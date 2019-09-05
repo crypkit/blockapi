@@ -1,15 +1,8 @@
-import blockapi.TzscanAPI
-import blockapi.DcrdataAPI
-import blockapi.CosmosAPI
-import blockapi.EosparkAPI
-
-#from backend.accounts.blockchains.ethereum import Ethereum
-#from backend.accounts.blockchains.tezos import Tezos
-
-from blockapi import get_api_classes_for_coin
-
+import unittest
+import blockapi
+from blockapi.services import AddressNotExist,APIError,BadGateway,GatewayTimeOut
+import blockapi.api
 import itertools
-
 
 test_addresses = {
     'bitcoin': [
@@ -41,63 +34,72 @@ test_addresses = {
     ]
 }
 
-def test_bitcoin_api():
-    _test_blockchain_api('bitcoin')
+test_invalid_addresses = {
+    'bitcoin': [ 'xxxx', ],
+    'cardano': [ 'xxxx', ],
+    'eos': [],
+    'ethereum': [ 'xxxx', ],
+    'litecoin': [ 'xxxx', ],
+    'tezos': [ 'xxxx', ],
+    'decred': [ 'xxxx', ],
+    'cosmos': [ 'xxxx', ]
+}
 
-def test_cardano_api():
-    _test_blockchain_api('cardano')
+class BlockapiTestCase(unittest.TestCase):
+    currencies = ('bitcoin', 'cardano', 'eos', 'ethereum', 'litecoin', 'tezos', 'decred', 'cosmos')
 
-def test_eos_api():
-    _test_blockchain_api('eos')
 
-def test_ethereum_api():
-    _test_blockchain_api('etherem')
+    def test_valid_address(self):
+        for currency_id in self.currencies:
+            with self.subTest(currency_id):
+                api_classes = blockapi.get_api_classes_for_coin(currency_id)
+                addresses = test_addresses[currency_id]
 
-def test_litecoin_api():
-    _test_blockchain_api('litecoin')
+                for api_class, address in itertools.product(api_classes, addresses):
+                    api_inst = api_class(address)
+                    try:
+                        b = api_inst.get_balance()
+                    except (AddressNotExist,BadGateway,GatewayTimeOut,APIError):
+                        self.fail("get_balance for {} [{}] failed unexpectedly with a valid address {}".format(api_inst.__class__.__name__,currency_id,address))
 
-def test_tezos_api():
-    _test_blockchain_api('tezos')
+    def test_invalid_address(self):
+        for currency_id in self.currencies:
+            with self.subTest(currency_id):
+                api_classes = blockapi.get_api_classes_for_coin(currency_id)
+                addresses = test_invalid_addresses[currency_id]
 
-def test_decred_api():
-    _test_blockchain_api('decred')
+                for api_class, address in itertools.product(api_classes, addresses):
+                    api_inst = api_class(address)
+                    with self.assertRaises((blockapi.services.AddressNotExist,
+                                            blockapi.services.APIError),
+                                            msg="API/currency: {}/{}".format(api_inst.__class__.__name__, currency_id)):
+                        b = api_inst.get_balance()
 
-def test_cosmos_api():
-    api_classes = get_api_classes_for_coin('cosmos')
-    addresses = test_addresses['cosmos']
+    def test_get_balance(self):
+        for currency_id in self.currencies:
+            with self.subTest(currency_id):
+                api_classes = blockapi.get_api_classes_for_coin(currency_id)
+                addresses = test_addresses[currency_id]
 
-    for api_class, address in itertools.product(api_classes, addresses):
-        api_inst = api_class(address)
-        b = api_inst.get_balance()
-        it = api_inst.get_incoming_txs()
-        ot = api_inst.get_outgoing_txs()
-        # just for check values in debugging
-        b,it,ot = b,it,ot
+                for api_class, address in itertools.product(api_classes, addresses):
+                    api_inst = api_class(address)
+                    try:
+                        b = api_inst.get_balance()
+                    except:
+                        self.fail("get_balance for {} [{}] failed unexpectedly".format(api_inst.__class__.__name__,currency_id))
 
-def _test_blockchain_api(currency_id):
-    """Test always all test addresses with all available apis."""
+                    try:
+                        tmp = float(b)
+                    except (ValueError,TypeError):
+                        self.fail("get_balance for {} [{}] failed unexpectedly - returned value is not a number".format(api_inst.__class__.__name__,currency_id))
 
-    api_classes = get_api_classes_for_coin(currency_id)
-    addresses = test_addresses[currency_id]
-
-    for api_class, address in itertools.product(api_classes, addresses):
-        api_inst = api_class(address)
-        b = api_inst.get_balance()
-        t = api_inst.get_txs()
-        # just for check values in debugging
-        b,t = b,t
-
+                    #if currency_id == 'cosmos':
+                    #    # get both incoming and outgoing transactions
+                    #    it = api_inst.get_incoming_txs()
+                    #    ot = api_inst.get_outgoing_txs()
+                    #else:
+                    #    # get transactions
+                    #    t = api_inst.get_txs()
 
 if __name__ == "__main__":
-    # test_cardano_api()
-    # test_eos_api()
-    # test_ethereum_api()
-    # test_tezos_api()
-    # test_decred_api()
-    # test_cosmos_api()
-    test_litecoin_api()
-
-    # for i in range(100):
-    #     print('{} call'.format(i+1))
-    #     # test_bitcoin_api()
- 
+    unittest.main()
