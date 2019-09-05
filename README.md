@@ -18,24 +18,26 @@ Library can be installed simply with pip:
 pip install blockapi
 ```
 
+or by running:
+```
+make install
+```
+
 Example usage to get account balance:
 ```
-from blockapi.BlockchairAPI import BlockchairEthereumAPI
-apiobj = BlockchairEthereumAPI('ethereum-address-here')
-account_balance = apiobj.get_balance()
-
+import blockapi.api
+from blockapi.api.blockchaininfo import BlockchainInfoAPI
+myobj = BlockchainInfoAPI("bitcoin-address-here")
+myobj.get_balance()
 ```
 
 ## Running the tests
 
-TBD
+To run the included tests simply issue:
 
 ```
-from blockapi import test
+make test
 ```
-
-or run the test.py manually.
-
 
 ## Contributing
 
