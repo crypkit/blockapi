@@ -1,8 +1,11 @@
-from .services import (
-    TzscanAPI, DcrdataAPI, CosmosAPI, EosparkAPI
-)
+import blockapi.TzscanAPI
+import blockapi.DcrdataAPI
+import blockapi.CosmosAPI
+import blockapi.EosparkAPI
+
 #from backend.accounts.blockchains.ethereum import Ethereum
 #from backend.accounts.blockchains.tezos import Tezos
+
 from blockapi import get_api_classes_for_coin
 
 import itertools
