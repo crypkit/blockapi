@@ -1,5 +1,13 @@
 import dateutil.parser
-from blockapi.services import BlockchainAPI,set_default_args_values,APIError,AddressNotExist,BadGateway,GatewayTimeOut
+from blockapi.services import (
+    BlockchainAPI,
+    set_default_args_values,
+    APIError,
+    AddressNotExist,
+    BadGateway,
+    GatewayTimeOut,
+    InternalServerError
+    )
 
 class EosparkAPI(BlockchainAPI):
     """

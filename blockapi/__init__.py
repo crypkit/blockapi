@@ -1,7 +1,9 @@
 import random
-from .services import BlockchainAPI
+from .services import BlockchainAPI,APIError,BadGateway,GatewayTimeOut,AddressNotExist,InternalServerError
 import blockapi.api
 import inspect
+
+from .test import test_addresses
 
 def get_random_api_class_for_coin(currency_id, exclude=[]):
     api_classes = get_api_classes_for_coin(currency_id)
@@ -54,3 +56,45 @@ def _get_all_inheritors():
 
     return all_inheritors
 
+
+def get_working_apis_for_coin(currency_id,debug=False):
+    coin_classes = get_api_classes_for_coin(currency_id)
+
+    if currency_id in test_addresses:
+        if len(test_addresses[currency_id]) == 0:
+            return ()
+    else:
+        return ()
+
+    coin_address = test_addresses[currency_id][0]
+    working_apis = []
+
+    api_ok = True
+    for api_class in coin_classes:
+        api_inst = api_class(coin_address)
+        exception_class = None
+        exception_msg = None
+        try:
+            api_inst.get_balance()
+
+        except Exception as e:
+            exception_class = e.__class__.__name__
+            exception_msg = str(e)
+            api_ok = False
+
+        if debug:
+            working_apis.append((api_class,exception_class,exception_msg))
+        else:
+            if api_ok:
+                working_apis.append(api_class)
+
+    return tuple(working_apis)
+
+def get_working_apis(debug=False):
+    all_coins = get_all_supported_coins()
+    ok_apis = {}
+
+    for a_coin in all_coins:
+        ok_apis[a_coin] = get_working_apis_for_coin(a_coin,debug=debug)
+
+    return ok_apis

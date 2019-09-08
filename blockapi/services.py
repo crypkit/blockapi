@@ -62,6 +62,8 @@ class Service(ABC):
         sleep(self.rate_limit)
 
     def process_error_response(self, response):
+        if response.status_code == 500:
+            raise InternalServerError('Error 500: Internal Server Error.')
         if response.status_code == 502:
             raise BadGateway('Error 502: Bad Gateway.')
         if response.status_code == 504:
@@ -108,6 +110,10 @@ class APIError(Exception):
     pass
 
 class AddressNotExist(APIError):
+    pass
+
+# 500
+class InternalServerError(APIError):
     pass
 
 # 502

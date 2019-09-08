@@ -1,6 +1,14 @@
 import dateutil.parser
 import random
-from blockapi.services import BlockchainAPI,set_default_args_values,APIError,AddressNotExist,BadGateway,GatewayTimeOut
+from blockapi.services import (
+    BlockchainAPI,
+    set_default_args_values,
+    APIError,
+    AddressNotExist,
+    BadGateway,
+    GatewayTimeOut,
+    InternalServerError
+    )
 
 class TzscanAPI(BlockchainAPI):
     """

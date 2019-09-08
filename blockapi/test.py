@@ -1,6 +1,6 @@
 import unittest
 import blockapi
-from blockapi.services import AddressNotExist,APIError,BadGateway,GatewayTimeOut
+from blockapi.services import AddressNotExist,APIError,BadGateway,GatewayTimeOut,InternalServerError
 import blockapi.api
 import itertools
 
@@ -59,7 +59,7 @@ class BlockapiTestCase(unittest.TestCase):
                     api_inst = api_class(address)
                     try:
                         b = api_inst.get_balance()
-                    except (AddressNotExist,BadGateway,GatewayTimeOut,APIError):
+                    except (AddressNotExist,BadGateway,GatewayTimeOut,InternalServerError,APIError):
                         self.fail("get_balance for {} [{}] failed unexpectedly with a valid address {}".format(api_inst.__class__.__name__,currency_id,address))
 
     def test_invalid_address(self):
