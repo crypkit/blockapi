@@ -10,3 +10,4 @@ from blockapi.api import dcrdata
 from blockapi.api import eospark
 from blockapi.api import etherscan
 from blockapi.api import tzscan
+from blockapi.api import neoscan

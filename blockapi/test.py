@@ -31,6 +31,9 @@ test_addresses = {
     ],
     'cosmos': [
         'cosmos1gn326f6sza44xt5kxrsdrnapp2sxhav03rhcsz'
+    ],
+    'neo': [
+        'AZnTM3mYbx9yzg8tb6hr7w9pAKntDmrtqk'
     ]
 }
 
@@ -42,7 +45,8 @@ test_invalid_addresses = {
     'litecoin': [ 'xxxx', ],
     'tezos': [ 'xxxx', ],
     'decred': [ 'xxxx', ],
-    'cosmos': [ 'xxxx', ]
+    'cosmos': [ 'xxxx', ],
+    'neo': [ 'xxxx', ],
 }
 
 class BlockapiTestCase(unittest.TestCase):

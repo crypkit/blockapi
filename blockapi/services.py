@@ -35,6 +35,7 @@ class Service(ABC):
     def request(self, request_method, with_rate_limit=True,
                 body={}, headers={}, **params):
         request_url = self.build_request_url(request_method, **params)
+
         if not request_url:
             return None
 

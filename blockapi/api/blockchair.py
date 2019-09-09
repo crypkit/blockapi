@@ -10,6 +10,7 @@ from blockapi.services import (
     GatewayTimeOut,
     InternalServerError
     )
+import coinaddr
 
 class BlockchairAPI(BlockchainAPI):
     """
@@ -142,9 +143,21 @@ class BlockchairBitcoinAPI(BlockchairAPI):
     currency_id = 'bitcoin'
     coef = 1e-8
 
+    def __init__(self,address,api_key=None):
+        if coinaddr.validate('btc',address).valid:
+            super().__init__(address,api_key)
+        else:
+            raise ValueError('Not a valid bitcoin address.')
+
 class BlockchairBitcoinCashAPI(BlockchairAPI):
     currency_id = 'bitcoin-cash'
     coef = 1e-8
+
+    def __init__(self,address,api_key=None):
+        if coinaddr.validate('bch',address).valid:
+            super().__init__(address,api_key)
+        else:
+            raise ValueError('Not a valid bitcoin-cash address.')
 
 class BlockchairBitcoinSvAPI(BlockchairAPI):
     currency_id = 'bitcoin-sv'
@@ -154,17 +167,41 @@ class BlockchairLitecoinAPI(BlockchairAPI):
     currency_id = 'litecoin'
     coef = 1e-8
 
+    def __init__(self,address,api_key=None):
+        if coinaddr.validate('ltc',address).valid:
+            super().__init__(address,api_key)
+        else:
+            raise ValueError('Not a valid litecoin address.')
+
 class BlockchairDogecoinAPI(BlockchairAPI):
     currency_id = 'dogecoin'
     coef = 1e-8
+
+    def __init__(self,address,api_key=None):
+        if coinaddr.validate('doge',address).valid:
+            super().__init__(address,api_key)
+        else:
+            raise ValueError('Not a valid dogecoin address.')
 
 class BlockchairDashAPI(BlockchairAPI):
     currency_id = 'dash'
     coef = 1e-8
 
+    def __init__(self,address,api_key=None):
+        if coinaddr.validate('dash',address).valid:
+            super().__init__(address,api_key)
+        else:
+            raise ValueError('Not a valid dashcoin address.')
+
 class BlockchairEthereumAPI(BlockchairAPI):
     currency_id = 'ethereum'
     coef = 1e-18
+
+    def __init__(self,address,api_key=None):
+        if coinaddr.validate('eth',address).valid:
+            super().__init__(address,api_key)
+        else:
+            raise ValueError('Not a valid ethereum address.')
 
 class BlockchairGroestlcoinAPI(BlockchairAPI):
     currency_id = 'groestlcoin'

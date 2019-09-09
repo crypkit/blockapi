@@ -18,7 +18,8 @@ class EtherscanAPI(BlockchainAPI):
     """
 
     currency_id = 'ethereum'
-    base_url = 'https://api.ethplorer.io'
+    #base_url = 'https://api.ethplorer.io'
+    base_url = 'https://api.etherscan.io'
     rate_limit = 0
     coef = 1e-18
     start_offset = 1
@@ -26,12 +27,20 @@ class EtherscanAPI(BlockchainAPI):
     page_offset_step = 1
 
     supported_requests = {
-        'get_balance': '',
-        'get_txs': 'module=account&action={}&offset={}&sort={}&page={}&address={}&api_key={}'
+        'get_balance': '/api?module=account&action=balance&address={address}&tag=latest&api_key={api_key}',
+        'get_txs': '/api?module=account&action={action}&offset={offset}&sort={sort}&page={page}&address={address}&api_key={api_key}'
+        #'get_txs': 'module=account&action={}&offset={}&sort={}&page={}&address={}&api_key={}'
     }
 
     def get_balance(self):
-        return None
+        balance_dict = self.request('get_balance',
+                                    address=self.address,
+                                    api_key=self.api_key)
+
+        if 'result' in balance_dict:
+            return int(balance_dict['result']) * self.coef
+        else:
+            return None
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
         txs = self._get_txs('txlist', offset, limit, unconfirmed)

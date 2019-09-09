@@ -7,6 +7,7 @@ from blockapi.services import (
     GatewayTimeOut,
     InternalServerError
     )
+import coinaddr
 
 class BlockonomicsAPI(BlockchainAPI):
     """
@@ -34,6 +35,12 @@ class BlockonomicsAPI(BlockchainAPI):
     #         raise AddressNotExist()
     #     # else
     #     super().process_error_response(response)
+
+    def __init__(self,address, api_key=None):
+        if coinaddr.validate('btc', address).valid:
+            super().__init__(address,api_key)
+        else:
+            raise ValueError('Not a valid bitcoin address.')
 
     def get_balance(self):
         body = '{"addr": "' + self.address + '"}'

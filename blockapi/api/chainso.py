@@ -7,6 +7,7 @@ from blockapi.services import (
     GatewayTimeOut,
     InternalServerError
     )
+import coinaddr
 
 class ChainSoAPI(BlockchainAPI):
     """
@@ -27,10 +28,13 @@ class ChainSoAPI(BlockchainAPI):
     page_offset_step = None
     confirmed_num = None
 
-    supported_requests: {
+    supported_requests = {
         'get_balance': '/get_address_balance/{symbol}/{address}',
         'get_txs': '/address/{symbol}/{address}'
     }
+
+    def __init__(self, address, api_key=None):
+        super().__init__(address, api_key)
 
     def get_balance(self):
         response = self._request('get_balance')
@@ -58,7 +62,7 @@ class ChainSoAPI(BlockchainAPI):
 
     def _request(self, method):
         response = self.request(
-            'get_balance',
+            method,
             symbol=self.symbol,
             address=self.address
         )
@@ -66,3 +70,14 @@ class ChainSoAPI(BlockchainAPI):
             return None
         return response['data']
 
+
+class ChainSoBitcoinAPI(ChainSoAPI):
+    currency_id = 'bitcoin'
+    symbol = 'BTC'
+    coef = 1e-8
+
+    def __init__(self,address,api_key=None):
+        if coinaddr.validate('btc',address).valid:
+            super().__init__(address,api_key)
+        else:
+            raise ValueError('Not a valid bitcoin address.')
