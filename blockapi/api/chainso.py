@@ -64,7 +64,8 @@ class ChainSoAPI(BlockchainAPI):
         response = self.request(
             method,
             symbol=self.symbol,
-            address=self.address
+            address=self.address,
+            with_cloudflare=True
         )
         if response['status'] == 'fail':
             return None
@@ -81,3 +82,47 @@ class ChainSoBitcoinAPI(ChainSoAPI):
             super().__init__(address,api_key)
         else:
             raise ValueError('Not a valid bitcoin address.')
+
+class ChainSoLitecoinAPI(ChainSoAPI):
+    currency_id = 'litecoin'
+    symbol = 'LTC'
+    coef = 1e-8
+
+    def __init__(self,address,api_key=None):
+        if coinaddr.validate('ltc',address).valid:
+            super().__init__(address,api_key)
+        else:
+            raise ValueError('Not a valid litecoin address.')
+
+class ChainSoDogecoinAPI(ChainSoAPI):
+    currency_id = 'dogecoin'
+    symbol = 'DOGE'
+    coef = 1
+
+    def __init__(self,address,api_key=None):
+        if coinaddr.validate('doge',address).valid:
+            super().__init__(address,api_key)
+        else:
+            raise ValueError('Not a valid dogecoin address.')
+
+class ChainSoZcashAPI(ChainSoAPI):
+    currency_id = 'zcash'
+    symbol = 'ZEC'
+    coef = 1
+
+    def __init__(self,address,api_key=None):
+        if coinaddr.validate('zcash',address).valid:
+            super().__init__(address,api_key)
+        else:
+            raise ValueError('Not a valid zcash address.')
+
+class ChainSoDashAPI(ChainSoAPI):
+    currency_id = 'dashcoin'
+    symbol = 'DASH'
+    coef = 1
+
+    def __init__(self,address,api_key=None):
+        if coinaddr.validate('dash',address).valid:
+            super().__init__(address,api_key)
+        else:
+            raise ValueError('Not a valid dashcoin address.')

@@ -34,6 +34,9 @@ test_addresses = {
     ],
     'neo': [
         'AZnTM3mYbx9yzg8tb6hr7w9pAKntDmrtqk'
+    ],
+    'dogecoin': [
+        'DH5yaieqoZN36fDVciNyRueRGvGLR3mr7L'
     ]
 }
 
@@ -47,6 +50,7 @@ test_invalid_addresses = {
     'decred': [ 'xxxx', ],
     'cosmos': [ 'xxxx', ],
     'neo': [ 'xxxx', ],
+    'dogecoin': [ 'xxxx', ],
 }
 
 class BlockapiTestCase(unittest.TestCase):

@@ -9,7 +9,7 @@ import random
 from time import sleep
 from copy import deepcopy
 from datetime import datetime
-
+import cfscrape
 
 class Service(ABC):
     """General class for handling blockchain API services."""
@@ -32,12 +32,17 @@ class Service(ABC):
             return self.base_url + path_url.format(**params)
         return None
 
-    def request(self, request_method, with_rate_limit=True,
+    def request(self, request_method, with_rate_limit=True, with_cloudflare=False,
                 body={}, headers={}, **params):
         request_url = self.build_request_url(request_method, **params)
 
         if not request_url:
             return None
+
+        if with_cloudflare:
+            reqobj = cfscrape.create_scraper()
+        else:
+            reqobj = requests
 
         if with_rate_limit:
             self.wait_for_next_request()
@@ -45,9 +50,9 @@ class Service(ABC):
         try:
             # if body is passed, use post
             if body:
-                response = requests.post(request_url, data=body, headers=headers)
+                    response = reqobj.post(request_url, data=body, headers=headers)
             else:
-                response = requests.get(request_url)
+                    response = reqobj.get(request_url)
             self.last_response = response
         except Exception as e:
             raise e
