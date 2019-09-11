@@ -37,7 +37,10 @@ test_addresses = {
     ],
     'dogecoin': [
         'DH5yaieqoZN36fDVciNyRueRGvGLR3mr7L'
-    ]
+    ],
+    'zcash': [
+        't1fLdzB7mHQgdb3tD474V9wYtuknPfQSX5e'
+    ],
 }
 
 test_invalid_addresses = {
@@ -51,10 +54,11 @@ test_invalid_addresses = {
     'cosmos': [ 'xxxx', ],
     'neo': [ 'xxxx', ],
     'dogecoin': [ 'xxxx', ],
+    'zcash': [ 'xxxx', ],
 }
 
 class BlockapiTestCase(unittest.TestCase):
-    currencies = ('bitcoin', 'cardano', 'eos', 'ethereum', 'litecoin', 'tezos', 'decred', 'cosmos')
+    currencies = ('bitcoin', 'cardano', 'eos', 'ethereum', 'litecoin', 'tezos', 'decred', 'cosmos', 'neo', 'dogecoin', 'zcash')
 
 
     def test_valid_address(self):
@@ -77,11 +81,15 @@ class BlockapiTestCase(unittest.TestCase):
                 addresses = test_invalid_addresses[currency_id]
 
                 for api_class, address in itertools.product(api_classes, addresses):
-                    api_inst = api_class(address)
-                    with self.assertRaises((blockapi.services.AddressNotExist,
-                                            blockapi.services.APIError),
-                                            msg="API/currency: {}/{}".format(api_inst.__class__.__name__, currency_id)):
-                        b = api_inst.get_balance()
+                    try:
+                        api_inst = api_class(address)
+                    except ValueError:
+                        pass
+                    else:
+                        with self.assertRaises((blockapi.services.AddressNotExist,
+                                                blockapi.services.APIError),
+                                                msg="API/currency: {}/{}".format(api_inst.__class__.__name__, currency_id)):
+                            b = api_inst.get_balance()
 
     def test_get_balance(self):
         for currency_id in self.currencies:

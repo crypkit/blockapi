@@ -43,7 +43,7 @@ class NeoscanAPI(BlockchainAPI):
                 self.max_items_per_page = self.page_offset_step = paging_params[1]
                 self.total_txs_count = paging_params[2]
         else:
-            raise ValueError('Not a valid neocoin address.')
+            raise ValueError('Not a valid neocoin address: {}'.format(address))
 
     def get_balance(self):
         response = self.request('get_balance',

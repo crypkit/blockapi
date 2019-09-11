@@ -17,7 +17,7 @@ class ChainSoAPI(BlockchainAPI):
     Explorer: 
     """
 
-    active = False
+    active = True
 
     currency_id = None
     symbol = None
@@ -81,7 +81,7 @@ class ChainSoBitcoinAPI(ChainSoAPI):
         if coinaddr.validate('btc',address).valid:
             super().__init__(address,api_key)
         else:
-            raise ValueError('Not a valid bitcoin address.')
+            raise ValueError('Not a valid bitcoin address: {}'.format(address))
 
 class ChainSoLitecoinAPI(ChainSoAPI):
     currency_id = 'litecoin'
@@ -92,7 +92,7 @@ class ChainSoLitecoinAPI(ChainSoAPI):
         if coinaddr.validate('ltc',address).valid:
             super().__init__(address,api_key)
         else:
-            raise ValueError('Not a valid litecoin address.')
+            raise ValueError('Not a valid litecoin address: {}'.format(address))
 
 class ChainSoDogecoinAPI(ChainSoAPI):
     currency_id = 'dogecoin'
@@ -103,7 +103,7 @@ class ChainSoDogecoinAPI(ChainSoAPI):
         if coinaddr.validate('doge',address).valid:
             super().__init__(address,api_key)
         else:
-            raise ValueError('Not a valid dogecoin address.')
+            raise ValueError('Not a valid dogecoin address: {}'.format(address))
 
 class ChainSoZcashAPI(ChainSoAPI):
     currency_id = 'zcash'
@@ -114,7 +114,7 @@ class ChainSoZcashAPI(ChainSoAPI):
         if coinaddr.validate('zcash',address).valid:
             super().__init__(address,api_key)
         else:
-            raise ValueError('Not a valid zcash address.')
+            raise ValueError('Not a valid zcash address: {}'.format(address))
 
 class ChainSoDashAPI(ChainSoAPI):
     currency_id = 'dashcoin'
@@ -125,4 +125,4 @@ class ChainSoDashAPI(ChainSoAPI):
         if coinaddr.validate('dash',address).valid:
             super().__init__(address,api_key)
         else:
-            raise ValueError('Not a valid dashcoin address.')
+            raise ValueError('Not a valid dashcoin address: {}'.format(address))

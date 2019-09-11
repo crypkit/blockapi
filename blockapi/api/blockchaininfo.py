@@ -37,7 +37,7 @@ class BlockchainInfoAPI(BlockchainAPI):
         if coinaddr.validate('btc', address).valid:
             super().__init__(address,api_key)
         else:
-            raise ValueError('Not a valid bitcoin address.')
+            raise ValueError('Not a valid bitcoin address: {}'.format(address))
 
     def process_error_response(self, response):
         if response.text == 'Invalid Bitcoin Address':

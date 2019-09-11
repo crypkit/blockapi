@@ -11,3 +11,5 @@ from blockapi.api import eospark
 from blockapi.api import etherscan
 from blockapi.api import tzscan
 from blockapi.api import neoscan
+from blockapi.api import zchain
+from blockapi.api import mercerweiss

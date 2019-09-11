@@ -147,7 +147,7 @@ class BlockchairBitcoinAPI(BlockchairAPI):
         if coinaddr.validate('btc',address).valid:
             super().__init__(address,api_key)
         else:
-            raise ValueError('Not a valid bitcoin address.')
+            raise ValueError('Not a valid bitcoin address: {}'.format(address))
 
 class BlockchairBitcoinCashAPI(BlockchairAPI):
     currency_id = 'bitcoin-cash'
@@ -157,7 +157,7 @@ class BlockchairBitcoinCashAPI(BlockchairAPI):
         if coinaddr.validate('bch',address).valid:
             super().__init__(address,api_key)
         else:
-            raise ValueError('Not a valid bitcoin-cash address.')
+            raise ValueError('Not a valid bitcoin-cash address: {}'.format(address))
 
 class BlockchairBitcoinSvAPI(BlockchairAPI):
     currency_id = 'bitcoin-sv'
@@ -171,7 +171,7 @@ class BlockchairLitecoinAPI(BlockchairAPI):
         if coinaddr.validate('ltc',address).valid:
             super().__init__(address,api_key)
         else:
-            raise ValueError('Not a valid litecoin address.')
+            raise ValueError('Not a valid litecoin address: {}'.format(address))
 
 class BlockchairDogecoinAPI(BlockchairAPI):
     currency_id = 'dogecoin'
@@ -181,7 +181,7 @@ class BlockchairDogecoinAPI(BlockchairAPI):
         if coinaddr.validate('doge',address).valid:
             super().__init__(address,api_key)
         else:
-            raise ValueError('Not a valid dogecoin address.')
+            raise ValueError('Not a valid dogecoin address: {}'.format(address))
 
 class BlockchairDashAPI(BlockchairAPI):
     currency_id = 'dash'
@@ -191,7 +191,7 @@ class BlockchairDashAPI(BlockchairAPI):
         if coinaddr.validate('dash',address).valid:
             super().__init__(address,api_key)
         else:
-            raise ValueError('Not a valid dashcoin address.')
+            raise ValueError('Not a valid dashcoin address: {}'.format(address))
 
 class BlockchairEthereumAPI(BlockchairAPI):
     currency_id = 'ethereum'
@@ -201,7 +201,7 @@ class BlockchairEthereumAPI(BlockchairAPI):
         if coinaddr.validate('eth',address).valid:
             super().__init__(address,api_key)
         else:
-            raise ValueError('Not a valid ethereum address.')
+            raise ValueError('Not a valid ethereum address: {}'.format(address))
 
 class BlockchairGroestlcoinAPI(BlockchairAPI):
     currency_id = 'groestlcoin'

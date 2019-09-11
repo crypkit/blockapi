@@ -40,7 +40,7 @@ class BlockonomicsAPI(BlockchainAPI):
         if coinaddr.validate('btc', address).valid:
             super().__init__(address,api_key)
         else:
-            raise ValueError('Not a valid bitcoin address.')
+            raise ValueError('Not a valid bitcoin address: {}'.format(address))
 
     def get_balance(self):
         body = '{"addr": "' + self.address + '"}'
