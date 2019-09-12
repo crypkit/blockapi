@@ -13,16 +13,19 @@ import inspect
 from .test import test_addresses
 
 
-def get_balance_from_random_api(currency_id):
+def get_balance_from_random_api(currency_id, address, api_key):
     """Get balance for currency from random API."""
-    return _call_method_from_random_api(currency_id, 'get_balance')
+    return _call_method_from_random_api(
+        currency_id, address, 'get_balance', api_key=None
+    )
 
 
-def _call_method_from_random_api(currency_id, method):
+def _call_method_from_random_api(currency_id, address, method, api_key=None):
     api_classes = get_shuffled_api_classes_for_coin(currency_id)
     for cl in api_classes:
         try:
-            return getattr(cl, method)()
+            inst = cl(address, api_key)
+            return getattr(inst, method)()
         except APIError:
             continue
     return None
