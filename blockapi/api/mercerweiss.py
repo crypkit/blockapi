@@ -7,7 +7,6 @@ from blockapi.services import (
     GatewayTimeOut,
     InternalServerError
     )
-import coinaddrng
 import pytz
 from datetime import datetime
 
@@ -21,6 +20,7 @@ class MercerweissAPI(BlockchainAPI):
     active = True
 
     currency_id = 'zcash'
+    currency_ticker = 'zec'
     base_url = 'http://insight.mercerweiss.com/api'
     rate_limit = 0
     coef = 1e-8
@@ -31,12 +31,6 @@ class MercerweissAPI(BlockchainAPI):
     supported_requests = {
         'get_balance': '/addr/{address}/balance',
     }
-
-    def __init__(self, address, api_key=None):
-        if coinaddrng.validate('zec', address).valid:
-            super().__init__(address,api_key)
-        else:
-            raise ValueError('Not a valid zcash address: {}'.format(address))
 
     def get_balance(self):
         response = self.request('get_balance',

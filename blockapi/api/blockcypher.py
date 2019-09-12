@@ -16,6 +16,7 @@ class BlockcypherAPI(BlockchainAPI):
     """
 
     currency_id = None
+    currency_ticker = None
     coin_symbol = None
     base_url = 'https://api.blockcypher.com/v1/'
     rate_limit = 0
@@ -49,6 +50,7 @@ class BlockcypherAPI(BlockchainAPI):
 
 class BlockcypherLitecoinAPI(BlockcypherAPI):
     currency_id = 'litecoin'
+    currency_ticker = 'ltc'
     coin_symbol = 'ltc'
     coef = 1e-8
 

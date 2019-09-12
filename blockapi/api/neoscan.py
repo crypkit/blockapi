@@ -7,20 +7,20 @@ from blockapi.services import (
     GatewayTimeOut,
     InternalServerError
     )
-import coinaddrng
 import pytz
 from datetime import datetime
 
 class NeoscanAPI(BlockchainAPI):
     """
-    coins: neo
+    coins: neocoin
     API docs: https://neoscan.io/docs/index.html#api-v1
     Explorer: 
     """
 
     active = True
 
-    currency_id = 'neo'
+    currency_id = 'neocoin'
+    currency_ticker = 'neo'
     base_url = 'https://api.neoscan.io/api/main_net/v1'
     rate_limit = 0
     coef = 1
@@ -34,16 +34,13 @@ class NeoscanAPI(BlockchainAPI):
     }
 
     def __init__(self, address, api_key=None):
-        if coinaddrng.validate('neo', address).valid:
-            super().__init__(address,api_key)
-            paging_params = self.get_tx_paging_params()
-            if paging_params is None:
-                raise APIError('Can\'t initialize API paging.')
-            else:
-                self.max_items_per_page = self.page_offset_step = paging_params[1]
-                self.total_txs_count = paging_params[2]
+        super().__init__(address,api_key)
+        paging_params = self.get_tx_paging_params()
+        if paging_params is None:
+            raise APIError('Can\'t initialize API paging.')
         else:
-            raise ValueError('Not a valid neocoin address: {}'.format(address))
+            self.max_items_per_page = self.page_offset_step = paging_params[1]
+            self.total_txs_count = paging_params[2]
 
     def get_balance(self):
         response = self.request('get_balance',

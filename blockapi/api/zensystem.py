@@ -10,18 +10,18 @@ from blockapi.services import (
 import pytz
 from datetime import datetime
 
-class ZchainAPI(BlockchainAPI):
+class ZensystemAPI(BlockchainAPI):
     """
-    coins: zcash
-    API docs: https://explorer.zcha.in/api
-    Explorer: https://explorer.zcha.in/
+    coins: horizen
+    API docs: ?
+    Explorer: https://explorer.zensystem.io/
     """
 
     active = True
 
-    currency_id = 'zcash'
-    currency_ticker = 'zec'
-    base_url = 'https://api.zcha.in'
+    currency_id = 'horizen'
+    #currency_ticker = 'zen'
+    base_url = 'https://explorer.zensystem.io/api'
     rate_limit = 0
     coef = 1
     max_items_per_page = None
@@ -29,7 +29,7 @@ class ZchainAPI(BlockchainAPI):
     confirmed_num = None
 
     supported_requests = {
-        'get_balance': '/v2/mainnet/accounts/{address}',
+        'get_balance': '/addr/{address}',
     }
 
     def get_balance(self):

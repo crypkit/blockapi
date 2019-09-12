@@ -10,6 +10,7 @@ from time import sleep
 from copy import deepcopy
 from datetime import datetime
 import cfscrape
+import blockapi
 
 class Service(ABC):
     """General class for handling blockchain API services."""
@@ -175,9 +176,14 @@ def check_obligatory_fields(method, args, kwargs, obligatory_fields):
         if obl_field not in response_keys:
             missing_fields.append(obl_field)
 
-
 class BlockchainAPI(Service, BlockchainInterface):
     currency_id = None
+    currency_ticker = None
+
     def __init__(self, address, api_key=None):
+        if not self.currency_ticker is None:
+            if not blockapi.check_address_valid(self.currency_ticker,address):
+                raise ValueError('Not a valid {} address: {}'.format(self.currency_id,address))
+
         Service.__init__(self, api_key)
         BlockchainInterface.__init__(self, address)

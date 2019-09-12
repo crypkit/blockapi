@@ -9,6 +9,7 @@ from .services import (
 import blockapi.api
 import random
 import inspect
+import coinaddrng
 
 from .test import test_addresses
 
@@ -135,3 +136,9 @@ def get_working_apis(debug=False):
         ok_apis[a_coin] = get_working_apis_for_coin(a_coin, debug=debug)
 
     return ok_apis
+
+def check_address_valid(currency_ticker,address):
+    if coinaddrng.validate(currency_ticker, address).valid:
+        return True
+    else:
+        return False

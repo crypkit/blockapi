@@ -9,7 +9,6 @@ from blockapi.services import (
     GatewayTimeOut,
     InternalServerError
     )
-import coinaddrng
 
 class EtherscanAPI(BlockchainAPI):
     """
@@ -19,6 +18,7 @@ class EtherscanAPI(BlockchainAPI):
     """
 
     currency_id = 'ethereum'
+    currency_ticker = 'eth'
     #base_url = 'https://api.ethplorer.io'
     base_url = 'https://api.etherscan.io'
     rate_limit = 0
@@ -32,13 +32,6 @@ class EtherscanAPI(BlockchainAPI):
         'get_txs': '/api?module=account&action={action}&offset={offset}&sort={sort}&page={page}&address={address}&api_key={api_key}'
         #'get_txs': 'module=account&action={}&offset={}&sort={}&page={}&address={}&api_key={}'
     }
-
-    def __init__(self, address, api_key=None):
-        if coinaddrng.validate('eth', address).valid:
-            super().__init__(address,api_key)
-        else:
-            raise ValueError('Not a valid ethereum address: {}'.format(address))
-
 
     def get_balance(self):
         balance_dict = self.request('get_balance',

@@ -10,26 +10,26 @@ from blockapi.services import (
 import pytz
 from datetime import datetime
 
-class ZchainAPI(BlockchainAPI):
+class BlockscoutAPI(BlockchainAPI):
     """
-    coins: zcash
-    API docs: https://explorer.zcha.in/api
-    Explorer: https://explorer.zcha.in/
+    coins: etc
+    API docs: https://blockscout.com/etc/mainnet/api_docs
+    Explorer: https://blockscout.com
     """
 
     active = True
 
-    currency_id = 'zcash'
-    currency_ticker = 'zec'
-    base_url = 'https://api.zcha.in'
+    currency_id = 'ethereum-classic'
+    currency_ticker = 'etc'
+    base_url = 'https://blockscout.com/etc/mainnet/api?'
     rate_limit = 0
-    coef = 1
+    coef = 1e-18
     max_items_per_page = None
     page_offset_step = None
     confirmed_num = None
 
     supported_requests = {
-        'get_balance': '/v2/mainnet/accounts/{address}',
+        'get_balance': 'module=account&action=eth_get_balance&address={address}',
     }
 
     def get_balance(self):
@@ -38,5 +38,5 @@ class ZchainAPI(BlockchainAPI):
         if not response:
             return 0
 
-        return response.get('balance') * self.coef
+        return int(response['result'],16) * self.coef
 

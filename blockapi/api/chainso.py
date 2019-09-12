@@ -7,7 +7,6 @@ from blockapi.services import (
     GatewayTimeOut,
     InternalServerError
     )
-import coinaddrng
 
 class ChainSoAPI(BlockchainAPI):
     """
@@ -20,6 +19,7 @@ class ChainSoAPI(BlockchainAPI):
     active = True
 
     currency_id = None
+    currency_ticker = None
     symbol = None
     base_url = 'https://chain.so/api/v2'
     rate_limit = 0.2  # 5 per second
@@ -74,55 +74,31 @@ class ChainSoAPI(BlockchainAPI):
 
 class ChainSoBitcoinAPI(ChainSoAPI):
     currency_id = 'bitcoin'
+    currency_ticker = 'btc'
     symbol = 'BTC'
     coef = 1e-8
 
-    def __init__(self,address,api_key=None):
-        if coinaddrng.validate('btc',address).valid:
-            super().__init__(address,api_key)
-        else:
-            raise ValueError('Not a valid bitcoin address: {}'.format(address))
-
 class ChainSoLitecoinAPI(ChainSoAPI):
     currency_id = 'litecoin'
+    currency_ticker = 'ltc'
     symbol = 'LTC'
     coef = 1e-8
 
-    def __init__(self,address,api_key=None):
-        if coinaddrng.validate('ltc',address).valid:
-            super().__init__(address,api_key)
-        else:
-            raise ValueError('Not a valid litecoin address: {}'.format(address))
-
 class ChainSoDogecoinAPI(ChainSoAPI):
     currency_id = 'dogecoin'
+    currency_ticker = 'doge'
     symbol = 'DOGE'
     coef = 1
 
-    def __init__(self,address,api_key=None):
-        if coinaddrng.validate('doge',address).valid:
-            super().__init__(address,api_key)
-        else:
-            raise ValueError('Not a valid dogecoin address: {}'.format(address))
-
 class ChainSoZcashAPI(ChainSoAPI):
     currency_id = 'zcash'
+    currency_ticker = 'zec'
     symbol = 'ZEC'
     coef = 1
 
-    def __init__(self,address,api_key=None):
-        if coinaddrng.validate('zcash',address).valid:
-            super().__init__(address,api_key)
-        else:
-            raise ValueError('Not a valid zcash address: {}'.format(address))
-
 class ChainSoDashAPI(ChainSoAPI):
     currency_id = 'dashcoin'
+    currency_ticker = 'dash'
     symbol = 'DASH'
     coef = 1
 
-    def __init__(self,address,api_key=None):
-        if coinaddrng.validate('dash',address).valid:
-            super().__init__(address,api_key)
-        else:
-            raise ValueError('Not a valid dashcoin address: {}'.format(address))
