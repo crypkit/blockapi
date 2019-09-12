@@ -1,26 +1,57 @@
-import random
-from .services import BlockchainAPI,APIError,BadGateway,GatewayTimeOut,AddressNotExist,InternalServerError
+from .services import (
+    BlockchainAPI,
+    APIError,
+    BadGateway,
+    GatewayTimeOut,
+    AddressNotExist,
+    InternalServerError
+)
 import blockapi.api
+import random
 import inspect
 
 from .test import test_addresses
 
-def get_random_api_class_for_coin(currency_id, exclude=[]):
+
+def get_balance_from_random_api(currency_id):
+    """Get balance for currency from random API."""
+    return _call_method_from_random_api(currency_id, 'get_balance')
+
+
+def _call_method_from_random_api(currency_id, method):
+    api_classes = get_shuffled_api_classes_for_coin(currency_id)
+    for cl in api_classes:
+        try:
+            return getattr(cl, method)()
+        except APIError:
+            continue
+    return None
+
+
+def get_shuffled_api_classes_for_coin(currency_id):
     api_classes = get_api_classes_for_coin(currency_id)
-    api_classes = [cl for cl in api_classes if not (cl in exclude)]
-    return random.choice(api_classes) if api_classes else None
+    return random.shuffle(api_classes)
+
 
 def get_api_classes_for_coin(currency_id):
     return [i for i in get_active_api_classes() if
             i.currency_id and
             i.currency_id == currency_id]
 
+
+def get_random_api_class_for_coin(currency_id, exclude=[]):
+    api_classes = get_api_classes_for_coin(currency_id)
+    api_classes = [cl for cl in api_classes if not (cl in exclude)]
+    return random.choice(api_classes) if api_classes else None
+
+
 def get_all_supported_coins():
     return list(set(c.currency_id for c in get_active_api_classes()
-           if c.currency_id))
+                    if c.currency_id))
+
 
 def get_active_api_classes():
-    #inheritors = _inheritors(BlockchainAPI)
+    # inheritors = _inheritors(BlockchainAPI)
     inheritors = _get_all_inheritors()
     return [i for i in inheritors if i.active]
 
@@ -36,8 +67,10 @@ def _inheritors(klass):
                 work.append(child)
     return subclasses
 
+
 def _get_subclasses(class_name):
-    return [getattr(class_name,x) for x in dir(class_name) if not x.startswith('__')]
+    return [getattr(class_name, x) for x in dir(class_name) if not x.startswith('__')]
+
 
 def _get_all_inheritors():
     all_inheritors = []
@@ -57,7 +90,7 @@ def _get_all_inheritors():
     return all_inheritors
 
 
-def get_working_apis_for_coin(currency_id,debug=False):
+def get_working_apis_for_coin(currency_id, debug=False):
     coin_classes = get_api_classes_for_coin(currency_id)
 
     if currency_id in test_addresses:
@@ -83,18 +116,19 @@ def get_working_apis_for_coin(currency_id,debug=False):
             api_ok = False
 
         if debug:
-            working_apis.append((api_class,exception_class,exception_msg))
+            working_apis.append((api_class, exception_class, exception_msg))
         else:
             if api_ok:
                 working_apis.append(api_class)
 
     return tuple(working_apis)
 
+
 def get_working_apis(debug=False):
     all_coins = get_all_supported_coins()
     ok_apis = {}
 
     for a_coin in all_coins:
-        ok_apis[a_coin] = get_working_apis_for_coin(a_coin,debug=debug)
+        ok_apis[a_coin] = get_working_apis_for_coin(a_coin, debug=debug)
 
     return ok_apis
