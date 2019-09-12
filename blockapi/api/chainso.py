@@ -7,7 +7,7 @@ from blockapi.services import (
     GatewayTimeOut,
     InternalServerError
     )
-import coinaddr
+import coinaddrng
 
 class ChainSoAPI(BlockchainAPI):
     """
@@ -78,7 +78,7 @@ class ChainSoBitcoinAPI(ChainSoAPI):
     coef = 1e-8
 
     def __init__(self,address,api_key=None):
-        if coinaddr.validate('btc',address).valid:
+        if coinaddrng.validate('btc',address).valid:
             super().__init__(address,api_key)
         else:
             raise ValueError('Not a valid bitcoin address: {}'.format(address))
@@ -89,7 +89,7 @@ class ChainSoLitecoinAPI(ChainSoAPI):
     coef = 1e-8
 
     def __init__(self,address,api_key=None):
-        if coinaddr.validate('ltc',address).valid:
+        if coinaddrng.validate('ltc',address).valid:
             super().__init__(address,api_key)
         else:
             raise ValueError('Not a valid litecoin address: {}'.format(address))
@@ -100,7 +100,7 @@ class ChainSoDogecoinAPI(ChainSoAPI):
     coef = 1
 
     def __init__(self,address,api_key=None):
-        if coinaddr.validate('doge',address).valid:
+        if coinaddrng.validate('doge',address).valid:
             super().__init__(address,api_key)
         else:
             raise ValueError('Not a valid dogecoin address: {}'.format(address))
@@ -111,7 +111,7 @@ class ChainSoZcashAPI(ChainSoAPI):
     coef = 1
 
     def __init__(self,address,api_key=None):
-        if coinaddr.validate('zcash',address).valid:
+        if coinaddrng.validate('zcash',address).valid:
             super().__init__(address,api_key)
         else:
             raise ValueError('Not a valid zcash address: {}'.format(address))
@@ -122,7 +122,7 @@ class ChainSoDashAPI(ChainSoAPI):
     coef = 1
 
     def __init__(self,address,api_key=None):
-        if coinaddr.validate('dash',address).valid:
+        if coinaddrng.validate('dash',address).valid:
             super().__init__(address,api_key)
         else:
             raise ValueError('Not a valid dashcoin address: {}'.format(address))

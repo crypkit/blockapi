@@ -7,7 +7,7 @@ from blockapi.services import (
     GatewayTimeOut,
     InternalServerError
     )
-import coinaddr
+import coinaddrng
 import pytz
 from datetime import datetime
 
@@ -34,7 +34,7 @@ class NeoscanAPI(BlockchainAPI):
     }
 
     def __init__(self, address, api_key=None):
-        if coinaddr.validate('neo', address).valid:
+        if coinaddrng.validate('neo', address).valid:
             super().__init__(address,api_key)
             paging_params = self.get_tx_paging_params()
             if paging_params is None:

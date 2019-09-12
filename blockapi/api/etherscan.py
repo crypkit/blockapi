@@ -9,7 +9,7 @@ from blockapi.services import (
     GatewayTimeOut,
     InternalServerError
     )
-import coinaddr
+import coinaddrng
 
 class EtherscanAPI(BlockchainAPI):
     """
@@ -34,7 +34,7 @@ class EtherscanAPI(BlockchainAPI):
     }
 
     def __init__(self, address, api_key=None):
-        if coinaddr.validate('eth', address).valid:
+        if coinaddrng.validate('eth', address).valid:
             super().__init__(address,api_key)
         else:
             raise ValueError('Not a valid ethereum address: {}'.format(address))
