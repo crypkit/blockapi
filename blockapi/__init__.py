@@ -138,7 +138,4 @@ def get_working_apis(debug=False):
     return ok_apis
 
 def check_address_valid(currency_ticker,address):
-    if coinaddrng.validate(currency_ticker, address).valid:
-        return True
-    else:
-        return False
+    return coinaddrng.validate(currency_ticker, address).valid
