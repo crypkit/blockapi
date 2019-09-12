@@ -8,7 +8,8 @@ from blockapi.services import (
     BadGateway,
     GatewayTimeOut,
     InternalServerError
-    )
+)
+
 
 class TzscanAPI(BlockchainAPI):
     """
@@ -18,7 +19,7 @@ class TzscanAPI(BlockchainAPI):
     """
 
     currency_id = 'tezos'
-    _base_url = 'https://api{num}.tzscan.io' # num = 1-6
+    base_url = None # endpoint is created in runtime
     rate_limit = 0
     coef = 1e-6
     max_items_per_page = 50
@@ -32,12 +33,14 @@ class TzscanAPI(BlockchainAPI):
         'get_endorsements': '/v3/cycle_endorsements/{address}?p={page_offset}&number={number}'
     }
 
-    @property
-    def base_url(self):
-        return self._base_url.format(num=random.randint(1, 6))
+    def __init__(self, address, api_key=None):
+        super().__init__(address)
+        # this API is very unstable, add some functionality to prevent fails
+        self._base_url_temp = 'https://api{num}.tzscan.io'  # num = 1-6
+        self._api_nums = [1, 2, 3, 4, 5, 6]
 
     def get_balance(self):
-        balance = self.request('get_balance', address=self.address)
+        balance = self._safe_request('get_balance', address=self.address)
         return float(balance['spendable']) * self.coef
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
@@ -61,7 +64,7 @@ class TzscanAPI(BlockchainAPI):
         """Get all operations by type
         @op_type in [Transaction, Origination, Delegation, Activation, ...]"""
 
-        operations = self.request(
+        operations = self._safe_request(
             'get_operations',
             address=self.address,
             type=op_type,
@@ -148,10 +151,9 @@ class TzscanAPI(BlockchainAPI):
             })
             return parsed
 
-
     @set_default_args_values
     def get_endorsements(self, offset=None, limit=None):
-        ends = self.request(
+        ends = self._safe_request(
             'get_endorsements',
             address=self.address,
             page_offset=offset,
@@ -176,7 +178,7 @@ class TzscanAPI(BlockchainAPI):
 
     @set_default_args_values
     def get_bakings(self, offset=None, limit=None):
-        baks = self.request(
+        baks = self._safe_request(
             'get_bakings',
             address=self.address,
             page_offset=offset,
@@ -199,3 +201,19 @@ class TzscanAPI(BlockchainAPI):
             'priority': float(b['priority']),
             'bake_time': int(b['bake_time'])
         }
+
+    def _safe_request(self, method, **params):
+        api_nums = self._api_nums.copy()
+        while api_nums:
+            try:
+                api_num = api_nums.pop(0)
+                self.base_url = self._base_url_temp.format(num=api_num)
+                response = self.request(method, **params)
+            except APIError as e:
+                ex = e
+                continue
+            else:
+                return response
+
+        # when all endpoints are checked and none of them is valid, raise exc
+        raise ex
