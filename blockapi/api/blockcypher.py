@@ -1,12 +1,8 @@
 from blockapi.services import (
     BlockchainAPI,
-    set_default_args_values,
-    APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
-    )
+    AddressNotExist
+)
+
 
 class BlockcypherAPI(BlockchainAPI):
     """
@@ -16,7 +12,6 @@ class BlockcypherAPI(BlockchainAPI):
     """
 
     currency_id = None
-    currency_ticker = None
     coin_symbol = None
     base_url = 'https://api.blockcypher.com/v1/'
     rate_limit = 0
@@ -48,10 +43,8 @@ class BlockcypherAPI(BlockchainAPI):
 
         return response['balance'] * self.coef
 
+
 class BlockcypherLitecoinAPI(BlockcypherAPI):
     currency_id = 'litecoin'
-    currency_ticker = 'ltc'
     coin_symbol = 'ltc'
     coef = 1e-8
-
-

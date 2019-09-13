@@ -1,8 +1,9 @@
-import unittest
-import blockapi
-from blockapi.services import AddressNotExist,APIError,BadGateway,GatewayTimeOut,InternalServerError
-import blockapi.api
 import itertools
+import unittest
+
+import blockapi
+import blockapi.api
+from blockapi.services import AddressNotExist, APIError, BadGateway, GatewayTimeOut, InternalServerError
 
 test_addresses = {
     'bitcoin': [
@@ -56,22 +57,23 @@ test_addresses = {
 }
 
 test_invalid_addresses = {
-    'bitcoin': [ 'xxxx', ],
-    'bitcoin-cash': [ 'xxxx', ],
-    'cardano': [ 'xxxx', ],
+    'bitcoin': ['xxxx', ],
+    'bitcoin-cash': ['xxxx', ],
+    'cardano': ['xxxx', ],
     'eos': [],
-    'ethereum': [ 'xxxx', ],
-    'litecoin': [ 'xxxx', ],
-    'tezos': [ 'xxxx', ],
-    'decred': [ 'xxxx', ],
-    'cosmos': [ 'xxxx', ],
-    'neocoin': [ 'xxxx', ],
-    'dogecoin': [ 'xxxx', ],
-    'zcash': [ 'xxxx', ],
-    'dashcoin': [ 'xxxx', ],
-    'ethereum-classic': [ 'xxxx', ],
-    'horizen': [ 'xxxx', ],
+    'ethereum': ['xxxx', ],
+    'litecoin': ['xxxx', ],
+    'tezos': ['xxxx', ],
+    'decred': ['xxxx', ],
+    'cosmos': ['xxxx', ],
+    'neocoin': ['xxxx', ],
+    'dogecoin': ['xxxx', ],
+    'zcash': ['xxxx', ],
+    'dashcoin': ['xxxx', ],
+    'ethereum-classic': ['xxxx', ],
+    'horizen': ['xxxx', ],
 }
+
 
 class BlockapiTestCase(unittest.TestCase):
     currencies = ('bitcoin', 'bitcoin-cash', 'cardano',
@@ -90,8 +92,9 @@ class BlockapiTestCase(unittest.TestCase):
                     api_inst = api_class(address)
                     try:
                         b = api_inst.get_balance()
-                    except (AddressNotExist,BadGateway,GatewayTimeOut,InternalServerError,APIError):
-                        self.fail("get_balance for {} [{}] failed unexpectedly with a valid address {}".format(api_inst.__class__.__name__,currency_id,address))
+                    except (AddressNotExist, BadGateway, GatewayTimeOut, InternalServerError, APIError):
+                        self.fail("get_balance for {} [{}] failed unexpectedly with a valid address {}".format(
+                            api_inst.__class__.__name__, currency_id, address))
 
     def test_invalid_address(self):
         for currency_id in self.currencies:
@@ -105,9 +108,10 @@ class BlockapiTestCase(unittest.TestCase):
                     except ValueError:
                         pass
                     else:
-                        with self.assertRaises((blockapi.services.AddressNotExist,
-                                                blockapi.services.APIError),
-                                                msg="API/currency: {}/{}".format(api_inst.__class__.__name__, currency_id)):
+                        with self.assertRaises(
+                                (blockapi.services.AddressNotExist, blockapi.services.APIError),
+                                msg="API/currency: {}/{}".format(api_inst.__class__.__name__,
+                                                                 currency_id)):
                             b = api_inst.get_balance()
 
     def test_get_balance(self):
@@ -121,20 +125,33 @@ class BlockapiTestCase(unittest.TestCase):
                     try:
                         b = api_inst.get_balance()
                     except:
-                        self.fail("get_balance for {} [{}] failed unexpectedly".format(api_inst.__class__.__name__,currency_id))
+                        self.fail("get_balance for {} [{}] failed unexpectedly".format(api_inst.__class__.__name__,
+                                                                                       currency_id))
 
                     try:
                         tmp = float(b)
-                    except (ValueError,TypeError):
-                        self.fail("get_balance for {} [{}] failed unexpectedly - returned value is not a number".format(api_inst.__class__.__name__,currency_id))
+                    except (ValueError, TypeError):
+                        self.fail("get_balance for {} [{}] failed unexpectedly - returned value is not a number".format(
+                            api_inst.__class__.__name__, currency_id))
 
-                    #if currency_id == 'cosmos':
+                    # if currency_id == 'cosmos':
                     #    # get both incoming and outgoing transactions
                     #    it = api_inst.get_incoming_txs()
                     #    ot = api_inst.get_outgoing_txs()
-                    #else:
+                    # else:
                     #    # get transactions
                     #    t = api_inst.get_txs()
+
+    def test_random_balance(self):
+        for currency_id in self.currencies:
+            with self.subTest(currency_id):
+                addresses = test_addresses[currency_id]
+                for address in addresses:
+                    try:
+                        blockapi.get_balance_from_random_api(currency_id, address)
+                    except:
+                        self.fail("get_balance_from_random_api for {} failed unexpectedly".format(currency_id))
+
 
 if __name__ == "__main__":
     unittest.main()

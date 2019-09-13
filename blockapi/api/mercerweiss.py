@@ -1,14 +1,7 @@
 from blockapi.services import (
-    BlockchainAPI,
-    set_default_args_values,
-    APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
-    )
-import pytz
-from datetime import datetime
+    BlockchainAPI
+)
+
 
 class MercerweissAPI(BlockchainAPI):
     """
@@ -20,7 +13,6 @@ class MercerweissAPI(BlockchainAPI):
     active = True
 
     currency_id = 'zcash'
-    currency_ticker = 'zec'
     base_url = 'http://insight.mercerweiss.com/api'
     rate_limit = 0
     coef = 1e-8
@@ -39,5 +31,4 @@ class MercerweissAPI(BlockchainAPI):
         if not response:
             return 0
 
-        return response  * self.coef
-
+        return response * self.coef

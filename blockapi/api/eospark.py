@@ -1,13 +1,9 @@
 import dateutil.parser
+
 from blockapi.services import (
-    BlockchainAPI,
-    set_default_args_values,
-    APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
-    )
+    BlockchainAPI
+)
+
 
 class EosparkAPI(BlockchainAPI):
     """
@@ -16,7 +12,7 @@ class EosparkAPI(BlockchainAPI):
     Explorer: https://eospark.com
     """
 
-    currency_id = 'atom'
+    currency_id = 'eos'
     base_url = 'https://api.eospark.com/api'
     rate_limit = 0
     coef = 1e-6
@@ -49,5 +45,3 @@ class EosparkAPI(BlockchainAPI):
             'direction': 'outgoing' if self.address == tx['sender'] else 'incoming',
             'raw': tx
         }
-
-

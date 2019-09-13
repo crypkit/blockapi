@@ -1,14 +1,13 @@
-import pytz
 from datetime import datetime
+
+import pytz
+
 from blockapi.services import (
     BlockchainAPI,
     set_default_args_values,
-    APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
-    )
+    AddressNotExist
+)
+
 
 class DcrdataAPI(BlockchainAPI):
     """
@@ -40,7 +39,7 @@ class DcrdataAPI(BlockchainAPI):
     def get_balance(self):
         balance = self.request('get_balance', address=self.address)
         return balance['dcr_unspent']
-    
+
     @set_default_args_values
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
         txs = self.request(
@@ -49,13 +48,13 @@ class DcrdataAPI(BlockchainAPI):
             count=limit,
             skip=offset
         )
-        
+
         parsed_txs = []
         for tx in txs:
             parsed_txs += self.parse_tx(tx)
-        
+
         return BlockchainAPI.filter_unconfirmed_txs(parsed_txs)
-    
+
     def get_tx(self, tx_hash):
         tx = self.request('get_transaction', tx_hash=tx_hash)
         for parsed in self.parse_tx(tx):
@@ -65,10 +64,10 @@ class DcrdataAPI(BlockchainAPI):
     def parse_tx(self, tx):
         # TX in decred could contain several addresses, filter only mine
         ins = [v for v in tx['vin']
-            if self.address in v.get('prevOut', {}).get('addresses', [])]
+               if self.address in v.get('prevOut', {}).get('addresses', [])]
         outs = [o for o in tx['vout']
-            if self.address in o.get('scriptPubKey', {}).get('addresses', [])]
-        
+                if self.address in o.get('scriptPubKey', {}).get('addresses', [])]
+
         date = datetime.fromtimestamp(tx['time'], pytz.utc)
         kind = self._get_tx_kind(tx)
         status = self._get_tx_status(tx)
@@ -78,7 +77,7 @@ class DcrdataAPI(BlockchainAPI):
             parsed.append({
                 'date': date,
                 'from_address': self.address,
-                'to_address': None, # multiple, TODO check it
+                'to_address': None,  # multiple, TODO check it
                 'amount': i['amountin'],
                 'fee': None,
                 'gas_limit': None,
@@ -110,7 +109,7 @@ class DcrdataAPI(BlockchainAPI):
                 'raw': tx
             })
         return parsed
-    
+
     def _get_tx_kind(self, tx):
         tx_types = [t['scriptPubKey']['type'] for t in tx['vout']]
         if 'stakesubmission' in tx_types:  # and 'sstxcommitment', 'sstxchange'
@@ -120,24 +119,22 @@ class DcrdataAPI(BlockchainAPI):
         elif 'stakerevoke' in tx_types:
             return 'revocation'
         elif 'pubkeyhash' in tx_types:
-            return 'transaction' #  'regular' in api
+            return 'transaction'  # 'regular' in api
         return None
-    
+
     def _get_tx_status(self, tx):
         status = None
 
         # only for ticket
         if self._get_tx_kind(tx) == 'ticket':
             voted = next((True for t in tx['vout']
-                if t['scriptPubKey']['type'] == 'stakesubmission'
-                and t.get('spend')), False)
+                          if t['scriptPubKey']['type'] == 'stakesubmission'
+                          and t.get('spend')), False)
             if voted:
                 status = 'voted'
             elif tx['confirmations'] < 256:
                 status = 'immature'
             else:
                 status = 'live'
-        
-        return status
-    
 
+        return status

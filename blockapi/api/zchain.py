@@ -1,14 +1,7 @@
 from blockapi.services import (
-    BlockchainAPI,
-    set_default_args_values,
-    APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
-    )
-import pytz
-from datetime import datetime
+    BlockchainAPI
+)
+
 
 class ZchainAPI(BlockchainAPI):
     """
@@ -20,7 +13,6 @@ class ZchainAPI(BlockchainAPI):
     active = True
 
     currency_id = 'zcash'
-    currency_ticker = 'zec'
     base_url = 'https://api.zcha.in'
     rate_limit = 0
     coef = 1
@@ -39,4 +31,3 @@ class ZchainAPI(BlockchainAPI):
             return 0
 
         return response.get('balance') * self.coef
-

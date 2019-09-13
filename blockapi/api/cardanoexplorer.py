@@ -1,14 +1,13 @@
-import pytz
 from datetime import datetime
+
+import pytz
+
 from blockapi.services import (
     BlockchainAPI,
-    set_default_args_values,
     APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
-    )
+    AddressNotExist
+)
+
 
 class CardanoExplorerAPI(BlockchainAPI):
     """
@@ -37,25 +36,25 @@ class CardanoExplorerAPI(BlockchainAPI):
 
     def parse_tx(self, tx):
         my_input = next((i for i in tx['ctbInputs']
-            if i[0].lower() == self.address.lower()), None)
+                         if i[0].lower() == self.address.lower()), None)
 
         my_output = next((i for i in tx['ctbOutputs']
-            if i[0].lower() == self.address.lower()), None)
+                          if i[0].lower() == self.address.lower()), None)
 
         fee = None
 
         if my_input:
             fee = (int(tx['ctbInputSum']['getCoin'])
-                - int(tx['ctbOutputSum']['getCoin']))
+                   - int(tx['ctbOutputSum']['getCoin']))
 
             to_address = (tx['ctbInputs'][0][0]
-                if len(tx['ctbInputs']) else None)
+                          if len(tx['ctbInputs']) else None)
             from_address = self.address
             amount = int(my_input[1]['getCoin']) * self.coef
 
-        elif my_output:
+        else:
             from_address = (tx['ctbOutputs'][0][0]
-                if len(tx['ctbOutputs']) else None)
+                            if len(tx['ctbOutputs']) else None)
             to_address = self.address
             amount = int(my_output[1]['getCoin']) * self.coef
 

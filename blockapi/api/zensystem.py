@@ -1,14 +1,7 @@
 from blockapi.services import (
-    BlockchainAPI,
-    set_default_args_values,
-    APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
-    )
-import pytz
-from datetime import datetime
+    BlockchainAPI
+)
+
 
 class ZensystemAPI(BlockchainAPI):
     """
@@ -20,7 +13,6 @@ class ZensystemAPI(BlockchainAPI):
     active = True
 
     currency_id = 'horizen'
-    currency_ticker = 'zen'
     base_url = 'https://explorer.zensystem.io/api'
     rate_limit = 0
     coef = 1
@@ -39,4 +31,3 @@ class ZensystemAPI(BlockchainAPI):
             return 0
 
         return response.get('balance') * self.coef
-

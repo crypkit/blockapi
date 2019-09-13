@@ -1,14 +1,7 @@
 from blockapi.services import (
-    BlockchainAPI,
-    set_default_args_values,
-    APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
-    )
-import pytz
-from datetime import datetime
+    BlockchainAPI
+)
+
 
 class BlockscoutAPI(BlockchainAPI):
     """
@@ -20,7 +13,6 @@ class BlockscoutAPI(BlockchainAPI):
     active = True
 
     currency_id = 'ethereum-classic'
-    currency_ticker = 'etc'
     base_url = 'https://blockscout.com/etc/mainnet/api?'
     rate_limit = 0
     coef = 1e-18
@@ -38,5 +30,4 @@ class BlockscoutAPI(BlockchainAPI):
         if not response:
             return 0
 
-        return int(response['result'],16) * self.coef
-
+        return int(response['result'], 16) * self.coef

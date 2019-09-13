@@ -1,12 +1,7 @@
 from blockapi.services import (
-    BlockchainAPI,
-    set_default_args_values,
-    APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
-    )
+    BlockchainAPI
+)
+
 
 class BlockonomicsAPI(BlockchainAPI):
     """
@@ -18,7 +13,6 @@ class BlockonomicsAPI(BlockchainAPI):
     active = True
 
     currency_id = 'bitcoin'
-    currency_ticker = 'btc'
     base_url = 'https://www.blockonomics.co/api'
     # rate_limit = 30
     coef = 1e-8
@@ -44,4 +38,3 @@ class BlockonomicsAPI(BlockchainAPI):
 
         balance = sum(r['confirmed'] * self.coef for r in response['response'])
         return balance
-

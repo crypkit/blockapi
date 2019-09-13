@@ -1,14 +1,13 @@
-import pytz
 from datetime import datetime
+
+import pytz
+
 from blockapi.services import (
     BlockchainAPI,
     set_default_args_values,
-    APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
-    )
+    AddressNotExist
+)
+
 
 class BlockchainInfoAPI(BlockchainAPI):
     """
@@ -20,7 +19,6 @@ class BlockchainInfoAPI(BlockchainAPI):
     active = True
 
     currency_id = 'bitcoin'
-    currency_ticker = 'btc'
     base_url = 'https://blockchain.info'
     rate_limit = 0
     coef = 1e-8
@@ -66,7 +64,7 @@ class BlockchainInfoAPI(BlockchainAPI):
         if is_outgoing:
             from_addresses = in_addresses
             to_addresses = out_addresses
-        elif is_incoming:
+        else:
             from_addresses = out_addresses
             to_addresses = in_addresses
 
