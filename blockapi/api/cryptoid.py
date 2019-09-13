@@ -1,12 +1,7 @@
 from blockapi.services import (
-    BlockchainAPI,
-    set_default_args_values,
-    APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
-    )
+    BlockchainAPI
+)
+
 
 class CryptoIDAPI(BlockchainAPI):
     """
@@ -15,6 +10,3 @@ class CryptoIDAPI(BlockchainAPI):
     Explorer: https://chainz.cryptoid.info
     """
     pass
-
-
-

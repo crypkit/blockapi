@@ -1,14 +1,12 @@
-import pytz
 from datetime import datetime
+
+import pytz
+
 from blockapi.services import (
     BlockchainAPI,
-    set_default_args_values,
-    APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
-    )
+    set_default_args_values
+)
+
 
 class EtherscanAPI(BlockchainAPI):
     """
@@ -18,8 +16,6 @@ class EtherscanAPI(BlockchainAPI):
     """
 
     currency_id = 'ethereum'
-    currency_ticker = 'eth'
-    #base_url = 'https://api.ethplorer.io'
     base_url = 'https://api.etherscan.io'
     rate_limit = 0
     coef = 1e-18
@@ -30,7 +26,7 @@ class EtherscanAPI(BlockchainAPI):
     supported_requests = {
         'get_balance': '/api?module=account&action=balance&address={address}&tag=latest&api_key={api_key}',
         'get_txs': '/api?module=account&action={action}&offset={offset}&sort={sort}&page={page}&address={address}&api_key={api_key}'
-        #'get_txs': 'module=account&action={}&offset={}&sort={}&page={}&address={}&api_key={}'
+        # 'get_txs': 'module=account&action={}&offset={}&sort={}&page={}&address={}&api_key={}'
     }
 
     def get_balance(self):

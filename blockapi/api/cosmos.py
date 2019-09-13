@@ -1,15 +1,14 @@
-import dateutil.parser
 import re
 from copy import deepcopy
+
+import dateutil.parser
+
 from blockapi.services import (
     BlockchainAPI,
     set_default_args_values,
-    APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
-    )
+    AddressNotExist
+)
+
 
 class CosmosAPI(BlockchainAPI):
     """
@@ -49,7 +48,7 @@ class CosmosAPI(BlockchainAPI):
         balance = {}
         for b in balances:
             currency_id = (self.currency_id if b['denom'] == 'uatom'
-                else b['denom'])
+                           else b['denom'])
             balance[currency_id] = int(b['amount']) * self.coef
 
         return balance
@@ -104,7 +103,6 @@ class CosmosAPI(BlockchainAPI):
             msg.update(base_tx)
             msgs.append(msg)
         return msgs
-
 
     def get_rewards_withdrawals(self, offset=None, limit=None):
         items = self._get_txs('withdraw_delegator_reward', 'delegator', offset, limit)
@@ -226,14 +224,14 @@ class CosmosAPI(BlockchainAPI):
 
         elif msg_type == 'multisend':
             my_input = next((i for i in msg_value['inputs']
-                if i['address'].lower() == self.address.lower()), None)
+                             if i['address'].lower() == self.address.lower()), None)
 
             my_output = next((i for i in msg_value['outputs']
-                if i['address'].lower() == self.address.lower()), None)
+                              if i['address'].lower() == self.address.lower()), None)
 
             if my_input:
                 to_address = (msg_value['outputs'][0]['address']
-                    if len(msg_value['outputs']) == 1 else 'multiple')
+                              if len(msg_value['outputs']) == 1 else 'multiple')
                 return {
                     'from_address': self.address,
                     'to_address': to_address,
@@ -241,7 +239,7 @@ class CosmosAPI(BlockchainAPI):
                 }
             if my_output:
                 from_address = (msg_value['inputs'][0]['address']
-                    if len(msg_value['inputs']) == 1 else 'multiple')
+                                if len(msg_value['inputs']) == 1 else 'multiple')
                 return {
                     'from_address': from_address,
                     'to_address': self.address,
@@ -250,12 +248,13 @@ class CosmosAPI(BlockchainAPI):
 
         else:
             amount_obj = msg_value['amount']
+            amount_data = {}
             if isinstance(amount_obj, list):
                 amount_data = amount_obj[0] if amount_obj else {}
             elif isinstance(amount_obj, dict):
                 amount_data = amount_obj
 
             msg_info['amount'] = (int(amount_data['amount']) * self.coef
-                if amount_data else None)
+                                  if amount_data else None)
 
         return msg_info

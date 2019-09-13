@@ -1,15 +1,14 @@
+from datetime import datetime
+
 import dateutil.parser
 import pytz
-from datetime import datetime
+
 from blockapi.services import (
     BlockchainAPI,
     set_default_args_values,
-    APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
-    )
+    AddressNotExist
+)
+
 
 class BlockchairAPI(BlockchainAPI):
     """
@@ -22,12 +21,10 @@ class BlockchairAPI(BlockchainAPI):
     active = False
 
     currency_id = None
-    currency_ticker = None
-    base_url = 'https://api.blockchair.com'
     rate_limit = 0
     coef = None
     start_offset = 0
-    max_items_per_page = 10 # 10000 per tx hashes; 10 per tx details
+    max_items_per_page = 10  # 10000 per tx hashes; 10 per tx details
     page_offset_step = max_items_per_page
 
     supported_requests = {
@@ -42,7 +39,7 @@ class BlockchairAPI(BlockchainAPI):
 
     def _set_address_type(self):
         is_xpub = (any(self.address.startswith(p)
-            for p in ['xpub', 'ypub', 'zpub']))
+                       for p in ['xpub', 'ypub', 'zpub']))
         self.address_type = 'xpub' if is_xpub else 'address'
 
     def get_balance(self):
@@ -50,7 +47,7 @@ class BlockchairAPI(BlockchainAPI):
         if not dashboard:
             return 0
 
-        #return dashboard[self.address_type]['balance'] * self.coef
+        # return dashboard[self.address_type]['balance'] * self.coef
         return int(dashboard['address']['balance']) * self.coef
 
     def get_create_date(self):
@@ -82,9 +79,9 @@ class BlockchairAPI(BlockchainAPI):
 
     def parse_tx(self, tx):
         my_input = next((i for i in tx['inputs']
-            if self.address == i['recipient']), None)
+                         if self.address == i['recipient']), None)
         my_output = next((o for o in tx['outputs']
-            if self.address == o ['recipient']), None)
+                          if self.address == o['recipient']), None)
         tx_data = tx['transaction']
 
         if my_input:
@@ -93,7 +90,7 @@ class BlockchairAPI(BlockchainAPI):
             from_address = self.address
             to_address = (tx['outputs'][0]['recipient']
                           if tx_data['output_count'] == 1 else 'multiple')
-        elif my_output:
+        else:
             amount = my_output['value'] * self.coef
             direction = 'incoming'
             to_address = self.address
@@ -141,37 +138,38 @@ class BlockchairAPI(BlockchainAPI):
 
 class BlockchairBitcoinAPI(BlockchairAPI):
     currency_id = 'bitcoin'
-    currency_ticker = 'btc'
     coef = 1e-8
+
 
 class BlockchairBitcoinCashAPI(BlockchairAPI):
     currency_id = 'bitcoin-cash'
-    currency_ticker = 'bch'
     coef = 1e-8
+
 
 class BlockchairBitcoinSvAPI(BlockchairAPI):
     currency_id = 'bitcoin-sv'
     # coef = 1e-8
 
+
 class BlockchairLitecoinAPI(BlockchairAPI):
     currency_id = 'litecoin'
-    currency_ticker = 'ltc'
     coef = 1e-8
+
 
 class BlockchairDogecoinAPI(BlockchairAPI):
     currency_id = 'dogecoin'
-    currency_ticker = 'doge'
     coef = 1e-8
+
 
 class BlockchairDashAPI(BlockchairAPI):
     currency_id = 'dashcoin'
-    currency_ticker = 'dash'
     coef = 1e-8
+
 
 class BlockchairEthereumAPI(BlockchairAPI):
     currency_id = 'ethereum'
-    currency_ticker = 'eth'
     coef = 1e-18
+
 
 class BlockchairGroestlcoinAPI(BlockchairAPI):
     currency_id = 'groestlcoin'
@@ -180,5 +178,3 @@ class BlockchairGroestlcoinAPI(BlockchairAPI):
 # class BlockchairRippleAPI(BlockchairAPI):
 #     currency_id = 'ripple'
 #     coef = 1e-8
-
-

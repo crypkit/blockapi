@@ -1,16 +1,12 @@
+import inspect
 from abc import ABC, abstractmethod
+from time import sleep
+
+import cfscrape
 import requests
 
-import dateutil.parser
-import pytz
-import re
-import inspect
-import random
-from time import sleep
-from copy import deepcopy
-from datetime import datetime
-import cfscrape
 import blockapi
+
 
 class Service(ABC):
     """General class for handling blockchain API services."""
@@ -34,11 +30,17 @@ class Service(ABC):
         return None
 
     def request(self, request_method, with_rate_limit=True, with_cloudflare=False,
-                body={}, headers={}, **params):
+                body=None, headers=None, **params):
         request_url = self.build_request_url(request_method, **params)
 
         if not request_url:
             return None
+
+        if not body:
+            body = {}
+
+        if not headers:
+            headers = {}
 
         if with_cloudflare:
             reqobj = cfscrape.create_scraper()
@@ -51,9 +53,9 @@ class Service(ABC):
         try:
             # if body is passed, use post
             if body:
-                    response = reqobj.post(request_url, data=body, headers=headers)
+                response = reqobj.post(request_url, data=body, headers=headers)
             else:
-                    response = reqobj.get(request_url)
+                response = reqobj.get(request_url)
             self.last_response = response
         except Exception as e:
             raise e
@@ -80,7 +82,6 @@ class Service(ABC):
             response.text, response.status_code))
 
 
-
 # Decorator that set default args
 def set_default_args_values(f):
     def wrapper(*args, **kwargs):
@@ -94,7 +95,7 @@ def set_default_args_values(f):
     def _set_default_arg(f, arg_name, default_value, *args, **kwargs):
         sig = inspect.signature(f)
         arg_idx, _ = next((i, par) for i, (name, par)
-            in enumerate(sig.parameters.items()) if name == arg_name)
+                          in enumerate(sig.parameters.items()) if name == arg_name)
 
         # check if its argument is in *args
         if len(args) > arg_idx:
@@ -111,26 +112,28 @@ def set_default_args_values(f):
     return wrapper
 
 
-
 # Exceptions
 class APIError(Exception):
     pass
 
+
 class AddressNotExist(APIError):
     pass
+
 
 # 500
 class InternalServerError(APIError):
     pass
 
+
 # 502
 class BadGateway(APIError):
     pass
 
+
 # 504
 class GatewayTimeOut(APIError):
     pass
-
 
 
 class BlockchainInterface(ABC):
@@ -166,6 +169,7 @@ def check_obligatory_fields(method, args, kwargs, obligatory_fields):
     if not response:
         return True
 
+    response_keys = []
     if type(response) == dict:
         response_keys = response.keys
     elif type(response) == list:
@@ -176,14 +180,13 @@ def check_obligatory_fields(method, args, kwargs, obligatory_fields):
         if obl_field not in response_keys:
             missing_fields.append(obl_field)
 
-class BlockchainAPI(Service, BlockchainInterface):
+
+class BlockchainAPI(Service, BlockchainInterface, ABC):
     currency_id = None
-    currency_ticker = None
 
     def __init__(self, address, api_key=None):
-        if not self.currency_ticker is None:
-            if not blockapi.check_address_valid(self.currency_ticker,address):
-                raise ValueError('Not a valid {} address: {}'.format(self.currency_id,address))
+        if not blockapi.check_address_valid(self.currency_id, address):
+            raise ValueError('Not a valid {} address: {}'.format(self.currency_id, address))
 
         Service.__init__(self, api_key)
         BlockchainInterface.__init__(self, address)

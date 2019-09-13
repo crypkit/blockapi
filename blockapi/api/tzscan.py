@@ -1,13 +1,9 @@
 import dateutil.parser
-import random
+
 from blockapi.services import (
     BlockchainAPI,
     set_default_args_values,
-    APIError,
-    AddressNotExist,
-    BadGateway,
-    GatewayTimeOut,
-    InternalServerError
+    APIError
 )
 
 
@@ -19,8 +15,6 @@ class TzscanAPI(BlockchainAPI):
     """
 
     currency_id = 'tezos'
-    currency_ticker = 'xtz'
-
     base_url = None # endpoint is created in runtime
     rate_limit = 0
     coef = 1e-6
