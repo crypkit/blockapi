@@ -16,6 +16,7 @@ from .test import test_addresses
 
 # currencies' ids and tickers
 COINS = {
+    'binance-coin': None, # BNB
     'bitcoin': 'BTC',
     'bitcoin-cash': 'BCH',
     'bitcoin-sv': None,  # BSV

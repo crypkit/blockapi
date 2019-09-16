@@ -1,3 +1,4 @@
+from blockapi.api.binance import *
 from blockapi.api.blockchaininfo import *
 from blockapi.api.blockchair import *
 from blockapi.api.blockcypher import *
