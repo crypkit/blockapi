@@ -18,8 +18,8 @@ setuptools.setup(
     install_requires=[
         'requests', 
         'pytz', 
-        'python-dateutil', 
-        'coinaddrng', 
+        'python-dateutil',
+        'coinaddrng',
         'cfscrape'
     ],
 )
