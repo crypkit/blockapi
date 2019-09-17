@@ -30,6 +30,9 @@ class BinanceAPI(BlockchainAPI):
             return 0
 
         try:
-            return [{'symbol': bal['symbol'], 'amount': float(bal['free']) * self.coef } for bal in response['balances']]
+            return [{
+                'symbol': bal['symbol'],
+                'amount': float(bal['free']) * self.coef
+            } for bal in response['balances']]
         except ValueError:
             return 0

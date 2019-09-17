@@ -49,7 +49,7 @@ def _call_method_from_random_api(currency_id, address, method):
         try:
             inst = cl(address)
             return getattr(inst, method)()
-        except APIError:
+        except (APIError, Exception):
             continue
     return None
 

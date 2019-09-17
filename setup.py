@@ -8,7 +8,7 @@ PACKAGES = find_packages(where='.')
 
 setuptools.setup(
     name='blockapi',
-    version='0.0.11',
+    version='0.0.12',
     author='Devmons s.r.o.',
     description='BlockAPI library',
     license='MIT',
@@ -18,8 +18,8 @@ setuptools.setup(
     install_requires=[
         'requests', 
         'pytz', 
-        'python-dateutil', 
-        'coinaddrng', 
+        'python-dateutil',
+        'coinaddrng',
         'cfscrape'
     ],
 )
