@@ -15,6 +15,7 @@ from blockapi.api.etherscan import *
 from blockapi.api.greymass import *
 from blockapi.api.mercerweiss import *
 from blockapi.api.neoscan import *
+from blockapi.api.stellar import *
 from blockapi.api.tzscan import *
 from blockapi.api.zchain import *
 from blockapi.api.zensystem import *

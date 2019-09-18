@@ -33,7 +33,10 @@ class GreymassAPI(BlockchainAPI):
 
         # {‘symbol’: _, ‘address’: _, ‘price’: _, ‘name’: ?} ]
 
-        return [{"symbol" : item["symbol"], 
-                 "address": item["code"], 
-                 "amount": float(item["amount"]), 
-                 "name": None } for item in response ]
+        try:
+            return [{"symbol" : item["symbol"], 
+                     "address": item["code"], 
+                     "amount": float(item["amount"]), 
+                     "name": None } for item in response ]
+        except KeyError:
+            return 0

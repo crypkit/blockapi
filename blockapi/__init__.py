@@ -32,6 +32,7 @@ COINS = {
     'horizen': 'ZEN',
     'litecoin': 'LTC',
     'neocoin': 'NEO',
+    'stellar': 'XLM',
     'zcash': 'ZEC'
 }
 

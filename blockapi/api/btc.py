@@ -30,7 +30,7 @@ class BtcAPI(BlockchainAPI):
         if not response:
             return 0
 
-        if 'data' in response:
-            if 'balance' in response['data']:
-                return response['data']['balance'] * self.coef
-        return 0
+        try:
+            return response['data']['balance'] * self.coef
+        except KeyError:
+            return 0
