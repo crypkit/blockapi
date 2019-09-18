@@ -4,6 +4,7 @@ from blockapi.api.blockchair import *
 from blockapi.api.blockcypher import *
 from blockapi.api.blockonomics import *
 from blockapi.api.blockscout import *
+from blockapi.api.btc import *
 from blockapi.api.cardanoexplorer import *
 from blockapi.api.chainso import *
 from blockapi.api.cosmos import *
@@ -11,6 +12,7 @@ from blockapi.api.cryptoid import *
 from blockapi.api.dcrdata import *
 from blockapi.api.eospark import *
 from blockapi.api.etherscan import *
+from blockapi.api.greymass import *
 from blockapi.api.mercerweiss import *
 from blockapi.api.neoscan import *
 from blockapi.api.tzscan import *

@@ -25,7 +25,7 @@ COINS = {
     'decred': None,  # DCR
     'dashcoin': 'DASH',
     'dogecoin': 'DOGE',
-    'eos': None,  # EOS
+    'eos': 'EOS',
     'ethereum': 'ETH',
     'ethereum-classic': 'ETC',
     'groestlcoin': None,  # GRS
