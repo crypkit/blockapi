@@ -17,6 +17,7 @@ from blockapi.api.mercerweiss import *
 from blockapi.api.neoscan import *
 from blockapi.api.ravencoin import *
 from blockapi.api.stellar import *
+from blockapi.api.tronscan import *
 from blockapi.api.tzscan import *
 from blockapi.api.zchain import *
 from blockapi.api.zensystem import *
