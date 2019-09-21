@@ -33,6 +33,7 @@ COINS = {
     'litecoin': 'LTC',
     'neocoin': 'NEO',
     'stellar': 'XLM',
+    'tron': 'TRX',
     'zcash': 'ZEC'
 }
 
