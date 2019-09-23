@@ -30,29 +30,32 @@ class EtherscanAPI(BlockchainAPI):
     }
 
     def get_balance(self):
-        balance_dict = self.request('get_balance',
-                                    address=self.address,
-                                    api_key=self.api_key)
+        balance_dict = self.request(
+            'get_balance',
+            address=self.address,
+            api_key=self.api_key
+        )
 
+        # returns only balance for ETH; ERC20 and ERC721 tokens are omitted
         if 'result' in balance_dict:
             return int(balance_dict['result']) * self.coef
         else:
             return None
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
-        txs = self._get_txs('txlist', offset, limit, unconfirmed)
+        txs = self._get_txs('txlist', offset, limit)
         return [self.parse_tx(t) for t in txs]
 
     def get_internal_txs(self, offset=None, limit=None, unconfirmed=False):
-        txs = self._get_txs('txlistinternal', offset, limit, unconfirmed)
+        txs = self._get_txs('txlistinternal', offset, limit)
         return [self.parse_tx(t) for t in txs]
 
     def get_token_txs(self, offset=None, limit=None, unconfirmed=False):
-        txs = self._get_txs('tokentx', offset, limit, unconfirmed)
+        txs = self._get_txs('tokentx', offset, limit)
         return [self.parse_tx(t) for t in txs]
 
     @set_default_args_values
-    def _get_txs(self, action, offset=None, limit=None, unconfirmed=False):
+    def _get_txs(self, action, offset=None, limit=None):
         return self.request(
             'get_txs',
             action=action,
