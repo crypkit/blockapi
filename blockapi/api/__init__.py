@@ -12,6 +12,7 @@ from blockapi.api.cryptoid import *
 from blockapi.api.dcrdata import *
 from blockapi.api.eospark import *
 from blockapi.api.etherscan import *
+from blockapi.api.ethplorer import *
 from blockapi.api.greymass import *
 from blockapi.api.mercerweiss import *
 from blockapi.api.neoscan import *
