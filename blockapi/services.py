@@ -1,9 +1,11 @@
 import inspect
 from abc import ABC, abstractmethod
+from datetime import datetime, timedelta
 from time import sleep
 
 import cfscrape
 import requests
+from dateutil.parser import parse as date_parse
 
 import blockapi
 
@@ -47,7 +49,7 @@ class Service(ABC):
         else:
             reqobj = requests
 
-        if with_rate_limit:
+        if with_rate_limit and self.rate_limit:
             self.wait_for_next_request()
 
         try:
@@ -66,8 +68,15 @@ class Service(ABC):
         return response.json()
 
     def wait_for_next_request(self):
-        # TODO - store timestamp of last request and wait till rate limit
-        # is >= then current timestamp and timestamp of last request
+        if not self.last_response:
+            return
+
+        if self.last_response.headers.get('Date'):
+            last_resp_time = date_parse(self.last_response.headers.get('Date'))
+            wait_until = last_resp_time + timedelta(seconds=self.rate_limit)
+            while datetime.utcnow() < wait_until:
+                pass
+
         sleep(self.rate_limit)
 
     def process_error_response(self, response):
@@ -155,30 +164,9 @@ class BlockchainInterface(ABC):
         """Loads txs for single address."""
         return []
 
-    def parse_tx(self, tx):
-        """Parse txs into general structure."""
-        return tx
-
     @staticmethod
     def filter_unconfirmed_txs(txs):
         return [t for t in txs if t.get('confirmed') in [True, None]]
-
-
-def check_obligatory_fields(method, args, kwargs, obligatory_fields):
-    response = method(*args, **kwargs)
-    if not response:
-        return True
-
-    response_keys = []
-    if type(response) == dict:
-        response_keys = response.keys
-    elif type(response) == list:
-        response_keys = response[0].keys
-
-    missing_fields = []
-    for obl_field in obligatory_fields:
-        if obl_field not in response_keys:
-            missing_fields.append(obl_field)
 
 
 class BlockchainAPI(Service, BlockchainInterface, ABC):

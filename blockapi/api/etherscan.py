@@ -17,7 +17,7 @@ class EtherscanAPI(BlockchainAPI):
 
     currency_id = 'ethereum'
     base_url = 'https://api.etherscan.io'
-    rate_limit = 0
+    rate_limit = 0.2
     coef = 1e-18
     start_offset = 1
     max_items_per_page = 10000
@@ -25,8 +25,8 @@ class EtherscanAPI(BlockchainAPI):
 
     supported_requests = {
         'get_balance': '/api?module=account&action=balance&address={address}&tag=latest&api_key={api_key}',
-        'get_txs': '/api?module=account&action={action}&offset={offset}&sort={sort}&page={page}&address={address}&api_key={api_key}'
-        # 'get_txs': 'module=account&action={}&offset={}&sort={}&page={}&address={}&api_key={}'
+        'get_txs': '/api?module=account&action={action}&offset={offset}&sort={sort}&page={page}&address={address}'
+                   '&api_key={api_key}'
     }
 
     def get_balance(self):
@@ -36,7 +36,7 @@ class EtherscanAPI(BlockchainAPI):
             api_key=self.api_key
         )
 
-        # returns only balance for ETH; ERC20 and ERC721 tokens are omitted
+        # returns only balance for ETH; ERC20 and ERC721 tokens are in etherscan omitted
         if 'result' in balance_dict:
             return int(balance_dict['result']) * self.coef
         else:
@@ -44,15 +44,15 @@ class EtherscanAPI(BlockchainAPI):
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
         txs = self._get_txs('txlist', offset, limit)
-        return [self.parse_tx(t) for t in txs]
+        return [self.parse_tx(t, 'normal') for t in txs]
 
     def get_internal_txs(self, offset=None, limit=None, unconfirmed=False):
         txs = self._get_txs('txlistinternal', offset, limit)
-        return [self.parse_tx(t) for t in txs]
+        return [self.parse_tx(t, 'internal') for t in txs]
 
     def get_token_txs(self, offset=None, limit=None, unconfirmed=False):
         txs = self._get_txs('tokentx', offset, limit)
-        return [self.parse_tx(t) for t in txs]
+        return [self.parse_tx(t, 'token') for t in txs]
 
     @set_default_args_values
     def _get_txs(self, action, offset=None, limit=None):
@@ -66,7 +66,23 @@ class EtherscanAPI(BlockchainAPI):
             api_key=self.api_key
         )
 
-    def parse_tx(self, tx):
+    def parse_tx(self, tx, tx_type):
+        direction = None
+        if self.address.lower() == tx['from'].lower():
+            direction = 'outgoing'
+        elif self.address.lower() == tx['to'].lower():
+            direction = 'incoming'
+        elif not tx['contractAddress']:
+            direction = 'outgoing'
+
+        token_data = None
+        if tx_type is 'token':
+            token_data = {
+                'name': tx.get('tokenName'),
+                'symbol': tx.get('tokenSymbol'),
+                'decimals': tx.get('tokenDecimal')
+            }
+
         return {
             'currency_id': self.currency_id,
             'date': datetime.fromtimestamp(int(tx['timeStamp']), pytz.utc),
@@ -74,18 +90,20 @@ class EtherscanAPI(BlockchainAPI):
             'to_address': tx['to'],
             'contract_address': tx['contractAddress'],
             'amount': float(tx['value']) * self.coef,
-            'fee': float(tx['gasUsed']) * float(tx['gasPrice']),
+            'fee': float(tx['gasUsed']) * float(tx['gasPrice']) * self.coef,
             'gas': {
                 'gas': float(tx['gas']),
                 'gas_price': float(tx['gasPrice']),
-                'cumulative_gas_used': float(tx['cumulativeGasUsed']),
-                'gas_used': float(tx['gasUsed'])
+                'cumulative_gas_used': float(tx['cumulativeGasUsed']) if tx.get('cumulativeGasUsed') else None,
+                'gas_used': float(tx['gasUsed']) if tx.get('gasUsed') else None
             },
-            'hash': tx['trx_id'],
+            'hash': tx['hash'],  # tx['trx_id'],
+            'confirmations': tx['confirmations'],
             'confirmed': None,
-            'is_error': False,
-            'type': 'normal',
+            'is_error': tx.get('isError') == "1",
+            'type': tx_type,
             'kind': 'transaction',
-            'direction': 'outgoing' if self.address == tx['sender'] else 'incoming',
+            'direction': direction,
+            'token_data': token_data,
             'raw': tx
         }

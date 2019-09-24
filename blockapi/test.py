@@ -152,6 +152,35 @@ class BlockapiTestCase(unittest.TestCase):
                     except:
                         self.fail("get_balance_from_random_api for {} failed unexpectedly".format(currency_id))
 
+    def test_rate_limits(self):
+        for currency_id in self.currencies:
+            with self.subTest(currency_id):
+                addresses = test_addresses[currency_id]
+                for address in addresses:
+                    for _ in range(2):
+                        try:
+                            blockapi.get_balance_from_random_api(currency_id, address)
+                        except _:
+                            self.fail("repeated call for {} failed unexpectedly".format(currency_id))
+
+
+# TODO check obligatory fields in response
+def check_obligatory_fields(method, args, kwargs, obligatory_fields):
+    response = method(*args, **kwargs)
+    if not response:
+        return True
+
+    response_keys = []
+    if type(response) == dict:
+        response_keys = response.keys
+    elif type(response) == list:
+        response_keys = response[0].keys
+
+    missing_fields = []
+    for obl_field in obligatory_fields:
+        if obl_field not in response_keys:
+            missing_fields.append(obl_field)
+
 
 if __name__ == "__main__":
     unittest.main()
