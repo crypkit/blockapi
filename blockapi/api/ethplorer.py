@@ -13,7 +13,7 @@ class EthplorerAPI(BlockchainAPI):
     currency_id = 'ethereum'
     base_url = 'http://api.ethplorer.io'
     default_api_key = 'freekey'
-    rate_limit = 0
+    rate_limit = 0.5
     coef = 1e-18
     start_offset = None
     max_items_per_page = None
@@ -26,11 +26,18 @@ class EthplorerAPI(BlockchainAPI):
     def __init__(self, address, api_key=None):
         if not api_key:
             api_key = self.default_api_key
+
         super().__init__(address, api_key)
+
+        # cache info
+        self._info = None
+
+        if self.api_key != self.default_api_key:
+            self.rate_limit = 0.1
 
     def get_balance(self):
         balances = []
-        response = self.get_info()
+        response = self.info
 
         balances.append({
             'symbol': 'ETH',
@@ -48,9 +55,12 @@ class EthplorerAPI(BlockchainAPI):
 
         return balances
 
-    def get_info(self):
-        return self.request(
-            'get_info',
-            address=self.address,
-            api_key=self.api_key
-        )
+    @property
+    def info(self):
+        if not self._info:
+            self._info = self.request(
+                'get_info',
+                address=self.address,
+                api_key=self.api_key
+            )
+        return self._info

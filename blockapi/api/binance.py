@@ -1,14 +1,15 @@
+from datetime import datetime
+
 from blockapi.services import (
     BlockchainAPI
 )
 
-from datetime import datetime
 
 class BinanceAPI(BlockchainAPI):
     """
     coins: binance coin
     API docs: https://docs.binance.org/api-reference/dex-api/paths.html
-    Explorer: 
+    Explorer: https://explorer.binance.org
     """
 
     active = True
@@ -46,9 +47,9 @@ class BinanceAPI(BlockchainAPI):
                                 offset=offset,
                                 limit=limit)
 
-        return [ self.parse_tx(t) for t in response['tx'] ]
+        return [self.parse_tx(t) for t in response['tx']]
 
-    def parse_tx(self,tx):
+    def parse_tx(self, tx):
         from_address = tx['fromAddr']
         to_address = tx['toAddr']
         amount = tx['value']
@@ -62,7 +63,7 @@ class BinanceAPI(BlockchainAPI):
             direction = 'incoming'
 
         return {
-            'date': datetime.strptime(timestamp,'%Y-%m-%dT%H:%M:%S.%fZ'),
+            'date': datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S.%fZ'),
             'from_address': from_address,
             'to_address': to_address,
             'amount': amount * self.coef,
@@ -76,4 +77,3 @@ class BinanceAPI(BlockchainAPI):
             'direction': direction,
             'raw': tx
         }
-
