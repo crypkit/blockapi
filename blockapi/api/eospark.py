@@ -12,7 +12,7 @@ class EosparkAPI(BlockchainAPI):
     Explorer: https://eospark.com
     """
 
-    currency_id = 'eos'
+    symbol = 'EOS'
     base_url = 'https://api.eospark.com/api'
     rate_limit = 0
     coef = 1e-6
@@ -27,7 +27,7 @@ class EosparkAPI(BlockchainAPI):
 
     def parse_tx(self, tx):
         return {
-            'currency_id': tx['code'],
+            'symbol': tx['code'],
             'date': dateutil.parser.parse(tx['timestamp']),
             'from_address': tx['sender'],
             'to_address': tx['receiver'],

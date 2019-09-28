@@ -12,7 +12,7 @@ class TronscanAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = 'tron'
+    symbol = 'TRX'
     base_url = 'https://apilist.tronscan.org/api'
     rate_limit = 0
     coef = 1e-6
@@ -41,7 +41,7 @@ class TronscanAPI(BlockchainAPI):
 
         for coin in response['tokenBalances']:
             if coin['name'] == '_':
-                symbol = 'TRX'
+                symbol = self.symbol
                 owner_address = self.address
                 coin_coef = 1e-6
             else:

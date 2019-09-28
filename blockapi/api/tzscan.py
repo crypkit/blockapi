@@ -14,7 +14,7 @@ class TzscanAPI(BlockchainAPI):
     Explorer: https://tzscan.io
     """
 
-    currency_id = 'tezos'
+    symbol = 'XTZ'
     base_url = None # endpoint is created in runtime
     rate_limit = 0
     coef = 1e-6

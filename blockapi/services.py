@@ -170,11 +170,11 @@ class BlockchainInterface(ABC):
 
 
 class BlockchainAPI(Service, BlockchainInterface, ABC):
-    currency_id = None
+    symbol = None
 
     def __init__(self, address, api_key=None):
-        if not blockapi.check_address_valid(self.currency_id, address):
-            raise ValueError('Not a valid {} address: {}'.format(self.currency_id, address))
+        if not blockapi.check_address_valid(self.symbol, address):
+            raise ValueError('Not a valid {} address: {}'.format(self.symbol, address))
 
         Service.__init__(self, api_key)
         BlockchainInterface.__init__(self, address)

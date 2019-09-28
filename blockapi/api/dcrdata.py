@@ -16,7 +16,7 @@ class DcrdataAPI(BlockchainAPI):
     Explorer: https://explorer.dcrdata.org
     """
 
-    currency_id = 'decred'
+    symbol = 'DCR'
     base_url = 'https://explorer.dcrdata.org/api'
     rate_limit = 0
     coef = 1

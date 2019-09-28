@@ -20,7 +20,7 @@ class BlockchairAPI(BlockchainAPI):
 
     active = False
 
-    currency_id = None
+    symbol = None
     rate_limit = 0
     coef = None
     start_offset = 0
@@ -29,8 +29,8 @@ class BlockchairAPI(BlockchainAPI):
 
     supported_requests = {
         # for limit and offset the second parameter 0 is for utxo
-        'get_dashboard': '/{currency_id}/dashboards/{address_type}/{address}?limit={limit},0&offset={offset},0',
-        'get_txs': '/{currency_id}/dashboards/transactions/{hash_or_hashes}',
+        'get_dashboard': '/{symbol}/dashboards/{address_type}/{address}?limit={limit},0&offset={offset},0',
+        'get_txs': '/{symbol}/dashboards/transactions/{hash_or_hashes}',
     }
 
     def __init__(self, address, api_key=None):
@@ -68,7 +68,7 @@ class BlockchairAPI(BlockchainAPI):
         tx_hashes = dashboard['transactions']
         tx_response = self.request(
             'get_txs',
-            currency_id=self.currency_id,
+            symbol=self.symbol,
             hash_or_hashes=','.join(tx_hashes)
         )
         if not tx_response.get('data'):
@@ -116,7 +116,7 @@ class BlockchairAPI(BlockchainAPI):
     def _get_dashboard(self, offset=0, limit=0):
         response = self.request(
             'get_dashboard',
-            currency_id=self.currency_id,
+            symbol=self.symbol,
             address_type=self.address_type,
             address=self.address,
             offset=offset,
@@ -137,44 +137,44 @@ class BlockchairAPI(BlockchainAPI):
 
 
 class BlockchairBitcoinAPI(BlockchairAPI):
-    currency_id = 'bitcoin'
+    symbol = 'BTC'
     coef = 1e-8
 
 
 class BlockchairBitcoinCashAPI(BlockchairAPI):
-    currency_id = 'bitcoin-cash'
+    symbol = 'BCH'
     coef = 1e-8
 
 
 class BlockchairBitcoinSvAPI(BlockchairAPI):
-    currency_id = 'bitcoin-sv'
+    symbol = 'BSV'
     # coef = 1e-8
 
 
 class BlockchairLitecoinAPI(BlockchairAPI):
-    currency_id = 'litecoin'
+    symbol = 'LTC'
     coef = 1e-8
 
 
 class BlockchairDogecoinAPI(BlockchairAPI):
-    currency_id = 'dogecoin'
+    symbol = 'DOGE'
     coef = 1e-8
 
 
 class BlockchairDashAPI(BlockchairAPI):
-    currency_id = 'dashcoin'
+    symbol = 'DASH'
     coef = 1e-8
 
 
 class BlockchairEthereumAPI(BlockchairAPI):
-    currency_id = 'ethereum'
+    symbol = 'ETH'
     coef = 1e-18
 
 
 class BlockchairGroestlcoinAPI(BlockchairAPI):
-    currency_id = 'groestlcoin'
+    symbol = 'GRS'
     coef = 1e-8
 
 # class BlockchairRippleAPI(BlockchairAPI):
-#     currency_id = 'ripple'
+#     symbol = 'XRP'
 #     coef = 1e-8

@@ -12,7 +12,7 @@ class CryptoIDAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = None
+    symbol = None
     base_url = 'http://chainz.cryptoid.info'
     rate_limit = 0
     coef = 1e-8
@@ -21,27 +21,27 @@ class CryptoIDAPI(BlockchainAPI):
     confirmed_num = None
 
     supported_requests = {
-        'get_balance': '/{currency_id}/api.dws?q=getbalance&a={address}&key={api_key}',
+        'get_balance': '/{symbol}/api.dws?q=getbalance&a={address}&key={api_key}',
     }
 
     def get_balance(self):
         response = self.request('get_balance',
                                 api_key=self.api_key,
-                                currency_id=self.currency_id,
+                                symbol=self.symbol.lower(),
                                 address=self.address)
 
         return response * self.coef
 
-class CryptoIDLitecoinAPI(CryptoIDAPI):
 
-    currency_id = 'ltc'
+class CryptoIDLitecoinAPI(CryptoIDAPI):
+    symbol = 'LTC'
+
 
 class CryptoIDDashAPI(CryptoIDAPI):
-
-    currency_id = 'dash'
+    symbol = 'DASH'
     coef = 1
 
-class CryptoIDGroestlcoinAPI(CryptoIDAPI):
 
-    currency_id = 'grs'
+class CryptoIDGroestlcoinAPI(CryptoIDAPI):
+    symbol = 'GRS'
     coef = 1

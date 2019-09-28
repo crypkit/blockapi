@@ -12,7 +12,7 @@ class ZensystemAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = 'horizen'
+    symbol = 'ZEN'
     base_url = 'https://explorer.zensystem.io/api'
     rate_limit = 0
     coef = 1

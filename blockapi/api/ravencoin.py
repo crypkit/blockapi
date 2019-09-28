@@ -11,7 +11,7 @@ class RavencoinAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = 'ravencoin'
+    symbol = 'RVN'
     base_url = 'https://ravencoin.network/api'
     rate_limit = 0
     coef = 1e-8

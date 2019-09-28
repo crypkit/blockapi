@@ -17,7 +17,7 @@ class NeoscanAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = 'neocoin'
+    symbol = 'NEO'
     base_url = 'https://api.neoscan.io/api/main_net/v1'
     rate_limit = 0
     coef = 1
@@ -46,7 +46,7 @@ class NeoscanAPI(BlockchainAPI):
             return 0
 
         for bal in response['balance']:
-            if bal.get('asset_symbol') == 'NEO':
+            if bal.get('asset_symbol') == self.symbol:
                 return bal.get('amount') * self.coef
 
         return None

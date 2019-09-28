@@ -12,7 +12,7 @@ class BtcAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = 'bitcoin-cash'
+    symbol = 'BCH'
     base_url = 'https://bch-chain.api.btc.com/v3'
     rate_limit = 0
     coef = 1e-8

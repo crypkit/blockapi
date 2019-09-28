@@ -16,7 +16,7 @@ class CardanoExplorerAPI(BlockchainAPI):
     Explorer: https://cardanoexplorer.com
     """
 
-    currency_id = 'cardano'
+    symbol = 'ADA'
     base_url = 'https://cardanoexplorer.com/api'
     rate_limit = 0
     coef = 1e-6

@@ -12,7 +12,7 @@ class ZchainAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = 'zcash'
+    symbol = 'ZEC'
     base_url = 'https://api.zcha.in'
     rate_limit = 0
     coef = 1

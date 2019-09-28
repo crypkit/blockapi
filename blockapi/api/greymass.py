@@ -12,7 +12,7 @@ class GreymassAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = 'eos'
+    symbol = 'EOS'
     base_url = 'https://eos.greymass.com/v1'
     rate_limit = 0
     coef = 1

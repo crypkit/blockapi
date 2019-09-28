@@ -18,7 +18,7 @@ class BlockchainInfoAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = 'bitcoin'
+    symbol = 'BTC'
     base_url = 'https://blockchain.info'
     rate_limit = 0
     coef = 1e-8

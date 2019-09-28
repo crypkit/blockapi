@@ -15,7 +15,7 @@ class EtherscanAPI(BlockchainAPI):
     Explorer: https://etherscan.io
     """
 
-    currency_id = 'ethereum'
+    symbol = 'ETH'
     base_url = 'https://api.etherscan.io'
     rate_limit = 0.2
     coef = 1e-18
@@ -80,16 +80,21 @@ class EtherscanAPI(BlockchainAPI):
             token_data = {
                 'name': tx.get('tokenName'),
                 'symbol': tx.get('tokenSymbol'),
-                'decimals': tx.get('tokenDecimal')
+                'decimals': float(tx.get('tokenDecimal'))
             }
+            symbol = token_data['symbol']
+            amount = float(tx['value']) * pow(10, -token_data['decimals'])
+        else:
+            symbol = self.symbol
+            amount = float(tx['value']) * self.coef
 
         return {
-            'currency_id': self.currency_id,
+            'symbol': symbol,
             'date': datetime.fromtimestamp(int(tx['timeStamp']), pytz.utc),
             'from_address': tx['from'],
             'to_address': tx['to'],
             'contract_address': tx['contractAddress'],
-            'amount': float(tx['value']) * self.coef,
+            'amount': amount,
             'fee': float(tx['gasUsed']) * float(tx['gasPrice']) * self.coef,
             'gas': {
                 'gas': float(tx['gas']),
@@ -97,7 +102,7 @@ class EtherscanAPI(BlockchainAPI):
                 'cumulative_gas_used': float(tx['cumulativeGasUsed']) if tx.get('cumulativeGasUsed') else None,
                 'gas_used': float(tx['gasUsed']) if tx.get('gasUsed') else None
             },
-            'hash': tx['hash'],  # tx['trx_id'],
+            'hash': tx['hash'],
             'confirmations': tx['confirmations'],
             'confirmed': None,
             'is_error': tx.get('isError') == "1",

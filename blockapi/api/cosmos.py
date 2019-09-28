@@ -17,7 +17,7 @@ class CosmosAPI(BlockchainAPI):
     Explorer: https://www.mintscan.io
     """
 
-    currency_id = 'cosmos'
+    symbol = 'ATOM'
     base_url = 'https://stargate.cosmos.network'
     rate_limit = 0
     coef = 1e-6
@@ -47,9 +47,9 @@ class CosmosAPI(BlockchainAPI):
 
         balance = {}
         for b in balances:
-            currency_id = (self.currency_id if b['denom'] == 'uatom'
+            symbol = (self.symbol if b['denom'] == 'uatom'
                            else b['denom'])
-            balance[currency_id] = int(b['amount']) * self.coef
+            balance[symbol] = int(b['amount']) * self.coef
 
         return balance
 
