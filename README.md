@@ -1,6 +1,39 @@
 # blockapi
 
-Library to interact with numerous cryptocurrency data APIs to get the basic info about account balance, transactions, ...
+Library to interact with numerous cryptocurrency data APIs to get the basic info about account balance, transactions, etc.
+List of supported coins:
+| coin  | API name | supported operations |
+| ----  | ------------| ---------------------|
+| XTZ   | TzscanAPI   | balance, transactions, activations, originations, delegations, endorsements, bakings|
+| ATOM  | CosmosAPI   | balance, transactions, rewards, delegates, votes|
+| DCR   | DcrdataAPI  | balance, transactions|
+| ADA   | CardanoExplorerAPI | balance, transactions|
+| ZEC   | ChainSoAPI  | balance, transactions|
+|       | MercerweissAPI | balance|
+|       | ZchainAPI | balance|
+| ETC   | BlockscoutAPI | balance|
+| NEO   | NeoscanAPI | balance, transactions|
+| ZEN   | ZensystemAPI | balance|
+| DASH  | ChainSoAPI | balance, transactions|
+|       | CryptoIDAPI | balance|
+| DOGE  | ChainSoAPI |balance, transactions|
+| BNB   | BinanceAPI |balance,transactions|
+| EOS   | EosparkAPI |balance, transactions|
+|       | GreymassAPI | balance|
+| BCH   | BtcAPI | balance|
+| XLM   | StellarAPI | balance|
+| RVN   | RavencoinAPI | balance|
+| TRX   | TronscanAPI | balance|
+| LTC   | BlockcypherAPI | balance|
+|       | ChainSoAPI | balance, transactions|
+|       | CryptoIDAPI | balance|
+| BTC   | BlockchainInfoAPI | balance, transactions|
+|       | BlockonomicsAPI | balance, transactions|
+|       | ChainSoAPI | balance, transactions|
+| GRS   | CryptoIDAPI | balance|
+| ETH   | EtherscanAPI | balance, transactions|
+|       | EthplorerAPI | balance|
+
 
 ## Getting Started
 
