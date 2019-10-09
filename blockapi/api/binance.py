@@ -14,7 +14,7 @@ class BinanceAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = 'binance-coin'
+    symbol = 'BNB'
     base_url = 'https://dex.binance.org/api/v1'
     rate_limit = 0
     coef = 1
@@ -28,8 +28,7 @@ class BinanceAPI(BlockchainAPI):
     }
 
     def get_balance(self):
-        response = self.request('get_balance',
-                                address=self.address)
+        response = self.request('get_balance', address=self.address)
         if not response:
             return 0
 

@@ -10,7 +10,7 @@ class EthplorerAPI(BlockchainAPI):
     Explorer: https://ethplorer.io
     """
 
-    currency_id = 'ethereum'
+    symbol = 'ETH'
     base_url = 'http://api.ethplorer.io'
     default_api_key = 'freekey'
     rate_limit = 0.5
@@ -40,14 +40,14 @@ class EthplorerAPI(BlockchainAPI):
         response = self.info
 
         balances.append({
-            'symbol': 'ETH',
+            'symbol': self.symbol,
             'amount': response['ETH']['balance']
         })
 
         for token in response.get('tokens', []):
             info = token['tokenInfo']
             balances.append({
-                'symbol': info['symbol'],
+                'symbol': info['symbol'].upper(),
                 'address': info['address'],
                 'amount': token['balance'] * pow(10, -int(info['decimals'])),
                 'name': info['name']

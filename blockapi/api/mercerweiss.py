@@ -12,7 +12,7 @@ class MercerweissAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = 'zcash'
+    symbol = 'ZEC'
     base_url = 'http://insight.mercerweiss.com/api'
     rate_limit = 0
     coef = 1e-8

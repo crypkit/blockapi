@@ -14,39 +14,41 @@ from .services import (
 )
 from .test import test_addresses
 
-# currencies' ids and tickers
+# currencies' ids and symbols
 COINS = {
-    'binance-coin': None, # BNB
+    'binance-coin': 'BNB',
     'bitcoin': 'BTC',
     'bitcoin-cash': 'BCH',
-    'bitcoin-sv': None,  # BSV
-    'cardano': None,  # ADA
-    'cosmos': None,  # ATOM
-    'decred': None,  # DCR
+    'bitcoin-sv': 'BSV',
+    'cardano': 'ADA',
+    'cosmos': 'ATOM',
+    'decred': 'DCR',
     'dashcoin': 'DASH',
     'dogecoin': 'DOGE',
     'eos': 'EOS',
     'ethereum': 'ETH',
     'ethereum-classic': 'ETC',
-    'groestlcoin': None,  # GRS
+    'groestlcoin': 'GRS',
     'horizen': 'ZEN',
     'litecoin': 'LTC',
     'neocoin': 'NEO',
+    'ravencoin': 'RVN',
     'stellar': 'XLM',
+    'tezos': 'XTZ',
     'tron': 'TRX',
     'zcash': 'ZEC'
 }
 
 
-def get_balance_from_random_api(currency_id, address):
+def get_balance_from_random_api(symbol, address):
     """Get balance for currency from random API (APIs with API keys are not supported)."""
     return _call_method_from_random_api(
-        currency_id, address, 'get_balance'
+        symbol, address, 'get_balance'
     )
 
 
-def _call_method_from_random_api(currency_id, address, method):
-    api_classes = get_shuffled_api_classes_for_coin(currency_id)
+def _call_method_from_random_api(symbol, address, method):
+    api_classes = get_shuffled_api_classes_for_coin(symbol)
     for cl in api_classes:
         try:
             inst = cl(address)
@@ -56,28 +58,28 @@ def _call_method_from_random_api(currency_id, address, method):
     return None
 
 
-def get_shuffled_api_classes_for_coin(currency_id):
-    api_classes = get_api_classes_for_coin(currency_id)
+def get_shuffled_api_classes_for_coin(symbol):
+    api_classes = get_api_classes_for_coin(symbol)
     random.shuffle(api_classes)
     return api_classes
 
 
-def get_api_classes_for_coin(currency_id):
+def get_api_classes_for_coin(symbol):
     return [i for i in get_active_api_classes() if
-            i.currency_id and
-            i.currency_id == currency_id]
+            i.symbol and
+            i.symbol == symbol]
 
 
-def get_random_api_class_for_coin(currency_id, exclude=None):
-    api_classes = get_api_classes_for_coin(currency_id)
+def get_random_api_class_for_coin(symbol, exclude=None):
+    api_classes = get_api_classes_for_coin(symbol)
     exclude = [] if not exclude else exclude
     api_classes = [cl for cl in api_classes if not (cl in exclude)]
     return random.choice(api_classes) if api_classes else None
 
 
 def get_all_supported_coins():
-    return list(set(c.currency_id for c in get_active_api_classes()
-                    if c.currency_id))
+    return list(set(c.symbol for c in get_active_api_classes()
+                    if c.symbol))
 
 
 def get_active_api_classes():
@@ -120,16 +122,16 @@ def _get_all_inheritors():
     return all_inheritors
 
 
-def get_working_apis_for_coin(currency_id, debug=False):
-    coin_classes = get_api_classes_for_coin(currency_id)
+def get_working_apis_for_coin(symbol, debug=False):
+    coin_classes = get_api_classes_for_coin(symbol)
 
-    if currency_id in test_addresses:
-        if len(test_addresses[currency_id]) == 0:
+    if symbol in test_addresses:
+        if len(test_addresses[symbol]) == 0:
             return ()
     else:
         return ()
 
-    coin_address = test_addresses[currency_id][0]
+    coin_address = test_addresses[symbol][0]
     working_apis = []
 
     api_ok = True
@@ -164,8 +166,8 @@ def get_working_apis(debug=False):
     return ok_apis
 
 
-def check_address_valid(currency_id, address):
-    ticker = COINS.get(currency_id)
-    if not ticker:
+def check_address_valid(symbol, address):
+    try:
+        return coinaddrng.validate(symbol.lower(), address).valid
+    except TypeError:
         return True
-    return coinaddrng.validate(ticker.lower(), address).valid

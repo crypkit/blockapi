@@ -6,6 +6,7 @@ from time import sleep
 import cfscrape
 import requests
 from dateutil.parser import parse as date_parse
+from dateutil.tz import UTC
 
 import blockapi
 
@@ -73,8 +74,12 @@ class Service(ABC):
 
         if self.last_response.headers.get('Date'):
             last_resp_time = date_parse(self.last_response.headers.get('Date'))
+            last_resp_time.replace(tzinfo=UTC)
             wait_until = last_resp_time + timedelta(seconds=self.rate_limit)
-            while datetime.utcnow() < wait_until:
+
+            now = datetime.utcnow().replace(tzinfo=UTC)
+
+            while now < wait_until:
                 pass
 
         sleep(self.rate_limit)
@@ -170,11 +175,11 @@ class BlockchainInterface(ABC):
 
 
 class BlockchainAPI(Service, BlockchainInterface, ABC):
-    currency_id = None
+    symbol = None
 
     def __init__(self, address, api_key=None):
-        if not blockapi.check_address_valid(self.currency_id, address):
-            raise ValueError('Not a valid {} address: {}'.format(self.currency_id, address))
+        if not blockapi.check_address_valid(self.symbol, address):
+            raise ValueError('Not a valid {} address: {}'.format(self.symbol, address))
 
         Service.__init__(self, api_key)
         BlockchainInterface.__init__(self, address)

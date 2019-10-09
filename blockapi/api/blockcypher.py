@@ -11,8 +11,7 @@ class BlockcypherAPI(BlockchainAPI):
     Explorer: https://live.blockcypher.com
     """
 
-    currency_id = None
-    coin_symbol = None
+    symbol = None
     base_url = 'https://api.blockcypher.com/v1/'
     rate_limit = 0
     coef = None
@@ -35,7 +34,7 @@ class BlockcypherAPI(BlockchainAPI):
     def get_balance(self):
         response = self.request(
             'get_balance',
-            coin=self.coin_symbol,
+            coin=self.symbol.lower(),
             address=self.address
         )
         if not response:
@@ -45,6 +44,5 @@ class BlockcypherAPI(BlockchainAPI):
 
 
 class BlockcypherLitecoinAPI(BlockcypherAPI):
-    currency_id = 'litecoin'
-    coin_symbol = 'ltc'
+    symbol = 'LTC'
     coef = 1e-8

@@ -1,10 +1,11 @@
+from datetime import datetime
+
+import pytz
+
 from blockapi.services import (
     BlockchainAPI
 )
-import json
-import dateutil
-from datetime import datetime
-import pytz
+
 
 class BlockonomicsAPI(BlockchainAPI):
     """
@@ -15,7 +16,7 @@ class BlockonomicsAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = 'bitcoin'
+    symbol = 'BTC'
     base_url = 'https://www.blockonomics.co/api'
     rate_limit = 30
     coef = 1e-8

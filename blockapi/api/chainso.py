@@ -13,7 +13,6 @@ class ChainSoAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = None
     symbol = None
     base_url = 'https://chain.so/api/v2'
     rate_limit = 0.2  # 5 per second
@@ -67,30 +66,25 @@ class ChainSoAPI(BlockchainAPI):
 
 
 class ChainSoBitcoinAPI(ChainSoAPI):
-    currency_id = 'bitcoin'
     symbol = 'BTC'
     coef = 1e-8
 
 
 class ChainSoLitecoinAPI(ChainSoAPI):
-    currency_id = 'litecoin'
     symbol = 'LTC'
     coef = 1e-8
 
 
 class ChainSoDogecoinAPI(ChainSoAPI):
-    currency_id = 'dogecoin'
     symbol = 'DOGE'
     coef = 1
 
 
 class ChainSoZcashAPI(ChainSoAPI):
-    currency_id = 'zcash'
     symbol = 'ZEC'
     coef = 1
 
 
 class ChainSoDashAPI(ChainSoAPI):
-    currency_id = 'dashcoin'
     symbol = 'DASH'
     coef = 1

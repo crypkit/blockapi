@@ -12,7 +12,7 @@ class BlockscoutAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = 'ethereum-classic'
+    symbol = 'ETC'
     base_url = 'https://blockscout.com/etc/mainnet/api?'
     rate_limit = 0
     coef = 1e-18

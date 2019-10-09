@@ -12,7 +12,7 @@ class StellarAPI(BlockchainAPI):
 
     active = True
 
-    currency_id = 'stellar'
+    symbol = 'XLM'
     base_url = 'https://horizon.stellar.org'
     rate_limit = 0
     coef = 1
