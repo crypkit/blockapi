@@ -56,7 +56,7 @@ class EtherscanAPI(BlockchainAPI):
 
     @set_default_args_values
     def _get_txs(self, action, offset=None, limit=None):
-        return self.request(
+        response = self.request(
             'get_txs',
             action=action,
             offset=limit,
@@ -65,6 +65,9 @@ class EtherscanAPI(BlockchainAPI):
             address=self.address,
             api_key=self.api_key
         )
+        if not response:
+            return []
+        return response.get('result', [])
 
     def parse_tx(self, tx, tx_type):
         direction = None

@@ -17,70 +17,66 @@ test_addresses = {
     'ADA': [
         'DdzFFzCqrhsdyjuJWYcfEWSuk4TB25HGv66bQKeU3KpvA78xfDbgu1rQdhaLHb5XvqPU7gfKS5mBoGmRNNhTSQ3H7iL1so8RygHMdNiN'
     ],
-    'eos': [],
-    'ethereum': [
+    'EOS': [],
+    'ETH': [
         '0x1d0DcC8d8BcaFa8e8502BEaEeF6CBD49d3AFFCDC'
     ],
-    'litecoin': [
+    'LTC': [
         # 'MBuTKxJaHMN3UsRxQqpGRPdA7sCfE1UF7n',
         '3QY7aJKtRHDy3a8V5RS99A813hie9YqjhF'
     ],
-    'tezos': [
+    'XTZ': [
         'tz1bDXD6nNSrebqmAnnKKwnX1QdePSMCj4MX'
     ],
-    'decred': [
+    'DCR': [
         'DsXt3he1A9KB2uL1g3MJvbAbXEB1CxN2rNF'
         # current api doesn't support xpub key
         # 'dpubZFwoKEEJYVDxGo8bf2E4qwh6Qve9cku5gvaS5kC96hUdMT7SF9nymaLFeEFQaHy8a3SuiUJRL87rz3bfwFSFqErYVeHUg3xnzPjHftiofFu',
     ],
-    'cosmos': [
+    'ATOM': [
         'cosmos1gn326f6sza44xt5kxrsdrnapp2sxhav03rhcsz'
     ],
-    'neocoin': [
+    'NEO': [
         'AZnTM3mYbx9yzg8tb6hr7w9pAKntDmrtqk'
     ],
-    'dogecoin': [
+    'DOGE': [
         'DH5yaieqoZN36fDVciNyRueRGvGLR3mr7L'
     ],
-    'zcash': [
+    'ZEC': [
         't1fLdzB7mHQgdb3tD474V9wYtuknPfQSX5e'
     ],
-    'dashcoin': [
+    'DASH': [
         'XtAG1982HcYJVibHxRZrBmdzL5YTzj4cA1'
     ],
-    'ethereum-classic': [
+    'ETC': [
         '0x9d2BFC36106F038250c01801685785b16C86C60D'
     ],
-    'horizen': [
+    'ZEN': [
         'znZTLu1asaLWxB7EBqBRQ6DCnNyctYA3Rm4'
     ],
 }
 
 test_invalid_addresses = {
-    'bitcoin': ['xxxx', ],
-    'bitcoin-cash': ['xxxx', ],
-    'cardano': ['xxxx', ],
-    'eos': [],
-    'ethereum': ['xxxx', ],
-    'litecoin': ['xxxx', ],
-    'tezos': ['xxxx', ],
-    'decred': ['xxxx', ],
-    'cosmos': ['xxxx', ],
-    'neocoin': ['xxxx', ],
-    'dogecoin': ['xxxx', ],
-    'zcash': ['xxxx', ],
-    'dashcoin': ['xxxx', ],
-    'ethereum-classic': ['xxxx', ],
-    'horizen': ['xxxx', ],
+    'BTC': ['xxxx', ],
+    'BCH': ['xxxx', ],
+    'ADA': ['xxxx', ],
+    'EOS': [],
+    'ETH': ['xxxx', ],
+    'LTC': ['xxxx', ],
+    'XTZ': ['xxxx', ],
+    'DCR': ['xxxx', ],
+    'ATOM': ['xxxx', ],
+    'NEO': ['xxxx', ],
+    'DOGE': ['xxxx', ],
+    'ZEC': ['xxxx', ],
+    'DASH': ['xxxx', ],
+    'ETC': ['xxxx', ],
+    'ZEN': ['xxxx', ],
 }
 
 
 class BlockapiTestCase(unittest.TestCase):
-    currencies = ('bitcoin', 'bitcoin-cash', 'cardano',
-                  'eos', 'ethereum', 'litecoin', 'tezos',
-                  'decred', 'cosmos', 'neocoin', 'dogecoin',
-                  'zcash', 'dashcoin', 'ethereum-classic',
-                  'horizen')
+    currencies = test_addresses.keys()
 
     def test_valid_address(self):
         for symbol in self.currencies:

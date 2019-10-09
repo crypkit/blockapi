@@ -45,13 +45,14 @@ class CosmosAPI(BlockchainAPI):
         if not balances:
             return 0
 
-        balance = {}
+        balances = []
         for b in balances:
-            symbol = (self.symbol if b['denom'] == 'uatom'
-                           else b['denom'])
-            balance[symbol] = int(b['amount']) * self.coef
-
-        return balance
+            symbol = self.symbol if b['denom'] == 'uatom' else b['denom']
+            balances.append({
+                'symbol': symbol,
+                'amount': int(b['amount']) * self.coef
+            })
+        return balances
 
     def get_incoming_txs(self, offset=None, limit=None, unconfirmed=False):
         txs = self._get_txs('send', 'recipient', offset, limit, unconfirmed)

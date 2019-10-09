@@ -6,6 +6,7 @@ from time import sleep
 import cfscrape
 import requests
 from dateutil.parser import parse as date_parse
+from dateutil.tz import UTC
 
 import blockapi
 
@@ -73,8 +74,12 @@ class Service(ABC):
 
         if self.last_response.headers.get('Date'):
             last_resp_time = date_parse(self.last_response.headers.get('Date'))
+            last_resp_time.replace(tzinfo=UTC)
             wait_until = last_resp_time + timedelta(seconds=self.rate_limit)
-            while datetime.utcnow() < wait_until:
+
+            now = datetime.utcnow().replace(tzinfo=UTC)
+
+            while now < wait_until:
                 pass
 
         sleep(self.rate_limit)
