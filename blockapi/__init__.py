@@ -167,7 +167,13 @@ def get_working_apis(debug=False):
 
 
 def check_address_valid(symbol, address):
+    validation = validate_address(symbol, address)
+    # return True if validation for symbol doesn't exist
+    return validation.valid if validation else True
+
+
+def validate_address(symbol, address):
     try:
-        return coinaddrng.validate(symbol.lower(), address).valid
+        return coinaddrng.validate(symbol.lower(), address)
     except TypeError:
-        return True
+        return None

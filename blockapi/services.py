@@ -156,6 +156,7 @@ class BlockchainInterface(ABC):
     max_items_per_page = None
     page_offset_step = 1
     confirmed_num = 0
+    testnet_url = None
 
     def __init__(self, address):
         self.address = address
@@ -178,8 +179,22 @@ class BlockchainAPI(Service, BlockchainInterface, ABC):
     symbol = None
 
     def __init__(self, address, api_key=None):
-        if not blockapi.check_address_valid(self.symbol, address):
-            raise ValueError('Not a valid {} address: {}'.format(self.symbol, address))
+        self.validator_response = blockapi.validate_address(self.symbol, address)
+        self.check_validity(address)
 
         Service.__init__(self, api_key)
         BlockchainInterface.__init__(self, address)
+
+        self.update_network()
+
+    def check_validity(self, address):
+        if not self.validator_response:
+            return
+        if not self.validator_response.valid:
+            raise ValueError('Not a valid {} address: {}'.format(self.symbol, address))
+
+    def update_network(self):
+        if not self.validator_response:
+            return
+        if self.validator_response.network == 'test' and self.testnet_url:
+            self.base_url = self.testnet_url

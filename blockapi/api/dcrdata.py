@@ -18,6 +18,7 @@ class DcrdataAPI(BlockchainAPI):
 
     symbol = 'DCR'
     base_url = 'https://explorer.dcrdata.org/api'
+    testnet_url = 'https://testnet.dcrdata.org/api'
     rate_limit = 0
     coef = 1
     max_items_per_page = 50000
@@ -69,8 +70,8 @@ class DcrdataAPI(BlockchainAPI):
                 if self.address in o.get('scriptPubKey', {}).get('addresses', [])]
 
         date = datetime.fromtimestamp(tx['time'], pytz.utc)
-        kind = self._get_tx_kind(tx)
-        status = self._get_tx_status(tx)
+        kind = self.get_tx_kind(tx)
+        status = self.get_tx_status(tx)
 
         parsed = []
         for i in ins:
@@ -110,7 +111,8 @@ class DcrdataAPI(BlockchainAPI):
             })
         return parsed
 
-    def _get_tx_kind(self, tx):
+    @staticmethod
+    def get_tx_kind(tx):
         tx_types = [t['scriptPubKey']['type'] for t in tx['vout']]
         if 'stakesubmission' in tx_types:  # and 'sstxcommitment', 'sstxchange'
             return 'ticket'
@@ -122,11 +124,12 @@ class DcrdataAPI(BlockchainAPI):
             return 'transaction'  # 'regular' in api
         return None
 
-    def _get_tx_status(self, tx):
+    @staticmethod
+    def get_tx_status(tx):
         status = None
 
         # only for ticket
-        if self._get_tx_kind(tx) == 'ticket':
+        if DcrdataAPI.get_tx_kind(tx) == 'ticket':
             voted = next((True for t in tx['vout']
                           if t['scriptPubKey']['type'] == 'stakesubmission'
                           and t.get('spend')), False)
