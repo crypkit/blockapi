@@ -20,7 +20,7 @@ class EthplorerAPI(BlockchainAPI):
     page_offset_step = None
 
     supported_requests = {
-        'get_info': '/getTokenInfo/{address}?apiKey={api_key}'
+        'get_info': '/getAddressInfo/{address}?apiKey={api_key}'
     }
 
     def __init__(self, address, api_key=None):
