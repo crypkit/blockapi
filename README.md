@@ -28,9 +28,13 @@ List of supported coins:
 | LTC   | BlockcypherAPI | balance
 |       | ChainSoAPI | balance, transactions
 |       | CryptoIDAPI | balance
+|       | Ltc1TrezorAPI | balance, transactions
 | BTC   | BlockchainInfoAPI | balance, transactions
 |       | BlockonomicsAPI | balance, transactions
 |       | ChainSoAPI | balance, transactions
+|       | Btc1TrezorAPI | balance, transactions
+|       | Btc2TrezorAPI | balance, transactions
+|       | BitpayAPI | balance
 | GRS   | CryptoIDAPI | balance
 | ETH   | EtherscanAPI | balance, transactions
 |       | EthplorerAPI | balance

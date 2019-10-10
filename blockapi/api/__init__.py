@@ -14,10 +14,10 @@ from blockapi.api.eospark import *
 from blockapi.api.etherscan import *
 from blockapi.api.ethplorer import *
 from blockapi.api.greymass import *
-from blockapi.api.mercerweiss import *
+from blockapi.api.insight import *
 from blockapi.api.neoscan import *
-from blockapi.api.ravencoin import *
 from blockapi.api.stellar import *
+from blockapi.api.trezor import *
 from blockapi.api.tronscan import *
 from blockapi.api.tzscan import *
 from blockapi.api.zchain import *
