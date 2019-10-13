@@ -1,5 +1,4 @@
 from datetime import datetime
-
 import pytz
 
 from blockapi.services import (
@@ -30,7 +29,7 @@ class TrezorAPI(BlockchainAPI):
     }
 
     def get_balance(self):
-        if self.address.startswith('xpub'):
+        if len(self.address) == 111:
             response = self.request('get_balance_xpub',
                                     address=self.address)
         else:
@@ -42,6 +41,7 @@ class TrezorAPI(BlockchainAPI):
 
         return float(response.get('balance')) * self.coef
 
+
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
         response = self.request('get_txs',
                                 address=self.address,
@@ -52,6 +52,7 @@ class TrezorAPI(BlockchainAPI):
     def parse_tx(self, tx):
         txdata = self.request('get_tx',
                               tx_hash=tx['txid'])
+
 
         if self.address in txdata['vin'][0]['addresses']:
             direction = 'outgoing'
@@ -79,12 +80,11 @@ class Btc1TrezorAPI(TrezorAPI):
     base_url = 'https://btc1.trezor.io'
     symbol = 'BTC'
 
-
 class Btc2TrezorAPI(TrezorAPI):
     base_url = 'https://btc2.trezor.io'
     symbol = 'BTC'
 
-
 class Ltc1TrezorAPI(TrezorAPI):
     base_url = 'https://ltc1.trezor.io'
     symbol = 'LTC'
+
