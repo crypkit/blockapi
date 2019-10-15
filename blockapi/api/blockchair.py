@@ -26,6 +26,7 @@ class BlockchairAPI(BlockchainAPI):
     start_offset = 0
     max_items_per_page = 10  # 10000 per tx hashes; 10 per tx details
     page_offset_step = max_items_per_page
+    xpub_support = True
 
     supported_requests = {
         # for limit and offset the second parameter 0 is for utxo

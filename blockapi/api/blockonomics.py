@@ -23,6 +23,7 @@ class BlockonomicsAPI(BlockchainAPI):
     max_items_per_page = None
     page_offset_step = None
     confirmed_num = None
+    xpub_support = True
 
     supported_requests = {
         'get_balance': '/balance',
