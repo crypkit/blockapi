@@ -77,7 +77,7 @@ class Service(ABC):
             return
 
         diff = (datetime.now() - self.last_response_time).total_seconds()
-        wait = diff - self.rate_limit
+        wait = self.rate_limit - diff
 
         if wait > 0:
             sleep(wait)
