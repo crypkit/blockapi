@@ -66,11 +66,13 @@ class ChainSoAPI(BlockchainAPI):
 
 
 class ChainSoBitcoinAPI(ChainSoAPI):
+    active = False
     symbol = 'BTC'
     coef = 1e-8
 
 
 class ChainSoLitecoinAPI(ChainSoAPI):
+    active = False
     symbol = 'LTC'
     coef = 1e-8
 
