@@ -14,7 +14,7 @@ from .services import (
 )
 from .test import test_addresses
 
-# currencies' ids and symbols
+# currencies' ids (from coingecko.com) and symbols
 COINS = {
     'binance-coin': 'BNB',
     'bitcoin': 'BTC',
@@ -42,13 +42,12 @@ COINS = {
 
 def get_balance_from_random_api(symbol, address):
     """Get balance for currency from random API (APIs with API keys are not supported)."""
-    return _call_method_from_random_api(
-        symbol, address, 'get_balance'
-    )
+    return _call_method_from_random_api(symbol, address, 'get_balance')
 
 
 def _call_method_from_random_api(symbol, address, method):
     api_classes = get_shuffled_api_classes_for_coin(symbol)
+    filtered_api_classes = filter_suitable_api_classes(api_classes, symbol, address)
     for cl in api_classes:
         try:
             inst = cl(address)
@@ -66,8 +65,18 @@ def get_shuffled_api_classes_for_coin(symbol):
 
 def get_api_classes_for_coin(symbol):
     return [i for i in get_active_api_classes() if
-            i.symbol and
-            i.symbol == symbol]
+            i.symbol and i.symbol == symbol]
+
+
+def filter_suitable_api_classes(api_classes, symbol, address):
+    address_info = get_address_info(symbol, address)
+
+    filtered = api_classes
+    if address_info.network == 'test':
+        filtered = [c for c in filtered if c.testnet_url]
+    if address_info.is_extended:
+        filtered = [c for c in filtered if c.xpub_support]
+    return filtered
 
 
 def get_random_api_class_for_coin(symbol, exclude=None):
@@ -167,13 +176,20 @@ def get_working_apis(debug=False):
 
 
 def check_address_valid(symbol, address):
-    validation = validate_address(symbol, address)
-    # return True if validation for symbol doesn't exist
-    return validation.valid if validation else True
+    return get_address_info(symbol, address).valid
 
 
-def validate_address(symbol, address):
+def get_address_info(symbol: str, address: str):
     try:
         return coinaddrng.validate(symbol.lower(), address)
     except TypeError:
-        return None
+        # if validator for symbol doesn't exist return empty object
+        return coinaddrng.validation.ValidationResult(
+            name='',
+            ticker=symbol,
+            address=address.encode(),
+            valid=False,
+            network='',
+            address_type='',
+            is_extended=False
+        )
