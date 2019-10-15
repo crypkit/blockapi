@@ -1,14 +1,16 @@
 import inspect
 from abc import ABC, abstractmethod
-from datetime import datetime, timedelta
+from datetime import datetime
 from time import sleep
 
 import cfscrape
 import requests
-from dateutil.parser import parse as date_parse
-from dateutil.tz import UTC
 
 import blockapi
+
+
+# from dateutil.parser import parse as date_parse
+# from dateutil.tz import UTC
 
 
 class Service(ABC):
@@ -25,6 +27,7 @@ class Service(ABC):
     def __init__(self, api_key=None):
         self.api_key = api_key
         self.last_response = None
+        self.last_response_time = None
 
     def build_request_url(self, request_method, **params):
         path_url = self.supported_requests.get(request_method)
@@ -60,6 +63,7 @@ class Service(ABC):
             else:
                 response = reqobj.get(request_url)
             self.last_response = response
+            self.last_response_time = datetime.now()
         except Exception as e:
             raise e
 
@@ -69,20 +73,23 @@ class Service(ABC):
         return response.json()
 
     def wait_for_next_request(self):
-        if not self.last_response:
+        if not self.last_response_time:
             return
 
-        if self.last_response.headers.get('Date'):
-            last_resp_time = date_parse(self.last_response.headers.get('Date'))
-            last_resp_time.replace(tzinfo=UTC)
-            wait_until = last_resp_time + timedelta(seconds=self.rate_limit)
+        diff = (datetime.now() - self.last_response_time).total_seconds()
+        wait = diff - self.rate_limit
 
-            now = datetime.utcnow().replace(tzinfo=UTC)
+        if wait > 0:
+            sleep(wait)
 
-            while now < wait_until:
-                pass
-
-        sleep(self.rate_limit)
+        # use date from last response
+        # doesn't work very good, time on server can differ from local time
+        # if self.last_response.headers.get('Date'):
+        #     last_resp_time = date_parse(self.last_response.headers.get('Date'))
+        #     last_resp_time.replace(tzinfo=UTC)
+        #     wait_until = last_resp_time + timedelta(seconds=self.rate_limit)
+        #
+        #     now = datetime.utcnow().replace(tzinfo=UTC)
 
     def process_error_response(self, response):
         if response.status_code == 500:
