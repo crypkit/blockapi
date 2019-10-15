@@ -39,10 +39,11 @@ class EthplorerAPI(BlockchainAPI):
         balances = []
         response = self.info
 
-        balances.append({
-            'symbol': self.symbol,
-            'amount': response['ETH']['balance']
-        })
+        if response.get('ETH', {}).get('balance'):
+            balances.append({
+                'symbol': self.symbol,
+                'amount': response['ETH']['balance']
+            })
 
         for token in response.get('tokens', []):
             info = token['tokenInfo']
