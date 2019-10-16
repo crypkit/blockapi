@@ -48,7 +48,7 @@ def get_balance_from_random_api(symbol, address):
 def _call_method_from_random_api(symbol, address, method):
     api_classes = get_shuffled_api_classes_for_coin(symbol)
     filtered_api_classes = filter_suitable_api_classes(api_classes, symbol, address)
-    for cl in api_classes:
+    for cl in filtered_api_classes:
         try:
             inst = cl(address)
             return getattr(inst, method)()
@@ -183,12 +183,14 @@ def get_address_info(symbol: str, address: str):
     try:
         return coinaddrng.validate(symbol.lower(), address)
     except TypeError:
-        # if validator for symbol doesn't exist return empty object
+        # if validator for symbol doesn't exist return default object;
+        # 'valid' attribute is set to True, because there may not exist
+        #  validator for every supported coin
         return coinaddrng.validation.ValidationResult(
             name='',
             ticker=symbol,
             address=address.encode(),
-            valid=False,
+            valid=True,
             network='',
             address_type='',
             is_extended=False
