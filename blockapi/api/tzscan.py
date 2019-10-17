@@ -104,7 +104,8 @@ class TzscanAPI(BlockchainAPI):
                  'end_rewards': float(reward['endorsements_rewards']) * self.coef,
                  'blocks_rewards': float(reward['blocks_rewards']) * self.coef,
                  'extra_rewards': float(reward['revelation_rewards']) * self.coef,
-                 'losses': float(reward['lost_revelation_rewards']) * self.coef
+                 'losses': float(reward['lost_revelation_rewards']) * self.coef,
+                 'fees': float(reward['fees']) * self.coef
         }
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):

@@ -18,8 +18,9 @@ class CosmosAPI(BlockchainAPI):
     """
 
     symbol = 'ATOM'
-    base_url = 'https://stargate.cosmos.network'
-    rate_limit = 0
+    #base_url = 'https://stargate.cosmos.network'
+    base_url = 'https://cosmos.node.cracklord.com'
+    rate_limit = 0.6
     coef = 1e-6
     start_offset = 1
     max_items_per_page = 30
@@ -28,7 +29,8 @@ class CosmosAPI(BlockchainAPI):
     supported_requests = {
         'get_info': '/auth/accounts/{address}',
         'get_balance': '/bank/balances/{address}',
-        'get_txs': '/txs?action={action}&{role}={address}&page={page}&limit={limit}'
+        'get_txs': '/txs?action={action}&{role}={address}&page={page}&limit={limit}',
+        'get_delegations': '/staking/delegators/{address}/delegations'
     }
 
     def process_error_response(self, response):
@@ -53,6 +55,12 @@ class CosmosAPI(BlockchainAPI):
                 'amount': int(b['amount']) * self.coef
             })
         return balances
+
+    def get_delegations(self):
+        delegations = self.request('get_delegations',
+            address = self.address)
+
+        return delegations
 
     def get_incoming_txs(self, offset=None, limit=None, unconfirmed=False):
         txs = self._get_txs('send', 'recipient', offset, limit, unconfirmed)

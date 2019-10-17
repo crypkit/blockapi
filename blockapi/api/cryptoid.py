@@ -1,5 +1,5 @@
 from blockapi.services import (
-    BlockchainAPI
+    BlockchainAPI,APIKeyMissing
 )
 
 
@@ -23,6 +23,13 @@ class CryptoIDAPI(BlockchainAPI):
     supported_requests = {
         'get_balance': '/{symbol}/api.dws?q=getbalance&a={address}&key={api_key}',
     }
+
+    def __init__(self, address, api_key=None):
+        if api_key is None:
+            raise APIKeyMissing
+
+        super().__init__(address, api_key)
+
 
     def get_balance(self):
         response = self.request('get_balance',

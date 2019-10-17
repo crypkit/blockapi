@@ -12,6 +12,7 @@ import blockapi
 # from dateutil.parser import parse as date_parse
 # from dateutil.tz import UTC
 
+cfscrape.DEFAULT_CIPHERS += ':!SHA'
 
 class Service(ABC):
     """General class for handling blockchain API services."""
@@ -206,3 +207,7 @@ class BlockchainAPI(Service, BlockchainInterface, ABC):
                 self.base_url = self.testnet_url
             else:
                 raise ValueError("API doesn't support testnet.")
+
+
+class APIKeyMissing(Exception):
+    pass

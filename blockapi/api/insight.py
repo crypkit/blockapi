@@ -65,5 +65,6 @@ class InsightLitecoreAPI(InsightAPI):
     API docs: 
     Explorer: https://insight.litecore.io
     """
+    active = False
     symbol = 'LTC'
     base_url = 'https://insight.litecore.io/api'
