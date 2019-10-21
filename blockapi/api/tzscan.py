@@ -33,7 +33,7 @@ class TzscanAPI(BlockchainAPI):
     def __init__(self, address, api_key=None):
         super().__init__(address)
         # this API is very unstable, add some functionality to prevent fails
-        self._base_url_temp = 'https://api{num}.tzscan.io'  # num = 1-6
+        self._base_url_temp = 'https://api{num}.dunscan.io'  # num = 1-6
         self._api_nums = [1, 2, 3, 4, 5, 6]
 
     def get_balance(self):

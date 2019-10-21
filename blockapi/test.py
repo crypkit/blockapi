@@ -55,6 +55,21 @@ test_addresses = {
     'ZEN': [
         'znZTLu1asaLWxB7EBqBRQ6DCnNyctYA3Rm4'
     ],
+    'BNB': [
+        'bnb1jxfh2g85q3v0tdq56fnevx6xcxtcnhtsmcu64m'
+    ],
+    'XLM': [
+        'GDD7ABRF7BCK76W33RXDQG5Q3WXVSQYVLGEMXSOWRGZ6Z3G3M2EM2TCP'
+    ],
+    'RVN': [
+        'RMJVXz8pn7EsBRqXYvDXU7UV7WrbGiDiHk'
+    ],
+    'TRX': [
+        'TNNc1HGDUrRkowQxdcUaWyBodZXshuVtBp'
+    ],
+    'GRS': [
+        'Fr5m2irs9vNWSAFXJK6KPtxqW9YWg384FX'
+    ]
 }
 
 test_invalid_addresses = {
@@ -73,6 +88,11 @@ test_invalid_addresses = {
     'DASH': ['xxxx', ],
     'ETC': ['xxxx', ],
     'ZEN': ['xxxx', ],
+    'BNB': ['xxxx', ],
+    'XLM': ['xxxx', ],
+    'RVN': ['xxxx', ],
+    'TRX': ['xxxx', ],
+    'GRS': ['xxxx', ]
 }
 
 
