@@ -61,6 +61,8 @@ or by running:
 make install
 ```
 
+### Usage examples
+
 Example usage to get account balance:
 ```
 import blockapi
@@ -73,6 +75,12 @@ to randomly pick any of the available APIs:
 ```
 myapi = blockapi.get_random_api_class_for_coin('BTC')('1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX')
 myapi.get_balance()
+```
+
+To directly pick first random working API and ask it for the account balance:
+```
+>>> blockapi.get_balance_from_random_api('BTC','16ftSEQ4ctQFDtVZiUBusQUjRrGhM3JYwe')
+0.010034040000000001
 ```
 
 It is possible to ask for a list of working APIs for a coin. They are automatically checked first if they work (test is done with asking for a balance). Only APIs which pass this check are returned:
