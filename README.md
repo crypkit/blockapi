@@ -38,7 +38,9 @@ List of supported coins:
 | GRS   | CryptoIDAPI | balance
 | ETH   | EtherscanAPI | balance, transactions
 |       | EthplorerAPI | balance
-
+| ONT   | OntioAPI | balance, transactions
+| VET   | DigonchainAPI | balance
+| BOS   | BlockchainosAPI | balance, transactions
 
 ## Getting Started
 

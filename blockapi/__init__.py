@@ -20,6 +20,7 @@ COINS = {
     'bitcoin': 'BTC',
     'bitcoin-cash': 'BCH',
     'bitcoin-sv': 'BSV',
+    'boscoin': 'BOS',
     'cardano': 'ADA',
     'cosmos': 'ATOM',
     'decred': 'DCR',
@@ -32,10 +33,12 @@ COINS = {
     'horizen': 'ZEN',
     'litecoin': 'LTC',
     'neocoin': 'NEO',
+    'ontology': 'ONT',
     'ravencoin': 'RVN',
     'stellar': 'XLM',
     'tezos': 'XTZ',
     'tron': 'TRX',
+    'vechain': 'VET',
     'zcash': 'ZEC'
 }
 
