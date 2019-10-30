@@ -20,7 +20,8 @@ setuptools.setup(
         'pytz', 
         'python-dateutil',
         'coinaddrng',
-        'cfscrape'
+        'cfscrape',
+        'gevent'
     ],
 )
 

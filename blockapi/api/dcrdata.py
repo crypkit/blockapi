@@ -23,7 +23,6 @@ class DcrdataAPI(BlockchainAPI):
     coef = 1
     max_items_per_page = 50000
     page_offset_step = max_items_per_page
-    confirmed_num = 60
 
     supported_requests = {
         'get_balance': '/address/{address}/totals',
@@ -49,12 +48,7 @@ class DcrdataAPI(BlockchainAPI):
             count=limit,
             skip=offset
         )
-
-        parsed_txs = []
-        for tx in txs:
-            parsed_txs += self.parse_tx(tx)
-
-        return BlockchainAPI.filter_unconfirmed_txs(parsed_txs)
+        return [self.parse_tx(tx) for tx in txs]
 
     def get_tx(self, tx_hash):
         tx = self.request('get_transaction', tx_hash=tx_hash)
@@ -63,15 +57,35 @@ class DcrdataAPI(BlockchainAPI):
         return None
 
     def parse_tx(self, tx):
-        # TX in decred could contain several addresses, filter only mine
+        kind = self.get_tx_kind(tx)
+        return {
+            'transaction': self.parse_regular_tx,
+            'ticket': self.parse_tx,
+            'vote': self.parse_vote,
+            'revocation': self.parse_revocation
+        }.get(kind)(tx)
+
+    @staticmethod
+    def get_tx_kind(tx):
+        tx_types = [t['scriptPubKey']['type'] for t in tx['vout']]
+        if 'stakesubmission' in tx_types:  # and 'sstxcommitment', 'sstxchange'
+            return 'ticket'
+        elif 'stakegen' in tx_types:
+            return 'vote'
+        elif 'stakerevoke' in tx_types:
+            return 'revocation'
+        elif 'pubkeyhash' in tx_types:
+            return 'transaction'  # 'regular' in api
+        return None
+
+    def parse_regular_tx(self, tx):
+        # Tx in decred could contain several addresses, filter only mine
         ins = [v for v in tx['vin']
                if self.address in v.get('prevOut', {}).get('addresses', [])]
         outs = [o for o in tx['vout']
                 if self.address in o.get('scriptPubKey', {}).get('addresses', [])]
 
         date = datetime.fromtimestamp(tx['time'], pytz.utc)
-        kind = self.get_tx_kind(tx)
-        status = self.get_tx_status(tx)
 
         parsed = []
         for i in ins:
@@ -86,9 +100,9 @@ class DcrdataAPI(BlockchainAPI):
                 'confirmed': tx['confirmations'] > self.confirmed_num,
                 'is_error': False,
                 'type': 'normal',
-                'kind': kind,
+                'kind': 'transaction',
                 'direction': 'outgoing',
-                'status': status,
+                'status': None,
                 'raw': tx
             })
 
@@ -104,40 +118,94 @@ class DcrdataAPI(BlockchainAPI):
                 'confirmed': tx['confirmations'] > self.confirmed_num,
                 'is_error': False,
                 'type': 'normal',
-                'kind': kind,
+                'kind': 'transaction',
                 'direction': 'incoming',
-                'status': status,
+                'status': None,
                 'raw': tx
             })
         return parsed
 
     @staticmethod
-    def get_tx_kind(tx):
-        tx_types = [t['scriptPubKey']['type'] for t in tx['vout']]
-        if 'stakesubmission' in tx_types:  # and 'sstxcommitment', 'sstxchange'
-            return 'ticket'
-        elif 'stakegen' in tx_types:  # and 'nulldata'
-            return 'vote'
-        elif 'stakerevoke' in tx_types:
-            return 'revocation'
-        elif 'pubkeyhash' in tx_types:
-            return 'transaction'  # 'regular' in api
-        return None
+    def parse_ticket(tx):
+        investment = sum(v['amount_in'] for v in tx['vin'])
+        ticket_cost = next((v['value'] for v in tx['vout']
+                            if v['scriptPubKey']['type'] == 'stakesubmission'),
+                           0)
+
+        # pool fee is lower value then ticket cost, but not sure if it's correct
+        pool_fee = (min([v['amount_in'] for v in tx['vin']])
+                    if len(tx['vin']) > 1
+                    else 0)
+
+        return {
+            'hash': tx['txid'],
+            'purchased_on': datetime.fromtimestamp(tx['time'], pytz.utc),
+            # all input tx ids in tx['vin'] should be same?
+            'input_tx_id': tx['vin'][0]['txid'],
+            'investment': investment,
+            'ticket_cost': ticket_cost,
+            'transaction_fee': investment - ticket_cost,
+            'pool_fee': pool_fee,
+            'block_hash': tx['blockhash'],
+            'block_height': None,  # TODO
+            'status': DcrdataAPI.get_ticket_status(tx)
+        }
 
     @staticmethod
-    def get_tx_status(tx):
-        status = None
+    def get_ticket_status(tx):
+        # params for mainnet:
+        # https://github.com/decred/dcrd/blob/9da132b9823b20870122dc0bf795884cee99d922/chaincfg/mainnetparams.go#L321
+        if tx['confirmations'] < 1:
+            return 'unmined'
+        elif tx['confirmations'] < 256:
+            return 'immature'
+        # TODO - not sure about this one
+        elif tx['confirmations'] < 7640:
+            return 'missed'
+        elif tx['confimations'] > 40960:
+            return 'expired'
 
-        # only for ticket
-        if DcrdataAPI.get_tx_kind(tx) == 'ticket':
-            voted = next((True for t in tx['vout']
-                          if t['scriptPubKey']['type'] == 'stakesubmission'
-                          and t.get('spend')), False)
-            if voted:
-                status = 'voted'
-            elif tx['confirmations'] < 256:
-                status = 'immature'
+        # other statuses depends on specific txs
+        # (votes -> voded, revocations -> revocated)
+        # -> specific tx refers to ticket by ticket_hash
+        # otherwise is live
+        return 'live'
+
+    @staticmethod
+    def parse_vote(tx):
+        total_input = 0
+        reward = 0
+        ticket_hash = None
+        for v in tx['vin']:
+            if 'stakebase' in v:
+                reward = v['amountin']
+                total_input += reward
             else:
-                status = 'live'
+                # value of ticket
+                ticket_hash = v['txid']
+                total_input += v['value']
 
-        return status
+        total_output = sum(v['value'] for v in tx['vout'] if v['value'])
+
+        return {
+            'hash': tx['txid'],
+            'voted_on': datetime.fromtimestamp(tx['time'], pytz.utc),
+            'spent_ticket_hash': ticket_hash,
+            'reward': reward,
+            'fee': total_input - total_output,
+            'block_hash': tx['blockhash']
+        }
+
+    @staticmethod
+    def parse_revocation(tx):
+        ticket_hash = next((v['txid'] for v in tx['vin']), None)
+        total_input = sum(v['amountin'] for v in tx['vin'] if v['amountind'])
+        total_output = sum(v['value'] for v in tx['vout'] if v['value'])
+
+        return {
+            'hash': tx['txid'],
+            'revocated_on': datetime.fromtimestamp(tx['time'], pytz.utc),
+            'spent_ticket_hash': ticket_hash,
+            'fee': total_input - total_output,
+            'block_hash': tx['blockhash']
+        }
