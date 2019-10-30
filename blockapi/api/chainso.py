@@ -11,8 +11,6 @@ class ChainSoAPI(BlockchainAPI):
     Explorer: 
     """
 
-    active = True
-
     symbol = None
     base_url = 'https://chain.so/api/v2'
     rate_limit = 0.2  # 5 per second

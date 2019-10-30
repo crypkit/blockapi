@@ -3,12 +3,13 @@ import unittest
 
 import blockapi
 import blockapi.api
-from blockapi.services import AddressNotExist, APIError, BadGateway, GatewayTimeOut, InternalServerError
+from blockapi.services import AddressNotExist, APIError, BadGateway, GatewayTimeOut, InternalServerError, APIKeyMissing
+from cfscrape import CloudflareCaptchaError
 
 test_addresses = {
     'BTC': [
         '1NuXUAnkWBYF3Fs9CkjfARYMacrVtoCrAM',
-        'ypub6WjHjrJLKSg8oQw1E4LGvQDJ2uofgMfJKLnv5Ha4NPRW4rf7LPXffMJ8EReixY1mUCc33SsiDUodUCTvCktFeN7ZW28GVhBXhNnoKYUqXbP',
+        #'ypub6WjHjrJLKSg8oQw1E4LGvQDJ2uofgMfJKLnv5Ha4NPRW4rf7LPXffMJ8EReixY1mUCc33SsiDUodUCTvCktFeN7ZW28GVhBXhNnoKYUqXbP',
         'xpub6CUGRUonZSQ4TWtTMmzXdrXDtypWKiKrhko4egpiMZbpiaQL2jkwSB1icqYh2cfDfVxdx4df189oLKnC5fSwqPfgyP3hooxujYzAu3fDVmz'
     ],
     'BCH': [
@@ -54,6 +55,21 @@ test_addresses = {
     'ZEN': [
         'znZTLu1asaLWxB7EBqBRQ6DCnNyctYA3Rm4'
     ],
+    'BNB': [
+        'bnb1jxfh2g85q3v0tdq56fnevx6xcxtcnhtsmcu64m'
+    ],
+    'XLM': [
+        'GDD7ABRF7BCK76W33RXDQG5Q3WXVSQYVLGEMXSOWRGZ6Z3G3M2EM2TCP'
+    ],
+    'RVN': [
+        'RMJVXz8pn7EsBRqXYvDXU7UV7WrbGiDiHk'
+    ],
+    'TRX': [
+        'TNNc1HGDUrRkowQxdcUaWyBodZXshuVtBp'
+    ],
+    'GRS': [
+        'Fr5m2irs9vNWSAFXJK6KPtxqW9YWg384FX'
+    ]
 }
 
 test_invalid_addresses = {
@@ -72,6 +88,11 @@ test_invalid_addresses = {
     'DASH': ['xxxx', ],
     'ETC': ['xxxx', ],
     'ZEN': ['xxxx', ],
+    'BNB': ['xxxx', ],
+    'XLM': ['xxxx', ],
+    'RVN': ['xxxx', ],
+    'TRX': ['xxxx', ],
+    'GRS': ['xxxx', ]
 }
 
 
@@ -85,10 +106,22 @@ class BlockapiTestCase(unittest.TestCase):
                 addresses = test_addresses[symbol]
 
                 for api_class, address in itertools.product(api_classes, addresses):
-                    api_inst = api_class(address)
+                    #if 'api_key' in api_class.__init__.__code__.co_varnames:
+                    #    continue
+
+                    try:
+                        api_inst = api_class(address)
+                    except APIKeyMissing:
+                        # skip test if api key is required
+                        continue
+
+                    if not api_inst.xpub_support and address.startswith('xpub'):
+                        # skip testing against xpub address if xpub is not supported
+                        continue
+
                     try:
                         b = api_inst.get_balance()
-                    except (AddressNotExist, BadGateway, GatewayTimeOut, InternalServerError, APIError):
+                    except (AddressNotExist, BadGateway, GatewayTimeOut, InternalServerError, APIError, CloudflareCaptchaError):
                         self.fail("get_balance for {} [{}] failed unexpectedly with a valid address {}".format(
                             api_inst.__class__.__name__, symbol, address))
 
@@ -99,10 +132,15 @@ class BlockapiTestCase(unittest.TestCase):
                 addresses = test_invalid_addresses[symbol]
 
                 for api_class, address in itertools.product(api_classes, addresses):
+                    #if 'api_key' in api_class.__init__.__code__.co_varnames:
+                    #    continue
+
                     try:
                         api_inst = api_class(address)
                     except ValueError:
                         pass
+                    except APIKeyMissing:
+                        continue
                     else:
                         with self.assertRaises(
                                 (blockapi.services.AddressNotExist, blockapi.services.APIError),
@@ -117,18 +155,40 @@ class BlockapiTestCase(unittest.TestCase):
                 addresses = test_addresses[symbol]
 
                 for api_class, address in itertools.product(api_classes, addresses):
-                    api_inst = api_class(address)
+                    #if 'api_key' in api_class.__init__.__code__.co_varnames:
+                    #    continue
+
+                    try:
+                        api_inst = api_class(address)
+                    except APIKeyMissing:
+                        continue
+
+                    if not api_inst.xpub_support and address.startswith('xpub'):
+                        # skip testing against xpub address if xpub is not supported
+                        continue
+
+
                     try:
                         b = api_inst.get_balance()
                     except:
-                        self.fail("get_balance for {} [{}] failed unexpectedly".format(api_inst.__class__.__name__,
-                                                                                       symbol))
+                        self.fail("get_balance for {} [{}] - {} failed unexpectedly".format(api_inst.__class__.__name__,
+                                                                                       symbol,address))
+                    is_ok = True
 
                     try:
                         tmp = float(b)
                     except (ValueError, TypeError):
-                        self.fail("get_balance for {} [{}] failed unexpectedly - returned value is not a number".format(
+                        is_ok = False
+
+                    if not is_ok:
+                        is_ok = True
+                        if not isinstance(b, list):
+                            is_ok = False
+
+                    if not is_ok:
+                        self.fail("get_balance for {} [{}] failed unexpectedly - returned value is not a number or list".format(
                             api_inst.__class__.__name__, symbol))
+
 
                     # if symbol == 'cosmos':
                     #    # get both incoming and outgoing transactions

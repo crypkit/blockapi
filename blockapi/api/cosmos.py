@@ -6,7 +6,8 @@ import dateutil.parser
 from blockapi.services import (
     BlockchainAPI,
     set_default_args_values,
-    AddressNotExist
+    AddressNotExist,
+    APIError
 )
 
 
@@ -18,8 +19,9 @@ class CosmosAPI(BlockchainAPI):
     """
 
     symbol = 'ATOM'
-    base_url = 'https://stargate.cosmos.network'
-    rate_limit = 0
+    #base_url = 'https://stargate.cosmos.network'
+    base_url = 'https://cosmos.node.cracklord.com'
+    rate_limit = 0.6
     coef = 1e-6
     start_offset = 1
     max_items_per_page = 30
@@ -28,7 +30,13 @@ class CosmosAPI(BlockchainAPI):
     supported_requests = {
         'get_info': '/auth/accounts/{address}',
         'get_balance': '/bank/balances/{address}',
-        'get_txs': '/txs?action={action}&{role}={address}&page={page}&limit={limit}'
+        'get_txs': '/txs?action={action}&{role}={address}&page={page}&limit={limit}',
+        'get_delegations': '/staking/delegators/{address}/delegations',
+        'get_unbonding_delegations': '/staking/delegators/{address}/unbonding_delegations',
+        'get_redelegations': '/staking/redelegations?delegator={address}',
+        'get_delegation_reward': '/distribution/delegators/{address}/rewards/{validator_address}',
+        'get_proposals': '/gov/proposals',
+        'query_votes': '/gov/proposals/{proposal_id}/votes',
     }
 
     def process_error_response(self, response):
@@ -45,14 +53,62 @@ class CosmosAPI(BlockchainAPI):
         if not balances:
             return 0
 
-        balances = []
+        balances_result = []
         for b in balances:
             symbol = self.symbol if b['denom'] == 'uatom' else b['denom']
-            balances.append({
+            balances_result.append({
                 'symbol': symbol,
                 'amount': int(b['amount']) * self.coef
             })
-        return balances
+        return balances_result
+
+    def get_delegations(self):
+        delegations = self.request('get_delegations',
+            address = self.address)
+
+        return delegations
+
+    def get_unbonding_delegations(self):
+        unbonding_delegations = self.request('get_unbonding_delegations',
+            address = self.address)
+
+        return unbonding_delegations
+
+    def get_redelegations(self):
+        redelegations = self.request('get_redelegations',
+            address= self.address)
+
+        return redelegations
+
+    def get_delegation_reward(self,validator_address):
+        delegation_reward = self.request('get_delegation_reward',
+            address = self.address,
+            validator_address = validator_address)
+
+        return delegation_reward
+
+    def get_proposals(self):
+        proposals = self.request('get_proposals')
+        return proposals
+
+    """
+    def get_votes(self):
+        votes = []
+        for prop in self.get_proposals():
+            try:
+                vote = self.request('query_votes',
+                    proposal_id=prop['proposal_id'])
+                if vote is None:
+                    continue
+                for v in vote:
+                    if v['voter'] == self.address:
+                        votes.append(v)
+
+            except APIError:
+                pass
+
+        return votes
+    """
 
     def get_incoming_txs(self, offset=None, limit=None, unconfirmed=False):
         txs = self._get_txs('send', 'recipient', offset, limit, unconfirmed)
@@ -104,19 +160,19 @@ class CosmosAPI(BlockchainAPI):
             msg.update(base_tx)
             msgs.append(msg)
         return msgs
-
+    #
     def get_rewards_withdrawals(self, offset=None, limit=None):
         items = self._get_txs('withdraw_delegator_reward', 'delegator', offset, limit)
         return self.parse_other_txs(items)
-
+    #
     def get_redelegates(self, offset=None, limit=None):
         items = self._get_txs('begin_redelegate', 'delegator', offset, limit)
         return self.parse_other_txs(items)
-
+    #
     def get_delegates(self, offset=None, limit=None):
         items = self._get_txs('delegate', 'delegator', offset, limit)
         return self.parse_other_txs(items)
-
+    #
     def get_undelegates(self, offset=None, limit=None):
         items = self._get_txs('begin_unbonding', 'delegator', offset, limit)
         return self.parse_other_txs(items)

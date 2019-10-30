@@ -33,7 +33,7 @@ class TzscanAPI(BlockchainAPI):
     def __init__(self, address, api_key=None):
         super().__init__(address)
         # this API is very unstable, add some functionality to prevent fails
-        self._base_url_temp = 'https://api{num}.tzscan.io'  # num = 1-6
+        self._base_url_temp = 'https://api{num}.dunscan.io'  # num = 1-6
         self._api_nums = [1, 2, 3, 4, 5, 6]
 
     def get_balance(self):
@@ -104,7 +104,8 @@ class TzscanAPI(BlockchainAPI):
                  'end_rewards': float(reward['endorsements_rewards']) * self.coef,
                  'blocks_rewards': float(reward['blocks_rewards']) * self.coef,
                  'extra_rewards': float(reward['revelation_rewards']) * self.coef,
-                 'losses': float(reward['lost_revelation_rewards']) * self.coef
+                 'losses': float(reward['lost_revelation_rewards']) * self.coef,
+                 'fees': float(reward['fees']) * self.coef
         }
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
