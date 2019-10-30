@@ -1,8 +1,3 @@
-# fixed ssl recursion exception - https://stackoverflow.com/a/52130355/9192612
-import gevent.monkey
-
-gevent.monkey.patch_all()
-
 import inspect
 from abc import ABC, abstractmethod
 from datetime import datetime
@@ -12,7 +7,6 @@ import cfscrape
 import requests
 
 import blockapi
-
 
 # from dateutil.parser import parse as date_parse
 # from dateutil.tz import UTC
