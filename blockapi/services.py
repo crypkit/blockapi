@@ -142,6 +142,10 @@ class AddressNotExist(APIError):
     pass
 
 
+class APIKeyMissing(APIError):
+    pass
+
+
 # 500
 class InternalServerError(APIError):
     pass
@@ -191,14 +195,7 @@ class BlockchainAPI(Service, BlockchainInterface, ABC):
         BlockchainInterface.__init__(self, address)
 
         self.address_info = blockapi.get_address_info(self.symbol.lower(), address)
-        self.check_validity()
         self.update_network()
-
-    def check_validity(self):
-        if not self.address_info.valid:
-            raise ValueError('Not a valid {} address: {}'.format(
-                self.symbol, self.address_info.address
-            ))
 
     def update_network(self):
         if self.address_info.network == 'test':
@@ -206,7 +203,3 @@ class BlockchainAPI(Service, BlockchainInterface, ABC):
                 self.base_url = self.testnet_url
             else:
                 raise ValueError("API doesn't support testnet.")
-
-
-class APIKeyMissing(Exception):
-    pass

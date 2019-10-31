@@ -1,10 +1,12 @@
 import itertools
 import unittest
 
+from cfscrape import CloudflareCaptchaError
+
 import blockapi
 import blockapi.api
-from blockapi.services import AddressNotExist, APIError, BadGateway, GatewayTimeOut, InternalServerError, APIKeyMissing
-from cfscrape import CloudflareCaptchaError
+from blockapi.services import AddressNotExist, APIError, BadGateway, \
+    GatewayTimeOut, InternalServerError, APIKeyMissing
 
 test_addresses = {
     'BTC': [
@@ -137,16 +139,22 @@ class BlockapiTestCase(unittest.TestCase):
 
                     try:
                         api_inst = api_class(address)
-                    except ValueError:
-                        pass
+                        assert not api_inst.address_info.valid
                     except APIKeyMissing:
                         continue
-                    else:
-                        with self.assertRaises(
-                                (blockapi.services.AddressNotExist, blockapi.services.APIError),
-                                msg="API/currency: {}/{}".format(api_inst.__class__.__name__,
-                                                                 symbol)):
-                            b = api_inst.get_balance()
+
+                    # try:
+                    #     api_inst = api_class(address)
+                    # except ValueError:
+                    #     pass
+                    # except APIKeyMissing:
+                    #     continue
+                    # else:
+                    #     with self.assertRaises(
+                    #             (blockapi.services.AddressNotExist, blockapi.services.APIError),
+                    #             msg="API/currency: {}/{}".format(api_inst.__class__.__name__,
+                    #                                              symbol)):
+                    #         b = api_inst.get_balance()
 
     def test_get_balance(self):
         for symbol in self.currencies:
