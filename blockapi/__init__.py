@@ -4,6 +4,7 @@ import random
 import coinaddrng
 
 import blockapi.api
+import blockapi.utils
 from .services import (
     BlockchainAPI,
     APIError,

@@ -8,7 +8,7 @@ PACKAGES = find_packages(where='.')
 
 setuptools.setup(
     name='blockapi',
-    version='0.0.34',
+    version='0.0.35',
     author='Devmons s.r.o.',
     description='BlockAPI library',
     license='MIT',
@@ -21,7 +21,8 @@ setuptools.setup(
         'python-dateutil',
         'coinaddrng',
         'cfscrape',
-        'gevent'
+        'gevent',
+        'ethereum_input_decoder'
     ],
 )
 
