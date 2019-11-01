@@ -26,7 +26,8 @@ class EtherscanAPI(BlockchainAPI):
     supported_requests = {
         'get_balance': '/api?module=account&action=balance&address={address}&tag=latest&api_key={api_key}',
         'get_txs': '/api?module=account&action={action}&offset={offset}&sort={sort}&page={page}&address={address}'
-                   '&api_key={api_key}'
+                   '&api_key={api_key}',
+        'get_abi': '/api?module=contract&action=getabi&address={address}'
     }
 
     def get_balance(self):
@@ -53,6 +54,13 @@ class EtherscanAPI(BlockchainAPI):
     def get_token_txs(self, offset=None, limit=None, unconfirmed=False):
         txs = self._get_txs('tokentx', offset, limit)
         return [self.parse_tx(t, 'token') for t in txs]
+
+    def get_abi(self,contract):
+        abi = self.request(
+            'get_abi',
+            address=contract)
+
+        return abi
 
     @set_default_args_values
     def _get_txs(self, action, offset=None, limit=None):
