@@ -36,3 +36,11 @@ class Ethereum:
         tx_function = tx_input_values[0]
         return tx_function
 
+
+class Infura(Ethereum):
+    def __init__(self, network, api_key, contracts=None):
+        self.network = network
+        self.api_prefix = network if network != "mainnet" else "api"
+        self.api_key = api_key
+        self.infura_url = 'https://{}.infura.io/v3/{}'.format(self.network,self.api_key)
+        super().__init__(self.infura_url, contracts=contracts)
