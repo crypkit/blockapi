@@ -75,7 +75,10 @@ class EtherscanAPI(BlockchainAPI):
         )
         if not response:
             return []
-        return response.get('result', [])
+        result = response.get('result', [])
+        if result is None:
+            result = []
+        return result
 
     def parse_tx(self, tx, tx_type):
         direction = None
