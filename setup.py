@@ -8,7 +8,7 @@ PACKAGES = find_packages(where='.')
 
 setuptools.setup(
     name='blockapi',
-    version='0.0.39',
+    version='0.0.40',
     author='Devmons s.r.o.',
     description='BlockAPI library',
     license='MIT',
@@ -23,7 +23,9 @@ setuptools.setup(
         'cfscrape>=2.0.8',
         'gevent>=1.4.0',
         'ethereum_input_decoder>=0.2.2',
-        'web3>=5.2.2'
+        'web3>=5.2.2',
+        'bs4>=0.0.1',
+        'lxml>=4.4.1'
     ],
 )
 
