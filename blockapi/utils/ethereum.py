@@ -57,14 +57,13 @@ class ERC20Token:
     def _get_number(num_string, rtype):
         """
         converts string in currency format $1234,56.78  or 1234.56 % into
-        a float
+        a user-defined type (usually float or int)
 
         :param num_string: string in US currency format / percentage
         :type num_string: string
         :param rtype: class to convert the resulting number to
         :type rtype: class
-        :return: number converted from the string
-        :rtype float
+        :return: number converted from the string to the desired type
         """
         try:
             result = rtype(
