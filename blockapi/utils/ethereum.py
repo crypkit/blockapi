@@ -16,7 +16,7 @@ class Ethereum:
         myapi = EtherscanAPI(contract)
         self.abi = myapi.get_abi(contract)['result']
 
-    def toChecksumAddress(self, address):
+    def to_checksum_addr(self, address):
         return self.web3.toChecksumAddress(address)
 
     def get_contract(self, contract):
@@ -53,6 +53,99 @@ class ERC20Token:
         self.reqobj = cfscrape.create_scraper()
         self.tokens = {}
 
+    def get_token_list(self):
+        """
+        Scrapes the ERC20 token list from etherscan.io
+
+        :return: dictionary containing currency_name, contract_addres,
+                 price, change, volume, market_cap, holders - for each token
+        :rtype: dict
+        """
+        scrape_result = True
+        result_msg = ''
+        page = 0
+
+        while True:
+            status_code, rows = self._get_table_rows(page)
+            if status_code != 200:
+                scrape_result = False
+                result_msg = 'error {} on page {}'.format(status_code,
+                                                          page)
+                break
+
+            if rows is None:
+                break
+
+            for row in rows:
+                result = self._parse_table_row(row)
+                self.tokens[result[0]] = \
+                    {'currency_name': result[1],
+                     'contract_address': result[2],
+                     'price': float(result[3]),
+                     'change': result[4],
+                     'volume': result[5],
+                     'market_cap': result[6],
+                     'holders': result[7]}
+
+            page += 1
+
+        return {'result': scrape_result, 'result_msg': result_msg,
+                'tokens': self.tokens}
+
+    def _get_table_rows(self, page):
+        erc20_url = self.url.format(page)
+        result = self.reqobj.get(erc20_url)
+
+        if result.status_code == 200:
+            soup = BeautifulSoup(result.text, "lxml")
+            table = soup.body.find("table", {"id": "tblResult"})
+
+            if table is None:
+                return result.status_code, None
+
+            table_body = table.find_all('tbody')[0]
+            table_rows = table_body.find_all('tr')
+
+            return result.status_code, table_rows
+        else:
+            return result.status_code, None
+
+    def _parse_table_row(self, row):
+        row_ahref = row.find_all('a')[0]
+        cointext = row_ahref.text
+
+        coin_sc = row_ahref['href'][7:]
+        currency_symbol = self._get_currency_symbol(cointext)
+        currency_name = self._get_currency_name(cointext)
+
+        row_tds = row.find_all('td')
+        row_tds[2].find('div').decompose()
+
+        currency_price = ERC20Token._get_number(row_tds[2].text,
+                                                float)
+        currency_change = ERC20Token._get_number(row_tds[3].text,
+                                                 float)
+        currency_volume = ERC20Token._get_number(row_tds[4].text, int)
+        market_cap = ERC20Token._get_number(row_tds[5].text, int)
+        holders = ERC20Token._get_number(row_tds[6].text, int)
+
+        return (currency_symbol, currency_name, coin_sc, currency_price,
+                currency_change, currency_volume, market_cap, holders)
+
+    def _get_currency_symbol(self, cointext):
+        try:
+            currency_symbol = re.search('\([A-Za-z0-9]+\)',
+                                        cointext).group(0)[1:-1]
+        except AttributeError:
+            currency_symbol = cointext
+
+        return currency_symbol
+
+    def _get_currency_name(self, cointext):
+        currency_name = re.sub('\([A-Za-z0-9]+\)', '',
+                               cointext).strip()
+        return currency_name
+
     @staticmethod
     def _get_number(num_string, rtype):
         """
@@ -72,70 +165,3 @@ class ERC20Token:
             result = None
 
         return result
-
-    def get_token_list(self):
-        """
-        Scrapes the ERC20 token list from etherscan.io
-
-        :return: dictionary containing currency_name, contract_addres,
-                 price, change, volume, market_cap, holders - for each token
-        :rtype: dict
-        """
-        while True:
-            erc20_url = self.url.format(self.page)
-
-            result = self.reqobj.get(erc20_url)
-
-            if result.status_code == 200:
-                soup = BeautifulSoup(result.text, "lxml")
-                table = soup.body.find("table", {"id": "tblResult"})
-
-                if table is None:
-                    break
-
-                table_body = table.find_all('tbody')[0]
-
-                table_rows = table_body.find_all('tr')
-
-                for row in table_rows:
-                    row_ahref = row.find_all('a')[0]
-                    cointext = row_ahref.text
-
-                    coin_sc = row_ahref['href'][7:]
-
-                    try:
-                        currency_symbol = re.search('\([A-Za-z0-9]+\)',
-                                                    cointext).group(0)[1:-1]
-                    except AttributeError:
-                        currency_symbol = cointext
-
-                    currency_name = re.sub('\([A-Za-z0-9]+\)', '',
-                                           cointext).strip()
-
-                    row_tds = row.find_all('td')
-                    row_tds[2].find('div').decompose()
-
-                    currency_price = ERC20Token._get_number(row_tds[2].text,
-                                                            float)
-                    currency_change = ERC20Token._get_number(row_tds[3].text,
-                                                             float)
-                    currency_volume = ERC20Token._get_number(row_tds[4].text,
-                                                             int)
-                    market_cap = ERC20Token._get_number(row_tds[5].text, int)
-                    holders = ERC20Token._get_number(row_tds[6].text, int)
-
-                    self.tokens[currency_symbol] = \
-                        {'currency_name': currency_name,
-                         'contract_address': coin_sc,
-                         'price': float(currency_price),
-                         'change': currency_change,
-                         'volume': currency_volume,
-                         'market_cap': market_cap,
-                         'holders': holders}
-
-            else:
-                break
-
-            self.page += 1
-
-        return self.tokens
