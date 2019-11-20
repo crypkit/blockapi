@@ -38,7 +38,7 @@ class DcrdataAPI(BlockchainAPI):
 
     def get_balance(self):
         balance = self.request('get_balance', address=self.address)
-        return balance['dcr_unspent']
+        return [{'symbol': self.symbol, 'amount': balance['dcr_unspent']}]
 
     @set_default_args_values
     def get_txs(self, offset=None, limit=None, unconfirmed=False):

@@ -31,17 +31,14 @@ class DigonchainAPI(BlockchainAPI):
         response = self.request('get_balance',
                                 address=self.address)
         if not response:
-            return 0
+            retval = 0
+        else:
+            try:
+                balance = response['balance']
+                balance = int(balance, 16)
+                retval = balance * self.coef
+            except (KeyError, ValueError):
+                retval = 0
 
-        try:
-            balance = response['balance']
-        except KeyError:
-            return None
-
-        try:
-            balance = int(balance,16)
-        except ValueError:
-            return None
-
-        return balance * self.coef
+        return [{'symbol': self.symbol, 'amount': retval}]
 

@@ -30,9 +30,12 @@ class ChainSoAPI(BlockchainAPI):
     def get_balance(self):
         response = self._request('get_balance')
         if not response:
-            return 0
+            retval = 0
+        else:
+            retval = float(response['confirmed_balance']) * self.coef
 
-        return float(response['confirmed_balance']) * self.coef
+        return [{'symbol': self.symbol, 'amount': retval}]
+
 
     # don't set default args, we can get all transactions at once
     # @set_default_args_values

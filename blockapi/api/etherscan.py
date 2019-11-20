@@ -37,11 +37,13 @@ class EtherscanAPI(BlockchainAPI):
             api_key=self.api_key
         )
 
-        # returns only balance for ETH; ERC20 and ERC721 tokens are in etherscan omitted
+        # returns only balance for ETH; ERC20 and ERC721 tokens are omitted
         if 'result' in balance_dict:
-            return int(balance_dict['result']) * self.coef
+            retval = int(balance_dict['result']) * self.coef
         else:
-            return None
+            retval = 0
+
+        return [{'symbol': self.symbol, 'amount': retval}]
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
         txs = self._get_txs('txlist', offset, limit)

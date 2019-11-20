@@ -51,7 +51,7 @@ class CosmosAPI(BlockchainAPI):
     def get_balance(self):
         balances = self.request('get_balance', address=self.address)
         if not balances:
-            return 0
+            return {'symbol': self.symbol, 'amount': 0}
 
         balances_result = []
         for b in balances:

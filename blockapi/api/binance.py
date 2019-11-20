@@ -29,8 +29,9 @@ class BinanceAPI(BlockchainAPI):
 
     def get_balance(self):
         response = self.request('get_balance', address=self.address)
+        no_result = [{'symbol': self.symbol, 'amount': 0}]
         if not response:
-            return 0
+            return no_result
 
         try:
             return [{
@@ -38,7 +39,7 @@ class BinanceAPI(BlockchainAPI):
                 'amount': float(bal['free']) * self.coef
             } for bal in response['balances']]
         except ValueError:
-            return 0
+            return no_result
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
         response = self.request('get_txs',

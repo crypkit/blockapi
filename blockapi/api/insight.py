@@ -24,9 +24,11 @@ class InsightAPI(BlockchainAPI):
         response = self.request('get_balance',
                                 address=self.address)
         if not response:
-            return 0
+            retval = 0
+        else:
+            retval = response * self.coef
 
-        return response * self.coef
+        return [{'symbol': self.symbol, 'amount': retval}]
 
 
 class BitpayAPI(InsightAPI):

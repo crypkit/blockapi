@@ -28,7 +28,7 @@ class StellarAPI(BlockchainAPI):
         response = self.request('get_balance',
                                 address=self.address)
         if not response:
-            return 0
+            return [{'symbol': self.symbol, 'amount': 0}]
 
         #return response.get('balances')
         balances = [{ 'symbol': bal['asset_code'],

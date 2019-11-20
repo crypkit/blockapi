@@ -38,7 +38,8 @@ class TzscanAPI(BlockchainAPI):
 
     def get_balance(self):
         balance = self._safe_request('get_balance', address=self.address)
-        return float(balance['spendable']) * self.coef
+        return [{'symbol': self.symbol,
+                 'amount': float(balance['spendable']) * self.coef}]
 
     def get_rewards(self, offset=0, limit=50):
         rewards = self._safe_request('get_rewards', address=self.address,

@@ -37,7 +37,7 @@ class CryptoIDAPI(BlockchainAPI):
                                 symbol=self.symbol.lower(),
                                 address=self.address)
 
-        return response * self.coef
+        return [{'symbol': self.symbol, 'amount': response * self.coef}]
 
 
 class CryptoIDLitecoinAPI(CryptoIDAPI):

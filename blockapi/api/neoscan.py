@@ -42,14 +42,16 @@ class NeoscanAPI(BlockchainAPI):
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
+        no_response = [{'symbol': self.symbol, 'amount': 0}]
         if not response:
-            return 0
+            return no_response
 
         for bal in response['balance']:
             if bal.get('asset_symbol') == self.symbol:
-                return bal.get('amount') * self.coef
+                return [{'symbol': self.symbol,
+                         'amount': bal.get('amount') * self.coef}]
 
-        return None
+        return no_response
 
     def get_tx_paging_params(self):
         # total pages can be found on the first page

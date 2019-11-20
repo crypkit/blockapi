@@ -28,9 +28,11 @@ class BtcAPI(BlockchainAPI):
         response = self.request('get_balance',
                                 address=self.address)
         if not response:
-            return 0
+            retval = 0
 
         try:
-            return response['data']['balance'] * self.coef
+            retval = response['data']['balance'] * self.coef
         except KeyError:
-            return 0
+            retval = 0
+
+        return [{'symbol': self.symbol, 'amount': retval}]

@@ -46,10 +46,11 @@ class BlockchairAPI(BlockchainAPI):
     def get_balance(self):
         dashboard = self._get_dashboard()
         if not dashboard:
-            return 0
-
+            retval = 0
+        else:
+            retval = int(dashboard['address']['balance']) * self.coef
         # return dashboard[self.address_type]['balance'] * self.coef
-        return int(dashboard['address']['balance']) * self.coef
+        return [{'symbol': self.symbol, 'amount': retval}]
 
     def get_create_date(self):
         dashboard = self._get_dashboard()

@@ -39,9 +39,11 @@ class TrezorAPI(BlockchainAPI):
                                     address=self.address)
 
         if not response:
-            return 0
+            retval = 0
+        else:
+            retval = float(response.get('balance')) * self.coef
 
-        return float(response.get('balance')) * self.coef
+        return [{'symbol': self.symbol, 'amount': retval}]
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
         response = self.request('get_txs',

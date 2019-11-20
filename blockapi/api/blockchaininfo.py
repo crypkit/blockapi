@@ -41,7 +41,8 @@ class BlockchainInfoAPI(BlockchainAPI):
         balance = self.request('get_balance', address=self.address)
         if not balance:
             return 0
-        return list(balance.values())[0]['final_balance'] * self.coef
+        retval = list(balance.values())[0]['final_balance'] * self.coef
+        return [{'symbol': self.symbol, 'amount': retval}]
 
     @set_default_args_values
     def get_txs(self, offset=None, limit=None, unconfirmed=False):

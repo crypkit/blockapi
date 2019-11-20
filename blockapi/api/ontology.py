@@ -35,7 +35,8 @@ class OntioAPI(BlockchainAPI):
         if not response:
             return 0
 
-        return [{"symbol": item['AssetName'], "amount": item['Balance']} for item in response['Result']['AssetBalance']]
+        return [{"symbol": item['AssetName'].upper(), "amount": item['Balance']}
+                for item in response['Result']['AssetBalance']]
 
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):

@@ -37,7 +37,7 @@ class BlockchainosAPI(BlockchainAPI):
         except (KeyError,ValueError):
             return None
 
-        return balance * self.coef
+        return [{'symbol': self.symbol, 'amount': balance * self.coef}]
 
     def get_txs(self, limit=None):
         if not 'get_txs_next' in self.supported_requests:

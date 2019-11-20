@@ -29,7 +29,7 @@ class TronscanAPI(BlockchainAPI):
         response = self.request('get_balance',
                                 address=self.address)
         if not response:
-            return 0
+            return [{'symbol': self.symbol, 'amount': 0}]
 
         token_map = {}
 

@@ -44,7 +44,7 @@ class BlockonomicsAPI(BlockchainAPI):
             return 0
 
         balance = sum(r['confirmed'] * self.coef for r in response['response'])
-        return balance
+        return [{'symbol': self.symbol, 'amount': balance}]
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
         body = '{"addr": "' + self.address + '"}'

@@ -27,7 +27,8 @@ class CardanoExplorerAPI(BlockchainAPI):
 
     def get_balance(self):
         summary = self._get_summary()
-        return int(summary['Right']['caBalance']['getCoin']) * self.coef
+        retval = int(summary['Right']['caBalance']['getCoin']) * self.coef
+        return [{'symbol': self.symbol, 'amount': retval}]
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
         summary = self._get_summary()

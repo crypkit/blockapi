@@ -38,9 +38,11 @@ class BlockcypherAPI(BlockchainAPI):
             address=self.address
         )
         if not response:
-            return 0
+            retval = 0
+        else:
+            retval = response['balance'] * self.coef
 
-        return response['balance'] * self.coef
+        return [{'symbol': self.symbol, 'amount': retval}]
 
 
 class BlockcypherLitecoinAPI(BlockcypherAPI):

@@ -28,6 +28,8 @@ class BlockscoutAPI(BlockchainAPI):
         response = self.request('get_balance',
                                 address=self.address)
         if not response:
-            return 0
+            retval = 0
+        else:
+            retval = int(response['result'], 16) * self.coef
 
-        return int(response['result'], 16) * self.coef
+        return [{'symbol': self.symbol, 'amount': retval}]

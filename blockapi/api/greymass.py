@@ -28,8 +28,9 @@ class GreymassAPI(BlockchainAPI):
         body = '{"account": "' + self.address + '"}'
         response = self.request('get_balance',
                                 body=body)
+        no_response = [{'symbol': self.symbol, 'amount': 0}]
         if not response:
-            return 0
+            return no_response
 
         # {‘symbol’: _, ‘address’: _, ‘price’: _, ‘name’: ?} ]
 
@@ -39,4 +40,4 @@ class GreymassAPI(BlockchainAPI):
                      "amount": float(item["amount"]),
                      "name": None} for item in response]
         except KeyError:
-            return 0
+            return no_response
