@@ -4,7 +4,8 @@ import pytz
 
 from blockapi.services import (
     BlockchainAPI,
-    set_default_args_values
+    set_default_args_values,
+    on_failure_return_none
 )
 
 
@@ -30,6 +31,7 @@ class EtherscanAPI(BlockchainAPI):
         'get_abi': '/api?module=contract&action=getabi&address={address}'
     }
 
+    @on_failure_return_none()
     def get_balance(self):
         balance_dict = self.request(
             'get_balance',
@@ -39,9 +41,12 @@ class EtherscanAPI(BlockchainAPI):
 
         # returns only balance for ETH; ERC20 and ERC721 tokens are omitted
         if 'result' in balance_dict:
-            retval = int(balance_dict['result']) * self.coef
+            try:
+                retval = int(balance_dict['result']) * self.coef
+            except ValueError:
+                return None
         else:
-            retval = 0
+            return None
 
         return [{'symbol': self.symbol, 'amount': retval}]
 

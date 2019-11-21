@@ -6,7 +6,8 @@ import pytz
 from blockapi.services import (
     BlockchainAPI,
     set_default_args_values,
-    AddressNotExist
+    AddressNotExist,
+    on_failure_return_none
 )
 
 
@@ -43,12 +44,13 @@ class BlockchairAPI(BlockchainAPI):
                        for p in ['xpub', 'ypub', 'zpub']))
         self.address_type = 'xpub' if is_xpub else 'address'
 
+    @on_failure_return_none()
     def get_balance(self):
         dashboard = self._get_dashboard()
         if not dashboard:
-            retval = 0
-        else:
-            retval = int(dashboard['address']['balance']) * self.coef
+            return None
+
+        retval = int(dashboard['address']['balance']) * self.coef
         # return dashboard[self.address_type]['balance'] * self.coef
         return [{'symbol': self.symbol, 'amount': retval}]
 

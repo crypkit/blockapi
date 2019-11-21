@@ -1,6 +1,7 @@
 import dateutil.parser
 from blockapi.services import (
-    BlockchainAPI
+    BlockchainAPI,
+    on_failure_return_none
 )
 
 
@@ -26,11 +27,12 @@ class BlockchainosAPI(BlockchainAPI):
         'get_txs': '/api/v1/accounts/{address}/transactions?limit={limit}&reverse=true',
     }
 
+    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
         if not response:
-            return 0
+            return None
 
         try:
             balance = int(response.get('balance'))

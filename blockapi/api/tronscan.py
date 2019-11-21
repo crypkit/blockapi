@@ -1,5 +1,6 @@
 from blockapi.services import (
-    BlockchainAPI
+    BlockchainAPI,
+    on_failure_return_none
 )
 
 
@@ -25,11 +26,12 @@ class TronscanAPI(BlockchainAPI):
         'get_trc10_tokenlist': '/token?limit=10000',
     }
 
+    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
         if not response:
-            return [{'symbol': self.symbol, 'amount': 0}]
+            return None
 
         token_map = {}
 

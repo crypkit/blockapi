@@ -5,7 +5,8 @@ import pytz
 from blockapi.services import (
     BlockchainAPI,
     APIError,
-    AddressNotExist
+    AddressNotExist,
+    on_failure_return_none
 )
 
 
@@ -25,6 +26,7 @@ class CardanoExplorerAPI(BlockchainAPI):
         'get_summary': '/addresses/summary/{address}'
     }
 
+    @on_failure_return_none()
     def get_balance(self):
         summary = self._get_summary()
         retval = int(summary['Right']['caBalance']['getCoin']) * self.coef

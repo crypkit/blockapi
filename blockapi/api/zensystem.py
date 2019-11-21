@@ -1,5 +1,6 @@
 from blockapi.services import (
-    BlockchainAPI
+    BlockchainAPI,
+    on_failure_return_none
 )
 
 
@@ -24,12 +25,12 @@ class ZensystemAPI(BlockchainAPI):
         'get_balance': '/addr/{address}',
     }
 
+    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
         if not response:
-            retval = 0
-        else:
-            retval = response.get('balance') * self.coef
+            return None
 
+        retval = response.get('balance') * self.coef
         return [{'symbol': self.symbol, 'amount': retval}]

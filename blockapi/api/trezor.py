@@ -3,7 +3,8 @@ from datetime import datetime
 import pytz
 
 from blockapi.services import (
-    BlockchainAPI
+    BlockchainAPI,
+    on_failure_return_none
 )
 
 
@@ -30,6 +31,7 @@ class TrezorAPI(BlockchainAPI):
         'get_tx': '/api/v2/tx/{tx_hash}',
     }
 
+    @on_failure_return_none()
     def get_balance(self):
         if len(self.address) == 111:
             response = self.request('get_balance_xpub',
@@ -39,10 +41,9 @@ class TrezorAPI(BlockchainAPI):
                                     address=self.address)
 
         if not response:
-            retval = 0
-        else:
-            retval = float(response.get('balance')) * self.coef
+            return None
 
+        retval = float(response.get('balance')) * self.coef
         return [{'symbol': self.symbol, 'amount': retval}]
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):

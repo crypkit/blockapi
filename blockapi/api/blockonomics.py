@@ -3,7 +3,8 @@ from datetime import datetime
 import pytz
 
 from blockapi.services import (
-    BlockchainAPI
+    BlockchainAPI,
+    on_failure_return_none
 )
 
 
@@ -37,11 +38,12 @@ class BlockonomicsAPI(BlockchainAPI):
     #     # else
     #     super().process_error_response(response)
 
+    @on_failure_return_none()
     def get_balance(self):
         body = '{"addr": "' + self.address + '"}'
         response = self.request('get_balance', body=body)
         if not response.get('response'):
-            return 0
+            return None
 
         balance = sum(r['confirmed'] * self.coef for r in response['response'])
         return [{'symbol': self.symbol, 'amount': balance}]

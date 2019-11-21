@@ -3,7 +3,8 @@ import dateutil.parser
 from blockapi.services import (
     BlockchainAPI,
     set_default_args_values,
-    APIError
+    APIError,
+    on_failure_return_none
 )
 
 
@@ -36,6 +37,7 @@ class TzscanAPI(BlockchainAPI):
         self._base_url_temp = 'https://api{num}.dunscan.io'  # num = 1-6
         self._api_nums = [1, 2, 3, 4, 5, 6]
 
+    @on_failure_return_none()
     def get_balance(self):
         balance = self._safe_request('get_balance', address=self.address)
         return [{'symbol': self.symbol,

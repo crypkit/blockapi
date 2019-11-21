@@ -1,5 +1,6 @@
 from blockapi.services import (
-    BlockchainAPI
+    BlockchainAPI,
+    on_failure_return_none
 )
 
 
@@ -35,6 +36,7 @@ class EthplorerAPI(BlockchainAPI):
         if self.api_key != self.default_api_key:
             self.rate_limit = 0.1
 
+    @on_failure_return_none()
     def get_balance(self):
         balances = []
         response = self.info
@@ -53,6 +55,9 @@ class EthplorerAPI(BlockchainAPI):
                 'amount': token['balance'] * pow(10, -int(info['decimals'])),
                 'name': info['name']
             })
+
+        if balances == []:
+            return None
 
         return balances
 

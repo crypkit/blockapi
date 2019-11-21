@@ -5,7 +5,8 @@ import pytz
 from blockapi.services import (
     BlockchainAPI,
     set_default_args_values,
-    AddressNotExist
+    AddressNotExist,
+    on_failure_return_none
 )
 
 
@@ -37,10 +38,11 @@ class BlockchainInfoAPI(BlockchainAPI):
         # else
         super().process_error_response(response)
 
+    @on_failure_return_none()
     def get_balance(self):
         balance = self.request('get_balance', address=self.address)
         if not balance:
-            return 0
+            return None
         retval = list(balance.values())[0]['final_balance'] * self.coef
         return [{'symbol': self.symbol, 'amount': retval}]
 

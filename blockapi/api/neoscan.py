@@ -4,7 +4,8 @@ import pytz
 
 from blockapi.services import (
     BlockchainAPI,
-    APIError
+    APIError,
+    on_failure_return_none
 )
 
 
@@ -39,19 +40,19 @@ class NeoscanAPI(BlockchainAPI):
             self.max_items_per_page = self.page_offset_step = paging_params[1]
             self.total_txs_count = paging_params[2]
 
+    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
-        no_response = [{'symbol': self.symbol, 'amount': 0}]
         if not response:
-            return no_response
+            return None
 
         for bal in response['balance']:
             if bal.get('asset_symbol') == self.symbol:
                 return [{'symbol': self.symbol,
                          'amount': bal.get('amount') * self.coef}]
 
-        return no_response
+        return None
 
     def get_tx_paging_params(self):
         # total pages can be found on the first page

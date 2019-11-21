@@ -1,6 +1,7 @@
 from blockapi.services import (
     BlockchainAPI,
-    AddressNotExist
+    AddressNotExist,
+    on_failure_return_none
 )
 
 
@@ -31,6 +32,7 @@ class BlockcypherAPI(BlockchainAPI):
         # else
         super().process_error_response(response)
 
+    @on_failure_return_none()
     def get_balance(self):
         response = self.request(
             'get_balance',
@@ -38,10 +40,9 @@ class BlockcypherAPI(BlockchainAPI):
             address=self.address
         )
         if not response:
-            retval = 0
-        else:
-            retval = response['balance'] * self.coef
+            return None
 
+        retval = response['balance'] * self.coef
         return [{'symbol': self.symbol, 'amount': retval}]
 
 

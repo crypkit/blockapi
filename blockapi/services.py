@@ -133,6 +133,21 @@ def set_default_args_values(f):
     return wrapper
 
 
+def on_failure_return_none():
+    def decorate(f):
+        def applicator(*args, **kwargs):
+            try:
+                return f(*args, **kwargs)
+            except (APIError,
+                    InternalServerError,
+                    BadGateway,
+                    GatewayTimeOut):
+                return None
+
+        return applicator
+    return decorate
+
+
 # Exceptions
 class APIError(Exception):
     pass

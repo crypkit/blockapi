@@ -1,5 +1,6 @@
 from blockapi.services import (
-    BlockchainAPI
+    BlockchainAPI,
+    on_failure_return_none
 )
 
 
@@ -24,13 +25,13 @@ class GreymassAPI(BlockchainAPI):
         'get_balance': '/chain/get_currency_balances',
     }
 
+    @on_failure_return_none()
     def get_balance(self):
         body = '{"account": "' + self.address + '"}'
         response = self.request('get_balance',
                                 body=body)
-        no_response = [{'symbol': self.symbol, 'amount': 0}]
         if not response:
-            return no_response
+            return None
 
         # {‘symbol’: _, ‘address’: _, ‘price’: _, ‘name’: ?} ]
 
@@ -40,4 +41,4 @@ class GreymassAPI(BlockchainAPI):
                      "amount": float(item["amount"]),
                      "name": None} for item in response]
         except KeyError:
-            return no_response
+            return None

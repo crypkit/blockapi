@@ -2,7 +2,8 @@ from datetime import datetime
 import pytz
 
 from blockapi.services import (
-    BlockchainAPI
+    BlockchainAPI,
+    on_failure_return_none
 )
 
 
@@ -29,11 +30,12 @@ class OntioAPI(BlockchainAPI):
         'get_txs': '/api/v1/explorer/address/{address}/{limit}/{page}'
     }
 
+    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
         if not response:
-            return 0
+            return None
 
         return [{"symbol": item['AssetName'].upper(), "amount": item['Balance']}
                 for item in response['Result']['AssetBalance']]

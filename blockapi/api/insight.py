@@ -1,5 +1,6 @@
 from blockapi.services import (
-    BlockchainAPI
+    BlockchainAPI,
+    on_failure_return_none
 )
 
 
@@ -20,14 +21,14 @@ class InsightAPI(BlockchainAPI):
         'get_balance': '/addr/{address}/balance',
     }
 
+    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
         if not response:
-            retval = 0
-        else:
-            retval = response * self.coef
+            return None
 
+        retval = response * self.coef
         return [{'symbol': self.symbol, 'amount': retval}]
 
 

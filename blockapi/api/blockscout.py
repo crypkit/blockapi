@@ -1,5 +1,6 @@
 from blockapi.services import (
-    BlockchainAPI
+    BlockchainAPI,
+    on_failure_return_none
 )
 
 
@@ -24,12 +25,12 @@ class BlockscoutAPI(BlockchainAPI):
         'get_balance': 'module=account&action=eth_get_balance&address={address}',
     }
 
+    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
         if not response:
-            retval = 0
-        else:
-            retval = int(response['result'], 16) * self.coef
+            return None
 
+        retval = int(response['result'], 16) * self.coef
         return [{'symbol': self.symbol, 'amount': retval}]
