@@ -1,3 +1,4 @@
+import os
 import inspect
 import random
 
@@ -46,7 +47,7 @@ COINS = {
 
 class BlockApi:
     def __init__(self, redis_url=None):
-        self.redis_url = redis_url
+        self.redis_url = os.getenv("REDIS_URL") or redis_url
 
     def get_balance_from_random_api(self, symbol, address):
         """Get balance for currency from random API (APIs with API keys are not supported)."""
