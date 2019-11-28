@@ -1,7 +1,9 @@
+import os
 import inspect
 from abc import ABC, abstractmethod
 from datetime import datetime
 from time import sleep
+import redis
 
 import cfscrape
 import requests
@@ -12,6 +14,7 @@ import blockapi
 # from dateutil.tz import UTC
 
 cfscrape.DEFAULT_CIPHERS += ':!SHA'
+
 
 class Service(ABC):
     """General class for handling blockchain API services."""
@@ -28,6 +31,11 @@ class Service(ABC):
         self.api_key = api_key
         self.last_response = None
         self.last_response_time = None
+
+        if os.getenv("REDIS_URL"):
+            self.redis = redis.Redis(host=os.getenv("REDIS_URL"))
+        else:
+            self.redis = None
 
     def build_request_url(self, request_method, **params):
         path_url = self.supported_requests.get(request_method)
@@ -145,6 +153,7 @@ def on_failure_return_none():
                 return None
 
         return applicator
+
     return decorate
 
 
