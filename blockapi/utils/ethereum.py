@@ -35,6 +35,23 @@ class Ethereum:
         tx_function = tx_input_values[0]
         return tx_function
 
+    def get_erc20_balances(self, address, tokens: dict):
+        addr = '0x8a0586e9c99b1596af42abf80b469fce321e8bac'
+        addr = Web3.toChecksumAddress(addr)
+        address = Web3.toChecksumAddress(address)
+
+        tokens_ch = []
+        for token in tokens:
+            tokens_ch.append(Web3.toChecksumAddress(token))
+
+        bal_sc = self.get_contract(addr)
+        balances = bal_sc.functions.batchTokenBalances([address],
+                                                       tokens_ch).call()
+
+        decimals = bal_sc.functions.batchTokenDecimals(tokens_ch)
+
+        return [float(b)*pow(10,-d) for b,d in zip(balances,decimals)]
+
 
 class Infura(Ethereum):
     def __init__(self, network, api_key):
@@ -165,3 +182,12 @@ class ERC20Token:
             result = None
 
         return result
+
+    def get_contract_by_symbol(self, symbol):
+        if len(self.tokens) == 0:
+            return None
+
+        if self.tokens.get(symbol) != None:
+            return self.tokens[symbol]['contract_address']
+        else:
+            return None
