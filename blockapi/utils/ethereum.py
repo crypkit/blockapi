@@ -4,7 +4,8 @@ from bs4 import BeautifulSoup
 import re
 from blockapi.api import EtherscanAPI
 from ethereum_input_decoder import AbiMethod
-
+from time import sleep
+import requests
 
 class Ethereum:
     def __init__(self, node_url):
@@ -36,19 +37,20 @@ class Ethereum:
         return tx_function
 
     def get_erc20_balances(self, address, tokens: dict):
-        addr = '0x8a0586e9c99b1596af42abf80b469fce321e8bac'
+        addr = '0xD1f89108Ba9525a11BEAf8bdC5058B4946a6C501'
         addr = Web3.toChecksumAddress(addr)
         address = Web3.toChecksumAddress(address)
 
         tokens_ch = []
         for token in tokens:
-            tokens_ch.append(Web3.toChecksumAddress(token))
+            tokens_ch.append(
+                Web3.toChecksumAddress(tokens[token]['contract_address']))
 
         bal_sc = self.get_contract(addr)
         balances = bal_sc.functions.batchTokenBalances([address],
                                                        tokens_ch).call()
 
-        decimals = bal_sc.functions.batchTokenDecimals(tokens_ch)
+        decimals = [tokens[token]['decimals'] for token in tokens]
 
         return [float(b)*pow(10,-d) for b,d in zip(balances,decimals)]
 
@@ -66,6 +68,7 @@ class Infura(Ethereum):
 class ERC20Token:
     def __init__(self):
         self.url = 'https://etherscan.io/tokens?p={}'
+        self.token_url = 'httpS://etherscan.io/token/{}'
         self.page = 0
         self.reqobj = cfscrape.create_scraper()
         self.tokens = {}
@@ -95,6 +98,8 @@ class ERC20Token:
 
             for row in rows:
                 result = self._parse_table_row(row)
+                decimals = self._get_token_details(result[2])
+
                 self.tokens[result[0]] = \
                     {'currency_name': result[1],
                      'contract_address': result[2],
@@ -102,16 +107,57 @@ class ERC20Token:
                      'change': result[4],
                      'volume': result[5],
                      'market_cap': result[6],
-                     'holders': result[7]}
+                     'holders': result[7],
+                     'decimals': decimals}
 
             page += 1
 
         return {'result': scrape_result, 'result_msg': result_msg,
                 'tokens': self.tokens}
 
+    def _get_token_details(self, contract_address):
+        token_details_url = self.token_url.format(contract_address)
+        i = 1
+        while True:
+            try:
+                result = self.reqobj.get(token_details_url)
+                if result.text.find('Sorry, You have reached') != -1:
+                    i += 1
+                    sleep(0.3 * i)
+                    continue
+                break
+            except requests.exceptions.ChunkedEncodingError:
+                i += 1
+
+            sleep(0.3 * i)
+
+        if result.status_code != 200:
+            return None
+
+        soup = BeautifulSoup(result.text, "lxml")
+        decimals_div = soup.body.find("div",
+                                      {"id": "ContentPlaceHolder1_trDecimals"})
+        if decimals_div is None:
+            return None
+
+        decimals_class = decimals_div.find("div", {"class": "col-md-8"})
+        return int(decimals_class.text)
+
     def _get_table_rows(self, page):
         erc20_url = self.url.format(page)
-        result = self.reqobj.get(erc20_url)
+        i = 1
+        while True:
+            try:
+                result = self.reqobj.get(erc20_url)
+                if result.text.find('Sorry, You have reached') != -1:
+                    i += 1
+                    sleep(0.3 * i)
+                    continue
+                break
+            except requests.exceptions.ChunkedEncodingError:
+                i += 1
+
+            sleep(0.3 * i)
 
         if result.status_code == 200:
             soup = BeautifulSoup(result.text, "lxml")
@@ -187,7 +233,7 @@ class ERC20Token:
         if len(self.tokens) == 0:
             return None
 
-        if self.tokens.get(symbol) != None:
+        if self.tokens.get(symbol) is not None:
             return self.tokens[symbol]['contract_address']
         else:
             return None
