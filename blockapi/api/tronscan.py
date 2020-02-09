@@ -15,7 +15,7 @@ class TronscanAPI(BlockchainAPI):
 
     symbol = 'TRX'
     base_url = 'https://apilist.tronscan.org/api'
-    rate_limit = 0
+    rate_limit = None
     coef = 1e-6
     max_items_per_page = None
     page_offset_step = None

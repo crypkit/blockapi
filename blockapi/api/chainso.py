@@ -14,7 +14,7 @@ class ChainSoAPI(BlockchainAPI):
 
     symbol = None
     base_url = 'https://chain.so/api/v2'
-    rate_limit = 0.2  # 5 per second
+    rate_limit = [(1,5), (60, 300), (3600, 18000)] # 5 per second
     coef = None
     max_items_per_page = None
     page_offset_step = None

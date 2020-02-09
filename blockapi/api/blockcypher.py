@@ -14,7 +14,7 @@ class BlockcypherAPI(BlockchainAPI):
 
     symbol = None
     base_url = 'https://api.blockcypher.com/v1/'
-    rate_limit = 0
+    rate_limit = None
     coef = None
     start_offset = 0
     max_items_per_page = None

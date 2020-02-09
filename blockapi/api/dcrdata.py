@@ -20,7 +20,7 @@ class DcrdataAPI(BlockchainAPI):
     symbol = 'DCR'
     base_url = 'https://explorer.dcrdata.org/api'
     testnet_url = 'https://testnet.dcrdata.org/api'
-    rate_limit = 0
+    rate_limit = None
     coef = 1
     max_items_per_page = 50000
     page_offset_step = max_items_per_page

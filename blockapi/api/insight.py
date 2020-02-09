@@ -11,7 +11,7 @@ class InsightAPI(BlockchainAPI):
 
     active = True
 
-    rate_limit = 0
+    rate_limit = None
     coef = 1e-8
     max_items_per_page = None
     page_offset_step = None

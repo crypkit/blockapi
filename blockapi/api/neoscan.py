@@ -20,7 +20,7 @@ class NeoscanAPI(BlockchainAPI):
 
     symbol = 'NEO'
     base_url = 'https://api.neoscan.io/api/main_net/v1'
-    rate_limit = 0
+    rate_limit = None
     coef = 1
     max_items_per_page = None
     page_offset_step = None

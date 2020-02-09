@@ -16,7 +16,7 @@ class BlockchainosAPI(BlockchainAPI):
 
     symbol = 'BOS'
     base_url = 'https://mainnet.blockchainos.org'
-    rate_limit = 0
+    rate_limit = None
     coef = 1e-7
     max_items_per_page = None
     page_offset_step = None

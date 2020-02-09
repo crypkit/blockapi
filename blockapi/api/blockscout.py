@@ -15,7 +15,7 @@ class BlockscoutAPI(BlockchainAPI):
 
     symbol = 'ETC'
     base_url = 'https://blockscout.com/etc/mainnet/api?'
-    rate_limit = 0
+    rate_limit = None
     coef = 1e-18
     max_items_per_page = None
     page_offset_step = None

@@ -19,7 +19,7 @@ class OntioAPI(BlockchainAPI):
 
     symbol = 'ONT'
     base_url = 'https://explorer.ont.io'
-    rate_limit = 0
+    rate_limit = None
     coef = 1
     max_items_per_page = 20
     page_offset_step = None

@@ -15,7 +15,7 @@ class BtcAPI(BlockchainAPI):
 
     symbol = 'BCH'
     base_url = 'https://bch-chain.api.btc.com/v3'
-    rate_limit = 0
+    rate_limit = None
     coef = 1e-8
     max_items_per_page = None
     page_offset_step = None

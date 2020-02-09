@@ -15,7 +15,7 @@ class ZchainAPI(BlockchainAPI):
 
     symbol = 'ZEC'
     base_url = 'https://api.zcha.in'
-    rate_limit = 0
+    rate_limit = None
     coef = 1
     max_items_per_page = None
     page_offset_step = None

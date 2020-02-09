@@ -17,7 +17,7 @@ class TzscanAPI(BlockchainAPI):
 
     symbol = 'XTZ'
     base_url = None # endpoint is created in runtime
-    rate_limit = 0
+    rate_limit = None
     coef = 1e-6
     max_items_per_page = 50
     page_offset_step = 1

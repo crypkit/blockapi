@@ -17,7 +17,7 @@ class BinanceAPI(BlockchainAPI):
 
     symbol = 'BNB'
     base_url = 'https://dex.binance.org/api/v1'
-    rate_limit = 0
+    rate_limit = None
     coef = 1
     max_items_per_page = None
     page_offset_step = None

@@ -21,7 +21,7 @@ class BlockchainInfoAPI(BlockchainAPI):
 
     symbol = 'BTC'
     base_url = 'https://blockchain.info'
-    rate_limit = 0
+    rate_limit = None
     coef = 1e-8
     max_items_per_page = 100
     page_offset_step = max_items_per_page

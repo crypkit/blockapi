@@ -19,7 +19,7 @@ class BlockonomicsAPI(BlockchainAPI):
 
     symbol = 'BTC'
     base_url = 'https://www.blockonomics.co/api'
-    rate_limit = 30
+    rate_limit = [(30,1), (60,2), (3600, 120)]
     coef = 1e-8
     max_items_per_page = None
     page_offset_step = None

@@ -14,7 +14,7 @@ class EosparkAPI(BlockchainAPI):
 
     symbol = 'EOS'
     base_url = 'https://api.eospark.com/api'
-    rate_limit = 0
+    rate_limit = None
     coef = 1e-6
     max_items_per_page = 20
     page_offset_step = 1

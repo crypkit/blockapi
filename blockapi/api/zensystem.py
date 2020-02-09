@@ -15,7 +15,7 @@ class ZensystemAPI(BlockchainAPI):
 
     symbol = 'ZEN'
     base_url = 'https://explorer.zensystem.io/api'
-    rate_limit = 0
+    rate_limit = None
     coef = 1
     max_items_per_page = None
     page_offset_step = None

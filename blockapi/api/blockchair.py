@@ -22,7 +22,7 @@ class BlockchairAPI(BlockchainAPI):
     active = False
 
     symbol = None
-    rate_limit = 0
+    rate_limit = None
     coef = None
     start_offset = 0
     max_items_per_page = 10  # 10000 per tx hashes; 10 per tx details

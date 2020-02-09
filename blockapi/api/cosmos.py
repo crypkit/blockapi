@@ -22,7 +22,7 @@ class CosmosAPI(BlockchainAPI):
     symbol = 'ATOM'
     #base_url = 'https://stargate.cosmos.network'
     base_url = 'https://cosmos.node.cracklord.com'
-    rate_limit = 0.6
+    rate_limit = [(3,5), (60,100), (3600, 6000)]
     coef = 1e-6
     start_offset = 1
     max_items_per_page = 30

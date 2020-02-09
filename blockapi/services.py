@@ -13,6 +13,7 @@ import blockapi
 
 cfscrape.DEFAULT_CIPHERS += ':!SHA'
 
+
 class Service(ABC):
     """General class for handling blockchain API services."""
 
@@ -24,10 +25,11 @@ class Service(ABC):
     # {request_method: request_url}
     supported_requests = {}
 
-    def __init__(self, api_key=None):
+    def __init__(self, api_key=None, ratelimiter_cls=None):
         self.api_key = api_key
         self.last_response = None
         self.last_response_time = None
+        self.ratelimiter_cls = ratelimiter_cls
 
     def build_request_url(self, request_method, **params):
         path_url = self.supported_requests.get(request_method)
@@ -73,23 +75,32 @@ class Service(ABC):
         return response.json()
 
     def wait_for_next_request(self):
-        if not self.last_response_time:
+        if self.rate_limit is None:
             return
 
-        diff = (datetime.now() - self.last_response_time).total_seconds()
-        wait = self.rate_limit - diff
+        if self.ratelimiter_cls is not None:
+            self.ratelimiter_cls().wait_slot(rate_limits=self.rate_limit,
+                                             api_id=self.__class__.__name__)
+        else:
+            if not self.last_response_time:
+                return
 
-        if wait > 0:
-            sleep(wait)
+            simple_ratelimit = self.rate_limit[0][0] / self.rate_limit[0][1]
 
-        # use date from last response
-        # doesn't work very good, time on server can differ from local time
-        # if self.last_response.headers.get('Date'):
-        #     last_resp_time = date_parse(self.last_response.headers.get('Date'))
-        #     last_resp_time.replace(tzinfo=UTC)
-        #     wait_until = last_resp_time + timedelta(seconds=self.rate_limit)
-        #
-        #     now = datetime.utcnow().replace(tzinfo=UTC)
+            diff = (datetime.now() - self.last_response_time).total_seconds()
+            wait = simple_ratelimit - diff
+
+            if wait > 0:
+                sleep(wait)
+
+            # use date from last response
+            # doesn't work very good, time on server can differ from local time
+            # if self.last_response.headers.get('Date'):
+            #     last_resp_time = date_parse(self.last_response.headers.get('Date'))
+            #     last_resp_time.replace(tzinfo=UTC)
+            #     wait_until = last_resp_time + timedelta(seconds=self.rate_limit)
+            #
+            #     now = datetime.utcnow().replace(tzinfo=UTC)
 
     def process_error_response(self, response):
         if response.status_code == 500:
@@ -205,8 +216,8 @@ class BlockchainInterface(ABC):
 class BlockchainAPI(Service, BlockchainInterface, ABC):
     symbol = None
 
-    def __init__(self, address, api_key=None):
-        Service.__init__(self, api_key)
+    def __init__(self, address, api_key=None, ratelimiter_cls=None):
+        Service.__init__(self, api_key, ratelimiter_cls)
         BlockchainInterface.__init__(self, address)
 
         self.address_info = blockapi.get_address_info(self.symbol.lower(), address)

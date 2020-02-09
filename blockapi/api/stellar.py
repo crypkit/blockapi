@@ -15,7 +15,7 @@ class StellarAPI(BlockchainAPI):
 
     symbol = 'XLM'
     base_url = 'https://horizon.stellar.org'
-    rate_limit = 0
+    rate_limit = None
     coef = 1
     max_items_per_page = None
     page_offset_step = None

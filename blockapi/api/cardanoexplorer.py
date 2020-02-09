@@ -19,7 +19,7 @@ class CardanoExplorerAPI(BlockchainAPI):
 
     symbol = 'ADA'
     base_url = 'https://cardanoexplorer.com/api'
-    rate_limit = 0
+    rate_limit = None
     coef = 1e-6
 
     supported_requests = {

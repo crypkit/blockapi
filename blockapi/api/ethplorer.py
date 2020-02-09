@@ -14,7 +14,8 @@ class EthplorerAPI(BlockchainAPI):
     symbol = 'ETH'
     base_url = 'http://api.ethplorer.io'
     default_api_key = 'freekey'
-    rate_limit = 0.5
+    #rate_limit = 0.5
+    rate_limit = [(1,2),(60,120),(3600,7200)]
     coef = 1e-18
     start_offset = None
     max_items_per_page = None
@@ -24,17 +25,17 @@ class EthplorerAPI(BlockchainAPI):
         'get_info': '/getAddressInfo/{address}?apiKey={api_key}'
     }
 
-    def __init__(self, address, api_key=None):
+    def __init__(self, address, api_key=None, ratelimiter_cls=None):
         if not api_key:
             api_key = self.default_api_key
 
-        super().__init__(address, api_key)
+        super().__init__(address, api_key, ratelimiter_cls)
 
         # cache info
         self._info = None
 
         if self.api_key != self.default_api_key:
-            self.rate_limit = 0.1
+            self.rate_limit = [(1,10),(60, 600),(3600, 36000)]
 
     @on_failure_return_none()
     def get_balance(self):
