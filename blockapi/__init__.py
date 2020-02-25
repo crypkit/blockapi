@@ -48,10 +48,15 @@ def get_balance_from_random_api(symbol, address):
     """Get balance for currency from random API (APIs with API keys are not supported)."""
     return _call_method_from_random_api(symbol, address, 'get_balance')
 
+def get_shuffled_suitable_api_classes_for_coin(symbol, address):
+    api_classes = get_shuffled_api_classes_for_coin(symbol)
+    filtered_api_classes = filter_suitable_api_classes(api_classes, symbol,
+                                                       address)
+    return filtered_api_classes
 
 def _call_method_from_random_api(symbol, address, method):
-    api_classes = get_shuffled_api_classes_for_coin(symbol)
-    filtered_api_classes = filter_suitable_api_classes(api_classes, symbol, address)
+    filtered_api_classes = get_shuffled_suitable_api_classes_for_coin(symbol,
+                                                                      address)
     for cl in filtered_api_classes:
         try:
             inst = cl(address)
