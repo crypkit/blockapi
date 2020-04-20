@@ -80,11 +80,18 @@ class EtherscanAPI(BlockchainAPI):
             address=self.address,
             api_key=self.api_key
         )
+
         if not response:
             return []
         result = response.get('result', [])
         if result is None:
             result = []
+
+        status = response.get('status', '0')
+        if status == '0':
+            print('EtherscanAPI error: {}'.format(result))
+            return []
+
         return result
 
     def parse_tx(self, tx, tx_type):

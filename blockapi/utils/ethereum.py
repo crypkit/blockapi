@@ -21,7 +21,9 @@ class Ethereum:
         return self.web3.toChecksumAddress(address)
 
     def get_contract(self, contract):
-        self.load_abi(contract)
+        # fallback to automatic loading if ABI is not set from outside
+        if self.abi is None:
+            self.load_abi(contract)
         return self.web3.eth.contract(address=Web3.toChecksumAddress(
             contract), abi=self.abi)
 
