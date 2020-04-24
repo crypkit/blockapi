@@ -25,6 +25,7 @@ class AlethioAPI(BlockchainAPI):
     confirmed_num = None
     has_next = {'normal': True,
                 'token': True}
+    collect_logs = True
 
     supported_requests = {
         'get_balance': '/ether-balances?filter[account]={address}',
@@ -33,7 +34,8 @@ class AlethioAPI(BlockchainAPI):
         'get_txs':
             '/transactions?filter[account]={address}&page[limit]={limit}',
         'get_txs_next': None,
-        'get_token_txs': '/token-transfers?filter[account]={address}',
+        'get_token_txs': '/token-transfers?filter[account]={address}'
+                         '&page[limit]={limit}',
         'get_token_txs_next': None,
         'get_logs': None
     }
@@ -52,6 +54,11 @@ class AlethioAPI(BlockchainAPI):
 
     @on_failure_return_none()
     def get_balance(self):
+        """
+        Returns a list of all balances, both Ethereum and token ones
+
+        :return: list
+        """
         response = self._query_api('get_balance',
                                    address=self.address)
         if not response:
@@ -98,10 +105,32 @@ class AlethioAPI(BlockchainAPI):
 
         return balances
 
-    def get_txs(self, page=None, limit=None, unconfirmed=False):
+    def get_txs(self, page=None, limit=None, unconfirmed=False,
+                collect_logs=True):
+        """
+        Returns the list of collected transactions, subsequent calls
+        download next transactions if available
+
+        :param page: not used at all here
+        :param limit: page limit; 100 is the maximum with AlethioAPI
+        :param unconfirmed: not used at all here
+        :param collect_logs: True if you'd like to collect eventlogs for each
+                             transaction, otherwise False
+        :return: list
+        """
+        self.collect_logs = collect_logs
         return self._get_txs(tx_type='normal', limit=limit)
 
     def get_token_txs(self, page=None, limit=None, unconfirmed=False):
+        """
+        Returns a list of collected token transactions, subsequent calls
+        download next transactions if available
+
+        :param page: not used at all here
+        :param limit: page limit; 100 is the maximum with AlethioAPI
+        :param unconfirmed: not used here at all
+        :return: list
+        """
         return self._get_txs(tx_type='token', limit=limit)
 
     def _get_txs(self, tx_type='normal', page=None, limit=None,
@@ -201,7 +230,10 @@ class AlethioAPI(BlockchainAPI):
         self.supported_requests['get_logs'] = \
             log_entries_req.replace(self.base_url, '')
 
-        parsed_logs = self._get_logs()
+        if self.collect_logs:
+            parsed_logs = self._get_logs()
+        else:
+            parsed_logs = None
 
         return {
             'symbol': 'ETH',
