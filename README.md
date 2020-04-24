@@ -36,7 +36,8 @@ List of supported coins:
 |       | Btc2TrezorAPI | balance, transactions
 |       | BitpayAPI | balance
 | GRS   | CryptoIDAPI | balance
-| ETH   | EtherscanAPI | balance, transactions
+| ETH   | AlethioAPI | balance, transactions, events 
+|       | EtherscanAPI | balance, transactions
 |       | EthplorerAPI | balance
 | ONT   | OntioAPI | balance, transactions
 | VET   | DigonchainAPI | balance
