@@ -2,7 +2,8 @@ from datetime import datetime
 import pytz
 from blockapi.services import (
     BlockchainAPI,
-    on_failure_return_none
+    on_failure_return_none,
+    APIError
 )
 
 
@@ -37,12 +38,14 @@ class AlethioAPI(BlockchainAPI):
         'get_token_txs': '/token-transfers?filter[account]={address}'
                          '&page[limit]={limit}',
         'get_token_txs_next': None,
-        'get_logs': None
+        'get_logs': None,
+        'get_info': '/accounts/{address}'
     }
 
     def __init__(self, address, api_key=None):
         self.has_next['normal'] = True
         self.has_next['token'] = True
+        self._info = None
         super().__init__(address, api_key)
 
     def _query_api(self, request_method, **kwargs):
@@ -326,3 +329,19 @@ class AlethioAPI(BlockchainAPI):
             i += 1
 
         return result
+
+    @property
+    def info(self):
+        if self._info is None:
+            result = self._query_api('get_info', address=self.address)
+            if result['data']['relationships']['contract']['data'] is None:
+                self._info = 'address'
+            else:
+                # contract or token
+                try:
+                    self._query_api('get_token_info', token_id=self.address)
+                    self._info = 'token'
+                except APIError:
+                    self._info = 'contract'
+
+        return self._info
