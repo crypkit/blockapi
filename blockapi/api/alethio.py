@@ -34,10 +34,10 @@ class AlethioAPI(BlockchainAPI):
         'get_token_info': '/tokens/{token_id}',
         'get_txs':
             '/transactions?filter[account]={address}&page[limit]={limit}'
-            '&page[next]={page}',
+            '&page[next]={cursor}',
         'get_txs_next': None,
         'get_token_txs': '/token-transfers?filter[account]={address}'
-                         '&page[limit]={limit}&page[next]={page}',
+                         '&page[limit]={limit}&page[next]={cursor}',
         'get_token_txs_next': None,
         'get_logs': None,
         'get_info': '/accounts/{address}'
@@ -124,8 +124,6 @@ class AlethioAPI(BlockchainAPI):
         :return: list
         """
         self.collect_logs = collect_logs
-        if page is None:
-            page = ''
         return self._get_txs(tx_type='normal', page=page, limit=limit)
 
     def get_token_txs(self, page=None, limit=None, unconfirmed=False):
@@ -151,6 +149,9 @@ class AlethioAPI(BlockchainAPI):
             fetch_next_req = 'get_token_txs_next'
             parser = self._parse_token_tx
 
+        if page is None:
+            page = ''
+
         if not self.has_next[tx_type]:
             return []
 
@@ -162,7 +163,7 @@ class AlethioAPI(BlockchainAPI):
 
         if self.supported_requests[fetch_next_req] is None:
             txs = self._query_api(fetch_req, address=self.address,
-                                  page=page, limit=limit)
+                                  cursor=page, limit=limit)
         else:
             txs = self._query_api(fetch_next_req)
 
@@ -217,6 +218,7 @@ class AlethioAPI(BlockchainAPI):
             'kind': 'transaction',
             'direction': tx_direction,
             'token_data': tx_token_data,
+            'cursor': attributes['cursor'],
             'raw': tx
         }
 
@@ -265,6 +267,7 @@ class AlethioAPI(BlockchainAPI):
             'kind': 'transaction',
             'direction': tx_direction,
             'token_data': None,
+            'cursor': attributes['cursor'],
             'raw': tx,
             'event_logs': parsed_logs
         }
