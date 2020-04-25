@@ -33,10 +33,11 @@ class AlethioAPI(BlockchainAPI):
         'get_token_balances': '/token-balances?filter[account]={address}',
         'get_token_info': '/tokens/{token_id}',
         'get_txs':
-            '/transactions?filter[account]={address}&page[limit]={limit}',
+            '/transactions?filter[account]={address}&page[limit]={limit}'
+            '&page[next]={page}',
         'get_txs_next': None,
         'get_token_txs': '/token-transfers?filter[account]={address}'
-                         '&page[limit]={limit}',
+                         '&page[limit]={limit}&page[next]={page}',
         'get_token_txs_next': None,
         'get_logs': None,
         'get_info': '/accounts/{address}'
@@ -114,7 +115,7 @@ class AlethioAPI(BlockchainAPI):
         Returns the list of collected transactions, subsequent calls
         download next transactions if available
 
-        :param page: not used at all here
+        :param page: tx cursor
         :param limit: page limit; 100 is the maximum with AlethioAPI
         :param unconfirmed: not used at all here
         :param collect_logs: True if you'd like to collect eventlogs for each
@@ -122,19 +123,21 @@ class AlethioAPI(BlockchainAPI):
         :return: list
         """
         self.collect_logs = collect_logs
-        return self._get_txs(tx_type='normal', limit=limit)
+        if page is None:
+            page = ''
+        return self._get_txs(tx_type='normal', page=page, limit=limit)
 
     def get_token_txs(self, page=None, limit=None, unconfirmed=False):
         """
         Returns a list of collected token transactions, subsequent calls
         download next transactions if available
 
-        :param page: not used at all here
+        :param page: tx cursor
         :param limit: page limit; 100 is the maximum with AlethioAPI
         :param unconfirmed: not used here at all
         :return: list
         """
-        return self._get_txs(tx_type='token', limit=limit)
+        return self._get_txs(tx_type='token', page=page, limit=limit)
 
     def _get_txs(self, tx_type='normal', page=None, limit=None,
                  unconfirmed=False):
@@ -158,7 +161,7 @@ class AlethioAPI(BlockchainAPI):
 
         if self.supported_requests[fetch_next_req] is None:
             txs = self._query_api(fetch_req, address=self.address,
-                                  limit=limit)
+                                  page=page, limit=limit)
         else:
             txs = self._query_api(fetch_next_req)
 
