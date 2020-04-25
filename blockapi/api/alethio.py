@@ -70,7 +70,8 @@ class AlethioAPI(BlockchainAPI):
 
         retval_eth = int(response['data'][0]['attributes']['balance']) * \
             self.coef
-        balance_eth = [{'symbol': self.symbol, 'amount': retval_eth}]
+        balance_eth = [{'symbol': self.symbol, 'amount': retval_eth,
+                        'name': 'Ethereum', 'contract_address': ''}]
         balances_tokens = self._get_token_balances()
         if balances_tokens is None:
             return None
