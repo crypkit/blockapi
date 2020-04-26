@@ -204,7 +204,7 @@ class AlethioAPI(BlockchainAPI):
             'contract_address': tx_contract_address,
             'amount': float(attributes['value']) *
                 pow(10, -attributes['decimals']),
-            'fee': None,
+            'fee': 0.0,
             'gas': {
                 'gas': float(attributes['transactionGasLimit']),
                 'gas_price': float(attributes['transactionGasPrice']),
