@@ -46,7 +46,7 @@ class AlethioAPI(BlockchainAPI):
     def __init__(self, address, api_key=None):
         self.has_next['normal'] = True
         self.has_next['token'] = True
-        self._info = None
+        self._address_type = None
         super().__init__(address, api_key)
 
     def _query_api(self, request_method, **kwargs):
@@ -296,6 +296,10 @@ class AlethioAPI(BlockchainAPI):
             for log in response['data']:
                 logs.append(self._parse_log(log))
             next_logs = response['meta']['page']['hasNext']
+            if next_logs:
+                self.supported_requests['get_logs'] = \
+                    response['links']['next'].replace(self.base_url, '')
+                response = self._query_api('get_logs')
 
         return logs
 
@@ -305,18 +309,7 @@ class AlethioAPI(BlockchainAPI):
 
         if attributes['eventDecodedError'] == '':
             event_name = attributes['eventDecoded']['event']
-            inputs = []
-            for inp in attributes['eventDecoded']['inputs']:
-                if 'indexed' in inp:
-                    is_indexed = inp['indexed']
-                else:
-                    is_indexed = False
-                inputs.append({
-                    'name': inp['name'],
-                    'type': inp['type'],
-                    'value': inp['value'],
-                    'is_indexed': is_indexed
-                })
+            inputs = self._parse_log_inputs(attributes)
         else:
             event_name = ''
             inputs = None
@@ -337,18 +330,39 @@ class AlethioAPI(BlockchainAPI):
 
         return result
 
+    def _parse_log_inputs(self, attributes):
+        inputs = []
+        if 'inputs' in attributes['eventDecoded']:
+            for inp in attributes['eventDecoded']['inputs']:
+                if 'indexed' in inp:
+                    is_indexed = inp['indexed']
+                else:
+                    is_indexed = False
+
+                parsed_log = {'name': inp['name'],
+                              'type': inp['type'],
+                              'is_indexed': is_indexed}
+                if 'value' in inp:
+                    parsed_log['value'] = inp['value']
+                if 'components' in inp:
+                    parsed_log['components'] = inp['components']
+
+                inputs.append(parsed_log)
+
+        return inputs
+
     @property
-    def info(self):
-        if self._info is None:
+    def address_type(self):
+        if self._address_type is None:
             result = self._query_api('get_info', address=self.address)
             if result['data']['relationships']['contract']['data'] is None:
-                self._info = 'address'
+                self._address_type = 'address'
             else:
                 # contract or token
                 try:
                     self._query_api('get_token_info', token_id=self.address)
-                    self._info = 'token'
+                    self._address_type = 'token'
                 except APIError:
-                    self._info = 'contract'
+                    self._address_type = 'contract'
 
-        return self._info
+        return self._address_type
