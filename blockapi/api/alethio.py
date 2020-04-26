@@ -34,10 +34,10 @@ class AlethioAPI(BlockchainAPI):
         'get_token_info': '/tokens/{token_id}',
         'get_txs':
             '/transactions?filter[account]={address}&page[limit]={limit}'
-            '&page[next]={cursor}',
+            '&page[next]={page}',
         'get_txs_next': None,
         'get_token_txs': '/token-transfers?filter[account]={address}'
-                         '&page[limit]={limit}&page[next]={cursor}',
+                         '&page[limit]={limit}&page[next]={page}',
         'get_token_txs_next': None,
         'get_logs': None,
         'get_info': '/accounts/{address}'
@@ -163,7 +163,7 @@ class AlethioAPI(BlockchainAPI):
 
         if self.supported_requests[fetch_next_req] is None:
             txs = self._query_api(fetch_req, address=self.address,
-                                  cursor=page, limit=limit)
+                                  page=page, limit=limit)
         else:
             txs = self._query_api(fetch_next_req)
 
@@ -218,7 +218,7 @@ class AlethioAPI(BlockchainAPI):
             'kind': 'transaction',
             'direction': tx_direction,
             'token_data': tx_token_data,
-            'cursor': attributes['cursor'],
+            'page': attributes['cursor'],
             'raw': tx
         }
 
@@ -267,7 +267,7 @@ class AlethioAPI(BlockchainAPI):
             'kind': 'transaction',
             'direction': tx_direction,
             'token_data': None,
-            'cursor': attributes['cursor'],
+            'page': attributes['cursor'],
             'raw': tx,
             'event_logs': parsed_logs
         }
