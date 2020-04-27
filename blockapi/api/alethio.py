@@ -47,6 +47,9 @@ class AlethioAPI(BlockchainAPI):
         self.has_next['normal'] = True
         self.has_next['token'] = True
         self._address_type = None
+        self.supported_requests['get_txs_next'] = None
+        self.supported_requests['get_token_txs_next'] = None
+        self.supported_requests['get_logs'] = None
         super().__init__(address, api_key)
 
     def _query_api(self, request_method, **kwargs):
