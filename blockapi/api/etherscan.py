@@ -22,10 +22,10 @@ class EtherscanAPI(BlockchainAPI):
     page_offset_step = 1
 
     supported_requests = {
-        'get_balance': '/api?module=account&action=balance&address={address}&tag=latest&api_key={api_key}',
+        'get_balance': '/api?module=account&action=balance&address={address}&tag=latest&apikey={api_key}',
         'get_txs': '/api?module=account&action={action}&offset={offset}&sort={sort}&page={page}&address={address}'
-                   '&api_key={api_key}',
-        'get_abi': '/api?module=contract&action=getabi&address={address}&api_key={api_key}'
+                   '&apikey={api_key}',
+        'get_abi': '/api?module=contract&action=getabi&address={address}&apikey={api_key}'
     }
 
     @on_failure_return_none()
