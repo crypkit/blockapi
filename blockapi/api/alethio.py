@@ -1,10 +1,8 @@
 from datetime import datetime
+
 import pytz
-from blockapi.services import (
-    BlockchainAPI,
-    on_failure_return_none,
-    APIError
-)
+
+from blockapi.services import (APIError, BlockchainAPI, on_failure_return_none)
 
 
 class AlethioAPI(BlockchainAPI):
@@ -71,10 +69,13 @@ class AlethioAPI(BlockchainAPI):
         if not response:
             return None
 
-        retval_eth = int(response['data'][0]['attributes']['balance']) * \
-            self.coef
-        balance_eth = [{'symbol': self.symbol, 'amount': retval_eth,
-                        'name': 'Ethereum', 'contract_address': ''}]
+        amount = int(response['data'][0]['attributes']['balance']) * self.coef
+        balance_eth = [{
+            'symbol': self.symbol,
+            'amount': amount,
+            'name': 'Ethereum',
+            'contract_address': ''}
+        ]
         balances_tokens = self._get_token_balances()
         if balances_tokens is None:
             return None
@@ -90,6 +91,10 @@ class AlethioAPI(BlockchainAPI):
         balances = []
 
         for token in response['data']:
+            bal = token['attributes']['balance']
+            if bal is None:
+                continue
+
             token_id = token['relationships']['token']['data']['id']
             token_info = self._query_api('get_token_info',
                                          token_id=token_id)
@@ -100,11 +105,8 @@ class AlethioAPI(BlockchainAPI):
             token_decimals = int(token_info_attrs['decimals'])
             token_symbol = token_info_attrs['symbol']
             token_name = token_info_attrs['name']
-            bal = token['attributes']['balance']
-            if bal is None:
-                continue
-            token_balance = int(bal) * \
-                pow(10, -token_decimals)
+
+            token_balance = int(bal) * pow(10, -token_decimals)
 
             balances.append({'contract_address': token_id,
                              'name': token_name,

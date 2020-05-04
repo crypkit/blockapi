@@ -2,11 +2,8 @@ from datetime import datetime
 
 import pytz
 
-from blockapi.services import (
-    BlockchainAPI,
-    set_default_args_values,
-    on_failure_return_none
-)
+from blockapi.services import (BlockchainAPI, on_failure_return_none,
+                               set_default_args_values)
 
 
 class EtherscanAPI(BlockchainAPI):
@@ -28,7 +25,7 @@ class EtherscanAPI(BlockchainAPI):
         'get_balance': '/api?module=account&action=balance&address={address}&tag=latest&api_key={api_key}',
         'get_txs': '/api?module=account&action={action}&offset={offset}&sort={sort}&page={page}&address={address}'
                    '&api_key={api_key}',
-        'get_abi': '/api?module=contract&action=getabi&address={address}'
+        'get_abi': '/api?module=contract&action=getabi&address={address}&api_key={api_key}'
     }
 
     @on_failure_return_none()
