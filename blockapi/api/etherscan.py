@@ -62,7 +62,9 @@ class EtherscanAPI(BlockchainAPI):
     def get_abi(self,contract):
         abi = self.request(
             'get_abi',
-            address=contract)
+            address=contract,
+            api_key=self.api_key
+        )
 
         return abi
 
