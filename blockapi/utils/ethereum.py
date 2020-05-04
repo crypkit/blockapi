@@ -8,13 +8,14 @@ from time import sleep
 import requests
 
 class Ethereum:
-    def __init__(self, node_url):
+    def __init__(self, node_url, etherscan_api_key):
         self.node_url = node_url
+        self.etherscan_api_key = etherscan_api_key
         self.web3 = Web3(Web3.HTTPProvider(self.node_url))
         self.abi = None
 
     def load_abi(self, contract):
-        myapi = EtherscanAPI(contract)
+        myapi = EtherscanAPI(contract, api_key=self.etherscan_api_key)
         self.abi = myapi.get_abi(contract)['result']
 
     def to_checksum_addr(self, address):
@@ -53,18 +54,25 @@ class Ethereum:
                                                        tokens_ch).call()
 
         decimals = [tokens[token]['decimals'] for token in tokens]
+        symbols = [token for token in tokens]
+        contract_addresses = [tokens[token]['contract_address']
+                              for token in tokens]
 
-        return [float(b)*pow(10,-d) for b,d in zip(balances,decimals)]
+        return [{'amount': float(b)*pow(10,-d),
+                 'symbol': symbol, 'contract_address': sc }
+                for b,d, symbol, sc in
+                zip(balances,decimals, symbols, contract_addresses) if b > 0]
 
 
 class Infura(Ethereum):
-    def __init__(self, network, api_key):
+    def __init__(self, network, api_key, etherscan_api_key):
         self.network = network
         self.api_prefix = network if network != "mainnet" else "api"
         self.api_key = api_key
+        self.etherscan_api_key = etherscan_api_key
         self.infura_url = 'https://{}.infura.io/v3/{}'.format(self.network,
                                                               self.api_key)
-        super().__init__(self.infura_url)
+        super().__init__(self.infura_url, etherscan_api_key)
 
 
 class ERC20Token:
