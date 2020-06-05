@@ -1,11 +1,14 @@
-from web3 import Web3
-import cfscrape
-from bs4 import BeautifulSoup
 import re
-from blockapi.api import EtherscanAPI
-from ethereum_input_decoder import AbiMethod
 from time import sleep
+
+import cfscrape
 import requests
+from bs4 import BeautifulSoup
+from ethereum_input_decoder import AbiMethod
+from web3 import Web3
+
+from blockapi.api import EtherscanAPI
+
 
 class Ethereum:
     def __init__(self, node_url, etherscan_api_key):
@@ -78,7 +81,7 @@ class Infura(Ethereum):
 class ERC20Token:
     def __init__(self):
         self.url = 'https://etherscan.io/tokens?p={}'
-        self.token_url = 'httpS://etherscan.io/token/{}'
+        self.token_url = 'https://etherscan.io/token/{}'
         self.page = 0
         self.reqobj = cfscrape.create_scraper()
         self.tokens = {}

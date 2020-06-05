@@ -2,12 +2,8 @@ from datetime import datetime
 
 import pytz
 
-from blockapi.services import (
-    BlockchainAPI,
-    set_default_args_values,
-    AddressNotExist,
-    on_failure_return_none
-)
+from blockapi.services import (AddressNotExist, BlockchainAPI,
+                               on_failure_return_none, set_default_args_values)
 
 
 class DcrdataAPI(BlockchainAPI):
@@ -60,12 +56,15 @@ class DcrdataAPI(BlockchainAPI):
 
     def parse_tx(self, tx):
         kind = self.get_tx_kind(tx)
-        return {
+        parsed = {
             'transaction': self.parse_regular_tx,
-            'ticket': self.parse_tx,
+            'ticket': self.parse_ticket,
             'vote': self.parse_vote,
             'revocation': self.parse_revocation
         }.get(kind)(tx)
+
+        parsed['kind'] = kind
+        return parsed
 
     @staticmethod
     def get_tx_kind(tx):
@@ -168,7 +167,7 @@ class DcrdataAPI(BlockchainAPI):
             return 'expired'
 
         # other statuses depends on specific txs
-        # (votes -> voded, revocations -> revocated)
+        # (votes -> voted, revocations -> revocated)
         # -> specific tx refers to ticket by ticket_hash
         # otherwise is live
         return 'live'
