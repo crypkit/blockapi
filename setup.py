@@ -25,7 +25,9 @@ setuptools.setup(
         'ethereum_input_decoder>=0.2.2',
         'web3>=5.2.2',
         'bs4>=0.0.1',
-        'lxml>=4.4.1'
+        'lxml>=4.4.1',
+        'pytest',
+        'pytest-vcr'
     ],
 )
 
