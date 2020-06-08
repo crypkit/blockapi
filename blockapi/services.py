@@ -1,15 +1,12 @@
+import blockapi
+import cfscrape
 import inspect
+import requests
+
 from abc import ABC, abstractmethod
 from datetime import datetime
 from time import sleep
 
-import cfscrape
-import requests
-
-import blockapi
-
-# from dateutil.parser import parse as date_parse
-# from dateutil.tz import UTC
 
 cfscrape.DEFAULT_CIPHERS += ':!SHA'
 
@@ -84,11 +81,11 @@ class Service(ABC):
         # use date from last response
         # doesn't work very good, time on server can differ from local time
         # if self.last_response.headers.get('Date'):
-        #     last_resp_time = date_parse(self.last_response.headers.get('Date'))
-        #     last_resp_time.replace(tzinfo=UTC)
-        #     wait_until = last_resp_time + timedelta(seconds=self.rate_limit)
+        # last_resp_time = date_parse(self.last_response.headers.get('Date'))
+        # last_resp_time.replace(tzinfo=UTC)
+        # wait_until = last_resp_time + timedelta(seconds=self.rate_limit)
         #
-        #     now = datetime.utcnow().replace(tzinfo=UTC)
+        # now = datetime.utcnow().replace(tzinfo=UTC)
 
     def process_error_response(self, response):
         if response.status_code == 500:
@@ -112,10 +109,11 @@ def set_default_args_values(f):
 
         return f(*args, **kwargs)
 
-    def _set_default_arg(f, arg_name, default_value, *args, **kwargs):
-        sig = inspect.signature(f)
+    def _set_default_arg(f_, arg_name, default_value, *args, **kwargs):
+        sig = inspect.signature(f_)
         arg_idx, _ = next((i, par) for i, (name, par)
-                          in enumerate(sig.parameters.items()) if name == arg_name)
+                          in enumerate(sig.parameters.items())
+                          if name == arg_name)
 
         # check if its argument is in *args
         if len(args) > arg_idx:
@@ -208,7 +206,8 @@ class BlockchainAPI(Service, BlockchainInterface, ABC):
         Service.__init__(self, api_key)
         BlockchainInterface.__init__(self, address)
 
-        self.address_info = blockapi.get_address_info(self.symbol.lower(), address)
+        self.address_info = blockapi.get_address_info(self.symbol.lower(),
+                                                      address)
         self.update_network()
 
     def update_network(self):

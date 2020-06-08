@@ -29,7 +29,8 @@ test_addresses = {
         '3QY7aJKtRHDy3a8V5RS99A813hie9YqjhF'
     ],
     'XTZ': [
-        'tz1bDXD6nNSrebqmAnnKKwnX1QdePSMCj4MX'
+        'tz1bDXD6nNSrebqmAnnKKwnX1QdePSMCj4MX',
+        'KT1CRN88fn8EdWmZT9954Xf8NDsGfxtuwome'
     ],
     'DCR': [
         'DsXt3he1A9KB2uL1g3MJvbAbXEB1CxN2rNF'
