@@ -13,7 +13,7 @@ from .services import (
     AddressNotExist,
     InternalServerError
 )
-from .test import test_addresses
+from .test_init import test_addresses
 
 # currencies' ids (from coingecko.com) and symbols
 COINS = {

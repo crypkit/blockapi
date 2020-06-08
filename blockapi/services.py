@@ -13,6 +13,7 @@ import blockapi
 
 cfscrape.DEFAULT_CIPHERS += ':!SHA'
 
+
 class Service(ABC):
     """General class for handling blockchain API services."""
 
@@ -35,8 +36,8 @@ class Service(ABC):
             return self.base_url + path_url.format(**params)
         return None
 
-    def request(self, request_method, with_rate_limit=True, with_cloudflare=False,
-                body=None, headers=None, **params):
+    def request(self, request_method, with_rate_limit=True,
+                with_cloudflare=False, body=None, headers=None, **params):
         request_url = self.build_request_url(request_method, **params)
 
         if not request_url:
@@ -56,16 +57,14 @@ class Service(ABC):
         if with_rate_limit and self.rate_limit:
             self.wait_for_next_request()
 
-        try:
-            # if body is passed, use post
-            if body:
-                response = reqobj.post(request_url, data=body, headers=headers)
-            else:
-                response = reqobj.get(request_url)
-            self.last_response = response
-            self.last_response_time = datetime.now()
-        except Exception as e:
-            raise e
+        # if body is passed, use post
+        if body:
+            response = reqobj.post(request_url, data=body, headers=headers)
+        else:
+            response = reqobj.get(request_url)
+
+        self.last_response = response
+        self.last_response_time = datetime.now()
 
         if response.status_code != 200:
             self.process_error_response(response)

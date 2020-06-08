@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.23.0
+    method: GET
+    uri: https://cosmos.node.cracklord.com/auth/accounts/cosmos1gn326f6sza44xt5kxrsdrnapp2sxhav03rhcsz
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAz2O2w6CMBBE/2WfMXIrKm9+hzGktBUIpcVuS7iEf3fRxKdNZs7Mzgat6prWQwlp
+        cslYGkMETmHQJG3gl1GRJSwOFk8o+/NdCBuMJ2riOpC5AZeSEvjnksZkafEqcOV5PnvWzw6lM3wc
+        U5xbPsWZawWuVCFsZyj32EAqYwdqCNzTjYAP3y8lsBu7wf6MYAy17kTVqwVKE7Qm5jelMmGolaNw
+        UbBjPqp3UEYcw68M9n3/ANS9M2DlAAAA
+    headers:
+      Access-Control-Allow-Headers:
+      - DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Content-Length,Content-Range
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 07 Jun 2020 09:32:58 GMT
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      X-Server-Time:
+      - '1591522378'
+    status:
+      code: 200
+      message: OK
+version: 1
