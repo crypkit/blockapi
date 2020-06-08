@@ -49,22 +49,22 @@ class DcrdataAPI(BlockchainAPI):
         return [self.parse_tx(tx) for tx in txs]
 
     def get_tx(self, tx_hash):
+        """Despite the name this method is not returning single tx
+        but might result in the array of txs
+        """
         tx = self.request('get_transaction', tx_hash=tx_hash)
-        for parsed in self.parse_tx(tx):
-            return parsed[0]
-        return None
+        return self.parse_tx(tx)['result']
 
     def parse_tx(self, tx):
         kind = self.get_tx_kind(tx)
+
         parsed = {
             'transaction': self.parse_regular_tx,
             'ticket': self.parse_ticket,
             'vote': self.parse_vote,
             'revocation': self.parse_revocation
         }.get(kind)(tx)
-
-        parsed['kind'] = kind
-        return parsed
+        return {'kind': kind, 'result': parsed}
 
     @staticmethod
     def get_tx_kind(tx):
@@ -83,10 +83,14 @@ class DcrdataAPI(BlockchainAPI):
         # Tx in decred could contain several addresses, filter only mine
         ins = [v for v in tx['vin']
                if self.address in v.get('prevOut', {}).get('addresses', [])]
-        outs = [o for o in tx['vout']
-                if self.address in o.get('scriptPubKey', {}).get('addresses', [])]
+        outs = [o for o in tx['vout'] if self.address
+                in o.get('scriptPubKey', {}).get('addresses', [])]
 
-        date = datetime.fromtimestamp(tx['time'], pytz.utc)
+        # get_txs has time attribute, get_tx has block.time attribute
+        if 'time' in tx:
+            date = datetime.fromtimestamp(tx['time'], pytz.utc)
+        else:
+            date = datetime.fromtimestamp(tx['block']['time'], pytz.utc)
 
         parsed = []
         for i in ins:
@@ -133,7 +137,8 @@ class DcrdataAPI(BlockchainAPI):
                             if v['scriptPubKey']['type'] == 'stakesubmission'),
                            0)
 
-        # pool fee is lower value then ticket cost, but not sure if it's correct
+        # pool fee is lower value then ticket cost,
+        # but not sure if it's correct
         pool_fee = (min([v['amount_in'] for v in tx['vin']])
                     if len(tx['vin']) > 1
                     else 0)
@@ -155,7 +160,9 @@ class DcrdataAPI(BlockchainAPI):
     @staticmethod
     def get_ticket_status(tx):
         # params for mainnet:
-        # https://github.com/decred/dcrd/blob/9da132b9823b20870122dc0bf795884cee99d922/chaincfg/mainnetparams.go#L321
+        # https://github.com/decred/dcrd/blob
+        # /9da132b9823b20870122dc0bf795884cee99d922
+        # /chaincfg/mainnetparams.go#L321
         if tx['confirmations'] < 1:
             return 'unmined'
         elif tx['confirmations'] < 256:
