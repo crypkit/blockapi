@@ -29,10 +29,12 @@ test_addresses = {
         '3QY7aJKtRHDy3a8V5RS99A813hie9YqjhF'
     ],
     'XTZ': [
-        'tz1bDXD6nNSrebqmAnnKKwnX1QdePSMCj4MX'
+        'tz1bDXD6nNSrebqmAnnKKwnX1QdePSMCj4MX',
+        'KT1CRN88fn8EdWmZT9954Xf8NDsGfxtuwome'
     ],
     'DCR': [
-        'DsXt3he1A9KB2uL1g3MJvbAbXEB1CxN2rNF'
+        'DsXt3he1A9KB2uL1g3MJvbAbXEB1CxN2rNF',
+        'DcrP3rA8RSi8Ai9VZU2pB2m31c9GWhEqii8'
         # current api doesn't support xpub key
         # 'dpubZFwoKEEJYVDxGo8bf2E4qwh6Qve9cku5gvaS5kC96hUdMT7SF9nymaLFeEFQaHy8a3SuiUJRL87rz3bfwFSFqErYVeHUg3xnzPjHftiofFu',
     ],

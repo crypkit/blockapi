@@ -8,6 +8,7 @@ from blockapi.test_init import test_addresses
 class TestDcrdataAPI:
 
     ADDRESS = test_addresses["DCR"][0]
+    STAKING_ADDRESS = test_addresses["DCR"][1]
 
     def test_init(self):
         api = DcrdataAPI(address=self.ADDRESS)
@@ -41,6 +42,25 @@ class TestDcrdataAPI:
 
         assert len(result) == 2
         assert all(k in ["kind", "result"] for k in result[0].keys())
+
+    @mark.vcr()
+    def test_get_txs_staking(self):
+        api = DcrdataAPI(address=self.STAKING_ADDRESS)
+        result = api.get_txs()
+
+        assert isinstance(result, list)
+        assert len(result) == 21
+        assert result[0]["kind"] == "ticket"
+        assert result[0]["result"]["hash"] == "51f27646cd8b98873816d820281bb"\
+            "bf850de79564440e3b18eceef46ef56cfae"
+        assert result[0]["result"]["purchased_on"].year == 2020
+        assert result[0]["result"]["purchased_on"].month == 6
+        assert result[0]["result"]["purchased_on"].day == 5
+        assert result[0]["result"]["investment"] == 146.59688866
+        assert result[0]["result"]["ticket_cost"] == 146.59683446
+        assert result[0]["result"]["transaction_fee"] == 5.419999999389802e-05
+        assert result[0]["result"]["pool_fee"] == 0.0087343
+        assert result[0]["result"]["status"] == "live"
 
     @mark.vcr()
     def test_get_tx(self):

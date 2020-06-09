@@ -1,0 +1,66 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.23.0
+    method: GET
+    uri: https://api1.dunscan.io/v3/operations/tz1bDXD6nNSrebqmAnnKKwnX1QdePSMCj4MX?type=Transaction&p=0&number=50
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2SXY+iMBSG/wvXY0KpKHDnx6jBj4CiIpPJpEIVRFosLaiT+e9bJrNmZ2c22dnd
+        y0244fScp2/b5+FZiVERK5ZCaTPIqtOwd1lN7MgN/La49u0oiA4jLULjznhqhwefG06nw70wD/Hc
+        V+6U7ZGG6dMbojvZ33fn2CtCtpqeo6K/4+lpEYmqm065GLp4PEnLfS/go1leajAbOI5EEMwrym6Q
+        GeZ+FW+26yEytDOVDfySY8V6VtKERLIhQwTtMZMLBRUsfF3iV7kw9sB0UOABY9teYExtx7BHHnWD
+        cBXRtJUFbiFaysudQnPMEE8oKRTr4YblDJEChXW9RrPwy1yUUUG4HAASEOGCJ+R1mxsoIsBP5mbF
+        wvkKxA4Ixn3oRKWpz0zRO7u2a2RuDcoRQxnmmBX1aImO4vWQOUsySVmShCsvsm2HkiOW0XfoWOA7
+        JSFygqCjYnEm5P9WMLm1osowYR1MXpnVAHIM47fyHhVPxyRL6syNOnTBKZN3+75I86cjLrHkQh1A
+        U5cPkmTydCjLZYumampD1RsAeGrT0oEF1EAOYcZoHf/h8eVRZv3BsmG/lc/J5FDGiOhNv7sc6qFZ
+        7Yz7eSeZ0p04ayO4FD0A4vYpAtFB/2/Zf8u+ahm5jgrPLp3RfuJAc4820MkXwsY+dkDRJf5pOxh6
+        5nyZ2KOTOXGT9PLBsnEFWpkN27PD5bzYLe6dE5zxtQudpl9pmlhvOvkmvpg2Enk8OWjLLvqXltWP
+        2Ca7zOPE7JsiL+l6em0tu6KaLVIaLNb58o8s+13uzTKoq7CltfS2ASH8S+N+qdJb4TOX2oamfrcJ
+        AMP8SSigQlX9xCn1nVLAgB+EAmZDrT8PGFZTt1T9o1CP3wAj+ga2HgcAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 08 Jun 2020 21:08:51 GMT
+      Server:
+      - nginx/1.10.3
+      Transfer-Encoding:
+      - chunked
+      X-Cache-Status:
+      - MISS
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      access-control-allow-headers:
+      - Accept, Content-Type
+      access-control-allow-methods:
+      - POST, GET, OPTIONS
+      access-control-allow-origin:
+      - '*'
+      host:
+      - 127.0.0.1:8082
+      user-agent:
+      - python-requests/2.23.0
+      x-forwarded-for:
+      - 84.42.234.242
+      x-real-ip:
+      - 84.42.234.242
+    status:
+      code: 200
+      message: OK
+version: 1
