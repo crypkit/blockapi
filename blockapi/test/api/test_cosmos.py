@@ -48,22 +48,21 @@ class TestCosmosAPI:
         api = CosmosAPI(address=self.ADDRESS)
         result = api.get_balance()
 
-        assert result["balances"] == [{"symbol": "ATOM", "amount": 0.005959}]
-        assert "height" in result
+        assert result == [{"symbol": "ATOM", "amount": 0.005959}]
 
     @mark.vcr()
     def test_get_incoming_txs(self):
         api = CosmosAPI(address=self.ADDRESS)
         api.get_incoming_txs()
 
-        # TODO: provider is no sending correct data
+        # TODO: provider is not sending correct data
 
     @mark.vcr()
     def test_get_outgoing_txs(self):
         api = CosmosAPI(address=self.ADDRESS)
         api.get_outgoing_txs()
 
-        # TODO: provider is no sending correct data
+        # TODO: provider is not sending correct data
 
 
 class TestResponse:

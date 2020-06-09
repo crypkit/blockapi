@@ -132,14 +132,14 @@ class DcrdataAPI(BlockchainAPI):
 
     @staticmethod
     def parse_ticket(tx):
-        investment = sum(v['amount_in'] for v in tx['vin'])
+        investment = sum(v['amountin'] for v in tx['vin'])
         ticket_cost = next((v['value'] for v in tx['vout']
                             if v['scriptPubKey']['type'] == 'stakesubmission'),
                            0)
 
         # pool fee is lower value then ticket cost,
         # but not sure if it's correct
-        pool_fee = (min([v['amount_in'] for v in tx['vin']])
+        pool_fee = (min([v['amountin'] for v in tx['vin']])
                     if len(tx['vin']) > 1
                     else 0)
 
@@ -169,8 +169,10 @@ class DcrdataAPI(BlockchainAPI):
             return 'immature'
         # TODO - not sure about this one
         elif tx['confirmations'] < 7640:
-            return 'missed'
-        elif tx['confimations'] > 40960:
+            return 'live'
+        elif tx['confirmations'] < 40960:
+            return 'voted'
+        elif tx['confirmations'] > 40960:
             return 'expired'
 
         # other statuses depends on specific txs
@@ -191,7 +193,7 @@ class DcrdataAPI(BlockchainAPI):
             else:
                 # value of ticket
                 ticket_hash = v['txid']
-                total_input += v['value']
+                total_input += v['prevOut']['value']
 
         total_output = sum(v['value'] for v in tx['vout'] if v['value'])
 

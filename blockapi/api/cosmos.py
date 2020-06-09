@@ -65,7 +65,7 @@ class CosmosAPI(BlockchainAPI):
                 'symbol': symbol,
                 'amount': int(b['amount']) * self.coef
             })
-        return {'height': balances['height'], 'balances': balances_result}
+        return balances_result
 
     def get_delegations(self):
         return self.request('get_delegations', address=self.address)
