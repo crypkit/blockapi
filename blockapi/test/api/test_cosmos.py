@@ -1,4 +1,4 @@
-import pytest
+from pytest import mark, raises
 
 from blockapi.api.cosmos import CosmosAPI
 from blockapi.services import InternalServerError, AddressNotExist
@@ -12,7 +12,6 @@ class TestCosmosAPI:
 
     def test_init(self):
         api = CosmosAPI(address=self.ADDRESS)
-
         assert api
 
     def test_process_error_response(self):
@@ -21,15 +20,15 @@ class TestCosmosAPI:
         response.text = "Error"
         response.status_code = 500
 
-        with pytest.raises(InternalServerError):
+        with raises(InternalServerError):
             CosmosAPI(address=self.ADDRESS).process_error_response(response)
 
         response.text = "Error decoding bech32 failed"
 
-        with pytest.raises(AddressNotExist):
+        with raises(AddressNotExist):
             CosmosAPI(address=self.ADDRESS).process_error_response(response)
 
-    @pytest.mark.vcr()
+    @mark.vcr()
     def test_get_info(self):
         api = CosmosAPI(address=self.ADDRESS)
         result = api.get_info()
@@ -44,7 +43,7 @@ class TestCosmosAPI:
         assert "account_number" in result["result"]["value"]
         assert "sequence" in result["result"]["value"]
 
-    @pytest.mark.vcr()
+    @mark.vcr()
     def test_get_balance(self):
         api = CosmosAPI(address=self.ADDRESS)
         result = api.get_balance()
@@ -52,14 +51,14 @@ class TestCosmosAPI:
         assert result["balances"] == [{"symbol": "ATOM", "amount": 0.005959}]
         assert "height" in result
 
-    @pytest.mark.vcr()
+    @mark.vcr()
     def test_get_incoming_txs(self):
         api = CosmosAPI(address=self.ADDRESS)
         api.get_incoming_txs()
 
         # TODO: provider is no sending correct data
 
-    @pytest.mark.vcr()
+    @mark.vcr()
     def test_get_outgoing_txs(self):
         api = CosmosAPI(address=self.ADDRESS)
         api.get_outgoing_txs()
