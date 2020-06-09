@@ -40,7 +40,7 @@ class TzscanAPI(BlockchainAPI):
                             '?p={page_offset}&number={number}'
     }
 
-    def __init__(self, address):
+    def __init__(self, address, api_key=None):
         super().__init__(address)
         # this API is very unstable, add some functionality to prevent fails
         self._base_url_temp = 'https://api{num}.dunscan.io'  # num is 1-6
