@@ -1,12 +1,12 @@
-import blockapi
-import cfscrape
 import inspect
-import requests
-
 from abc import ABC, abstractmethod
 from datetime import datetime
 from time import sleep
 
+import cfscrape
+import requests
+
+import blockapi
 
 cfscrape.DEFAULT_CIPHERS += ':!SHA'
 
@@ -33,7 +33,7 @@ class Service(ABC):
             return self.base_url + path_url.format(**params)
         return None
 
-    def request(self, request_method, with_rate_limit=True,
+    def request(self, request_method, with_rate_limit=False,
                 with_cloudflare=False, body=None, headers=None, **params):
         request_url = self.build_request_url(request_method, **params)
 
