@@ -74,7 +74,7 @@ class AlethioAPI(BlockchainAPI):
             'symbol': self.symbol,
             'amount': amount,
             'name': 'Ethereum',
-            'contract_address': ''}
+            'address': ''}
         ]
         balances_tokens = self._get_token_balances()
         if balances_tokens is None:
@@ -108,7 +108,7 @@ class AlethioAPI(BlockchainAPI):
 
             token_balance = int(bal) * pow(10, -token_decimals)
 
-            balances.append({'contract_address': token_id,
+            balances.append({'address': token_id,
                              'name': token_name,
                              'symbol': token_symbol,
                              'amount': token_balance})
