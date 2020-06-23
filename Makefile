@@ -34,7 +34,7 @@ dist:
 	python3 -m twine upload dist/*
 
 test:
-	python3 blockapi/test.py
+	python3 blockapi/test_init.py
 
 
 .PHONY: dist
