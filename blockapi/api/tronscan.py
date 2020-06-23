@@ -1,3 +1,4 @@
+from decimal import Decimal
 from blockapi.services import (
     BlockchainAPI,
     on_failure_return_none
@@ -16,7 +17,7 @@ class TronscanAPI(BlockchainAPI):
     symbol = 'TRX'
     base_url = 'https://apilist.tronscan.org/api'
     rate_limit = 0
-    coef = 1e-6
+    coef = "1e-6"
     max_items_per_page = None
     page_offset_step = None
     confirmed_num = None
@@ -37,27 +38,31 @@ class TronscanAPI(BlockchainAPI):
 
         trc10_tokenlist = self.request('get_trc10_tokenlist')['data']
         for token in trc10_tokenlist:
-            token_map[token['tokenID']] = {'abbr': token['abbr'], 'precision': token['precision'] }
+            token_map[token['tokenID']] = {'abbr': token['abbr'], 'precision': token['precision']}
 
         balances = []
-
         for coin in response['tokenBalances']:
             if coin['name'] == '_':
                 symbol = self.symbol
                 owner_address = self.address
-                coin_coef = 1e-6
+                coin_coef = "1e-6"
             else:
-                symbol = token_map[int(coin['name'])]['abbr']
+                token = token_map.get(int(coin['name']))
+                # Test address has token with 1002001 which doesn't return in 10000 tokens in token list.
+                # So we simply ignore this
+                if token is None:
+                    continue
+                symbol = token.get('abbr', '')
                 owner_address = coin['owner_address']
-                coin_coef = 1/pow(10,int(token_map[int(coin['name'])]['precision']))
+
+                coin_coef = "1e-{}".format(token.get('precision', 1))
 
             balances.append({'symbol': symbol,
-                             'amount': float(coin['balance']) * coin_coef,
+                             'amount': Decimal(coin['balance']) * Decimal(coin_coef),
                              'address': owner_address})
-
         for coin in response['trc20token_balances']:
             balances.append({'symbol': coin['symbol'], 
-                             'amount': float(coin['balance']) * (1/pow(10,int(coin['decimals']))),
-                             'address': None })
+                             'amount': Decimal(coin['balance']) * Decimal("1e-{}".format(coin['decimals'])),
+                             'address': None})
 
         return balances
