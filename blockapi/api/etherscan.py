@@ -15,7 +15,7 @@ class EtherscanAPI(BlockchainAPI):
 
     symbol = 'ETH'
     base_url = 'https://api.etherscan.io'
-    rate_limit = 2.5    # orignal rate_limit was 0.2  (5 req. / sec)
+    rate_limit = 0.2  # (5 req/sec)
     coef = 1e-18
     start_offset = 1
     max_items_per_page = 10000
