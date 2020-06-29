@@ -101,8 +101,8 @@ def get_all_supported_coins():
 
 
 def get_active_api_classes():
-    # inheritors = _inheritors(BlockchainAPI)
-    inheritors = _get_all_inheritors()
+    inheritors = _inheritors(BlockchainAPI)
+    # inheritors = _get_all_inheritors()
     return [i for i in inheritors if i.active]
 
 
