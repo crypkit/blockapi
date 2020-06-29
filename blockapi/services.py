@@ -201,6 +201,7 @@ class BlockchainInterface(ABC):
 
 class BlockchainAPI(Service, BlockchainInterface, ABC):
     symbol = None
+    supported_cryptos = set()
 
     def __init__(self, address, api_key=None):
         Service.__init__(self, api_key)
