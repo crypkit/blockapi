@@ -7,21 +7,23 @@ from blockapi.services import (
     BlockchainAPI,
     set_default_args_values,
     AddressNotExist,
-    on_failure_return_none
 )
 
 
 class BlockchairAPI(BlockchainAPI):
     """
-    Multi coins: bitcoin, bitcoin-cash, bitcoin-sv, litecoin, dogecoin, dash,
-                 ethereum, groestlcoin
-    API docs: https://github.com/Blockchair/Blockchair.Support/blob/master/API_DOCUMENTATION_EN.md
+    Multi coins: bitcoin, bitcoin-cash, bitcoin-sv, litecoin, dogecoin,
+                 dash, ethereum, groestlcoin
+    API docs: https://github.com/Blockchair/Blockchair.Support/blob
+    /master/API_DOCUMENTATION_EN.md
     Explorer: https://blockchair.com
     """
 
-    active = False
+    active = True
 
+    base_url = 'https://api.blockchair.com'
     symbol = None
+    name = None
     rate_limit = 0
     coef = None
     start_offset = 0
@@ -31,8 +33,9 @@ class BlockchairAPI(BlockchainAPI):
 
     supported_requests = {
         # for limit and offset the second parameter 0 is for utxo
-        'get_dashboard': '/{symbol}/dashboards/{address_type}/{address}?limit={limit},0&offset={offset},0',
-        'get_txs': '/{symbol}/dashboards/transactions/{hash_or_hashes}',
+        'get_dashboard': '/{name}/dashboards/{address_type}'
+                         '/{address}?limit={limit},0&offset={offset},0',
+        'get_txs': '/{name}/dashboards/transactions/{hash_or_hashes}',
     }
 
     def __init__(self, address, api_key=None):
@@ -44,14 +47,12 @@ class BlockchairAPI(BlockchainAPI):
                        for p in ['xpub', 'ypub', 'zpub']))
         self.address_type = 'xpub' if is_xpub else 'address'
 
-    @on_failure_return_none()
     def get_balance(self):
         dashboard = self._get_dashboard()
         if not dashboard:
             return None
 
         retval = int(dashboard['address']['balance']) * self.coef
-        # return dashboard[self.address_type]['balance'] * self.coef
         return [{'symbol': self.symbol, 'amount': retval}]
 
     def get_create_date(self):
@@ -121,6 +122,7 @@ class BlockchairAPI(BlockchainAPI):
         response = self.request(
             'get_dashboard',
             symbol=self.symbol,
+            name=self.name,
             address_type=self.address_type,
             address=self.address,
             offset=offset,
@@ -133,52 +135,61 @@ class BlockchairAPI(BlockchainAPI):
 
         dashboard = list(data.values())[0]
 
-        if self.address_type == 'address':
-            if not dashboard['address']['type']:
-                raise AddressNotExist()
+        if self.address_type == 'address' and not dashboard['address']['type']:
+            raise AddressNotExist()
 
         return dashboard
 
 
 class BlockchairBitcoinAPI(BlockchairAPI):
     symbol = 'BTC'
+    name = 'bitcoin'
     coef = 1e-8
+    active = False
 
 
 class BlockchairBitcoinCashAPI(BlockchairAPI):
     symbol = 'BCH'
+    name = 'bitcoin-cash'
     coef = 1e-8
+    active = False
 
 
 class BlockchairBitcoinSvAPI(BlockchairAPI):
     symbol = 'BSV'
-    # coef = 1e-8
+    name = 'bitcoin-sv'
+    coef = 1e-8
 
 
 class BlockchairLitecoinAPI(BlockchairAPI):
     symbol = 'LTC'
+    name = 'litecoin'
     coef = 1e-8
+    active = False
 
 
 class BlockchairDogecoinAPI(BlockchairAPI):
     symbol = 'DOGE'
+    name = 'dogecoin'
     coef = 1e-8
+    active = False
 
 
 class BlockchairDashAPI(BlockchairAPI):
     symbol = 'DASH'
+    name = 'dash'
     coef = 1e-8
+    active = False
 
 
 class BlockchairEthereumAPI(BlockchairAPI):
     symbol = 'ETH'
+    name = 'ethereum'
     coef = 1e-18
+    active = False
 
 
 class BlockchairGroestlcoinAPI(BlockchairAPI):
     symbol = 'GRS'
+    name = 'groestlcoin'
     coef = 1e-8
-
-# class BlockchairRippleAPI(BlockchairAPI):
-#     symbol = 'XRP'
-#     coef = 1e-8

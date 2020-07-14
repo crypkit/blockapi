@@ -17,10 +17,13 @@ test_addresses = {
     'BCH': [
         '35hK24tcLEWcgNA4JxpvbkNkoAcDGqQPsP',
     ],
+    'BSV': [
+        '1Twetcht1cTUxpdDoX5HQRpoXeuupAdyf'
+    ],
     'ADA': [
         'DdzFFzCqrhsdyjuJWYcfEWSuk4TB25HGv66bQKeU3KpvA78xfDbgu1rQdhaLHb5XvqPU7gfKS5mBoGmRNNhTSQ3H7iL1so8RygHMdNiN'
     ],
-    'EOS': [],
+    'EOS': ['fzrv13xeykgc'],
     'ETH': [
         '0x1d0DcC8d8BcaFa8e8502BEaEeF6CBD49d3AFFCDC'
     ],
@@ -66,13 +69,20 @@ test_addresses = {
         'GDD7ABRF7BCK76W33RXDQG5Q3WXVSQYVLGEMXSOWRGZ6Z3G3M2EM2TCP'
     ],
     'RVN': [
-        'RMJVXz8pn7EsBRqXYvDXU7UV7WrbGiDiHk'
+        'RMJVXz8pn7EsBRqXYvDXU7UV7WrbGiDiHk',
+        'RQoGa2cnnp5P4bGjMjX3zTWp6jCDLivYKV'
     ],
     'TRX': [
         'TNNc1HGDUrRkowQxdcUaWyBodZXshuVtBp'
     ],
     'GRS': [
         'Fr5m2irs9vNWSAFXJK6KPtxqW9YWg384FX'
+    ],
+    'VET': [
+        '0xcE6b1252b32a34fc4013F096cDf90643fB5D23ba'
+    ],
+    'BOS': [
+        'GCPQQIX2LRX2J63C7AHWDXEMNGMZR2UI2PRN5TCSOVMEMF7BAUADMKH5'
     ]
 }
 

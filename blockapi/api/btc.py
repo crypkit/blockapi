@@ -1,7 +1,4 @@
-from blockapi.services import (
-    BlockchainAPI,
-    on_failure_return_none
-)
+from blockapi.services import BlockchainAPI
 
 
 class BtcAPI(BlockchainAPI):
@@ -25,7 +22,6 @@ class BtcAPI(BlockchainAPI):
         'get_balance': '/address/{address}',
     }
 
-    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
@@ -36,7 +32,7 @@ class BtcAPI(BlockchainAPI):
             return None
 
         try:
-            retval = response['data']['balance'] * self.coef
+            retval = response['data']['banlance'] * self.coef
         except KeyError:
             return None
 

@@ -1,7 +1,4 @@
-from blockapi.services import (
-    BlockchainAPI,
-    on_failure_return_none
-)
+from blockapi.services import BlockchainAPI
 
 
 class ZchainAPI(BlockchainAPI):
@@ -25,7 +22,6 @@ class ZchainAPI(BlockchainAPI):
         'get_balance': '/v2/mainnet/accounts/{address}',
     }
 
-    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)

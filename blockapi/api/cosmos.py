@@ -7,8 +7,7 @@ from blockapi.services import (
     BlockchainAPI,
     APIError,
     set_default_args_values,
-    AddressNotExist,
-    on_failure_return_none
+    AddressNotExist
 )
 
 
@@ -52,7 +51,6 @@ class CosmosAPI(BlockchainAPI):
     def get_info(self):
         return self.request('get_info', address=self.address)
 
-    @on_failure_return_none()
     def get_balance(self):
         balances = self.request('get_balance', address=self.address)
         if not balances:

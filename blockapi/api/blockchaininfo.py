@@ -6,7 +6,6 @@ from blockapi.services import (
     BlockchainAPI,
     set_default_args_values,
     AddressNotExist,
-    on_failure_return_none
 )
 
 
@@ -38,7 +37,6 @@ class BlockchainInfoAPI(BlockchainAPI):
         # else
         super().process_error_response(response)
 
-    @on_failure_return_none()
     def get_balance(self):
         balance = self.request('get_balance', address=self.address)
         if not balance:
@@ -61,7 +59,8 @@ class BlockchainInfoAPI(BlockchainAPI):
         out_addresses = [o['addr'] for o in tx['out']]
         in_addresses = [i['prev_out']['addr'] for i in tx['inputs']]
         is_incoming = next((True for o in tx['out'] if o.get('xpub')), False)
-        is_outgoing = next((True for i in tx['inputs'] if i['prev_out'].get('xpub')), False)
+        is_outgoing = next((True for i in tx['inputs']
+                            if i['prev_out'].get('xpub')), False)
         direction = 'incoming' if is_incoming else 'outgoing'
 
         if is_outgoing:
@@ -74,7 +73,7 @@ class BlockchainInfoAPI(BlockchainAPI):
         return {
             'date': datetime.fromtimestamp(tx['time'], pytz.utc),
             'from_address': from_addresses,
-            'to_address': to_addresses, # multiple, TODO check it
+            'to_address': to_addresses,  # multiple, TODO check it
             'amount': tx['balance'] * self.coef,
             'fee': tx['fee'] * self.coef,
             'hash': tx['hash'],
@@ -86,4 +85,3 @@ class BlockchainInfoAPI(BlockchainAPI):
             'status': 'confirmed',
             'raw': tx
         }
-

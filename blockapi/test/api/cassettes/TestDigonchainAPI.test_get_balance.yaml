@@ -1,0 +1,42 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.23.0
+    method: GET
+    uri: https://vethor-pubnode.digonchain.com/accounts/0xcE6b1252b32a34fc4013F096cDf90643fB5D23ba
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/xzKOw6EIBAA0H6PMfUWDMsn0O5JxvloQTCRRmO8u9H+nTBRo84KFdyeI1rwQszi
+        KQbM7Bx8Qbtu8/EKFJZSTOOviGFOKOkRC43/KgrVqA29PncAAAD///5CbeRXAAAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '105'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 14 Jul 2020 09:12:17 GMT
+      Set-Cookie:
+      - SERVERID=03adccd112927fb7702bcc46174e756d|1594717937|1594717937;Path=/
+      Vary:
+      - Accept-Encoding
+      X-Genesis-Id:
+      - '0x00000000851caf3cfdb6e899cf5958bfb1ac3413d346d43539627e6be7ec1b4a'
+      X-Thorest-Ver:
+      - 1.3.2
+    status:
+      code: 200
+      message: OK
+version: 1

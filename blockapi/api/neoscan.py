@@ -2,11 +2,7 @@ from datetime import datetime
 
 import pytz
 
-from blockapi.services import (
-    BlockchainAPI,
-    APIError,
-    on_failure_return_none
-)
+from blockapi.services import BlockchainAPI, APIError
 
 
 class NeoscanAPI(BlockchainAPI):
@@ -40,7 +36,6 @@ class NeoscanAPI(BlockchainAPI):
             self.max_items_per_page = self.page_offset_step = paging_params[1]
             self.total_txs_count = paging_params[2]
 
-    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
@@ -68,7 +63,7 @@ class NeoscanAPI(BlockchainAPI):
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
         page = (offset // self.max_items_per_page) + 1
-        page_offset = offset % self.max_items_per_page
+        # page_offset 'should be set' offset % self.max_items_per_page
 
         if limit > self.total_txs_count - offset:
             limit = self.total_txs_count - offset

@@ -5,14 +5,7 @@ import coinaddrng
 
 import blockapi.api
 import blockapi.utils
-from .services import (
-    BlockchainAPI,
-    APIError,
-    BadGateway,
-    GatewayTimeOut,
-    AddressNotExist,
-    InternalServerError
-)
+from .services import APIError
 from .test_init import test_addresses
 
 # currencies' ids (from coingecko.com) and symbols
@@ -45,14 +38,18 @@ COINS = {
 
 
 def get_balance_from_random_api(symbol, address):
-    """Get balance for currency from random API (APIs with API keys are not supported)."""
+    """Get balance for currency from random API
+    (APIs with API keys are not supported).
+    """
     return _call_method_from_random_api(symbol, address, 'get_balance')
+
 
 def get_shuffled_suitable_api_classes_for_coin(symbol, address):
     api_classes = get_shuffled_api_classes_for_coin(symbol)
     filtered_api_classes = filter_suitable_api_classes(api_classes, symbol,
                                                        address)
     return filtered_api_classes
+
 
 def _call_method_from_random_api(symbol, address, method):
     filtered_api_classes = get_shuffled_suitable_api_classes_for_coin(symbol,
@@ -101,7 +98,6 @@ def get_all_supported_coins():
 
 
 def get_active_api_classes():
-    # inheritors = _inheritors(BlockchainAPI)
     inheritors = _get_all_inheritors()
     return [i for i in inheritors if i.active]
 
@@ -119,7 +115,8 @@ def _inheritors(klass):
 
 
 def _get_subclasses(class_name):
-    return [getattr(class_name, x) for x in dir(class_name) if not x.startswith('__')]
+    return [getattr(class_name, x) for x in dir(class_name)
+            if not x.startswith('__')]
 
 
 def _get_all_inheritors():
@@ -130,12 +127,12 @@ def _get_all_inheritors():
     for trida in tridy:
         tridy_sub = _get_subclasses(trida)
         for trida_sub in tridy_sub:
-            if inspect.isclass(trida_sub):
-                if blockapi.services.BlockchainAPI in trida_sub.__bases__:
-                    all_inheritors.append(trida_sub)
-                    grandchildren = _inheritors(trida_sub)
-                    if len(grandchildren) > 0:
-                        all_inheritors += _inheritors(trida_sub)
+            if (inspect.isclass(trida_sub) and
+                    blockapi.services.BlockchainAPI in trida_sub.__bases__):
+                all_inheritors.append(trida_sub)
+                grandchildren = _inheritors(trida_sub)
+                if len(grandchildren) > 0:
+                    all_inheritors += _inheritors(trida_sub)
 
     return all_inheritors
 

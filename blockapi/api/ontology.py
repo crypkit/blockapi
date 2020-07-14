@@ -1,17 +1,16 @@
 from datetime import datetime
 import pytz
 
-from blockapi.services import (
-    BlockchainAPI,
-    on_failure_return_none
-)
+from blockapi.services import BlockchainAPI
 
 
 class OntioAPI(BlockchainAPI):
     """
     coins: ontology
     API docs: https://dev-docs.ont.io/#/docs-en/API/02-restful_api
-              https://github.com/ontio/ontology-explorer/tree/master/back-end-projects/Explorer/src/main/java/com/github/ontio/controller
+              https://github.com/ontio/ontology-explorer/tree
+              /master/back-end-projects/Explorer/src/main/java/com
+              /github/ontio/controller
     Explorer: https://explorer.ont.io
     """
 
@@ -30,16 +29,16 @@ class OntioAPI(BlockchainAPI):
         'get_txs': '/api/v1/explorer/address/{address}/{limit}/{page}'
     }
 
-    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
         if not response:
             return None
 
-        return [{"symbol": item['AssetName'].upper(), "amount": item['Balance']}
-                for item in response['Result']['AssetBalance']]
-
+        return [{
+            "symbol": item['AssetName'].upper(),
+            "amount": item['Balance']
+        } for item in response['Result']['AssetBalance']]
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
         if limit is None:
@@ -69,10 +68,12 @@ class OntioAPI(BlockchainAPI):
                     'is_error': False,
                     'type': 'normal',
                     'kind': 'transaction',
-                    'direction': 'outgoing' if tx_transfer['FromAddress'] == self.address else 'incoming',
-                    'status': 'confirmed' if tx['ConfirmFlag'] == 1 else 'unconfirmed',
+                    'direction': 'outgoing'
+                    if tx_transfer['FromAddress'] == self.address
+                    else 'incoming',
+                    'status': 'confirmed' if tx['ConfirmFlag'] == 1
+                    else 'unconfirmed',
                     'raw': tx
                 })
-
 
         return txs_result

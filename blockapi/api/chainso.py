@@ -1,7 +1,4 @@
-from blockapi.services import (
-    BlockchainAPI,
-    on_failure_return_none
-)
+from blockapi.services import BlockchainAPI
 
 
 class ChainSoAPI(BlockchainAPI):
@@ -28,7 +25,6 @@ class ChainSoAPI(BlockchainAPI):
     def __init__(self, address, api_key=None):
         super().__init__(address, api_key)
 
-    @on_failure_return_none()
     def get_balance(self):
         response = self._request('get_balance')
         if not response:
@@ -36,7 +32,6 @@ class ChainSoAPI(BlockchainAPI):
 
         retval = float(response['confirmed_balance']) * self.coef
         return [{'symbol': self.symbol, 'amount': retval}]
-
 
     # don't set default args, we can get all transactions at once
     # @set_default_args_values
@@ -52,7 +47,8 @@ class ChainSoAPI(BlockchainAPI):
 
         return [self.parse_tx(t) for t in txs]
 
-    def parse_tx(self, tx):
+    @staticmethod
+    def parse_tx(tx):
         return tx
 
     def _request(self, method):
