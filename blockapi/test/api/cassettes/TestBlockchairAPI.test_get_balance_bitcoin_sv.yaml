@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.23.0
+    method: GET
+    uri: https://api.blockchair.com/bitcoin-sv/dashboards/address/1Twetcht1cTUxpdDoX5HQRpoXeuupAdyf?limit=0,0&offset=0,0
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA41UTW/bMAz9K4YuuzgJJUv+um3oYdhtQwcUWAZDkZXYq2N5ttQmGPLfRzpJu64F
+        NiBwbPLp8ZF89i9Wa69Z+Yvx20frTeO5uf16GOobd6c+fv4yuDsbwvC+Pm4JpOt6tNNEt/44WFay
+        IWzu7bHRU8NiNpmxHXzV2ANmslQXXILiebrdQsbB1gBSiMKmUhpIVbIRRa5MKnMtkjzXBhk2utO9
+        QeKkSCGXRf4UqsJUszJLlioTWa4gUTEbrbHtg8W4zJBPCAX8OXo+kWcJX6qCEtNge09YoTJUBskl
+        dAVKWKaZwKgLfgi+Mi4QXiE3lzEL/Rn9VzYFEbNtO06+mqztq3P5tt/hDATwYsFhIUTEZSlFKQGb
+        7PTbWAELyBY8iXiOwFIQ9g9iql6/4hWceFX2gvcF9EILEVclFyXA06ZobdV5kX3oupj5UfeTNr51
+        /bW/c2Lrxr328+I7u9PmiMz/dkzMDFYg0/wX/HR6oQCrffuOY/cHR3eUNa739uBJhnE1yhYA2IwL
+        I3mG3dAQ2n2LAAYx9em228k+P6J5Q0dt0CmvPR5KZaIkJ6WmsXN/6B1W+jHYmNVh1CQF/Ugn2tma
+        b2yqYGQP33ZvZRVlfbu/TBnb0ENLlR7sOM3kTCzResl1hXv9w41VGOpZ4HnZRFgQIWQlJ8Ie5/Aa
+        eSldRADl/ENk7UzYo3EvnbDG+2Eq16v1atM5c28a3Y5L4/brFeparxA+Eb/z7dztB7tr+x7NFH0K
+        3THihW/iiCpFj/Zd10U4x9FHtkeLGEKN9mewk4+Mwwv5JmBTcYS+jHxjIyzX72zndpSLaut1203s
+        dJ0QX6YK306RS1HI+Y+21td2rM4AWAJ+GCBPIAdR8EzmgF+CLQ62emJI8STnCooMpCqIYJZUkSQE
+        nE6/AR+jWxf3BAAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Origin, Content-Type, X-Auth-Token
+      Access-Control-Allow-Methods:
+      - GET,POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache, private
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 13 Jul 2020 18:40:29 GMT
+      Feature-Policy:
+      - geolocation none; midi none; notifications none; push none; sync-xhr none;
+        microphone none; camera none; magnetometer none; gyroscope none; speaker self;
+        vibrate none; fullscreen self; payment none;
+      Referrer-Policy:
+      - strict-origin
+      Server:
+      - nginx/1.14.2
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

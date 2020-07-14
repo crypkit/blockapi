@@ -1,0 +1,55 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.23.0
+    method: GET
+    uri: https://ravencoin.network/api/addr/RQoGa2cnnp5P4bGjMjX3zTWp6jCDLivYKV/balance
+  response:
+    body:
+      string: '95700263210'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 5b24e68b792bf9ca-PRG
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '11'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 13 Jul 2020 17:59:55 GMT
+      ETag:
+      - W/"b-ryh4flPODjK7KFc+6FFPR8e/iy0"
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cfduid=dbd726a3f6916be02edf10e49016661031594663195; expires=Wed, 12-Aug-20
+        17:59:55 GMT; path=/; domain=.ravencoin.network; HttpOnly; SameSite=Lax
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Powered-By:
+      - Express
+      X-RateLimit-Limit:
+      - '10800'
+      X-RateLimit-Remaining:
+      - '10779'
+      cf-request-id:
+      - 03eaee6b2c0000f9caff10d200000001
+    status:
+      code: 200
+      message: OK
+version: 1

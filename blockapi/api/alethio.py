@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytz
 
-from blockapi.services import (APIError, BlockchainAPI, on_failure_return_none)
+from blockapi.services import APIError, BlockchainAPI
 
 
 class AlethioAPI(BlockchainAPI):
@@ -57,7 +57,6 @@ class AlethioAPI(BlockchainAPI):
                                     self.api_key)},
                             **kwargs)
 
-    @on_failure_return_none()
     def get_balance(self):
         """
         Returns a list of all balances, both Ethereum and token ones

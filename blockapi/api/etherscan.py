@@ -2,8 +2,7 @@ from datetime import datetime
 
 import pytz
 
-from blockapi.services import (BlockchainAPI, on_failure_return_none,
-                               set_default_args_values)
+from blockapi.services import BlockchainAPI, set_default_args_values
 
 
 class EtherscanAPI(BlockchainAPI):
@@ -22,13 +21,15 @@ class EtherscanAPI(BlockchainAPI):
     page_offset_step = 1
 
     supported_requests = {
-        'get_balance': '/api?module=account&action=balance&address={address}&tag=latest&apikey={api_key}',
-        'get_txs': '/api?module=account&action={action}&offset={offset}&sort={sort}&page={page}&address={address}'
+        'get_balance': '/api?module=account&action=balance'
+                       '&address={address}&tag=latest&apikey={api_key}',
+        'get_txs': '/api?module=account&action={action}&offset={offset}'
+                   '&sort={sort}&page={page}&address={address}'
                    '&apikey={api_key}',
-        'get_abi': '/api?module=contract&action=getabi&address={address}&apikey={api_key}'
+        'get_abi': '/api?module=contract&action=getabi&address={address}'
+                   '&apikey={api_key}'
     }
 
-    @on_failure_return_none()
     def get_balance(self):
         balance_dict = self.request(
             'get_balance',
@@ -59,7 +60,7 @@ class EtherscanAPI(BlockchainAPI):
         txs = self._get_txs('tokentx', offset, limit)
         return [self.parse_tx(t, 'token') for t in txs]
 
-    def get_abi(self,contract):
+    def get_abi(self, contract):
         abi = self.request(
             'get_abi',
             address=contract,
@@ -122,15 +123,21 @@ class EtherscanAPI(BlockchainAPI):
             'to_address': tx['to'],
             'contract_address': tx['contractAddress'],
             'amount': amount,
-            'fee': float(tx.get('gasUsed', 0)) * float(tx.get('gasPrice', 0)) * self.coef,
+            'fee': float(tx.get('gasUsed', 0))
+            * float(tx.get('gasPrice', 0))
+            * self.coef,
             'gas': {
                 'gas': float(tx['gas']),
-                'gas_price': float(tx['gasPrice']) if tx.get('gasPrice') else None,
-                'cumulative_gas_used': float(tx['cumulativeGasUsed']) if tx.get('cumulativeGasUsed') else None,
-                'gas_used': float(tx['gasUsed']) if tx.get('gasUsed') else None
+                'gas_price': float(tx['gasPrice']) if tx.get('gasPrice')
+                else None,
+                'cumulative_gas_used': float(tx['cumulativeGasUsed'])
+                if tx.get('cumulativeGasUsed') else None,
+                'gas_used': float(tx['gasUsed']) if tx.get('gasUsed')
+                else None
             },
             'hash': tx['hash'],
-            'confirmations': int(tx['confirmations']) if tx.get('confirmations') else None,
+            'confirmations': int(tx['confirmations'])
+            if tx.get('confirmations') else None,
             'confirmed': None,
             'is_error': tx.get('isError') == '1',
             'type': tx_type,

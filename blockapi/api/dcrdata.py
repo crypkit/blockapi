@@ -2,8 +2,11 @@ from datetime import datetime
 
 import pytz
 
-from blockapi.services import (AddressNotExist, BlockchainAPI,
-                               on_failure_return_none, set_default_args_values)
+from blockapi.services import (
+    AddressNotExist,
+    BlockchainAPI,
+    set_default_args_values
+)
 
 
 class DcrdataAPI(BlockchainAPI):
@@ -33,7 +36,6 @@ class DcrdataAPI(BlockchainAPI):
         # else
         super().process_error_response(response)
 
-    @on_failure_return_none()
     def get_balance(self):
         balance = self.request('get_balance', address=self.address)
         return [{'symbol': self.symbol, 'amount': balance['dcr_unspent']}]

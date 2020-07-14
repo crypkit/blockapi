@@ -1,13 +1,11 @@
-from blockapi.services import (
-    BlockchainAPI,
-    on_failure_return_none
-)
+from blockapi.services import BlockchainAPI
 
 
 class GreymassAPI(BlockchainAPI):
     """
     coins: eos
-    API docs: https://github.com/greymass/eosio-api-ext/wiki/API-Request-Response-Examples
+    API docs: https://github.com/greymass/eosio-api-ext/wiki
+    /API-Request-Response-Examples
     Explorer: 
     """
 
@@ -25,7 +23,6 @@ class GreymassAPI(BlockchainAPI):
         'get_balance': '/chain/get_currency_balances',
     }
 
-    @on_failure_return_none()
     def get_balance(self):
         body = '{"account": "' + self.address + '"}'
         response = self.request('get_balance',

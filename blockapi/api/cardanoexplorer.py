@@ -6,7 +6,6 @@ from blockapi.services import (
     BlockchainAPI,
     APIError,
     AddressNotExist,
-    on_failure_return_none
 )
 
 
@@ -26,7 +25,6 @@ class CardanoExplorerAPI(BlockchainAPI):
         'get_summary': '/addresses/summary/{address}'
     }
 
-    @on_failure_return_none()
     def get_balance(self):
         summary = self._get_summary()
         retval = int(summary['Right']['caBalance']['getCoin']) * self.coef
@@ -85,7 +83,8 @@ class CardanoExplorerAPI(BlockchainAPI):
 
         return summary
 
-    def _process_error(self, msg):
+    @staticmethod
+    def _process_error(msg):
         if msg == 'Invalid Cardano address!':
             raise AddressNotExist()
         else:

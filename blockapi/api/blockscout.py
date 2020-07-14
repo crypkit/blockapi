@@ -1,7 +1,4 @@
-from blockapi.services import (
-    BlockchainAPI,
-    on_failure_return_none
-)
+from blockapi.services import BlockchainAPI
 
 
 class BlockscoutAPI(BlockchainAPI):
@@ -22,10 +19,10 @@ class BlockscoutAPI(BlockchainAPI):
     confirmed_num = None
 
     supported_requests = {
-        'get_balance': 'module=account&action=eth_get_balance&address={address}',
+        'get_balance': 'module=account&action=eth_get_balance'
+                       '&address={address}',
     }
 
-    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)

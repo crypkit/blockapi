@@ -1,0 +1,50 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.23.0
+    method: GET
+    uri: https://bch-chain.api.btc.com/v3/address/35hK24tcLEWcgNA4JxpvbkNkoAcDGqQPsP
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA1xQywrCMBC8+xl7ziF9bG17ExRBRfTkUeJmraKmmqQiiP9uWhEft9mZ2R1m76CV
+        V1DeQWlt2TkoIcHdNE49zUYrquaDdHI7XzeH+aEe0HB8WS7cAgRYJt5fWUOJEuMCkzSRRZFGAhwb
+        D2U/l1GCmYCNMkdliN/GOEOZY44C/G1NddOaIwx7jaHabPf2xHr9keSv8In9E16pHenOAX+diLLs
+        IYCtDYTmztQOpu7gKZRWVaDBNUTtB0IFr3zjvqhH7wkAAP//AwA8kbcJKQEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 13 Jul 2020 16:27:10 GMT
+      Server:
+      - BTC.com
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      access-control-allow-origin:
+      - '*'
+    status:
+      code: 200
+      message: OK
+version: 1
