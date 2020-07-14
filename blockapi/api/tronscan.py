@@ -1,13 +1,11 @@
-from blockapi.services import (
-    BlockchainAPI,
-    on_failure_return_none
-)
+from blockapi.services import BlockchainAPI
 
 
 class TronscanAPI(BlockchainAPI):
     """
     coins: tron
-    API docs: https://github.com/tronscan/tronscan-frontend/blob/dev2019/document/api.md
+    API docs: https://github.com/tronscan/tronscan-frontend/blob/dev2019
+        /document/api.md
     Explorer: https://tronscan.org
     """
 
@@ -26,7 +24,6 @@ class TronscanAPI(BlockchainAPI):
         'get_trc10_tokenlist': '/token?limit=10000',
     }
 
-    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
@@ -37,7 +34,10 @@ class TronscanAPI(BlockchainAPI):
 
         trc10_tokenlist = self.request('get_trc10_tokenlist')['data']
         for token in trc10_tokenlist:
-            token_map[token['tokenID']] = {'abbr': token['abbr'], 'precision': token['precision'] }
+            token_map[token['tokenID']] = {
+                'abbr': token['abbr'],
+                'precision': token['precision']
+            }
 
         balances = []
 
@@ -47,17 +47,27 @@ class TronscanAPI(BlockchainAPI):
                 owner_address = self.address
                 coin_coef = 1e-6
             else:
+                if int(coin['name']) not in token_map:
+                    # It has been found out that some coins are not
+                    # present in token map
+                    continue
+
                 symbol = token_map[int(coin['name'])]['abbr']
                 owner_address = coin['owner_address']
-                coin_coef = 1/pow(10,int(token_map[int(coin['name'])]['precision']))
+                coin_coef = pow(-10,
+                                int(token_map[int(coin['name'])]['precision']))
 
             balances.append({'symbol': symbol,
                              'amount': float(coin['balance']) * coin_coef,
                              'address': owner_address})
 
         for coin in response['trc20token_balances']:
-            balances.append({'symbol': coin['symbol'], 
-                             'amount': float(coin['balance']) * (1/pow(10,int(coin['decimals']))),
-                             'address': None })
+            balances.append(
+                {
+                    'symbol': coin['symbol'],
+                    'amount': float(coin['balance'])
+                    * pow(-10, int(coin['decimals'])),
+                    'address': None
+                })
 
         return balances

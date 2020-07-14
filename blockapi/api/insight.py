@@ -1,7 +1,4 @@
-from blockapi.services import (
-    BlockchainAPI,
-    on_failure_return_none
-)
+from blockapi.services import BlockchainAPI
 
 
 class InsightAPI(BlockchainAPI):
@@ -21,7 +18,6 @@ class InsightAPI(BlockchainAPI):
         'get_balance': '/addr/{address}/balance',
     }
 
-    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
@@ -60,6 +56,10 @@ class RavencoinAPI(InsightAPI):
     """
     symbol = 'RVN'
     base_url = 'https://ravencoin.network/api'
+
+    def get_balance(self):
+        response = self.request('get_balance', address=self.address)
+        return response * self.coef
 
 
 class InsightLitecoreAPI(InsightAPI):

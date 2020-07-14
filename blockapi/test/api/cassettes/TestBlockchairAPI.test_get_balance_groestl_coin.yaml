@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.23.0
+    method: GET
+    uri: https://api.blockchair.com/groestlcoin/dashboards/address/Fr5m2irs9vNWSAFXJK6KPtxqW9YWg384FX?limit=0,0&offset=0,0
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA21Ty27bMBD8FYGXXvzgQyRF3VoUOSRAUaCHpKgLgaYoS40sKhSZOij8713KsQO3
+        AQSB5Axnd2eXf1Ctg0blH3Tj+Z52flLPX+6/fbx5uL0Td1/D4elefb/fsSK/eUgsXdfeTlNahpfR
+        ohKNcftoX1o9tWiBJuO7MVStPQAihVYkt1zorTSUN4Upciy3osBMCC4U7LASnNCGw6IotAGFre71
+        YECYMYwxKXIi6OW0ilONSsFWRUE55TnmWGEuxQJ5a2z3bAElnAnQp4QLiYs35HSXSSnVKs8VINNo
+        hzBfYFgIoiQoitfjM5sTvqKcAdvFMMZQGRfTJYYlBW4cTuxrUADSgJWhmqwdqlMG3bADTyiUtCR0
+        iUlGRMl4yXIoutfvcyleYrkkLMOqxEAv0JVwil3/o3vispKLK90r6kWW0DKX4PSlc6mN1amxQ+z7
+        BQpeD5M2oXPDuboEHK8QGIcfP8GMcHBpdQTUuCHYQ0hzYlwNchRjCOKiT71Fn1Ny3b4DAsILDDvX
+        NJN928KQxT6AcLoVdEgDQWBkhARtbVqblHvoKyqDj3aB6uh1yiW1Bq508wxd1VqUNAdnUOpa6Pr3
+        0NmJ0O3tpUo9dinSs/XTLI7oCq8EO3u717+cr+JYzxmmLqhZUCVBLEuigDmAEf8zX0OrDONy/oBZ
+        OxP3ME+vlaA2hHEqN+vNets782ha3fmVcfvNGvLarIE+JX0XurnaT3bXDQN0ObuN/UtGVGgXWYqU
+        /bYf+j4DI33I7NA4bxLL26dop5AZBz843EcoapHBwGShtRmEG3a2d7uEZbUNuusndDw7hFekkERR
+        KFqQnEl4walvQ219dWZgDBBXPCeM4gJjCZQGnL0QiGKMFYRzmQsgqvkpz1lVKSt4ncfjX0HN/4Kk
+        BAAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Origin, Content-Type, X-Auth-Token
+      Access-Control-Allow-Methods:
+      - GET,POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache, private
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 13 Jul 2020 18:24:03 GMT
+      Feature-Policy:
+      - geolocation none; midi none; notifications none; push none; sync-xhr none;
+        microphone none; camera none; magnetometer none; gyroscope none; speaker self;
+        vibrate none; fullscreen self; payment none;
+      Referrer-Policy:
+      - strict-origin
+      Server:
+      - nginx/1.14.2
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytz
 
-from blockapi.services import (APIError, BlockchainAPI, on_failure_return_none)
+from blockapi.services import APIError, BlockchainAPI
 
 
 class AlethioAPI(BlockchainAPI):
@@ -57,7 +57,6 @@ class AlethioAPI(BlockchainAPI):
                                     self.api_key)},
                             **kwargs)
 
-    @on_failure_return_none()
     def get_balance(self):
         """
         Returns a list of all balances, both Ethereum and token ones
@@ -74,7 +73,7 @@ class AlethioAPI(BlockchainAPI):
             'symbol': self.symbol,
             'amount': amount,
             'name': 'Ethereum',
-            'contract_address': ''}
+            'address': ''}
         ]
         balances_tokens = self._get_token_balances()
         if balances_tokens is None:
@@ -108,7 +107,7 @@ class AlethioAPI(BlockchainAPI):
 
             token_balance = int(bal) * pow(10, -token_decimals)
 
-            balances.append({'contract_address': token_id,
+            balances.append({'address': token_id,
                              'name': token_name,
                              'symbol': token_symbol,
                              'amount': token_balance})

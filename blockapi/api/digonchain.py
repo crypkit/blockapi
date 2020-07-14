@@ -1,7 +1,4 @@
-from blockapi.services import (
-    BlockchainAPI,
-    on_failure_return_none
-)
+from blockapi.services import BlockchainAPI
 
 
 class DigonchainAPI(BlockchainAPI):
@@ -28,7 +25,6 @@ class DigonchainAPI(BlockchainAPI):
         'get_balance': '/accounts/{address}',
     }
 
-    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
@@ -43,4 +39,3 @@ class DigonchainAPI(BlockchainAPI):
                 return None
 
         return [{'symbol': self.symbol, 'amount': retval}]
-

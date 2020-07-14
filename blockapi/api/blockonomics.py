@@ -2,10 +2,7 @@ from datetime import datetime
 
 import pytz
 
-from blockapi.services import (
-    BlockchainAPI,
-    on_failure_return_none
-)
+from blockapi.services import BlockchainAPI
 
 
 class BlockonomicsAPI(BlockchainAPI):
@@ -15,7 +12,7 @@ class BlockonomicsAPI(BlockchainAPI):
     Explorer: https://www.blockonomics.co
     """
 
-    active = True
+    active = False
 
     symbol = 'BTC'
     base_url = 'https://www.blockonomics.co/api'
@@ -32,13 +29,9 @@ class BlockonomicsAPI(BlockchainAPI):
         'get_tx': '/tx_detail?txid={txid}'
     }
 
-    # def process_error_response(self, response):
-    #     if response.text == 'Invalid Bitcoin Address':
-    #         raise AddressNotExist()
-    #     # else
-    #     super().process_error_response(response)
+    def __init__(self, address, api_key):
+        super().__init__(address=address, api_key=api_key)
 
-    @on_failure_return_none()
     def get_balance(self):
         body = '{"addr": "' + self.address + '"}'
         response = self.request('get_balance', body=body)
@@ -55,8 +48,7 @@ class BlockonomicsAPI(BlockchainAPI):
 
         return [self.parse_tx(t) for t in txs['history']]
 
-
-    def parse_tx(self,tx):
+    def parse_tx(self, tx):
         tx_data = self.request('get_tx', 
                                txid=tx['txid'])
 
@@ -84,4 +76,3 @@ class BlockonomicsAPI(BlockchainAPI):
             'direction': direction,
             'raw': tx 
         }
-

@@ -1,14 +1,11 @@
-from blockapi.services import (
-    BlockchainAPI,
-    AddressNotExist,
-    on_failure_return_none
-)
+from blockapi.services import AddressNotExist, BlockchainAPI
 
 
 class BlockcypherAPI(BlockchainAPI):
     """
     Multi coins: bitcoin, litecoin, dogecoin
-    API docs: https://github.com/Blockchair/Blockchair.Support/blob/master/API_DOCUMENTATION_EN.md
+    API docs: https://github.com/Blockchair/Blockchair.Support/blob
+    /master/API_DOCUMENTATION_EN.md
     Explorer: https://live.blockcypher.com
     """
 
@@ -32,7 +29,6 @@ class BlockcypherAPI(BlockchainAPI):
         # else
         super().process_error_response(response)
 
-    @on_failure_return_none()
     def get_balance(self):
         response = self.request(
             'get_balance',

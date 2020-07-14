@@ -1,7 +1,4 @@
-from blockapi.services import (
-    BlockchainAPI,
-    on_failure_return_none
-)
+from blockapi.services import BlockchainAPI
 
 
 class EthplorerAPI(BlockchainAPI):
@@ -14,7 +11,7 @@ class EthplorerAPI(BlockchainAPI):
     symbol = 'ETH'
     base_url = 'http://api.ethplorer.io'
     default_api_key = 'freekey'
-    rate_limit = 0.5
+    rate_limit = 0.2
     coef = 1e-18
     start_offset = None
     max_items_per_page = None
@@ -36,7 +33,6 @@ class EthplorerAPI(BlockchainAPI):
         if self.api_key != self.default_api_key:
             self.rate_limit = 0.1
 
-    @on_failure_return_none()
     def get_balance(self):
         balances = []
         response = self.info
@@ -49,14 +45,16 @@ class EthplorerAPI(BlockchainAPI):
 
         for token in response.get('tokens', []):
             info = token['tokenInfo']
+            decimals = int(info['decimals']) if info.get('decimals') else 18
+
             balances.append({
-                'symbol': info['symbol'].upper(),
+                'symbol': info['symbol'],
                 'address': info['address'],
-                'amount': token['balance'] * pow(10, -int(info['decimals'])),
+                'amount': token['balance'] * pow(10, -decimals),
                 'name': info['name']
             })
 
-        if balances == []:
+        if not balances:
             return None
 
         return balances

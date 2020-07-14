@@ -1,7 +1,4 @@
-from blockapi.services import (
-    BlockchainAPI,
-    on_failure_return_none
-)
+from blockapi.services import BlockchainAPI
 
 
 class StellarAPI(BlockchainAPI):
@@ -25,19 +22,19 @@ class StellarAPI(BlockchainAPI):
         'get_balance': '/accounts/{address}',
     }
 
-    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance',
                                 address=self.address)
         if not response:
             return None
 
-        #return response.get('balances')
-        balances = [{ 'symbol': bal['asset_code'],
-                      'amount': float(bal['balance']),
-                    } for bal in response['balances'] if 'asset_code' in bal ]
-        balance_XLM = [{ 'symbol': 'XLM',
-                         'amount': float(bal['balance']),
-                       } for bal in response['balances'] if bal['asset_type'] == 'native' ]
+        balances = [{
+            'symbol': bal['asset_code'],
+            'amount': float(bal['balance'])
+        } for bal in response['balances'] if 'asset_code' in bal]
+        balance_stellar = [{
+            'symbol': 'XLM',
+            'amount': float(bal['balance'])
+        } for bal in response['balances'] if bal['asset_type'] == 'native']
 
-        return balances + balance_XLM
+        return balances + balance_stellar

@@ -1,0 +1,92 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.23.0
+    method: GET
+    uri: https://dex.binance.org/api/v1/account/bnb1jxfh2g85q3v0tdq56fnevx6xcxtcnhtsmcu64m
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 13 Jul 2020 13:23:18 GMT
+      Referrer-Policy:
+      - origin-when-cross-origin
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - kong/0.14.1, 1.1 91db3e27f70759a0dea967c4b34efea9.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - udzhyPPaKWrEMsA1fNsRzFIrMGA3-C0tn6stPzflPl144T4tV2QVvQ==
+      X-Amz-Cf-Pop:
+      - FRA53
+      X-Cache:
+      - Miss from cloudfront
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Kong-Proxy-Latency:
+      - '0'
+      X-Kong-Upstream-Latency:
+      - '2'
+      X-RateLimit-Limit-minute:
+      - '300'
+      X-RateLimit-Limit-second:
+      - '5'
+      X-RateLimit-Remaining-minute:
+      - '299'
+      X-RateLimit-Remaining-second:
+      - '4'
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

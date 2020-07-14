@@ -1,9 +1,6 @@
 from datetime import datetime
 
-from blockapi.services import (
-    BlockchainAPI,
-    on_failure_return_none
-)
+from blockapi.services import BlockchainAPI
 
 
 class BinanceAPI(BlockchainAPI):
@@ -25,10 +22,10 @@ class BinanceAPI(BlockchainAPI):
 
     supported_requests = {
         'get_balance': '/account/{address}',
-        'get_txs': '/transactions?address={address}&offset={offset}&limit={limit}'
+        'get_txs': '/transactions?address={address}&offset={offset}'
+                   '&limit={limit}'
     }
 
-    @on_failure_return_none()
     def get_balance(self):
         response = self.request('get_balance', address=self.address)
         if not response:
@@ -42,7 +39,7 @@ class BinanceAPI(BlockchainAPI):
         except ValueError:
             return None
 
-    def get_txs(self, offset=None, limit=None, unconfirmed=False):
+    def get_txs(self, offset=0, limit=100, unconfirmed=False):
         response = self.request('get_txs',
                                 address=self.address,
                                 offset=offset,
