@@ -42,6 +42,7 @@ List of supported coins:
 | ONT   | OntioAPI | balance, transactions
 | VET   | DigonchainAPI | balance
 | BOS   | BlockchainosAPI | balance, transactions
+| LUNA  | TerraMoneyAPI | balance, transactions, delegations
 
 ## Getting Started
 

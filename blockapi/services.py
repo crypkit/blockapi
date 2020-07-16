@@ -216,3 +216,25 @@ class BlockchainAPI(Service, BlockchainInterface, ABC):
                 self.base_url = self.testnet_url
             else:
                 raise ValueError("API doesn't support testnet.")
+
+    def _load(self, data):
+        from decimal import Decimal
+
+        if isinstance(data, dict):
+            for key in data:
+                data[key] = self._load(data[key])
+            return data
+        elif isinstance(data, list):
+            for i, elem in enumerate(data):
+                data[i] = self._load(elem)
+            return data
+        elif isinstance(data, str):
+            new = None
+            try:
+                new = Decimal(data)
+            except ValueError:
+                new = data
+            finally:
+                return new
+        else:
+            return data

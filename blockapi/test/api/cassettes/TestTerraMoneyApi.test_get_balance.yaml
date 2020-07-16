@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.23.0
+    method: GET
+    uri: https://fcd.terra.dev/v1/bank/terra1vw96exejy03w7n2jt8t3qv392f3lqtvmv53720
+  response:
+    body:
+      string: '{"balance":[{"denom":"uluna","available":"50583852","delegatedVesting":"0","delegatable":"50583852","freedVesting":"0","unbonding":"0","remainingVesting":"0"},{"denom":"ukrw","available":"53220066049","delegatedVesting":"0","delegatable":"0","freedVesting":"0","unbonding":"0","remainingVesting":"0"},{"denom":"usdr","available":"12470","delegatedVesting":"0","delegatable":"0","freedVesting":"0","unbonding":"0","remainingVesting":"0"},{"denom":"uusd","available":"50","delegatedVesting":"0","delegatable":"0","freedVesting":"0","unbonding":"0","remainingVesting":"0"},{"denom":"umnt","available":"112735002","delegatedVesting":"0","delegatable":"0","freedVesting":"0","unbonding":"0","remainingVesting":"0"}],"vesting":[],"delegations":[{"delegator_address":"terra1vw96exejy03w7n2jt8t3qv392f3lqtvmv53720","validator_address":"terravaloper1v5hrqlv8dqgzvy0pwzqzg0gxy899rm4kdur03x","shares":"33840000000.000000000000000000","amount":"33840000000"}],"unbondings":[]}'
+    headers:
+      Cache-Control:
+      - no-store, no-cache, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '964'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 16 Jul 2020 10:17:04 GMT
+      Expires:
+      - '0'
+      Pragma:
+      - no-cache
+      Server:
+      - nginx/1.10.3 (Ubuntu)
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

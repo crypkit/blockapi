@@ -83,6 +83,9 @@ test_addresses = {
     ],
     'BOS': [
         'GCPQQIX2LRX2J63C7AHWDXEMNGMZR2UI2PRN5TCSOVMEMF7BAUADMKH5'
+    ],
+    'LUNA': [
+        'terra1vw96exejy03w7n2jt8t3qv392f3lqtvmv53720'
     ]
 }
 
