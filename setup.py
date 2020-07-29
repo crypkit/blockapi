@@ -8,7 +8,7 @@ PACKAGES = find_packages(where='.')
 
 setuptools.setup(
     name='blockapi',
-    version='0.0.72',
+    version='0.0.73',
     author='Devmons s.r.o.',
     description='BlockAPI library',
     license='MIT',

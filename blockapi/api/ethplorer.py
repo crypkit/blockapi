@@ -48,10 +48,10 @@ class EthplorerAPI(BlockchainAPI):
             decimals = int(info['decimals']) if info.get('decimals') else 18
 
             balances.append({
-                'symbol': info['symbol'],
+                'symbol': info.get('symbol', 'unknown'),
                 'address': info['address'],
                 'amount': token['balance'] * pow(10, -decimals),
-                'name': info['name']
+                'name': info.get('name', 'Unknown')
             })
 
         if not balances:
