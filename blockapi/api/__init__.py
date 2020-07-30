@@ -25,5 +25,6 @@ from blockapi.api.terra_money import *
 from blockapi.api.trezor import *
 from blockapi.api.tronscan import *
 from blockapi.api.tzscan import *
+from blockapi.api.tzstats import *
 from blockapi.api.zchain import *
 from blockapi.api.zensystem import *
