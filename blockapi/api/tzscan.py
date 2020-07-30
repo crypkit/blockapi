@@ -34,7 +34,6 @@ class TzscanAPI(BlockchainAPI):
                              '?cycle={cycle}&number=50&p={page}',
         'get_bakings': '/v3/cycle_bakings/{address}'
                        '?p={page_offset}&number={number}',
-        'get_bakings_tzstats': 'account/{address}',
         'get_endorsements': '/v3/cycle_endorsements/{address}'
                             '?p={page_offset}&number={number}'
     }
@@ -260,17 +259,6 @@ class TzscanAPI(BlockchainAPI):
             'deposit': int(e['tez']['deposit']) * self.coef,
             'priority': float(e['priority'])
         }
-
-    @set_default_args_values
-    def get_bakings_tzstats(self, offset=None, limit=None):
-        self._base_url_temp = 'https://api.tzstats.com/explorer/'
-        response = self._safe_request(
-            'get_bakings_tzstats',
-            address=self.address,
-            page_offset=offset,
-            number=limit
-        )
-        return response
 
     @set_default_args_values
     def get_bakings(self, offset=None, limit=None):

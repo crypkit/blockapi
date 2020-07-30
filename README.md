@@ -6,6 +6,7 @@ List of supported coins:
 | coin  | API name | supported operations
 | :---- | :------------| :---------------------
 | XTZ   | TzscanAPI   | balance, transactions, activations, originations, delegations, endorsements, bakings
+|       | TzStatsAPI  | staking (balance, rewards)
 | ATOM  | CosmosAPI   | balance, transactions, rewards, delegates, votes
 | DCR   | DcrdataAPI  | balance, transactions
 | ADA   | CardanoExplorerAPI | balance, transactions
