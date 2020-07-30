@@ -11,6 +11,7 @@ from blockapi.api import EtherscanAPI
 
 
 class Ethereum:
+
     def __init__(self, node_url, etherscan_api_key):
         self.node_url = node_url
         self.etherscan_api_key = etherscan_api_key
@@ -35,7 +36,8 @@ class Ethereum:
         tx = self.web3.eth.getTransaction(txhash)
         return tx
 
-    def get_function_by_inputdata(self, tx_input):
+    @staticmethod
+    def get_function_by_inputdata(tx_input):
         tx_input_decoded = AbiMethod.from_input_lookup(
             bytes.fromhex(tx_input[2:]))
         tx_input_values = list(tx_input_decoded.values())
@@ -61,10 +63,10 @@ class Ethereum:
         contract_addresses = [tokens[token]['contract_address']
                               for token in tokens]
 
-        return [{'amount': float(b)*pow(10,-d),
-                 'symbol': symbol, 'contract_address': sc }
-                for b,d, symbol, sc in
-                zip(balances,decimals, symbols, contract_addresses) if b > 0]
+        return [{'amount': float(b) * pow(10, -d),
+                 'symbol': symbol, 'contract_address': sc}
+                for b, d, symbol, sc in
+                zip(balances, decimals, symbols, contract_addresses) if b > 0]
 
 
 class Infura(Ethereum):
@@ -208,7 +210,8 @@ class ERC20Token:
         return (currency_symbol, currency_name, coin_sc, currency_price,
                 currency_change, currency_volume, market_cap, holders)
 
-    def _get_currency_symbol(self, cointext):
+    @staticmethod
+    def _get_currency_symbol(cointext):
         try:
             currency_symbol = re.search('\([A-Za-z0-9]+\)',
                                         cointext).group(0)[1:-1]
@@ -217,9 +220,9 @@ class ERC20Token:
 
         return currency_symbol
 
-    def _get_currency_name(self, cointext):
-        currency_name = re.sub('\([A-Za-z0-9]+\)', '',
-                               cointext).strip()
+    @staticmethod
+    def _get_currency_name(cointext):
+        currency_name = re.sub('\([A-Za-z0-9]+\)', '', cointext).strip()
         return currency_name
 
     @staticmethod

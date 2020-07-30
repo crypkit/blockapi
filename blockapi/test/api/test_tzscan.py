@@ -37,17 +37,6 @@ class TestTzscanAPI:
         assert len(result) == 3
 
     @mark.vcr()
-    def test_get_bakings_tzstats(self):
-        api = TzscanAPI(address=self.REWARD_ADDRESS)
-        result = api.get_bakings_tzstats()
-
-        assert result["address"] == self.REWARD_ADDRESS
-        assert "manager" in result
-        assert "delegate" in result
-        assert "manager_account" in result
-        assert "delegate_account" in result
-
-    @mark.vcr()
     def test_get_endorsements(self):
         api = TzscanAPI(address=self.ADDRESS)
         result = api.get_endorsements()
