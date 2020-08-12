@@ -1,4 +1,5 @@
 from blockapi.api.alethio import *
+from blockapi.api.amberdata import *
 from blockapi.api.binance import *
 from blockapi.api.blockchaininfo import *
 from blockapi.api.blockchainos import *

@@ -1,0 +1,69 @@
+interactions:
+  - request:
+      body: null
+      headers:
+        Accept:
+          - '*/*'
+        Accept-Encoding:
+          - gzip, deflate
+        Connection:
+          - keep-alive
+        User-Agent:
+          - python-requests/2.22.0
+        x-amberdata-blockchain-id:
+          - ethereum-mainnet
+      method: GET
+      uri: https://web3api.io/api/v2/addresses/0xdac17f958d2ee523a2206206994597c13d831ec7/information?include_price=False
+    response:
+      body:
+        string: !!binary |
+          H4sIAAAAAAAAAGWPy07DMBBFf6XyukQT23WSbgEJxKKIBjaIheu4NMJxgh+LqOq/M25a1IJ3c3zv
+          0cye+CBD9GRJAeYktMFosiSrJzInjfbKtUNoe4toHZXS3m+jmTn9HbUPGBnkaHrZkOWebKSRVqVy
+          jh+n6dFez6sYEAAC2TQOdfU4pIrqbXBSJaXaSfuJxWfXHm03kAGvKgHA8qrgnAIXHJLiXEoOPOCd
+          3L/cUiAfaXPVdtIgJAKDVnbJVOuw0272ur5LLHYPvWm0S6G8YJSX+YTr/kvbRAtWIC9LkRfA+WJx
+          +nbS+u3U4xWFkpZpGT92m94gQ32Nc+iDNOs4DGa8UmWTC37fOfsmTdRpt2O6WuChAjImaCUEY+Ki
+          8fehIdo2XAjyDDH7lzscfgCAlMmb7wEAAA==
+      headers:
+        Access-Control-Allow-Origin:
+          - '*'
+        Connection:
+          - keep-alive
+        Content-Encoding:
+          - gzip
+        Content-Length:
+          - '310'
+        Content-Type:
+          - application/json; charset=utf-8
+        Date:
+          - Wed, 12 Aug 2020 10:58:40 GMT
+        ETag:
+          - W/"1ef-tkWVLavTt4HmPQXx2qfXsfNQd50"
+        Set-Cookie:
+          - AWSALB=EBSD9UeZUzj94XSIX87exmGDUVY0JFQ6PrYUtSmfFv3/N5GcWOA6qPllmmnksF2WAbdYnjAJSCgOlML9hkh4Kj+vVi1IaOt2alTXUl2vV2F1rBAnxsuhlhd8eZQV;
+            Expires=Wed, 19 Aug 2020 10:58:40 GMT; Path=/
+          - AWSALBCORS=EBSD9UeZUzj94XSIX87exmGDUVY0JFQ6PrYUtSmfFv3/N5GcWOA6qPllmmnksF2WAbdYnjAJSCgOlML9hkh4Kj+vVi1IaOt2alTXUl2vV2F1rBAnxsuhlhd8eZQV;
+            Expires=Wed, 19 Aug 2020 10:58:40 GMT; Path=/; SameSite=None; Secure
+        Via:
+          - 1.1 2a3d03f915cb6d29f35b8f9edd3b1956.cloudfront.net (CloudFront)
+        X-Amz-Cf-Id:
+          - A_Gik_6bBGz48XLVJipgYZ_ddCPO3kItfjg1a3oRGVaOBL0Qf-nCxg==
+        X-Amz-Cf-Pop:
+          - VIE50-C1
+        X-Cache:
+          - Miss from cloudfront
+        X-Response-Time:
+          - 54.784ms
+        x-amz-apigw-id:
+          - RJy3EFPIoAMFahw=
+        x-amzn-Remapped-Connection:
+          - keep-alive
+        x-amzn-Remapped-Content-Length:
+          - '495'
+        x-amzn-Remapped-Date:
+          - Wed, 12 Aug 2020 10:58:40 GMT
+        x-amzn-RequestId:
+          - 54f585f6-2a02-47d3-8b2e-69fcf00b0ba3
+      status:
+        code: 200
+        message: OK
+version: 1

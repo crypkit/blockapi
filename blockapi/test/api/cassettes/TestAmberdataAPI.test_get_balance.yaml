@@ -1,0 +1,139 @@
+interactions:
+  - request:
+      body: null
+      headers:
+        Accept:
+          - '*/*'
+        Accept-Encoding:
+          - gzip, deflate
+        Connection:
+          - keep-alive
+        User-Agent:
+          - python-requests/2.22.0
+        x-amberdata-blockchain-id:
+          - ethereum-mainnet
+      method: GET
+      uri: https://web3api.io/api/v2/addresses/0x1d0DcC8d8BcaFa8e8502BEaEeF6CBD49d3AFFCDC/account-balances/latest
+    response:
+      body:
+        string: !!binary |
+          H4sIAAAAAAAAAFWPyU7EMAyGXwX53EFOSdc3QEjDAU7cHNsR1aQLTYJAo747GYnL3Lx8+pcrxEQp
+          RxhrxArSlILCCK8vUIFo5H3a0rQu5fSWmTVGn8PDrl9ZYyrIRr9hJYHxCiSyl//dCPhjBIW5l94x
+          eeq1b7B2Sqq+ZSd2kCfynoXhqMCFlS/8SdPyXCTB8MBDO2DbFMCwh3/inGenewFs01lTI9xyzyUQ
+          zduZljUqr4sU+1Lom0K+FbqDyl6j6U7GnEz/js1ou9EOj4j4AcfxB2+Ef7YTAQAA
+      headers:
+        Access-Control-Allow-Origin:
+          - '*'
+        Connection:
+          - keep-alive
+        Content-Encoding:
+          - gzip
+        Content-Length:
+          - '219'
+        Content-Type:
+          - application/json; charset=utf-8
+        Date:
+          - Wed, 12 Aug 2020 09:35:18 GMT
+        ETag:
+          - W/"113-sNyzh7hipFPPz3BowQhHp+8GD3E"
+        Set-Cookie:
+          - AWSALB=4QankM0v2Xwhg0EGWqlUI2eMxS7MZOPsKBRr+9nRSx7gGoIBUE/ZAmU2t+nZ1mksYtp86PaVJF9zwHdGure4iS+rfZWNtP4sFkFjgc7fcBIZ+FSBhrvxUqWQTotN;
+            Expires=Wed, 19 Aug 2020 09:35:18 GMT; Path=/
+          - AWSALBCORS=4QankM0v2Xwhg0EGWqlUI2eMxS7MZOPsKBRr+9nRSx7gGoIBUE/ZAmU2t+nZ1mksYtp86PaVJF9zwHdGure4iS+rfZWNtP4sFkFjgc7fcBIZ+FSBhrvxUqWQTotN;
+            Expires=Wed, 19 Aug 2020 09:35:18 GMT; Path=/; SameSite=None; Secure
+        Via:
+          - 1.1 96296f2b3ee1b7cbc3fb127d3383661e.cloudfront.net (CloudFront)
+        X-Amz-Cf-Id:
+          - YOY-BZ0SGS56eSEFHEDdXlwkd2E4uIdGyYsY0eLxmZmxj-zG5l1p_A==
+        X-Amz-Cf-Pop:
+          - VIE50-C1
+        X-Cache:
+          - Miss from cloudfront
+        X-Response-Time:
+          - 46.241ms
+        x-amz-apigw-id:
+          - RJmpmHgXoAMFYYQ=
+        x-amzn-Remapped-Connection:
+          - keep-alive
+        x-amzn-Remapped-Content-Length:
+          - '275'
+        x-amzn-Remapped-Date:
+          - Wed, 12 Aug 2020 09:35:18 GMT
+        x-amzn-RequestId:
+          - 1b063b24-e7cc-46f6-aa1d-ffb25fee6874
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: null
+      headers:
+        Accept:
+          - '*/*'
+        Accept-Encoding:
+          - gzip, deflate
+        Connection:
+          - keep-alive
+        User-Agent:
+          - python-requests/2.22.0
+        x-amberdata-blockchain-id:
+          - ethereum-mainnet
+      method: GET
+      uri: https://web3api.io/api/v2/addresses/0x1d0DcC8d8BcaFa8e8502BEaEeF6CBD49d3AFFCDC/tokens?page=0&size=100
+    response:
+      body:
+        string: !!binary |
+          H4sIAAAAAAAAAOWWW2sUQRCF/0qY5yBdfa3eNxFjgpCEKL6ID9XV1Tg4uxPngoaQ/27vets1GCJu
+          REjDPJxDV9P1UWfo62acaJrHZqGVOmymduqkWTRnL5vDJsvIQ3s5tf2qWq9mZhnHMncHg3ycZZzq
+          lku66nrKzeK6GYT7IdeD3l43lPNQ99Yq9ZnEodYpsoAIKSeswJHOootWOglnoylKqKe977ssw6YK
+          ssrMmDExFUJBt95LIsVzyjZmQ6Vw5lpFy35eTbUqqt+sTS/cLqlbXwmw6hUt132+WPVjOx687j/I
+          qrrj1TL13do/PauyHZ9fPNOqWUzDLN9k0NAsSj3phxHCroFod40Y8Ztxc7jLJmBC55VHq2ywCWpD
+          bBJSMiKSxIoLmSOnx8jGB6d9JEcusYi3QRRB/Sw5EaeMq/MUPNBjZGOyigEocDFGiwdlLHpyRens
+          TXSVE3uocX2MbBiKS4SphohJx1giQsDgyQdwXocSRSfYx9xoBag82HuTOTo5evrkU7tDZe0t21X7
+          L9BoiSBGnGUXECWWnD0Bgo2hZBaCLJCYYR9o/mhkjmXguZNxG8xxbeUuKNt6zWRLb5Bs6Q2Rtb71
+          j0FQEoJHVKx0NCbbkBOkWFi5qFCcQZ+i/3sgoAFAOfNzOYf/bYaKEQW2CIL2NTvKawv1R1MMeetT
+          7digM7QPLvWW9x+TNyen2zC+ygeHEZWFIi6Zkuv7pTixVNMCQYKr+Q+mNhwCqT2kBn9Zd7E4H/pb
+          03F+8TDT8a4+DPuJuovvT7wmNjc3XwC0VMfzOwoAAA==
+      headers:
+        Access-Control-Allow-Origin:
+          - '*'
+        Connection:
+          - keep-alive
+        Content-Encoding:
+          - gzip
+        Content-Length:
+          - '601'
+        Content-Type:
+          - application/json; charset=utf-8
+        Date:
+          - Wed, 12 Aug 2020 09:35:22 GMT
+        ETag:
+          - W/"a3b-dXHKaugLTPeVpstT+N4fpy8Ei/I"
+        Set-Cookie:
+          - AWSALB=cSHMcB2HORDEDRKhm6g2GljND9sXPehuUECG6LxXDGSQsbKFPGcdIBZr2+pSj3f9DlyVVZu5gT+QeGu/9AMe2Y345mfdyjbHlxBEsSfhJtQ6TqC4XryO/H+1D5bM;
+            Expires=Wed, 19 Aug 2020 09:35:22 GMT; Path=/
+          - AWSALBCORS=cSHMcB2HORDEDRKhm6g2GljND9sXPehuUECG6LxXDGSQsbKFPGcdIBZr2+pSj3f9DlyVVZu5gT+QeGu/9AMe2Y345mfdyjbHlxBEsSfhJtQ6TqC4XryO/H+1D5bM;
+            Expires=Wed, 19 Aug 2020 09:35:22 GMT; Path=/; SameSite=None; Secure
+        Via:
+          - 1.1 9a736972b021a4b2382c29923f73ce8b.cloudfront.net (CloudFront)
+        X-Amz-Cf-Id:
+          - OyDtaNDc0EfzZN3YChB76grzWmySM0Ir1itZlXPW0xsndw-zD65b-w==
+        X-Amz-Cf-Pop:
+          - VIE50-C1
+        X-Cache:
+          - Miss from cloudfront
+        X-Response-Time:
+          - 57.969ms
+        x-amz-apigw-id:
+          - RJmqLHL1IAMFjqA=
+        x-amzn-Remapped-Connection:
+          - keep-alive
+        x-amzn-Remapped-Content-Length:
+          - '2619'
+        x-amzn-Remapped-Date:
+          - Wed, 12 Aug 2020 09:35:22 GMT
+        x-amzn-RequestId:
+          - 3518c057-666f-4e79-a866-32d5dd91249e
+      status:
+        code: 200
+        message: OK
+version: 1

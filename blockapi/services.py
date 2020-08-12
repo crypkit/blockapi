@@ -58,7 +58,7 @@ class Service(ABC):
         if body:
             response = reqobj.post(request_url, data=body, headers=headers)
         else:
-            response = reqobj.get(request_url)
+            response = reqobj.get(request_url, headers=headers)
 
         self.last_response = response
         self.last_response_time = datetime.now()
