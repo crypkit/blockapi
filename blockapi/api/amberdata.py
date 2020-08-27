@@ -85,8 +85,6 @@ class AmberdataAPI(BlockchainAPI):
     @staticmethod
     def _parse_token_balance(raw):
         decimals = int(raw.get('decimals'))
-        if decimals == 0:
-            decimals = 1
 
         if raw['isERC20']:
             type_ = 'ERC-20'
@@ -104,7 +102,8 @@ class AmberdataAPI(BlockchainAPI):
         return {
             'symbol': raw.get('symbol', 'UNKNOWN'),
             'address': raw['address'],
-            'amount': float(raw['amount']) * pow(10, -decimals),
+            'amount': (float(raw['amount']) * pow(10, -decimals)
+                       if decimals else float(raw['amount'])),
             'name': raw.get('name', 'Unknown'),
             'type': type_
         }
