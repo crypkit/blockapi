@@ -9,7 +9,8 @@ class AmberdataAPI(BlockchainAPI):
 
     symbol = 'ETH'
     base_url = 'https://web3api.io/api/v2'
-    rate_limit = 0.34  # 3 reqs per second with free api key
+    # 3 reqs per second with free api key, but doesn't work well
+    rate_limit = 1
     coef = 1e-18
     start_offset = 0
     max_items_per_page = 100
