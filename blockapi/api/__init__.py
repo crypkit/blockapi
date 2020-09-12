@@ -21,6 +21,7 @@ from blockapi.api.greymass import *
 from blockapi.api.insight import *
 from blockapi.api.neoscan import *
 from blockapi.api.ontology import *
+from blockapi.api.solana import *
 from blockapi.api.stellar import *
 from blockapi.api.terra_money import *
 from blockapi.api.trezor import *

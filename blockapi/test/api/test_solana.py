@@ -1,0 +1,36 @@
+from pytest import mark
+
+from blockapi.api import SolanaApi
+from blockapi.test_init import test_addresses
+
+
+class TestSolanaAPI:
+    ADDRESS = test_addresses['SOL'][0]
+
+    @mark.vcr()
+    def test_get_balance(self):
+        api = SolanaApi(self.ADDRESS)
+        result = api.get_balance()
+
+        assert len(result) == 3
+        assert next(b for b in result if b['symbol'] == 'SOL')
+        assert next(b for b in result if b['symbol'] == 'YFI')
+        usdc_bal = next(b for b in result if b['symbol'] == 'USDT')
+        assert usdc_bal['amount'] == 21.17783
+
+    @mark.vcr()
+    def test_get_txs_signatures(self):
+        api = SolanaApi(self.ADDRESS)
+        result = api.get_txs_signatures()
+
+        assert len(result) == 22
+
+    @mark.vcr()
+    def test_get_tx(self):
+        api = SolanaApi(self.ADDRESS)
+        result = api.get_tx(
+            '5v1yotDftqHWpgCqDuPoEMaLwyQiHaCiDZ3i2Srf31oKosDRJerk4PQpretG4HkQb'
+            'WqRgfSFPLLdKi9NuyGLcqQH'
+        )
+
+        assert result

@@ -31,7 +31,7 @@ class Service(ABC):
         path_url = self.supported_requests.get(request_method)
         if path_url:
             return self.base_url + path_url.format(**params)
-        return None
+        return self.base_url
 
     def request(self, request_method, with_rate_limit=False,
                 with_cloudflare=False, body=None, headers=None, **params):

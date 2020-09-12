@@ -5,8 +5,8 @@ from cfscrape import CloudflareCaptchaError
 
 import blockapi
 import blockapi.api
-from blockapi.services import AddressNotExist, APIError, BadGateway, \
-    GatewayTimeOut, InternalServerError, APIKeyMissing
+from blockapi.services import APIError, APIKeyMissing, AddressNotExist, \
+    BadGateway, GatewayTimeOut, InternalServerError
 
 test_addresses = {
     'BTC': [
@@ -86,7 +86,10 @@ test_addresses = {
     ],
     'LUNA': [
         'terra1vw96exejy03w7n2jt8t3qv392f3lqtvmv53720'
-    ]
+    ],
+    'SOL': [
+        '31dpiondDhZaqK23Re8kzkhY6CFEG9ZTQnr3shQm7g8b'
+    ],
 }
 
 test_invalid_addresses = {
