@@ -104,7 +104,7 @@ class EtherscanAPI(BlockchainAPI):
             direction = 'outgoing'
 
         token_data = None
-        if tx_type is 'token':
+        if tx_type == 'token':
             token_data = {
                 'name': tx.get('tokenName'),
                 'symbol': tx.get('tokenSymbol'),
