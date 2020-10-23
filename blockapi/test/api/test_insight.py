@@ -12,4 +12,4 @@ class TestInsightAPI:
         api = RavencoinAPI(address=self.RAVEN_ADDRESS)
         result = api.get_balance()
 
-        assert result == 957.0026321
+        assert result[0]['amount'] == 957.0026321
