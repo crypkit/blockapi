@@ -59,7 +59,7 @@ class RavencoinAPI(InsightAPI):
 
     def get_balance(self):
         response = self.request('get_balance', address=self.address)
-        return response * self.coef
+        return [{'symbol': self.symbol, 'amount': response * self.coef}]
 
 
 class InsightLitecoreAPI(InsightAPI):
