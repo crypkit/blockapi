@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.23.0
+        - python-requests/2.24.0
     method: GET
     uri: https://api1.dunscan.io/v3/cycle_endorsements/tz1bDXD6nNSrebqmAnnKKwnX1QdePSMCj4MX?p=0&number=50
   response:
@@ -23,11 +23,11 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 08 Jun 2020 21:10:14 GMT
+        - Wed, 28 Oct 2020 13:29:00 GMT
       Server:
       - nginx/1.10.3
       X-Cache-Status:
-      - HIT
+        - MISS
       accept:
       - '*/*'
       accept-encoding:
@@ -35,17 +35,17 @@ interactions:
       access-control-allow-headers:
       - Accept, Content-Type
       access-control-allow-methods:
-      - POST, GET, OPTIONS
+        - POST, GET, OPTIONS, PATCH, PUT, DELETE
       access-control-allow-origin:
       - '*'
       host:
       - 127.0.0.1:8082
       user-agent:
-      - python-requests/2.23.0
+        - python-requests/2.24.0
       x-forwarded-for:
-      - 84.42.234.242
+        - 185.242.56.125
       x-real-ip:
-      - 84.42.234.242
+        - 185.242.56.125
     status:
       code: 200
       message: OK

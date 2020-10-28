@@ -9,12 +9,12 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.23.0
+        - python-requests/2.24.0
     method: GET
     uri: https://api1.dunscan.io/v3/balance_from_balance_updates/tz1bDXD6nNSrebqmAnnKKwnX1QdePSMCj4MX
   response:
     body:
-      string: '{"spendable":"2068856458243","frozen":"0","rewards":"0","fees":"0","deposits":"0"}'
+      string: '{"spendable":"1221639050030","frozen":"0","rewards":"0","fees":"0","deposits":"0"}'
     headers:
       Connection:
       - keep-alive
@@ -23,7 +23,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 08 Jun 2020 20:55:47 GMT
+        - Wed, 28 Oct 2020 13:28:59 GMT
       Server:
       - nginx/1.10.3
       X-Cache-Status:
@@ -35,17 +35,17 @@ interactions:
       access-control-allow-headers:
       - Accept, Content-Type
       access-control-allow-methods:
-      - POST, GET, OPTIONS
+        - POST, GET, OPTIONS, PATCH, PUT, DELETE
       access-control-allow-origin:
       - '*'
       host:
       - 127.0.0.1:8082
       user-agent:
-      - python-requests/2.23.0
+        - python-requests/2.24.0
       x-forwarded-for:
-      - 84.42.234.242
+        - 185.242.56.125
       x-real-ip:
-      - 84.42.234.242
+        - 185.242.56.125
     status:
       code: 200
       message: OK

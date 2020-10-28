@@ -1,13 +1,11 @@
 from pytest import mark, raises
 
 from blockapi.api.cosmos import CosmosAPI
-from blockapi.services import InternalServerError, AddressNotExist
-
-from blockapi.test_init import test_addresses
+from blockapi.services import AddressNotExist, InternalServerError
+from blockapi.test.test_data import test_addresses
 
 
 class TestCosmosAPI:
-
     ADDRESS = test_addresses["ATOM"][0]
 
     def test_init(self):

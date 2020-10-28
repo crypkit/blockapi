@@ -1,0 +1,62 @@
+interactions:
+  - request:
+      body: null
+      headers:
+        Accept:
+          - '*/*'
+        Accept-Encoding:
+          - gzip, deflate
+        Connection:
+          - keep-alive
+        User-Agent:
+          - python-requests/2.24.0
+      method: GET
+      uri: https://explorer.ont.io/v2/addresses/AS5R2tAn2KViJN3W4KkW5XwrrR85sXpn9p/all/balances
+    response:
+      body:
+        string: !!binary |
+          H4sIAAAAAAAAA8WQzQqCQBSF3+WuJWb8wXIrPcHQKkKu46CC3hHnWoT47o0tImrjqu7yOwe+w51B
+          28pAJgLoXQ0ZqFOeH5WCAEbjpo4hO89QYoekfQ3kPkqTQ7QTYZLKWMS+h84ZLgj7NbdUvxDfhxUR
+          cns1nmpLPKLmokHX+ECEYtPBErxPEJ/OG7Zc2omqf8gn+pU6jJ9Ufr+ct6vlVvVleQBw/rNzGwIA
+          AA==
+      headers:
+        Access-Control-Allow-Credentials:
+          - 'true'
+        Access-Control-Allow-Methods:
+          - POST, PUT, GET, OPTIONS, DELETE
+        Access-Control-Allow-Origin:
+          - '*'
+        Access-Control-Expose-Headers:
+          - ont_exp_token
+        Access-Control-Max-Age:
+          - '3600'
+        Cache-Control:
+          - no-cache, no-store
+        Connection:
+          - keep-alive
+        Content-Encoding:
+          - gzip
+        Content-Security-Policy:
+          - ': default-src ''self'''
+        Content-Type:
+          - application/json;charset=UTF-8
+        Date:
+          - Wed, 28 Oct 2020 13:28:48 GMT
+        Server:
+          - nginx
+        Strict-Transport-Security:
+          - ': max-age=31536000; includeSubDomains'
+        Transfer-Encoding:
+          - chunked
+        Vary:
+          - Accept-Encoding
+        X-Content-Type-Options:
+          - nosniff
+        X-Frame-Options:
+          - SAMEORIGIN
+        X-Xss-Protection:
+          - '1'
+      status:
+        code: 200
+        message: ''
+version: 1

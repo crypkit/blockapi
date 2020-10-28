@@ -1,17 +1,23 @@
 from pytest import mark
 
 from blockapi.api.tzstats import TzStatsAPI
-from blockapi.test_init import test_addresses
+from blockapi.test.test_data import test_addresses
 
 
 class TestTzscanAPI:
-
     ADDRESS = test_addresses["XTZ"][0]
     REWARD_ADDRESS = test_addresses["XTZ"][1]
 
     def test_init(self):
         api = TzStatsAPI(address=self.ADDRESS)
         assert api
+
+    def test_get_balance(self):
+        api = TzStatsAPI(address=self.ADDRESS)
+        result = api.get_balance()
+
+        assert result[0]['symbol'] == api.symbol
+        assert result[0]['amount'] > 0
 
     @mark.vcr()
     def test_get_account(self):

@@ -1,7 +1,7 @@
 from pytest import mark
 
 from blockapi.api.blockchainos import BlockchainosAPI
-from blockapi.test_init import test_addresses
+from blockapi.test.test_data import test_addresses
 
 
 class TestBlockchainosAPI:
@@ -12,7 +12,7 @@ class TestBlockchainosAPI:
         api = BlockchainosAPI(address=self.ADDRESS)
         result = api.get_balance()
 
-        assert result == [{'symbol': 'BOS', 'amount': 454146425.404}]
+        assert result == [{'symbol': 'BOS', 'amount': 545879431.776}]
 
     @mark.vcr()
     def test_get_txs(self):

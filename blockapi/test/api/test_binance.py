@@ -1,8 +1,7 @@
 from pytest import mark
 
 from blockapi.api.binance import BinanceAPI
-
-from blockapi.test_init import test_addresses
+from blockapi.test.test_data import test_addresses
 
 
 class TestBinanceAPI:
@@ -19,7 +18,7 @@ class TestBinanceAPI:
         result = api.get_balance()
 
         assert isinstance(result, list)
-        assert len(result) == 68
+        assert len(result) == 103
 
     @mark.vcr()
     def test_get_txs(self):

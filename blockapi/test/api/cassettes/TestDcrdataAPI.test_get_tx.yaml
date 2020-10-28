@@ -9,54 +9,56 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.23.0
+        - python-requests/2.24.0
     method: GET
     uri: https://explorer.dcrdata.org/api/tx/193b59d8926588181aad5a5bed672e1fccf443f4d05dc16a0cdaacf3b4b4ed7c?spends=true
   response:
     body:
       string: !!binary |
-        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
+        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
     headers:
       Alt-Svc:
       - clear
       Content-Encoding:
       - gzip
       Content-Security-Policy-Report-Only:
-      - default-src 'self'; script-src 'self' 'sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb'
-        'sha256-8in1YfOPOMqtBgRhX5uaoR+Gb7WGEjhl6XqBqFHsTjI=' 'sha256-967sY4EvCS9bV1jFWgKgDeLOvpSpm2Sp9aCP537+BCA='
-        'sha256-ncTH9jyLor0RXzz2qH5UZEOpKBNwPyO/SrZW+vrYkA8=' 'sha384-e0qFAVkArN1dyymxMH35JdOyqaonxrxODNFAvMxThOhlG4XGCjfW92Y8GQmud8hK'
-        'sha384-eEQWQilDnDtUa8WKud8RTuw5eAoUbvrfoBjxyn1emDfDHoh8qXFpmy8IeP+2voml';
-        font-src 'self'; object-src 'none'; img-src 'self' data:; style-src 'self'
-        'unsafe-inline'; connect-src 'self' wss://*.dcrdata.org; manifest-src 'self';
-        frame-ancestors 'none'
+        - default-src 'self'; script-src 'self' 'sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb'
+          'sha256-8in1YfOPOMqtBgRhX5uaoR+Gb7WGEjhl6XqBqFHsTjI=' 'sha256-967sY4EvCS9bV1jFWgKgDeLOvpSpm2Sp9aCP537+BCA='
+          'sha256-ncTH9jyLor0RXzz2qH5UZEOpKBNwPyO/SrZW+vrYkA8=' 'sha384-e0qFAVkArN1dyymxMH35JdOyqaonxrxODNFAvMxThOhlG4XGCjfW92Y8GQmud8hK'
+          'sha384-eEQWQilDnDtUa8WKud8RTuw5eAoUbvrfoBjxyn1emDfDHoh8qXFpmy8IeP+2voml';
+          font-src 'self'; object-src 'none'; img-src 'self' data:; style-src 'self'
+          'unsafe-inline'; connect-src 'self' wss://*.dcrdata.org; manifest-src 'self';
+          frame-ancestors 'none'
       Content-Type:
-      - application/json; charset=utf-8
+        - application/json; charset=utf-8
       Date:
-      - Mon, 08 Jun 2020 13:42:58 GMT
+        - Wed, 28 Oct 2020 13:28:31 GMT
+      Onion-Location:
+        - http://dcrdata5oppwcotlxkrlsp6afncnxvw54sw6jqftc4bjytm4rn27j3ad.onion/api/tx/193b59d8926588181aad5a5bed672e1fccf443f4d05dc16a0cdaacf3b4b4ed7c?spends=true
       Referrer-Policy:
-      - same-origin
+        - same-origin
       Server:
-      - nginx
+        - nginx
       Set-Cookie:
-      - GCLB=CMXAx6ObyODqFg; path=/; HttpOnly
+        - GCLB=CNzK9KKuq4T_Lw; path=/; HttpOnly
       Strict-Transport-Security:
-      - max-age=15552001
+        - max-age=15552001
       Transfer-Encoding:
-      - chunked
+        - chunked
       Vary:
       - Accept-Encoding
       - Origin

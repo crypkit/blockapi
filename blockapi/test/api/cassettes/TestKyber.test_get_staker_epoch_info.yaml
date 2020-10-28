@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.23.0
+        - python-requests/2.24.0
     method: GET
     uri: https://ropsten-api.kyber.org/stakers/0x1375355fEcCB15e0DBedd7dcF3c496E2b1a25f6A?epoch=182
   response:
@@ -22,7 +22,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 5dacf26da830c76d-AMS
+        - 5e95002dbb8627b4-PRG
       Connection:
       - keep-alive
       Content-Encoding:
@@ -30,24 +30,24 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 30 Sep 2020 09:34:15 GMT
+        - Wed, 28 Oct 2020 13:28:35 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       NEL:
       - '{"report_to":"cf-nel","max_age":604800}'
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report?lkg-colo=20&lkg-time=1601458456"}],"group":"cf-nel","max_age":604800}'
+        - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report?s=WVPYIyFS9VdbygZ7iLFocpX9z2wnisEZlxBLYV6ayCEHKfGXyAsnmBHnHwV2YR5u8R6wue%2FOYcVjsBN%2BuAgLO2xZo%2FoXv3NmxEYTFF8640uvufmrvOE%3D"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Set-Cookie:
-      - __cfduid=d94a227066242417b8b2c929d7842d0b01601458454; expires=Fri, 30-Oct-20
-        09:34:14 GMT; path=/; domain=.kyber.org; HttpOnly; SameSite=Lax
+        - __cfduid=d1bbb80d2aff6865d6d08446b058c33f11603891714; expires=Fri, 27-Nov-20
+          13:28:34 GMT; path=/; domain=.kyber.org; HttpOnly; SameSite=Lax
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
       Transfer-Encoding:
       - chunked
       cf-request-id:
-      - 057ff5d88a0000c76d4016e200000001
+        - 0610fe7096000027b41484b000000001
     status:
       code: 200
       message: OK

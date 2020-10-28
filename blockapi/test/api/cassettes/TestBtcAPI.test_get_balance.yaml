@@ -9,16 +9,16 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.23.0
+        - python-requests/2.24.0
     method: GET
     uri: https://bch-chain.api.btc.com/v3/address/35hK24tcLEWcgNA4JxpvbkNkoAcDGqQPsP
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA1xQywrCMBC8+xl7ziF9bG17ExRBRfTkUeJmraKmmqQiiP9uWhEft9mZ2R1m76CV
-        V1DeQWlt2TkoIcHdNE49zUYrquaDdHI7XzeH+aEe0HB8WS7cAgRYJt5fWUOJEuMCkzSRRZFGAhwb
-        D2U/l1GCmYCNMkdliN/GOEOZY44C/G1NddOaIwx7jaHabPf2xHr9keSv8In9E16pHenOAX+diLLs
-        IYCtDYTmztQOpu7gKZRWVaDBNUTtB0IFr3zjvqhH7wkAAP//AwA8kbcJKQEAAA==
+        H4sIAAAAAAAAA1xQywrCMBC8+xl7zqFtmkZ7ExRBRerJo8TN+kBNNUlLofjvplXwcVlmZ4YdZlvQ
+        yivIW1BaW3IOcuDiuEhSj8vpBg+rcTpvbvXuvDqXY5zM7uvCFcDAEtKpJg25iEQyysKQieQRA0fG
+        Qy6HUcxFxmCnLsogvX1iJFMZc5ky8M0Wy6rzxhlnUBkszf5kr6S3Hyn6FT6pf8IrtCfdLeCvE7Ec
+        PhiQtYHQ1Ju6xZQ9vIbO6hBocBVi94DQwCtfuS/qMXgCAAD//wMARSedqSgBAAA=
     headers:
       Connection:
       - keep-alive
@@ -27,7 +27,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 13 Jul 2020 16:27:10 GMT
+        - Wed, 28 Oct 2020 13:28:28 GMT
       Server:
       - BTC.com
       Strict-Transport-Security:

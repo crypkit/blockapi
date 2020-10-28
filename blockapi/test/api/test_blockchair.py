@@ -1,8 +1,8 @@
 from pytest import mark
 
-from blockapi.api.blockchair import (BlockchairGroestlcoinAPI,
-                                     BlockchairBitcoinSvAPI)
-from blockapi.test_init import test_addresses
+from blockapi.api.blockchair import (BlockchairBitcoinSvAPI,
+                                     BlockchairGroestlcoinAPI)
+from blockapi.test.test_data import test_addresses
 
 
 class TestBlockchairAPI:
@@ -14,11 +14,11 @@ class TestBlockchairAPI:
         api = BlockchairGroestlcoinAPI(address=self.GROESTL_ADDRESS)
         result = api.get_balance()
 
-        assert result == [{'symbol': 'GRS', 'amount': 330.00184162}]
+        assert result == [{'symbol': 'GRS', 'amount': 130.0}]
 
     @mark.vcr()
     def test_get_balance_bitcoin_sv(self):
         api = BlockchairBitcoinSvAPI(address=self.BSV_ADDRESS)
         result = api.get_balance()
 
-        assert result == [{'symbol': 'BSV', 'amount': 0.39608498000000003}]
+        assert result == [{'symbol': 'BSV', 'amount': 468.0}]

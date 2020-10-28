@@ -1,7 +1,7 @@
 from pytest import mark
 
 from blockapi.api.tzscan import TzscanAPI
-from blockapi.test_init import test_addresses
+from blockapi.test.test_data import test_addresses
 
 
 class TestTzscanAPI:
@@ -18,7 +18,7 @@ class TestTzscanAPI:
         api = TzscanAPI(address=self.ADDRESS)
         result = api.get_balance()
 
-        assert result == [{'symbol': 'XTZ', 'amount': 2068856.4582429999}]
+        assert result == [{'symbol': 'XTZ', 'amount': 1221639.05003}]
 
     @mark.vcr()
     def test_get_rewards(self):

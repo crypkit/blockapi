@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.23.0
+        - python-requests/2.24.0
     method: GET
     uri: https://cosmos.node.cracklord.com/txs?action=send&recipient=cosmos1gn326f6sza44xt5kxrsdrnapp2sxhav03rhcsz&page=1&limit=30
   response:
@@ -33,13 +33,13 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sun, 07 Jun 2020 10:05:06 GMT
+        - Wed, 28 Oct 2020 13:28:29 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
       Transfer-Encoding:
       - chunked
       X-Server-Time:
-      - '1591524306'
+        - '1603891709'
     status:
       code: 200
       message: OK

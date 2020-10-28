@@ -1,7 +1,7 @@
 from pytest import mark
 
 from blockapi.api.digonchain import DigonchainAPI
-from blockapi.test_init import test_addresses
+from blockapi.test.test_data import test_addresses
 
 
 class TestDigonchainAPI:
@@ -12,4 +12,4 @@ class TestDigonchainAPI:
         api = DigonchainAPI(address=self.ADDRESS)
         result = api.get_balance()
 
-        assert result == [{'symbol': 'VET', 'amount': 553093.54494999}]
+        assert result == [{'symbol': 'VET', 'amount': 1099261.20775139}]

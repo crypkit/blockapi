@@ -1,11 +1,8 @@
-from blockapi import (
-    get_all_supported_coins,
-    check_address_valid,
-    get_api_classes_for_coin
-)
 from decimal import Decimal
 
-from blockapi.test_init import test_addresses
+from blockapi import (check_address_valid, get_all_supported_coins,
+                      get_api_classes_for_coin)
+from blockapi.test.test_data import get_test_api_key, test_addresses
 
 
 class TestBlockApiProviders:
@@ -59,8 +56,13 @@ class TestBlockApiProviders:
 
             for class_ in classes:
 
+                # try to load api_key
+                api_key = get_test_api_key(class_.__name__)
                 try:
-                    class_instance = class_(address=currency['address'])
+                    class_instance = class_(
+                        address=currency['address'],
+                        api_key=api_key
+                    )
                 except Exception as e:
                     self.error_api.append({
                         'api': class_.__name__,

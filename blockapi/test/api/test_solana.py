@@ -1,7 +1,7 @@
 from pytest import mark
 
 from blockapi.api import SolanaApi
-from blockapi.test_init import test_addresses
+from blockapi.test.test_data import test_addresses
 
 
 class TestSolanaAPI:

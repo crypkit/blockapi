@@ -9,18 +9,19 @@ interactions:
         Connection:
           - keep-alive
         User-Agent:
-          - python-requests/2.22.0
+          - python-requests/2.24.0
         x-amberdata-blockchain-id:
           - ethereum-mainnet
       method: GET
-      uri: https://web3api.io/api/v2/addresses/0x1d0DcC8d8BcaFa8e8502BEaEeF6CBD49d3AFFCDC/account-balances/latest
+      uri: https://web3api.io/api/v2/addresses/0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca/account-balances/latest
     response:
       body:
         string: !!binary |
-          H4sIAAAAAAAAAFWPyU7EMAyGXwX53EFOSdc3QEjDAU7cHNsR1aQLTYJAo747GYnL3Lx8+pcrxEQp
-          RxhrxArSlILCCK8vUIFo5H3a0rQu5fSWmTVGn8PDrl9ZYyrIRr9hJYHxCiSyl//dCPhjBIW5l94x
-          eeq1b7B2Sqq+ZSd2kCfynoXhqMCFlS/8SdPyXCTB8MBDO2DbFMCwh3/inGenewFs01lTI9xyzyUQ
-          zduZljUqr4sU+1Lom0K+FbqDyl6j6U7GnEz/js1ou9EOj4j4AcfxB2+Ef7YTAQAA
+          H4sIAAAAAAAAAFWPTU7EMAyFr4K8LshO27TJDRDSsIAVO9dJRDX9o0kQaNS7k0osQPLCsr9nv3eD
+          mDjlCFYhVpDGNHmw8PwEFTgfZR+3NK5LGb1kER9jyNPd7j+yj6kgG39PKzuwN2Dn9rL/1wJ+Cfeh
+          FA66Ji9uoF4cazLSBDGOTCc9hyAMRwXDtMpV3nlcHstJIDFitEHdBnEkAX6JS54Hv58Aoe5M08Fp
+          fC6OeN4uvKzRy7q48r8k+uQpn4lq1SJiowxShx2qBusWG8S/2oIpVHhPpfQraUu1Jf1QdG9wHD/1
+          KlfaKwEAAA==
       headers:
         Access-Control-Allow-Origin:
           - '*'
@@ -29,38 +30,38 @@ interactions:
         Content-Encoding:
           - gzip
         Content-Length:
-          - '219'
+          - '235'
         Content-Type:
           - application/json; charset=utf-8
         Date:
-          - Wed, 12 Aug 2020 09:35:18 GMT
+          - Wed, 28 Oct 2020 13:45:40 GMT
         ETag:
-          - W/"113-sNyzh7hipFPPz3BowQhHp+8GD3E"
+          - W/"12b-rVuLRx5xSlVfAQANn0hOPrkPWcg"
         Set-Cookie:
-          - AWSALB=4QankM0v2Xwhg0EGWqlUI2eMxS7MZOPsKBRr+9nRSx7gGoIBUE/ZAmU2t+nZ1mksYtp86PaVJF9zwHdGure4iS+rfZWNtP4sFkFjgc7fcBIZ+FSBhrvxUqWQTotN;
-            Expires=Wed, 19 Aug 2020 09:35:18 GMT; Path=/
-          - AWSALBCORS=4QankM0v2Xwhg0EGWqlUI2eMxS7MZOPsKBRr+9nRSx7gGoIBUE/ZAmU2t+nZ1mksYtp86PaVJF9zwHdGure4iS+rfZWNtP4sFkFjgc7fcBIZ+FSBhrvxUqWQTotN;
-            Expires=Wed, 19 Aug 2020 09:35:18 GMT; Path=/; SameSite=None; Secure
+          - AWSALB=tSyujEZQaUqTbEMgsj7QDR2LJeNUIiftc0zTZT6XxuWOBoWaWm2R5NU4d0OwGKH4n0kjLolV++2A20DI7+QSWtpCE7CVFgS4WQlWNH8OWasuP9bne6Qu96rjWEih;
+            Expires=Wed, 04 Nov 2020 13:45:40 GMT; Path=/
+          - AWSALBCORS=tSyujEZQaUqTbEMgsj7QDR2LJeNUIiftc0zTZT6XxuWOBoWaWm2R5NU4d0OwGKH4n0kjLolV++2A20DI7+QSWtpCE7CVFgS4WQlWNH8OWasuP9bne6Qu96rjWEih;
+            Expires=Wed, 04 Nov 2020 13:45:40 GMT; Path=/; SameSite=None; Secure
         Via:
-          - 1.1 96296f2b3ee1b7cbc3fb127d3383661e.cloudfront.net (CloudFront)
+          - 1.1 e3568b144ae2b93deb0c17907b662ac2.cloudfront.net (CloudFront)
         X-Amz-Cf-Id:
-          - YOY-BZ0SGS56eSEFHEDdXlwkd2E4uIdGyYsY0eLxmZmxj-zG5l1p_A==
+          - S5OilPb2JjhcQw5feVWjsh65gUUdPmv0aD8iSMYn5nuTGuI7iZxinw==
         X-Amz-Cf-Pop:
-          - VIE50-C1
+          - PRG50-C1
         X-Cache:
           - Miss from cloudfront
         X-Response-Time:
-          - 46.241ms
+          - 32.231ms
         x-amz-apigw-id:
-          - RJmpmHgXoAMFYYQ=
+          - VH9gtHZ6oAMFkcg=
         x-amzn-Remapped-Connection:
           - keep-alive
         x-amzn-Remapped-Content-Length:
-          - '275'
+          - '299'
         x-amzn-Remapped-Date:
-          - Wed, 12 Aug 2020 09:35:18 GMT
+          - Wed, 28 Oct 2020 13:45:40 GMT
         x-amzn-RequestId:
-          - 1b063b24-e7cc-46f6-aa1d-ffb25fee6874
+          - ae303388-a36e-4218-bb90-b82d8c66e799
       status:
         code: 200
         message: OK
@@ -74,25 +75,73 @@ interactions:
         Connection:
           - keep-alive
         User-Agent:
-          - python-requests/2.22.0
+          - python-requests/2.24.0
         x-amberdata-blockchain-id:
           - ethereum-mainnet
       method: GET
-      uri: https://web3api.io/api/v2/addresses/0x1d0DcC8d8BcaFa8e8502BEaEeF6CBD49d3AFFCDC/tokens?page=0&size=100
+      uri: https://web3api.io/api/v2/addresses/0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca/tokens?page=0&size=100
     response:
       body:
         string: !!binary |
-          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
+          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
+          EQ6Qcz4AAA==
       headers:
         Access-Control-Allow-Origin:
           - '*'
@@ -101,38 +150,38 @@ interactions:
         Content-Encoding:
           - gzip
         Content-Length:
-          - '601'
+          - '3313'
         Content-Type:
           - application/json; charset=utf-8
         Date:
-          - Wed, 12 Aug 2020 09:35:22 GMT
+          - Wed, 28 Oct 2020 13:45:44 GMT
         ETag:
-          - W/"a3b-dXHKaugLTPeVpstT+N4fpy8Ei/I"
+          - W/"3e73-aXgeOTMPHAzVRNru2PQhabtzvfo"
         Set-Cookie:
-          - AWSALB=cSHMcB2HORDEDRKhm6g2GljND9sXPehuUECG6LxXDGSQsbKFPGcdIBZr2+pSj3f9DlyVVZu5gT+QeGu/9AMe2Y345mfdyjbHlxBEsSfhJtQ6TqC4XryO/H+1D5bM;
-            Expires=Wed, 19 Aug 2020 09:35:22 GMT; Path=/
-          - AWSALBCORS=cSHMcB2HORDEDRKhm6g2GljND9sXPehuUECG6LxXDGSQsbKFPGcdIBZr2+pSj3f9DlyVVZu5gT+QeGu/9AMe2Y345mfdyjbHlxBEsSfhJtQ6TqC4XryO/H+1D5bM;
-            Expires=Wed, 19 Aug 2020 09:35:22 GMT; Path=/; SameSite=None; Secure
+          - AWSALB=6fh+NSi7xuXTBykweG4cBN7/GwtlX0oDDKBVMg9xhr9WO3SMDO4BSp+PVrdjtz5EzNRvDSZ+EoZMY4GSo44SreYIhF7Et4BMmccwjzA62tYylLYFUy1LyVPy5tTp;
+            Expires=Wed, 04 Nov 2020 13:45:44 GMT; Path=/
+          - AWSALBCORS=6fh+NSi7xuXTBykweG4cBN7/GwtlX0oDDKBVMg9xhr9WO3SMDO4BSp+PVrdjtz5EzNRvDSZ+EoZMY4GSo44SreYIhF7Et4BMmccwjzA62tYylLYFUy1LyVPy5tTp;
+            Expires=Wed, 04 Nov 2020 13:45:44 GMT; Path=/; SameSite=None; Secure
         Via:
-          - 1.1 9a736972b021a4b2382c29923f73ce8b.cloudfront.net (CloudFront)
+          - 1.1 2a9856881d192b485d1bf1928e98c7ed.cloudfront.net (CloudFront)
         X-Amz-Cf-Id:
-          - OyDtaNDc0EfzZN3YChB76grzWmySM0Ir1itZlXPW0xsndw-zD65b-w==
+          - 3YO3L2VZ2i5JUo-0td6mHVkGUbX3QWFnWmULvcFoXgnWUykAyc-myQ==
         X-Amz-Cf-Pop:
-          - VIE50-C1
+          - PRG50-C1
         X-Cache:
           - Miss from cloudfront
         X-Response-Time:
-          - 57.969ms
+          - 57.515ms
         x-amz-apigw-id:
-          - RJmqLHL1IAMFjqA=
+          - VH9hVFXdoAMFdCw=
         x-amzn-Remapped-Connection:
           - keep-alive
         x-amzn-Remapped-Content-Length:
-          - '2619'
+          - '15987'
         x-amzn-Remapped-Date:
-          - Wed, 12 Aug 2020 09:35:22 GMT
+          - Wed, 28 Oct 2020 13:45:44 GMT
         x-amzn-RequestId:
-          - 3518c057-666f-4e79-a866-32d5dd91249e
+          - 84515e91-eefd-414a-b8f6-18ea15c4837d
       status:
         code: 200
         message: OK
