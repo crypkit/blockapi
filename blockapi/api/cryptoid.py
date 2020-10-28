@@ -1,7 +1,4 @@
-from blockapi.services import (
-    BlockchainAPI,
-    APIKeyMissing
-)
+from blockapi.services import (APIKeyMissing, BlockchainAPI)
 
 
 class CryptoIDAPI(BlockchainAPI):
@@ -16,7 +13,7 @@ class CryptoIDAPI(BlockchainAPI):
     symbol = None
     base_url = 'http://chainz.cryptoid.info'
     rate_limit = 0
-    coef = 1e-8
+    coef = 1
     max_items_per_page = None
     page_offset_step = None
     confirmed_num = None
@@ -38,7 +35,10 @@ class CryptoIDAPI(BlockchainAPI):
                                 symbol=self.symbol.lower(),
                                 address=self.address)
 
-        return [{'symbol': self.symbol, 'amount': response * self.coef}]
+        return [{
+            'symbol': self.symbol,
+            'amount': float(response) * self.coef
+        }]
 
 
 class CryptoIDLitecoinAPI(CryptoIDAPI):
@@ -47,9 +47,7 @@ class CryptoIDLitecoinAPI(CryptoIDAPI):
 
 class CryptoIDDashAPI(CryptoIDAPI):
     symbol = 'DASH'
-    coef = 1
 
 
 class CryptoIDGroestlcoinAPI(CryptoIDAPI):
     symbol = 'GRS'
-    coef = 1

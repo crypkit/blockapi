@@ -5,14 +5,16 @@ class ChainSoAPI(BlockchainAPI):
     """
     Multi coins: bitcoin, litecoin, dogecoin, zcash, dash
     Does't support xpub/ypub/zpub :(
-    API docs: https://chain.so/api
+    API docs: https://sochain.com/api
     Explorer: 
     """
 
+    active = True
+
     symbol = None
-    base_url = 'https://chain.so/api/v2'
+    base_url = 'https://sochain.com/api/v2'
     rate_limit = 0.2  # 5 per second
-    coef = None
+    coef = 1
     max_items_per_page = None
     page_offset_step = None
     confirmed_num = None
@@ -56,7 +58,7 @@ class ChainSoAPI(BlockchainAPI):
             method,
             symbol=self.symbol,
             address=self.address,
-            with_cloudflare=True
+            # with_cloudflare=True
         )
         if response['status'] == 'fail':
             return None
@@ -64,27 +66,20 @@ class ChainSoAPI(BlockchainAPI):
 
 
 class ChainSoBitcoinAPI(ChainSoAPI):
-    active = False
     symbol = 'BTC'
-    coef = 1e-8
 
 
 class ChainSoLitecoinAPI(ChainSoAPI):
-    active = False
     symbol = 'LTC'
-    coef = 1e-8
 
 
 class ChainSoDogecoinAPI(ChainSoAPI):
     symbol = 'DOGE'
-    coef = 1
 
 
 class ChainSoZcashAPI(ChainSoAPI):
     symbol = 'ZEC'
-    coef = 1
 
 
 class ChainSoDashAPI(ChainSoAPI):
     symbol = 'DASH'
-    coef = 1

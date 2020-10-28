@@ -19,13 +19,14 @@ class InsightAPI(BlockchainAPI):
     }
 
     def get_balance(self):
-        response = self.request('get_balance',
-                                address=self.address)
+        response = self.request('get_balance', address=self.address)
         if not response:
-            return None
+            return []
 
-        retval = response * self.coef
-        return [{'symbol': self.symbol, 'amount': retval}]
+        return [{
+            'symbol': self.symbol,
+            'amount': response * self.coef
+        }]
 
 
 class BitpayAPI(InsightAPI):
@@ -34,6 +35,7 @@ class BitpayAPI(InsightAPI):
     API docs: 
     Explorer: 
     """
+    active = False  # no longer available
     symbol = 'BTC'
     base_url = 'https://insight.bitpay.com/api'
 
@@ -44,6 +46,7 @@ class MercerweissAPI(InsightAPI):
     API docs: http://insight.mercerweiss.com/api
     Explorer: http://insight.mercerweiss.com/
     """
+    active = False  # no longer available
     symbol = 'ZEC'
     base_url = 'http://insight.mercerweiss.com/api'
 
@@ -57,10 +60,6 @@ class RavencoinAPI(InsightAPI):
     symbol = 'RVN'
     base_url = 'https://ravencoin.network/api'
 
-    def get_balance(self):
-        response = self.request('get_balance', address=self.address)
-        return [{'symbol': self.symbol, 'amount': response * self.coef}]
-
 
 class InsightLitecoreAPI(InsightAPI):
     """
@@ -71,3 +70,13 @@ class InsightLitecoreAPI(InsightAPI):
     active = False
     symbol = 'LTC'
     base_url = 'https://insight.litecore.io/api'
+
+
+class InsightDcrdataAPI(InsightAPI):
+    """
+    coins: decred
+    API docs: https://github.com/decred/dcrdata/blob/master/api/Insight_API_documentation.md
+    Explorer: https://explorer.dcrdata.org
+    """
+    symbol = 'DCR'
+    base_url = 'https://explorer.dcrdata.org/insight/api'

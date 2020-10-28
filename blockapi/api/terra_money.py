@@ -14,7 +14,7 @@ class TerraMoneyApi(BlockchainAPI):
     base_url = 'https://fcd.terra.dev/v1'
     rate_limit = 0.5
     coef = Decimal(1e-6)
-    max_items_per_page = 50
+    max_items_per_page = 100
     page_offset_step = 1
 
     supported_requests = {
@@ -57,7 +57,7 @@ class TerraMoneyApi(BlockchainAPI):
 
         return return_balances
 
-    def get_txs(self, offset=1, limit=1000, unconfirmed=False):
+    def get_txs(self, offset=1, limit=100, unconfirmed=False):
         txs_req = self.request('get_txs', address=self.address, limit=limit,
                                page=offset)
         if not txs_req:

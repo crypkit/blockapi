@@ -1,21 +1,18 @@
 import dateutil.parser
 
-from blockapi.services import (
-    BlockchainAPI,
-    set_default_args_values,
-    APIError
-)
+from blockapi.services import (APIError, BlockchainAPI,
+                               set_default_args_values)
 
 
 class TzscanAPI(BlockchainAPI):
     """
     Tezos
     API docs: https://tzscan.io/api
-    Explorer: https://tzscan.io
-
-    Second API
-    https://api.tzstats.com/explorer/
+        Explorer: https://tzscan.io
     """
+
+    # inaccurate results for balances, use on your own risk
+    active = False
 
     symbol = 'XTZ'
     base_url = None  # endpoint is created in runtime
@@ -38,7 +35,7 @@ class TzscanAPI(BlockchainAPI):
                             '?p={page_offset}&number={number}'
     }
 
-    def __init__(self, address, api_key=None):
+    def __init__(self, address, *args, **kwargs):
         super().__init__(address)
         # this API is very unstable, add some functionality to prevent fails
         self._base_url_temp = 'https://api{num}.dunscan.io'  # num is 1-6
@@ -46,8 +43,10 @@ class TzscanAPI(BlockchainAPI):
 
     def get_balance(self):
         balance = self._safe_request('get_balance', address=self.address)
-        return [{'symbol': self.symbol,
-                 'amount': float(balance['spendable']) * self.coef}]
+        return [{
+            'symbol': self.symbol,
+            'amount': float(balance['spendable']) * self.coef
+        }]
 
     def get_rewards(self, offset=0, limit=50):
         rewards = self._safe_request('get_rewards', address=self.address,

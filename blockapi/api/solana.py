@@ -89,7 +89,7 @@ class SolanaApi(BlockchainAPI):
         },
     }
 
-    def __init__(self, address):
+    def __init__(self, address, *args, **kwargs):
         super().__init__(address)
         self._headers = {
             'Content-Type': 'application/json'

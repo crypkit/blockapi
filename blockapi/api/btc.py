@@ -31,9 +31,7 @@ class BtcAPI(BlockchainAPI):
         if response['data'] is None:
             return None
 
-        try:
-            retval = response['data']['banlance'] * self.coef
-        except KeyError:
-            return None
-
-        return [{'symbol': self.symbol, 'amount': retval}]
+        return [{
+            'symbol': self.symbol,
+            'amount': response['data']['balance'] * self.coef
+        }]
