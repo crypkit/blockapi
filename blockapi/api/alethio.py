@@ -17,7 +17,7 @@ class AlethioAPI(BlockchainAPI):
 
     symbol = 'ETH'
     base_url = 'https://api.aleth.io/v1'
-    rate_limit = 0
+    rate_limit = 1  # 1 req per second
     coef = 1e-18
     max_items_per_page = 100
     page_offset_step = None
@@ -27,8 +27,8 @@ class AlethioAPI(BlockchainAPI):
     collect_logs = True
 
     supported_requests = {
-        'get_balance': '/ether-balances?filter[account]={address}',
-        'get_token_balances': '/token-balances?filter[account]={address}',
+        'get_balance': '/accounts/{address}/etherBalances',
+        'get_token_balances': '/accounts/{address}/tokenBalances',
         'get_token_info': '/tokens/{token_id}',
         'get_txs':
             '/transactions?filter[account]={address}&page[limit]={limit}'
@@ -63,8 +63,7 @@ class AlethioAPI(BlockchainAPI):
 
         :return: list
         """
-        response = self._query_api('get_balance',
-                                   address=self.address)
+        response = self._query_api('get_balance', address=self.address)
         if not response:
             return None
 
