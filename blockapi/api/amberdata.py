@@ -10,7 +10,7 @@ class AmberdataAPI(BlockchainAPI):
     symbol = 'ETH'
     base_url = 'https://web3api.io/api/v2'
     # 3 reqs per second with free api key, but doesn't work well
-    rate_limit = 1
+    rate_limit = 2
     coef = 1e-18
     start_offset = 0
     max_items_per_page = 100
@@ -46,7 +46,6 @@ class AmberdataAPI(BlockchainAPI):
         response = self.request(
             'get_balance',
             address=self.address,
-            api_key=self.api_key,
             headers=self._headers
         )
         if response['status'] != 200:
@@ -67,7 +66,6 @@ class AmberdataAPI(BlockchainAPI):
                 address=self.address,
                 page=page,
                 size=self.max_items_per_page,
-                api_key=self.api_key,
                 headers=self._headers
             )
             if response['status'] != 200:
