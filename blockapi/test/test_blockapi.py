@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from blockapi import (check_address_valid, get_all_supported_coins,
                       get_api_classes_for_coin)
-from blockapi.test.test_data import get_test_api_key, test_addresses
+from blockapi.test_data import get_test_api_key, test_addresses
 
 
 class TestBlockApiProviders:

@@ -2,7 +2,7 @@ from pytest import mark, raises
 
 from blockapi.api.cosmos import CosmosAPI
 from blockapi.services import AddressNotExist, InternalServerError
-from blockapi.test.test_data import test_addresses
+from blockapi.test_data import test_addresses
 
 
 class TestCosmosAPI:

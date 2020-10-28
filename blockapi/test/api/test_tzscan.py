@@ -1,7 +1,7 @@
 from pytest import mark
 
 from blockapi.api.tzscan import TzscanAPI
-from blockapi.test.test_data import test_addresses
+from blockapi.test_data import test_addresses
 
 
 class TestTzscanAPI:

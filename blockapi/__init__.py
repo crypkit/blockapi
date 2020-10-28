@@ -5,8 +5,8 @@ import coinaddrng
 
 import blockapi.api
 import blockapi.utils
-from blockapi.test.test_data import test_addresses
 from .services import APIError
+from .test_data import test_addresses
 
 # currencies' ids (from coingecko.com) and symbols
 COINS = {

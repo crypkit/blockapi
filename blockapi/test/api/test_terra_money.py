@@ -3,7 +3,7 @@ from decimal import Decimal
 from pytest import mark
 
 from blockapi.api.terra_money import TerraMoneyApi
-from blockapi.test.test_data import test_addresses
+from blockapi.test_data import test_addresses
 
 
 class TestTerraMoneyApi:

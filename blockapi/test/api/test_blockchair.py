@@ -2,7 +2,7 @@ from pytest import mark
 
 from blockapi.api.blockchair import (BlockchairBitcoinSvAPI,
                                      BlockchairGroestlcoinAPI)
-from blockapi.test.test_data import test_addresses
+from blockapi.test_data import test_addresses
 
 
 class TestBlockchairAPI:

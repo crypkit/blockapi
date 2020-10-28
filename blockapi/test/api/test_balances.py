@@ -2,7 +2,7 @@ from typing import Type
 
 from blockapi import get_active_api_classes
 from blockapi.services import BlockchainAPI
-from blockapi.test.test_data import get_test_api_key, test_addresses
+from blockapi.test_data import get_test_api_key, test_addresses
 
 
 # TODO parametrize it for all endpoints using pytest

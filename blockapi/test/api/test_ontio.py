@@ -1,7 +1,7 @@
 from pytest import mark
 
 from blockapi.api import OntioAPI
-from blockapi.test.test_data import test_addresses
+from blockapi.test_data import test_addresses
 
 
 class TestOntioAPI:
