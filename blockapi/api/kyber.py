@@ -1,5 +1,6 @@
 from datetime import datetime
 from decimal import Decimal
+from typing import Dict, List
 
 from blockapi.services import BlockchainAPI
 
@@ -34,7 +35,7 @@ class KyberAPI(BlockchainAPI):
 
         super(KyberAPI, self).__init__(address)
 
-    def get_staker_epoch_info(self, epoch: int) -> dict:
+    def get_staker_epoch_info(self, epoch: int) -> Dict:
         """
         Get staker information for a given epoch
 
@@ -53,7 +54,7 @@ class KyberAPI(BlockchainAPI):
         return self._parse_staker_epoch_info(result['data'])
 
     @staticmethod
-    def _parse_staker_epoch_info(info: dict) -> dict:
+    def _parse_staker_epoch_info(info: Dict) -> Dict:
         return {
             'stake_amount': Decimal(info['stake_amount']),
             'delegated_stake_amount': Decimal(info['delegated_stake_amount']),
@@ -61,7 +62,7 @@ class KyberAPI(BlockchainAPI):
             'delegate': info['delegate']
         }
 
-    def get_user_actions(self) -> [dict]:
+    def get_user_actions(self) -> List[Dict]:
         """
         Get information about actions undertaken by a given address
 
@@ -80,7 +81,7 @@ class KyberAPI(BlockchainAPI):
         return self._parse_user_actions(result['data'])
 
     @staticmethod
-    def _parse_user_actions(raw_actions: list) -> [dict]:
+    def _parse_user_actions(raw_actions: List) -> List[Dict]:
         actions = []
         for action in raw_actions:
             actions.append({
@@ -92,7 +93,7 @@ class KyberAPI(BlockchainAPI):
             })
         return actions
 
-    def get_staker_rewards(self) -> [dict]:
+    def get_staker_rewards(self) -> List[Dict]:
         """
         Get information about staking rewards for a given address
 
@@ -117,7 +118,7 @@ class KyberAPI(BlockchainAPI):
         return self._parse_staker_rewards(result['data'])
 
     @staticmethod
-    def _parse_staker_rewards(raw_rewards: list) -> [dict]:
+    def _parse_staker_rewards(raw_rewards: List) -> List[Dict]:
         rewards = []
         for reward in raw_rewards:
             rewards.append({
@@ -131,7 +132,7 @@ class KyberAPI(BlockchainAPI):
             })
         return rewards
 
-    def get_staker_votes(self) -> [dict]:
+    def get_staker_votes(self) -> List[Dict]:
         """
         Get information about actions undertaken by a given address
 
@@ -151,7 +152,7 @@ class KyberAPI(BlockchainAPI):
         return self._parse_staker_votes(result['data'])
 
     @staticmethod
-    def _parse_staker_votes(raw_votes: list) -> [dict]:
+    def _parse_staker_votes(raw_votes: List) -> List[Dict]:
         votes = []
         for vote in raw_votes:
             votes.append({
