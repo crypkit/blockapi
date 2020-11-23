@@ -48,7 +48,7 @@ test_addresses = {
         'XtAG1982HcYJVibHxRZrBmdzL5YTzj4cA1'
     ],
     'ETC': [
-        '0x9d2BFC36106F038250c01801685785b16C86C60D'
+        '0x618F37D7ff7B140E604172466CD42D1Ec35E0544'
     ],
     'ZEN': [
         'znZTLu1asaLWxB7EBqBRQ6DCnNyctYA3Rm4'
@@ -82,6 +82,9 @@ test_addresses = {
     ],
     'ONT': [
         'AS5R2tAn2KViJN3W4KkW5XwrrR85sXpn9p'
+    ],
+    'STAKE': [
+        '0x6a1cf24C645DB2e37141Fa12E70Cb67e56b336f3'
     ]
 }
 

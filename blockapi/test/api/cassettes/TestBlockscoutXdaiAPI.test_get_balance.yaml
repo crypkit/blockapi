@@ -1,0 +1,151 @@
+interactions:
+  - request:
+      body: null
+      headers:
+        Accept:
+          - '*/*'
+        Accept-Encoding:
+          - gzip, deflate
+        Connection:
+          - keep-alive
+        User-Agent:
+          - python-requests/2.24.0
+      method: GET
+      uri: https://blockscout.com/poa/xdai/api?module=account&action=balance&address=0x6a1cf24C645DB2e37141Fa12E70Cb67e56b336f3
+    response:
+      body:
+        string: !!binary |
+          H4sIAAAAAAAAAwTBoRWAMAxAwV2+riBNINAVEMxQ0YcBQ1rFY3fuXu4WUc9G4dhJPC3G1SnkWbO5
+          6yqubssmbpOakYhe+wgKwvcDAAD//wMAUwgfs0AAAAA=
+      headers:
+        Access-Control-Allow-Credentials:
+          - 'true'
+        Access-Control-Allow-Origin:
+          - '*'
+        Access-Control-Expose-Headers:
+          - ''
+        CF-Cache-Status:
+          - DYNAMIC
+        CF-RAY:
+          - 5f6bd2ea5b9927b4-PRG
+        Cache-Control:
+          - max-age=0, private, must-revalidate
+        Connection:
+          - keep-alive
+        Content-Encoding:
+          - gzip
+        Content-Security-Policy:
+          - connect-src 'self' wss://*.blockscout.com wss://blockscout.com; default-src
+            'self' *.google-analytics.com *.googleapis.com *.gstatic.com *.googletagmanager.com;
+            script-src 'self' https://cdn.jsdelivr.net https://www.google-analytics.com
+            https://ajax.cloudflare.com https://www.googletagmanager.com 'unsafe-inline'
+            'unsafe-eval' ; style-src 'self' 'unsafe-inline' 'unsafe-eval' * https://cdn.jsdelivr.net
+            https://fonts.googleapis.com; img-src 'self' * data:; media-src 'self' * data:;
+            font-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://fonts.gstatic.com
+            data:;
+        Content-Type:
+          - application/json; charset=utf-8
+        Date:
+          - Mon, 23 Nov 2020 15:11:39 GMT
+        Expect-CT:
+          - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+        NEL:
+          - '{"report_to":"cf-nel","max_age":604800}'
+        Report-To:
+          - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report?s=WiUjfL7%2BrtllnB78aab0LEcFUTAW0EOo3WBoyoEgQdDbft1tA%2FrJjDQ6YIrksAz0airTpUqF0Is1ulyAMO1WYslPN%2FM2cezGlInd41nvDg%3D%3D"}],"group":"cf-nel","max_age":604800}'
+        Server:
+          - cloudflare
+        Set-Cookie:
+          - __cfduid=d10495c54615b70876d572c39983695401606144298; expires=Wed, 23-Dec-20
+            15:11:38 GMT; path=/; domain=.blockscout.com; HttpOnly; SameSite=Lax; Secure
+          - network=dai; path=/
+        Transfer-Encoding:
+          - chunked
+        X-Frame-Options:
+          - ALLOWALL
+        X-Request-Id:
+          - FkoruuQ36oP1owoAOkcJ
+        cf-request-id:
+          - 0697422678000027b44f0cd000000001
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: null
+      headers:
+        Accept:
+          - '*/*'
+        Accept-Encoding:
+          - gzip, deflate
+        Connection:
+          - keep-alive
+        User-Agent:
+          - python-requests/2.24.0
+      method: GET
+      uri: https://blockscout.com/poa/xdai/api?module=account&action=tokenlist&address=0x6a1cf24C645DB2e37141Fa12E70Cb67e56b336f3
+    response:
+      body:
+        string: !!binary |
+          H4sIAAAAAAAAA7zTXWtbMQwG4L8SfH0Kki1/qHdtGkgZdDCydWXsQrblLZCchJxT1lD630fKLrLS
+          UChst7JlP+hFj2atwyA/1Jybjx9MZ3Y63K9Gc/7t0WRZSV8OJ5HYUUyIISA45ylxcqYzZdOPOynj
+          Ra07HQZzbuCBPPhsg60FvGNOBSEkX4tvDJykJVFfklTTmapluZbVoQ+T6Uwv68Nvn/vl8Eu2ky/W
+          dGbYr/NmdajeXJ89V8b99nBr9ml6ZsE8dcdQOIEKAtaVUrG10CyQL84Bx5BUKmtIjWNqQfE06nYn
+          263WyWz8qbvJpp88XMny2Hc7W8zf0DEAuUTgIjIlS+AdnQBHTB5yVFZ1DZ1kCjVEDNERKuVaGLxq
+          49Pg+abX/TFwfnP3zuklVtsc2UyI4Kz4BE2bYGwcqgTxWRsh2v8aaVKfc87AWlFz1RQilSqOBQoG
+          JsCayfoXqFcSvVxMX83zcjF9Jy07QASImnP2oURGFc0txabgPDLkVLOGfzMvBB+sjRHIoqPoMRKc
+          2lVlrOidQib0mMQWTbW6GpmoSQqOghOO9e21+Hp1cf3X9P4UXki/d2YYZbx/fsY8/QYAAP//AwAa
+          JF/1fgQAAA==
+      headers:
+        Access-Control-Allow-Credentials:
+          - 'true'
+        Access-Control-Allow-Origin:
+          - '*'
+        Access-Control-Expose-Headers:
+          - ''
+        CF-Cache-Status:
+          - DYNAMIC
+        CF-RAY:
+          - 5f6bd2f27b0d2790-PRG
+        Cache-Control:
+          - max-age=0, private, must-revalidate
+        Connection:
+          - keep-alive
+        Content-Encoding:
+          - gzip
+        Content-Security-Policy:
+          - connect-src 'self' wss://*.blockscout.com wss://blockscout.com; default-src
+            'self' *.google-analytics.com *.googleapis.com *.gstatic.com *.googletagmanager.com;
+            script-src 'self' https://cdn.jsdelivr.net https://www.google-analytics.com
+            https://ajax.cloudflare.com https://www.googletagmanager.com 'unsafe-inline'
+            'unsafe-eval' ; style-src 'self' 'unsafe-inline' 'unsafe-eval' * https://cdn.jsdelivr.net
+            https://fonts.googleapis.com; img-src 'self' * data:; media-src 'self' * data:;
+            font-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://fonts.gstatic.com
+            data:;
+        Content-Type:
+          - application/json; charset=utf-8
+        Date:
+          - Mon, 23 Nov 2020 15:11:41 GMT
+        Expect-CT:
+          - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+        NEL:
+          - '{"report_to":"cf-nel","max_age":604800}'
+        Report-To:
+          - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report?s=eivzz3nZF%2FOoh8oIn%2FFJSONij2oChm0%2F2oEb43DGgm9slg%2FgTahfxd1OVEw5f5xx%2BK0uejkeiwL6dBG2FzM1Tnt9J2XCgmGERnFjqca9Ng%3D%3D"}],"group":"cf-nel","max_age":604800}'
+        Server:
+          - cloudflare
+        Set-Cookie:
+          - __cfduid=da20f37592d3e06f1d5889a2fec98fa8b1606144299; expires=Wed, 23-Dec-20
+            15:11:39 GMT; path=/; domain=.blockscout.com; HttpOnly; SameSite=Lax; Secure
+          - network=dai; path=/
+        Transfer-Encoding:
+          - chunked
+        X-Frame-Options:
+          - ALLOWALL
+        X-Request-Id:
+          - FkoruzEvewJU7LQAQJiF
+        cf-request-id:
+          - 0697422b8d00002790558d2000000001
+      status:
+        code: 200
+        message: OK
+version: 1
