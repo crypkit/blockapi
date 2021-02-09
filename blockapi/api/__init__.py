@@ -19,6 +19,7 @@ from blockapi.api.etherscan import *
 from blockapi.api.ethplorer import *
 from blockapi.api.greymass import *
 from blockapi.api.insight import *
+from blockapi.api.mirror import *
 from blockapi.api.neoscan import *
 from blockapi.api.ontology import *
 from blockapi.api.solana import *
@@ -30,5 +31,3 @@ from blockapi.api.tzscan import *
 from blockapi.api.tzstats import *
 from blockapi.api.zchain import *
 from blockapi.api.zensystem import *
-
-from blockapi.api.mirror import *
