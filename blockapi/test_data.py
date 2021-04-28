@@ -85,6 +85,9 @@ test_addresses = {
     ],
     'STAKE': [
         '0x6a1cf24C645DB2e37141Fa12E70Cb67e56b336f3'
+    ],
+    'DOT': [
+        '13vrWSUXdm9yJH4GPig2NDMJFxUHwepeUbHgBr6Kmya9eVLh'
     ]
 }
 
