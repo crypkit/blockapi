@@ -1,5 +1,4 @@
 import json
-from abc import ABC
 from datetime import datetime
 from decimal import Decimal
 
@@ -7,7 +6,7 @@ from blockapi.services import BlockchainAPI, AddressNotExist, APIError
 from blockapi.utils.decimal import safe_decimal
 
 
-class SubscanAPI(BlockchainAPI, ABC):
+class SubscanAPI(BlockchainAPI):
     """
     API docs: https://docs.api.subscan.io/
     Explorer: https://www.subscan.io
