@@ -25,7 +25,7 @@ class SubscanAPI(BlockchainAPI, ABC):
         'get_balance': '/api/v2/scan/search',
         'get_txs': '/api/scan/transfers',
         'get_rewards': '/api/scan/account/reward_slash',
-        'get_stacking': '/api/v2/scan/search'
+        'get_staking': '/api/v2/scan/search'
     }
 
     def __init__(self, address, api_key=None, *args, **kwargs):
@@ -149,7 +149,7 @@ class SubscanAPI(BlockchainAPI, ABC):
         })
 
         response = self.request(
-            'get_stacking',
+            'get_staking',
             body=body,
             headers=self._headers,
             api_key=self.api_key
