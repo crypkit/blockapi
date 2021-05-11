@@ -1,7 +1,7 @@
-import distutils
 import json
 from abc import ABC
 from datetime import datetime
+from decimal import Decimal
 
 from blockapi.services import BlockchainAPI, AddressNotExist, APIError
 from blockapi.utils.decimal import safe_decimal
@@ -15,7 +15,7 @@ class SubscanAPI(BlockchainAPI, ABC):
 
     api_url = 'api.subscan.io'
     rate_limit = 0
-    coef = 1e-12
+    coef = Decimal('1e-12')
     max_items_per_page = 50
     page_offset_step = 1
     confirmed_num = None
@@ -61,8 +61,8 @@ class SubscanAPI(BlockchainAPI, ABC):
     def get_txs(self, offset=0, limit=10, unconfirmed=False):
         body = json.dumps({
             'address': self.address,
-            'page': (0 if (offset is None) else offset),
-            'row': (1 if (limit is None) else limit)
+            'page': offset,
+            'row': limit
         })
 
         response = self.request(
@@ -73,36 +73,28 @@ class SubscanAPI(BlockchainAPI, ABC):
         )
 
         if response['code'] == 0:
-            result = [self._parse_tx(t) for t in response['data']['transfers']]
-            return [t for t in result if unconfirmed or t['confirmed']]
+            transfers = (self._parse_tx(t) for t in response['data']['transfers'])
+            return [t for t in transfers if unconfirmed or t['confirmed']]
         elif response['code'] == 10004:
             raise AddressNotExist()
         else:
             raise APIError(response['message'])
 
     def _parse_tx(self, tx):
-        from_address = tx['from']
-        to_address = tx['to']
-        amount = tx['amount']
-        fee = tx['fee']
-        tx_hash = tx['hash']
-        timestamp = tx['block_timestamp']
-        is_success = tx['success']
-
-        if from_address == self.address:
+        if tx['from'] == self.address:
             direction = 'outgoing'
         else:
             direction = 'incoming'
 
         return {
-            'date': datetime.strptime(datetime.fromtimestamp(timestamp).isoformat(), '%Y-%m-%dT%H:%M:%S'),
-            'from_address': from_address,
-            'to_address': to_address,
-            'amount': safe_decimal(amount),
-            'fee': safe_decimal(fee) * safe_decimal(self.coef),
-            'hash': tx_hash,
-            'confirmed': is_success,
-            'is_error': not is_success,
+            'date': datetime.fromtimestamp(tx['block_timestamp']),
+            'from_address': tx['from'],
+            'to_address': tx['to'],
+            'amount': safe_decimal(tx['amount']),
+            'fee': safe_decimal(tx['fee']) * self.coef,
+            'hash': tx['hash'],
+            'confirmed': tx['success'],
+            'is_error': not tx['success'],
             'type': 'normal',
             'kind': 'transaction',
             'direction': direction,
@@ -112,8 +104,8 @@ class SubscanAPI(BlockchainAPI, ABC):
     def get_rewards(self, offset=0, limit=20):
         body = json.dumps({
             'address': self.address,
-            'row': (1 if (limit is None) else limit),
-            'page': (0 if (offset is None) else offset)
+            'row': limit,
+            'page': offset
         })
 
         response = self.request(
@@ -124,8 +116,10 @@ class SubscanAPI(BlockchainAPI, ABC):
         )
 
         if response['code'] == 0:
-            rewards = response['data']['list'] if response['data']['list'] is not None else []
-            return [self._parse_reward(r) for r in rewards]
+            return [self._parse_reward(r) for r in
+                    (response['data']['list'] if response['data']['list'] is not None else [])]
+        elif response['code'] == 10004:
+            raise AddressNotExist()
         else:
             raise APIError(response['message'])
 
@@ -136,7 +130,7 @@ class SubscanAPI(BlockchainAPI, ABC):
             sign = -1
 
         return {
-            'amount': safe_decimal(reward['amount']) * safe_decimal(self.coef) * safe_decimal(sign),
+            'amount': safe_decimal(reward['amount']) * self.coef * sign,
             'hash': reward['extrinsic_hash'],
             'event_index': reward['event_index']
         }
@@ -144,8 +138,8 @@ class SubscanAPI(BlockchainAPI, ABC):
     def get_staking(self, offset=0, limit=20):
         body = json.dumps({
             'key': self.address,
-            'row': (1 if (limit is None) else limit),
-            'page': (0 if (offset is None) else offset)
+            'row': limit,
+            'page': offset
         })
 
         response = self.request(
@@ -157,6 +151,8 @@ class SubscanAPI(BlockchainAPI, ABC):
 
         if response['code'] == 0:
             return safe_decimal(response['data']['account']['balance_lock'])
+        elif response['code'] == 10004:
+            raise AddressNotExist()
         else:
             raise APIError(response['message'])
 

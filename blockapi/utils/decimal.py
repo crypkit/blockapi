@@ -16,7 +16,5 @@ def safe_decimal(number) -> Decimal:
         return Decimal(str(number))
     elif isinstance(number, (int, str)):
         return Decimal(number)
-    elif isinstance(number, str):
-        return Decimal(number)
     else:
         raise TypeError(f'Type {type(number)} is not supported.')
