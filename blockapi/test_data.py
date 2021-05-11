@@ -88,6 +88,9 @@ test_addresses = {
     ],
     'DOT': [
         '13vrWSUXdm9yJH4GPig2NDMJFxUHwepeUbHgBr6Kmya9eVLh'
+    ],
+    'WND': [
+        '5GeeixzC3xcCGc4Usi2UnCTfh46WXBmVL1duL9Nx5NHJkGxs'
     ]
 }
 
