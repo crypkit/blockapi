@@ -1,4 +1,5 @@
 import setuptools
+import setuptools
 from setuptools import find_packages
 
 with open("README.md", "r") as f:
@@ -8,7 +9,7 @@ PACKAGES = find_packages(where='.')
 
 setuptools.setup(
     name='blockapi',
-    version='0.0.82',
+    version='0.0.83',
     author='Devmons s.r.o.',
     description='BlockAPI library',
     license='MIT',

@@ -44,6 +44,8 @@ List of supported coins:
 | VET   | DigonchainAPI | balance
 | BOS   | BlockchainosAPI | balance, transactions
 | LUNA  | TerraMoneyAPI | balance, transactions, delegations
+| DOT   | SubscanPolkaAPI | balance, transactions, staking (locked, rewards)
+| KSM   | SubscanKusamaAPI | balance, transactions, staking (locked, rewards)
 
 ## Getting Started
 
