@@ -70,8 +70,9 @@ def get_shuffled_api_classes_for_coin(symbol):
 
 
 def get_api_classes_for_coin(symbol):
+
     return [i for i in get_active_api_classes() if
-            i.symbol and i.symbol == symbol]
+            (i.symbol and i.symbol == symbol) or (symbol in i.supported_cryptos)]
 
 
 def filter_suitable_api_classes(api_classes, symbol, address):
@@ -93,8 +94,10 @@ def get_random_api_class_for_coin(symbol, exclude=None):
 
 
 def get_all_supported_coins():
-    return list(set(c.symbol for c in get_active_api_classes()
-                    if c.symbol))
+    coins = set()
+    for c in get_active_api_classes():
+        coins |= c.supported_cryptos
+    return list(coins)
 
 
 def get_active_api_classes():
