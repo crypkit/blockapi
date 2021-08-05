@@ -1,0 +1,86 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+    method: GET
+    uri: https://fcd.terra.dev/v1/bank/terra1vw96exejy03w7n2jt8t3qv392f3lqtvmv53720
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA81TSW7DMAz8C89OoMX7O4oeGhiBEjGOWlmOZVnZ4L8Xdpo0W9Eey9tQI3KGoo6w
+        EFqYJUI+O4JEU1eQQ6c7IyAA4YXSYqERcmAspXESxhCARI2lcChfsXXKlJAD+U4/8lcW77mdWdRG
+        nnBEzgEBWKyEMsqU1/w+uNLWtfJOGs0oCVkUJ9FfxZHfVf0spgjAn/GsuJRWtWm/pjji2s6FlBbb
+        FnJwaK2gfpvFuMP3PeHbxLB3lzreeJ6xFdeN85WPeMKGxl5oJZ+V8ELXG7TUR2vbaJ/Kpjz4Pdls
+        D82hJOVun2aZrcIP2VnCdxBAuxYWh+uU8DiLGQ8jOiUPMUy0qjvjbpmj2ctU/qE9NM4qPAlbWhxf
+        Yb5GVa4HJ5yywQgEsKyrjcbx1Klq3E/C6ITEE5q80CinNCdsGmZhzFLKozcIQBnllNDzywe5XdSn
+        6b7oi/4Thl3BRFQDAAA=
+    headers:
+      CF-Cache-Status:
+      - EXPIRED
+      CF-RAY:
+      - 65c90df14a401135-MAD
+      Cache-Control:
+      - public, max-age=1
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - 'default-src ''self'';script-src ''self'' ''unsafe-inline'' ''unsafe-eval''
+        cdnjs.cloudflare.com;font-src ''self'' https: data:;object-src ''none'';img-src
+        ''self'' data: validator.swagger.io;style-src ''self'' https: ''unsafe-inline'';upgrade-insecure-requests;block-all-mixed-content'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 09 Jun 2021 08:40:19 GMT
+      Expect-CT:
+      - max-age=0
+      Expires:
+      - Wed, 09 Jun 2021 08:40:20 GMT
+      Pragma:
+      - no-cache
+      Referrer-Policy:
+      - no-referrer
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cfruid=87380033b7e4250ed51c4bd2566ee9c9ab4564ef-1623228019; path=/; domain=.terra.dev;
+        HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - '0'
+      - 1; mode=block
+      alt-svc:
+      - h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400, h3=":443";
+        ma=86400
+      cf-request-id:
+      - 0a91870aca000011359095c000000001
+    status:
+      code: 200
+      message: OK
+version: 1

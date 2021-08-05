@@ -28,7 +28,19 @@ class TerraMoneyApi(BlockchainAPI):
         'ukrw': 'KRT',
         'usdr': 'SDT',
         'uusd': 'UST',
-        'umnt': 'MNT'
+        'umnt': 'MNT',
+        'uaud': 'AUT',
+        'ucad': 'CAT',
+        'uchf': 'CHT',
+        'ucny': 'CNT',
+        'ueur': 'EUT',
+        'ugbp': 'GBT',
+        'uhkd': 'HKT',
+        'uinr': 'INT',
+        'ujpy': 'JPT',
+        'umnt': 'MNT',
+        'usek': 'SET',
+        'uthb': 'THT',
     }
 
     tx_kinds = {
@@ -78,6 +90,33 @@ class TerraMoneyApi(BlockchainAPI):
 
         # Convert all numbers
         return self._load(delegations)
+
+    def get_staked(self):
+        balances = self.request('get_balance', address=self.address)
+        if not balances:
+            return None
+
+        return_balance = {'symbol': 'LUNA', 'amount': 0}
+        for delegation in balances['delegations']:
+            return_balance['amount'] += Decimal(delegation['amount']) * self.coef
+
+        return return_balance
+
+    def get_rewards(self):
+        delegations = self.request('get_delegations', address=self.address)
+        rewards = delegations['rewards']
+
+        if not rewards:
+            return None
+
+        return_rewards = []
+        for bal in rewards['denoms']:
+            return_rewards.append({
+                'symbol': self._get_symbol(bal['denom']),
+                'amount': Decimal(bal['amount']) * self.coef
+            })
+
+        return return_rewards
 
     def parse_tx(self, tx):
         fee = tx['tx']['value']['fee']
