@@ -22,23 +22,23 @@ class TestTerraMoneyApi:
         assert result == [
             {
                 'symbol': 'LUNA',
-                'amount': Decimal('34682.50182799999843055130568')
+                'amount': Decimal('34682.501828')
             },
             {
                 'symbol': 'KRT',
-                'amount': Decimal('9412.963716999999574045618491')
+                'amount': Decimal('9412.963717')
             },
             {
                 'symbol': 'SDT',
-                'amount': Decimal('0.05280299999999999761056454874')
+                'amount': Decimal('0.052803')
             },
             {
                 'symbol': 'UST',
-                'amount': Decimal('0.01211199999999999945190913044')
+                'amount': Decimal('0.012112')
             },
             {
                 'symbol': 'MNT',
-                'amount': Decimal('1122.501886999999949204670134')
+                'amount': Decimal('1122.501887')
             }
         ]
 

@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from blockapi.services import BlockchainAPI
+from blockapi.utils.decimal import safe_decimal
 
 
 class TerraMoneyApi(BlockchainAPI):
@@ -13,7 +14,7 @@ class TerraMoneyApi(BlockchainAPI):
     symbol = 'LUNA'
     base_url = 'https://fcd.terra.dev/v1'
     rate_limit = 0.5
-    coef = Decimal(1e-6)
+    coef = Decimal('1e-6')
     max_items_per_page = 100
     page_offset_step = 1
 
@@ -23,12 +24,22 @@ class TerraMoneyApi(BlockchainAPI):
         'get_txs': '/txs?account={address}&limit={limit}&page={page}'
     }
 
+    # https://github.com/terra-money/fcd/blob/365c6dbd4b8803d38d03f9cfd573425f69493617/src/lib/common.ts#L24
     symbols = {
         'uluna': 'LUNA',
         'ukrw': 'KRT',
-        'usdr': 'SDT',
         'uusd': 'UST',
-        'umnt': 'MNT'
+        'usdr': 'SDT',
+        'ugbp': 'GBT',
+        'ueur': 'EUT',
+        'ujpy': 'JPT',
+        'ucny': 'CNT',
+        'uinr': 'INT',
+        'ucad': 'CAT',
+        'uchf': 'CHT',
+        'uhkd': 'HKT',
+        'uaud': 'AUT',
+        'umnt': 'MNT',
     }
 
     tx_kinds = {
@@ -46,14 +57,14 @@ class TerraMoneyApi(BlockchainAPI):
         for bal in balances['balance']:
             return_balances.append({
                 'symbol': self._get_symbol(bal['denom']),
-                'amount': Decimal(bal['available']) * self.coef
+                'amount': safe_decimal(bal['available']) * self.coef
             })
 
         # Add staked amount in LUNA
         for delegation in balances['delegations']:
             luna = next((b for b in return_balances if b['symbol'] == 'LUNA'),
                         {'symbol': 'LUNA', 'amount': 0})
-            luna['amount'] += Decimal(delegation['amount']) * self.coef
+            luna['amount'] += safe_decimal(delegation['amount']) * self.coef
 
         return return_balances
 
@@ -86,7 +97,7 @@ class TerraMoneyApi(BlockchainAPI):
             'date': tx['timestamp'],
             'fee': [{
                 'symbol': self._get_symbol(f['denom']),
-                'amount': Decimal(f['amount']) * self.coef
+                'amount': safe_decimal(f['amount']) * self.coef
             } for f in fee['amount']],
             'amount': [self.parse_tx_amount(m['value'])for m in msg]
         }
@@ -100,12 +111,12 @@ class TerraMoneyApi(BlockchainAPI):
         if isinstance(tx_amount, list):
             amount = [{
                 'symbol': self._get_symbol(t['denom']),
-                'amount': Decimal(t['amount']) * self.coef
+                'amount': safe_decimal(t['amount']) * self.coef
             } for t in tx_amount]
         else:
             amount = {
                 'symbol': self._get_symbol(tx_amount['denom']),
-                'amount': Decimal(tx_amount['amount']) * self.coef
+                'amount': safe_decimal(tx_amount['amount']) * self.coef
             }
         return amount
 
@@ -114,4 +125,4 @@ class TerraMoneyApi(BlockchainAPI):
         """It seems that API returns only denom instead of correct
         symbols.
         """
-        return cls.symbols.get(denom, 'unknown')
+        return cls.symbols.get(denom, denom)
