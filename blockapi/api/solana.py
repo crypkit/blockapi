@@ -1,8 +1,8 @@
 import json
+from decimal import Decimal
 
-from blockapi.services import (
-    APIError, BlockchainAPI,
-)
+from blockapi.services import APIError, BlockchainAPI
+from blockapi.utils.decimal import safe_decimal
 
 
 class SolanaApi(BlockchainAPI):
@@ -14,7 +14,7 @@ class SolanaApi(BlockchainAPI):
     symbol = 'SOL'
     base_url = 'https://api.mainnet-beta.solana.com/'
     rate_limit = None
-    coef = 1e-9
+    coef = Decimal('1e-9')
     start_offset = 0
     max_items_per_page = 1000
     page_offset_step = 1
@@ -29,7 +29,7 @@ class SolanaApi(BlockchainAPI):
     token_program_id = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
 
     # mainnet tokens
-    # https://github.com/solana-labs/explorer/blob/master/src/tokenRegistry.ts
+    # https://github.com/solana-labs/token-list/blob/main/src/tokens/solana.tokenlist.json
     tokens = {
         'SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt': {
             'name': 'Serum',
@@ -47,22 +47,6 @@ class SolanaApi(BlockchainAPI):
             'symbol': 'ETH',
             'name': 'Wrapped Ethereum',
         },
-        'AGFEad2et2ZJif9jaGpdMixQqvW5i81aBdvKe7PHNfz3': {
-            'symbol': 'FTT',
-            'name': 'Wrapped FTT',
-        },
-        '3JSf5tPeuscJGtaCp5giEiDhv51gQ4v3zWg8DGgyLfAB': {
-            'symbol': 'YFI',
-            'name': 'Wrapped YFI',
-        },
-        'CWE8jPTUYhdCTZYWPTe1o5DFqfdjzWKc9WKz6rSjQUdG': {
-            'symbol': 'LINK',
-            'name': 'Wrapped Chainlink',
-        },
-        'Ga2AXHpfAF6mv2ekZwcsJFqu7wB4NV331qNH7fW9Nst8': {
-            'symbol': 'XRP',
-            'name': 'Wrapped XRP',
-        },
         'BQcdHdAQW1hczDbBi9hiegXAR7A98Q9jx3X3iBBBDiq4': {
             'symbol': 'USDT',
             'name': 'Wrapped USDT',
@@ -74,18 +58,6 @@ class SolanaApi(BlockchainAPI):
         'So11111111111111111111111111111111111111112': {
             'symbol': 'SOL',
             'name': 'Wrapped SOL',
-        },
-        'AR1Mtgh7zAtxuxGd2XPovXPVjcSdY3i4rQYisNadjfKy': {
-            'symbol': 'SUSHI',
-            'name': 'Wrapped Sushi',
-        },
-        'SF3oTvfWzEP3DTwGSvUXRrGTvr75pdZNnBLAH9bzMuX': {
-            'symbol': 'SXP',
-            'name': 'Wrapped Swipe',
-        },
-        'CsZ5LZkDS7h9TDKjrbL7VAwQZ9nsRu8vJLhRYfmGaN8K': {
-            'symbol': 'ALEPH',
-            'name': 'Wrapped Aleph',
         },
     }
 
@@ -116,7 +88,7 @@ class SolanaApi(BlockchainAPI):
 
         return {
             'symbol': self.symbol,
-            'amount': response['result']['value'] * self.coef
+            'amount': safe_decimal(response['result']['value']) * self.coef
         }
 
     def _get_token_balances(self):
@@ -133,8 +105,10 @@ class SolanaApi(BlockchainAPI):
             ]
         )
 
-        balances = [self._parse_token_balance(b)
-                    for b in response['result']['value']]
+        balances = [
+            self._parse_token_balance(b)
+            for b in response['result']['value']
+        ]
 
         return balances
 
@@ -144,13 +118,13 @@ class SolanaApi(BlockchainAPI):
         token_address = info['mint']
         token_info = self.tokens.get(token_address)
 
-        _amount = info['tokenAmount']
-        if _amount.get('uiAmount'):
-            amount = _amount['uiAmount']
-        elif _amount.get('decimals'):
-            amount = float(_amount['amount']) * pow(10, -_amount['decimals'])
+        a = info['tokenAmount']
+        if a.get('uiAmount'):
+            amount = safe_decimal(a['uiAmount'])
+        elif a.get('decimals'):
+            amount = safe_decimal(a['amount']) * Decimal(f"10e-{a['decimals']}")
         else:
-            amount = _amount['amount']
+            amount = safe_decimal(a['amount'])
 
         return {
             'symbol': token_info['symbol'] if token_info else 'UNKNOWN',

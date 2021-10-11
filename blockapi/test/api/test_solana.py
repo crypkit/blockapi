@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from pytest import mark
 
 from blockapi.api import SolanaApi
@@ -14,9 +16,9 @@ class TestSolanaAPI:
 
         assert len(result) == 3
         assert next(b for b in result if b['symbol'] == 'SOL')
-        assert next(b for b in result if b['symbol'] == 'YFI')
-        usdc_bal = next(b for b in result if b['symbol'] == 'USDT')
-        assert usdc_bal['amount'] == 21.17783
+        assert next(b for b in result if b['symbol'] == 'UNKNOWN')
+        usdt_bal = next(b for b in result if b['symbol'] == 'USDT')
+        assert usdt_bal['amount'] == Decimal('21.17783')
 
     @mark.vcr()
     def test_get_txs_signatures(self):
