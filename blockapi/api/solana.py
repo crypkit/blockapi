@@ -110,7 +110,7 @@ class SolanaApi(BlockchainAPI):
             for b in response['result']['value']
         ]
 
-        return balances
+        return [b for b in balances if b['amount'] > Decimal(0)]
 
     def _parse_token_balance(self, raw):
         info = raw['account']['data']['parsed']['info']
