@@ -87,6 +87,10 @@ class AmberdataAPI(BlockchainAPI):
 
         if raw['isERC20']:
             type_ = 'ERC-20'
+
+            # TODO ignore coin if decimals = 0, it's okay?
+            if decimals == 0:
+                decimals = None
         elif raw['isERC721']:
             type_ = 'ERC-721'
         elif raw['isERC777']:
@@ -102,7 +106,7 @@ class AmberdataAPI(BlockchainAPI):
             'symbol': raw.get('symbol', 'UNKNOWN'),
             'address': raw['address'],
             'amount': (float(raw['amount']) * pow(10, -decimals)
-                       if decimals else float(raw['amount'])),
+                       if decimals is not None else 0),
             'name': raw.get('name', 'Unknown'),
             'type': type_
         }
