@@ -3,7 +3,7 @@ from datetime import datetime
 from decimal import Decimal
 
 from blockapi.services import BlockchainAPI, AddressNotExist, APIError
-from blockapi.utils.decimal import safe_decimal
+from blockapi.utils.num import to_decimal
 
 
 class SubscanAPI(BlockchainAPI):
@@ -50,7 +50,7 @@ class SubscanAPI(BlockchainAPI):
         if response['code'] == 0:
             return [{
                 'symbol': self.symbol,
-                'amount': safe_decimal(response['data']['account']['balance'])
+                'amount': to_decimal(response['data']['account']['balance'])
             }]
         elif response['code'] == 10004:
             raise AddressNotExist()
@@ -89,8 +89,8 @@ class SubscanAPI(BlockchainAPI):
             'date': datetime.fromtimestamp(tx['block_timestamp']),
             'from_address': tx['from'],
             'to_address': tx['to'],
-            'amount': safe_decimal(tx['amount']),
-            'fee': safe_decimal(tx['fee']) * self.coef,
+            'amount': to_decimal(tx['amount']),
+            'fee': to_decimal(tx['fee']) * self.coef,
             'hash': tx['hash'],
             'confirmed': tx['success'],
             'is_error': not tx['success'],
@@ -129,7 +129,7 @@ class SubscanAPI(BlockchainAPI):
             sign = -1
 
         return {
-            'amount': safe_decimal(reward['amount']) * self.coef * sign,
+            'amount': to_decimal(reward['amount']) * self.coef * sign,
             'hash': reward['extrinsic_hash'],
             'event_index': reward['event_index']
         }
@@ -149,7 +149,7 @@ class SubscanAPI(BlockchainAPI):
         )
 
         if response['code'] == 0:
-            return safe_decimal(response['data']['account']['balance_lock'])
+            return to_decimal(response['data']['account']['balance_lock'])
         elif response['code'] == 10004:
             raise AddressNotExist()
         else:

@@ -2,7 +2,7 @@ import json
 from decimal import Decimal
 
 from blockapi.services import APIError, BlockchainAPI
-from blockapi.utils.decimal import safe_decimal
+from blockapi.utils.num import to_decimal
 
 
 class SolanaApi(BlockchainAPI):
@@ -88,7 +88,7 @@ class SolanaApi(BlockchainAPI):
 
         return {
             'symbol': self.symbol,
-            'amount': safe_decimal(response['result']['value']) * self.coef
+            'amount': to_decimal(response['result']['value']) * self.coef
         }
 
     def _get_token_balances(self):
@@ -120,11 +120,11 @@ class SolanaApi(BlockchainAPI):
 
         a = info['tokenAmount']
         if a.get('uiAmount'):
-            amount = safe_decimal(a['uiAmount'])
+            amount = to_decimal(a['uiAmount'])
         elif a.get('decimals'):
-            amount = safe_decimal(a['amount']) * Decimal(f"10e-{a['decimals']}")
+            amount = to_decimal(a['amount']) * Decimal(f"10e-{a['decimals']}")
         else:
-            amount = safe_decimal(a['amount'])
+            amount = to_decimal(a['amount'])
 
         return {
             'symbol': token_info['symbol'] if token_info else 'UNKNOWN',
