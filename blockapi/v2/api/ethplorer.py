@@ -1,6 +1,5 @@
 from typing import Dict, Iterable, List, Optional
 
-import httpx
 from eth_utils import to_checksum_address
 
 from blockapi.v2.base import ApiOptions, BlockchainApi
@@ -10,7 +9,7 @@ from blockapi.v2.models import (
 from blockapi.v2.coins import coin_eth
 
 
-class EthplorerAPI(BlockchainApi):
+class EthplorerApi(BlockchainApi):
     """
     Ethereum
     API docs: https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API
@@ -27,13 +26,8 @@ class EthplorerAPI(BlockchainApi):
         'get_info': '/getAddressInfo/{address}?apiKey={api_key}'
     }
 
-    def __init__(
-        self,
-        address: str,
-        api_key: str = 'freekey',
-        client: Optional[httpx.Client] = None
-    ):
-        super().__init__(address, api_key, client)
+    def __init__(self, address: str, api_key: str = 'freekey'):
+        super().__init__(address, api_key)
 
     def get_balance(self) -> List[BalanceItem]:
         response = self.request(

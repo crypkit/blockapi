@@ -2,22 +2,9 @@ from abc import ABC
 from typing import Dict, Optional
 from urllib.parse import urljoin
 
-import attr
-import httpx
+from requests import Response, Session, HTTPError
 
-from .models import Blockchain, Coin
-
-
-@attr.s(auto_attribs=True, slots=True)
-class ApiOptions:
-    blockchain: Blockchain
-    base_url: str
-    rate_limit: float = 0.0
-    testnet: bool = False
-
-    start_offset: Optional[int] = None
-    max_items_per_page: Optional[int] = None
-    page_offset_step: Optional[int] = None
+from .models import ApiOptions, Coin
 
 
 class BlockchainApi(ABC):
@@ -30,15 +17,13 @@ class BlockchainApi(ABC):
     # {request_method: request_url}
     supported_requests: Dict[str, str] = {}
 
-    def __init__(
-        self,
-        address: str,
-        api_key: Optional[str] = None,
-        client: Optional[httpx.Client] = None
-    ):
+    def __init__(self, address: str, api_key: Optional[str] = None):
         self.address = address
         self.api_key = api_key
-        self._client = client if client is not None else self._default_client()
+        self._session = Session()
+
+    def __del__(self):
+        self._session.close()
 
     def request(
         self,
@@ -52,19 +37,15 @@ class BlockchainApi(ABC):
         """
         url = self._build_request_url(request_method, **req_args)
 
-        if body is None:
-            body = {}
-        if headers is None:
-            headers = {}
-
         # if body is passed, use post
         if body is not None:
-            response = self._client.post(url, data=body, headers=headers)
+            response = self._session.post(url, data=body, headers=headers)
         else:
-            response = self._client.get(url, headers=headers)
+            response = self._session.get(url, headers=headers)
 
         if response.status_code != 200:
             self._raise_from_response(response)
+        self._opt_raise_on_other_error(response)
 
         return response.json()
 
@@ -76,12 +57,15 @@ class BlockchainApi(ABC):
         return urljoin(self.api_options.base_url, path_url)
 
     @staticmethod
-    def _default_client() -> httpx.Client:
-        return httpx.Client(timeout=20.0)
+    def _raise_from_response(response: Response) -> None:
+        try:
+            response.raise_for_status()
+        except HTTPError as e:
+            raise ApiException(e)
 
-    @staticmethod
-    def _raise_from_response(response: httpx.Response) -> None:
-        response.raise_for_status()
+    def _opt_raise_on_other_error(self, response: Response) -> None:
+        # implement in child
+        return
 
     def __repr__(self):
         return (
@@ -90,5 +74,9 @@ class BlockchainApi(ABC):
         )
 
 
-class InvalidAddressException(Exception):
+class ApiException(Exception):
+    pass
+
+
+class InvalidAddressException(ApiException):
     pass

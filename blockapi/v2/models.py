@@ -18,6 +18,24 @@ class Blockchain(Enum):
     TERRA = 'terra'
 
 
+class AssetType(Enum):
+    AVAILABLE = 'available'
+    STAKED = 'staked'
+    VESTED = 'vested'
+
+
+@attr.s(auto_attribs=True, slots=True)
+class ApiOptions:
+    blockchain: Blockchain
+    base_url: str
+    rate_limit: float = 0.0
+    testnet: bool = False
+
+    start_offset: Optional[int] = None
+    max_items_per_page: Optional[int] = None
+    page_offset_step: Optional[int] = None
+
+
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class CoinInfo:
     tags: List[str] = attr.ib(default=None)
@@ -86,6 +104,7 @@ class BalanceItem:
     balance_raw: int
     raw: Dict
     coin: Coin
+    asset_type: AssetType = AssetType.AVAILABLE
     last_updated: Optional[datetime] = attr.ib(default=None)
 
     @classmethod
@@ -94,6 +113,7 @@ class BalanceItem:
         *,
         balance_raw: Union[int, str],
         coin: Coin,
+        asset_type: AssetType = AssetType.AVAILABLE,
         raw: Dict,
         last_updated: Optional[Union[int, str]] = None,
     ) -> 'BalanceItem':
@@ -101,6 +121,7 @@ class BalanceItem:
             balance_raw=to_decimal(balance_raw),
             balance=raw_to_decimals(balance_raw, coin.decimals),
             coin=coin,
+            asset_type=asset_type,
             raw=raw,
             last_updated=(
                 parse_dt(last_updated) if last_updated is not None else None
