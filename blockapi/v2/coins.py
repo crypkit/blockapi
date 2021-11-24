@@ -6,7 +6,7 @@ coin_eth = Coin(
     decimals=18,
     blockchain=Blockchain.ETHEREUM,
     address='0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-    info=CoinInfo(coingecko_id='ethereum')
+    info=CoinInfo(coingecko_id='ethereum'),
 )
 
 
@@ -24,7 +24,7 @@ coin_sol = Coin(
         ),
         coingecko_id='solana',
         website='https://solana.com/',
-    )
+    ),
 )
 
 
@@ -39,5 +39,5 @@ coin_terra = Coin(
         logo_url='https://assets.terra.money/icon/60/Luna.png',
         coingecko_id='terra-luna',
         website='https://www.terra.money/',
-    )
+    ),
 )

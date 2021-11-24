@@ -3,10 +3,8 @@ from typing import Dict, Iterable, List, Optional
 from eth_utils import to_checksum_address
 
 from blockapi.v2.base import ApiOptions, BlockchainApi
-from blockapi.v2.models import (
-    Blockchain, BalanceItem, Coin, CoinInfo
-)
 from blockapi.v2.coins import coin_eth
+from blockapi.v2.models import BalanceItem, Blockchain, Coin, CoinInfo
 
 
 class EthplorerApi(BlockchainApi):
@@ -15,6 +13,7 @@ class EthplorerApi(BlockchainApi):
     API docs: https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API
     Explorer: https://ethplorer.io
     """
+
     coin = coin_eth
     api_options = ApiOptions(
         blockchain=Blockchain.ETHEREUM,
@@ -22,19 +21,13 @@ class EthplorerApi(BlockchainApi):
         rate_limit=0.2,  # 0.1 in case of api_key
     )
 
-    supported_requests = {
-        'get_info': '/getAddressInfo/{address}?apiKey={api_key}'
-    }
+    supported_requests = {'get_info': '/getAddressInfo/{address}?apiKey={api_key}'}
 
     def __init__(self, address: str, api_key: str = 'freekey'):
         super().__init__(address, api_key)
 
     def get_balance(self) -> List[BalanceItem]:
-        response = self.request(
-            'get_info',
-            address=self.address,
-            api_key=self.api_key
-        )
+        response = self.request('get_info', address=self.address, api_key=self.api_key)
 
         balances = []
 
@@ -60,10 +53,7 @@ class EthplorerApi(BlockchainApi):
 
     def _parse_token_balances(self, response: Dict) -> Iterable[BalanceItem]:
         for _token_raw in response.get('tokens', []):
-            if (
-                _token_raw.get('rawBalance') is None or
-                _token_raw['rawBalance'] == 0
-            ):
+            if _token_raw.get('rawBalance') is None or _token_raw['rawBalance'] == 0:
                 continue
 
             info = _token_raw['tokenInfo']

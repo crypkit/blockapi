@@ -16,7 +16,7 @@ NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL = {
     ],
     'LUNA': [
         'terra1yltenl48mhl370ldpyt83werd9x3s645509gaf',
-    ]
+    ],
 }
 
 BAD_ADDRESSES = [
@@ -26,7 +26,7 @@ BAD_ADDRESSES = [
     '0x123',
     'ýžýščš&^^~',
     '0xAF3E9eF83B1dc9Db18cD5923e3112F6Cd8bfDAeX',
-    '0xAF3E9eF83B1dc9Db18cD5923e3112F6Cd8bfDAeDD'
+    '0xAF3E9eF83B1dc9Db18cD5923e3112F6Cd8bfDAeDD',
 ]
 
 

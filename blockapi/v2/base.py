@@ -2,7 +2,7 @@ from abc import ABC
 from typing import Dict, Optional
 from urllib.parse import urljoin
 
-from requests import Response, Session, HTTPError
+from requests import HTTPError, Response, Session
 
 from .models import ApiOptions, Coin
 
@@ -11,6 +11,7 @@ class BlockchainApi(ABC):
     """
     General class for handling blockchain API services.
     """
+
     coin: Coin = NotImplemented
     api_options: ApiOptions = NotImplemented
 
@@ -30,7 +31,7 @@ class BlockchainApi(ABC):
         request_method: str,
         body: Optional[Dict] = None,
         headers: Optional[Dict] = None,
-        **req_args
+        **req_args,
     ) -> Dict:
         """
         Call specific request method with params and return raw response.

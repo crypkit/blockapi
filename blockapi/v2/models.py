@@ -56,9 +56,7 @@ class CoinInfo:
         return cls(
             tags=tags,
             total_supply=(
-                to_decimal(total_supply)
-                if total_supply is not None
-                else None
+                to_decimal(total_supply) if total_supply is not None else None
             ),
             logo_url=logo_url,
             coingecko_id=coingecko_id,
@@ -94,7 +92,7 @@ class Coin:
             blockchain=blockchain,
             address=address,
             standards=standards,
-            info=info
+            info=info,
         )
 
 
@@ -123,7 +121,5 @@ class BalanceItem:
             coin=coin,
             asset_type=asset_type,
             raw=raw,
-            last_updated=(
-                parse_dt(last_updated) if last_updated is not None else None
-            ),
+            last_updated=(parse_dt(last_updated) if last_updated is not None else None),
         )
