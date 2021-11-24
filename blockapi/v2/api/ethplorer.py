@@ -72,7 +72,7 @@ class EthplorerApi(BlockchainApi):
                         if info.get('image')
                         else None
                     ),
-                    coingecko_id=info.get('coingecko_id'),
+                    coingecko_id=info.get('coingecko'),
                     website=info.get('website'),
                 ),
             )

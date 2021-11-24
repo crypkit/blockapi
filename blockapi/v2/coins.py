@@ -5,7 +5,7 @@ coin_eth = Coin(
     name='Ethereum',
     decimals=18,
     blockchain=Blockchain.ETHEREUM,
-    address='0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    address='0x0',
     info=CoinInfo(coingecko_id='ethereum'),
 )
 
@@ -17,11 +17,8 @@ coin_sol = Coin(
     blockchain=Blockchain.SOLANA,
     address='So11111111111111111111111111111111111111112',
     info=CoinInfo(
-        logo_url=(
-            'https://raw.githubusercontent.com/solana-labs/token-list/main/'
-            'assets/mainnet/So11111111111111111111111111111111111111112/'
-            'logo.png',
-        ),
+        logo_url='https://raw.githubusercontent.com/solana-labs/token-list/main/assets/'
+        'mainnet/So11111111111111111111111111111111111111112/logo.png',
         coingecko_id='solana',
         website='https://solana.com/',
     ),
