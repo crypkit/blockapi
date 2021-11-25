@@ -5,7 +5,7 @@ coin_eth = Coin(
     name='Ethereum',
     decimals=18,
     blockchain=Blockchain.ETHEREUM,
-    address='0x0',
+    address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(coingecko_id='ethereum'),
 )
 
