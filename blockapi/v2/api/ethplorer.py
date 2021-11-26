@@ -27,7 +27,7 @@ class EthplorerApi(BlockchainApi):
         super().__init__(address, api_key)
 
     def get_balance(self) -> List[BalanceItem]:
-        response = self.request('get_info', address=self.address, api_key=self.api_key)
+        response = self.get('get_info', address=self.address, api_key=self.api_key)
 
         balances = []
 

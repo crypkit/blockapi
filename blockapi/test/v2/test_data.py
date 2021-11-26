@@ -2,10 +2,10 @@ import pytest
 
 from blockapi.v2.api.ethplorer import EthplorerApi
 from blockapi.v2.api.solana import SolanaApi
-from blockapi.v2.api.terra_money import TerraMoneyApi
+from blockapi.v2.api.terra import TerraApi
 
 # TODO create method for auto loading all classes
-API_CLASSES = [EthplorerApi, SolanaApi, TerraMoneyApi]
+API_CLASSES = [EthplorerApi, SolanaApi, TerraApi]
 
 NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL = {
     'ETH': [

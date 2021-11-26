@@ -1,10 +1,10 @@
 from abc import ABC
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 from urllib.parse import urljoin
 
 from requests import HTTPError, Response, Session
 
-from .models import ApiOptions, Coin
+from .models import ApiOptions, BalanceItem, Coin
 
 
 class BlockchainApi(ABC):
@@ -26,29 +26,18 @@ class BlockchainApi(ABC):
     def __del__(self):
         self._session.close()
 
-    def request(
+    def get(
         self,
         request_method: str,
-        body: Optional[Dict] = None,
-        headers: Optional[Dict] = None,
+        headers=None,
         **req_args,
     ) -> Dict:
         """
         Call specific request method with params and return raw response.
         """
         url = self._build_request_url(request_method, **req_args)
-
-        # if body is passed, use post
-        if body is not None:
-            response = self._session.post(url, data=body, headers=headers)
-        else:
-            response = self._session.get(url, headers=headers)
-
-        if response.status_code != 200:
-            self._raise_from_response(response)
-        self._opt_raise_on_other_error(response)
-
-        return response.json()
+        response = self._session.get(url, headers=headers)
+        return self._check_and_get_from_response(response)
 
     def _build_request_url(self, request_method: str, **req_args):
         path_url = self.supported_requests.get(request_method)
@@ -56,6 +45,22 @@ class BlockchainApi(ABC):
             path_url = path_url.format(**req_args)
 
         return urljoin(self.api_options.base_url, path_url)
+
+    def post(self, body=None, json=None, headers=None):
+        """
+        Call request using json.
+        """
+        response = self._session.post(
+            self.api_options.base_url, data=body, json=json, headers=headers
+        )
+        return self._check_and_get_from_response(response)
+
+    def _check_and_get_from_response(self, response: Response) -> Dict:
+        if response.status_code != 200:
+            self._raise_from_response(response)
+        self._opt_raise_on_other_error(response)
+
+        return response.json()
 
     @staticmethod
     def _raise_from_response(response: Response) -> None:
@@ -73,6 +78,11 @@ class BlockchainApi(ABC):
             f"{self.__class__.__name__}"
             f"(coin={self.coin.name},address={self.address})"
         )
+
+
+class IBalance(ABC):
+    def get_balance(self, *args, **kwargs) -> List[BalanceItem]:
+        raise NotImplementedError
 
 
 class ApiException(Exception):

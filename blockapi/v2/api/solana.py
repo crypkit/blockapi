@@ -28,11 +28,11 @@ class SolanaApi(BlockchainApi):
         page_offset_step=1,
     )
 
-    # follow used pattern even though this API uses POST requests
-    supported_requests = {'get_balance': '', 'get_txs_signatures': '', 'get_tx': ''}
+    # API uses post requests
+    supported_requests = {}
 
     token_program_id = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
-    _tokens_map: Dict[str, Dict] = None
+    _tokens_map: Optional[Dict[str, Dict]] = None
 
     @property
     def tokens_map(self) -> Dict[str, Dict]:
@@ -131,13 +131,7 @@ class SolanaApi(BlockchainApi):
         body = json.dumps(
             {'jsonrpc': '2.0', 'id': 1, 'method': method, 'params': params}
         )
-
-        return self.request(
-            # request method is not needed, it's included in body
-            request_method=method,
-            body=body,
-            headers={'Content-Type': 'application/json'},
-        )
+        return self.post(body=body, headers={'Content-Type': 'application/json'})
 
     def _opt_raise_on_other_error(self, response: Response) -> None:
         json_response = response.json()

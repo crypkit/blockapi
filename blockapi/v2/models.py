@@ -22,6 +22,7 @@ class AssetType(Enum):
     AVAILABLE = 'available'
     STAKED = 'staked'
     VESTED = 'vested'
+    CLAIMABLE = 'claimable'  # rewards, ...
 
 
 @attr.s(auto_attribs=True, slots=True)
@@ -31,9 +32,9 @@ class ApiOptions:
     rate_limit: float = 0.0
     testnet: bool = False
 
-    start_offset: Optional[int] = None
-    max_items_per_page: Optional[int] = None
-    page_offset_step: Optional[int] = None
+    start_offset: Optional[int] = attr.ib(default=None)
+    max_items_per_page: Optional[int] = attr.ib(default=None)
+    page_offset_step: Optional[int] = attr.ib(default=None)
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
@@ -71,7 +72,8 @@ class Coin:
     decimals: int
     blockchain: Blockchain
     address: Optional[str] = attr.ib(default=None)
-    standards: Optional[List[str]] = None
+    standards: Optional[List[str]] = attr.ib(default=None)
+    protocol: Optional[str] = attr.ib(default=None)
     info: Optional[CoinInfo] = attr.ib(default=None)
 
     @classmethod
@@ -83,6 +85,7 @@ class Coin:
         name: Optional[str] = None,
         address: Optional[str] = None,
         standards: Optional[List[str]] = None,
+        protocol: Optional[str] = None,
         info: Optional[CoinInfo] = None,
     ) -> 'Coin':
         return cls(
@@ -92,6 +95,7 @@ class Coin:
             blockchain=blockchain,
             address=address,
             standards=standards,
+            protocol=protocol,
             info=info,
         )
 
@@ -99,7 +103,7 @@ class Coin:
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class BalanceItem:
     balance: Decimal
-    balance_raw: int
+    balance_raw: Decimal
     raw: Dict
     coin: Coin
     asset_type: AssetType = AssetType.AVAILABLE
@@ -109,7 +113,7 @@ class BalanceItem:
     def from_api(
         cls,
         *,
-        balance_raw: Union[int, str],
+        balance_raw: Union[int, float, str],
         coin: Coin,
         asset_type: AssetType = AssetType.AVAILABLE,
         raw: Dict,
