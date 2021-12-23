@@ -1,0 +1,2312 @@
+{
+  "data": {
+    "address": "0xfc43f5f9dd45258b3aff31bdbe6561d97e8b71de",
+    "updated_at": "2021-12-23T11:41:11.068117386Z",
+    "next_update_at": "2021-12-23T11:46:11.068118046Z",
+    "quote_currency": "USD",
+    "chain_id": 1,
+    "items": [
+      {
+        "contract_decimals": 18,
+        "contract_name": "PoolTogether: plDai Token",
+        "contract_ticker_symbol": "plDai",
+        "contract_address": "0x49d716dfe60b37379010a75329ae09428f17118d",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x49d716dfe60b37379010a75329ae09428f17118d.png",
+        "last_transferred_at": "2020-05-09T03:13:58Z",
+        "type": "cryptocurrency",
+        "balance": "1000000000000000000",
+        "balance_24h": "1000000000000000000",
+        "quote_rate": 2.0586999E11,
+        "quote_rate_24h": null,
+        "quote": 2.0586999E11,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "KyDy.org",
+        "contract_ticker_symbol": "KyDy.org",
+        "contract_address": "0xc85e0474068dba5b49450c26879541ee6cc94554",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xc85e0474068dba5b49450c26879541ee6cc94554.png",
+        "last_transferred_at": "2021-11-17T11:57:18Z",
+        "type": "cryptocurrency",
+        "balance": "300000000000000000000000",
+        "balance_24h": "300000000000000000000000",
+        "quote_rate": 0.9327855,
+        "quote_rate_24h": null,
+        "quote": 279835.66,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "SFAr.io",
+        "contract_ticker_symbol": "SFA",
+        "contract_address": "0x16b3dd2970ad3f19c6068c65777530830d33773e",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x16b3dd2970ad3f19c6068c65777530830d33773e.png",
+        "last_transferred_at": "2021-09-19T13:49:29Z",
+        "type": "cryptocurrency",
+        "balance": "300000000000000000000000",
+        "balance_24h": "300000000000000000000000",
+        "quote_rate": 0.39987883,
+        "quote_rate_24h": null,
+        "quote": 119963.65,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 6,
+        "contract_name": "Tether USD",
+        "contract_ticker_symbol": "USDT",
+        "contract_address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xdac17f958d2ee523a2206206994597c13d831ec7.png",
+        "last_transferred_at": "2021-11-19T04:56:02Z",
+        "type": "stablecoin",
+        "balance": "6510901690",
+        "balance_24h": "6510901690",
+        "quote_rate": 0.9996818,
+        "quote_rate_24h": 1.0155374,
+        "quote": 6508.8296,
+        "quote_24h": 6612.064,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Ether",
+        "contract_ticker_symbol": "ETH",
+        "contract_address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "supports_erc": null,
+        "logo_url": "https://www.covalenthq.com/static/images/icons/display-icons/ethereum-eth-logo.png",
+        "last_transferred_at": null,
+        "type": "cryptocurrency",
+        "balance": "915034792726268018",
+        "balance_24h": "915034792726268018",
+        "quote_rate": 3941.323,
+        "quote_rate_24h": 4031.3188,
+        "quote": 3606.4478,
+        "quote_24h": 3688.797,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Uniswap V2",
+        "contract_ticker_symbol": "UNI-V2",
+        "contract_address": "0x598e740cda7c525080d3fcb9fa7c4e1bd0044b34",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x598e740cda7c525080d3fcb9fa7c4e1bd0044b34.png",
+        "last_transferred_at": "2020-06-09T13:49:35Z",
+        "type": "cryptocurrency",
+        "balance": "423097265898050492",
+        "balance_24h": "423097265898050492",
+        "quote_rate": 8426.373,
+        "quote_rate_24h": 8541.933,
+        "quote": 3565.1753,
+        "quote_24h": 3614.0684,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Uniswap V2",
+        "contract_ticker_symbol": "UNI-V2",
+        "contract_address": "0xdf4aa141031e85468137ed125749c4f6a57f8f5b",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xdf4aa141031e85468137ed125749c4f6a57f8f5b.png",
+        "last_transferred_at": "2020-07-31T10:14:23Z",
+        "type": "cryptocurrency",
+        "balance": "12739202310085230531",
+        "balance_24h": "12739202310085230531",
+        "quote_rate": 201.89352,
+        "quote_rate_24h": 204.16553,
+        "quote": 2571.9624,
+        "quote_24h": 2600.906,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Uniswap V2",
+        "contract_ticker_symbol": "UNI-V2",
+        "contract_address": "0x01388f9242964e2aaadef6379eb92276acb5520e",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x01388f9242964e2aaadef6379eb92276acb5520e.png",
+        "last_transferred_at": "2021-07-29T06:49:13Z",
+        "type": "cryptocurrency",
+        "balance": "784400978020290",
+        "balance_24h": "784400978020290",
+        "quote_rate": 2798779.0,
+        "quote_rate_24h": 2794037.5,
+        "quote": 2195.365,
+        "quote_24h": 2191.6458,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 6,
+        "contract_name": "USD Coin",
+        "contract_ticker_symbol": "USDC",
+        "contract_address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png",
+        "last_transferred_at": "2021-11-15T08:11:18Z",
+        "type": "stablecoin",
+        "balance": "1777767729",
+        "balance_24h": "1777767729",
+        "quote_rate": 1.0006514,
+        "quote_rate_24h": 1.0172352,
+        "quote": 1778.9257,
+        "quote_24h": 1808.4078,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "SuperRare",
+        "contract_ticker_symbol": "RARE",
+        "contract_address": "0xba5bde662c17e2adff1075610382b9b691296350",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xba5bde662c17e2adff1075610382b9b691296350.png",
+        "last_transferred_at": "2021-08-18T03:20:16Z",
+        "type": "cryptocurrency",
+        "balance": "1157000000000000000000",
+        "balance_24h": "1157000000000000000000",
+        "quote_rate": 1.0118021,
+        "quote_rate_24h": 1.0277654,
+        "quote": 1170.655,
+        "quote_24h": 1189.1245,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 8,
+        "contract_name": "Wrapped BTC",
+        "contract_ticker_symbol": "WBTC",
+        "contract_address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.png",
+        "last_transferred_at": "2020-06-17T07:35:02Z",
+        "type": "cryptocurrency",
+        "balance": "1572325",
+        "balance_24h": "1572325",
+        "quote_rate": 48427.453,
+        "quote_rate_24h": 49086.027,
+        "quote": 761.43695,
+        "quote_24h": 771.7919,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "AllianceBlock Token",
+        "contract_ticker_symbol": "ALBT",
+        "contract_address": "0x00a8b738e453ffd858a7edf03bccfe20412f0eb0",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x00a8b738e453ffd858a7edf03bccfe20412f0eb0.png",
+        "last_transferred_at": "2021-06-03T07:27:42Z",
+        "type": "cryptocurrency",
+        "balance": "891111572302786779390",
+        "balance_24h": "891111572302786779390",
+        "quote_rate": 0.60843873,
+        "quote_rate_24h": 0.61560374,
+        "quote": 542.18677,
+        "quote_24h": 548.5716,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "BNB",
+        "contract_ticker_symbol": "BNB",
+        "contract_address": "0xb8c77482e45f1f44de1745f52c74426c631bdd52",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xb8c77482e45f1f44de1745f52c74426c631bdd52.png",
+        "last_transferred_at": "2020-05-01T06:08:34Z",
+        "type": "cryptocurrency",
+        "balance": "1000107409683556863",
+        "balance_24h": "1000107409683556863",
+        "quote_rate": 528.88837,
+        "quote_rate_24h": 537.0382,
+        "quote": 528.9452,
+        "quote_24h": 537.0959,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "DappRadar",
+        "contract_ticker_symbol": "RADAR",
+        "contract_address": "0x44709a920fccf795fbc57baa433cc3dd53c44dbe",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x44709a920fccf795fbc57baa433cc3dd53c44dbe.png",
+        "last_transferred_at": "2021-12-15T11:50:40Z",
+        "type": "cryptocurrency",
+        "balance": "8697000000000000000000",
+        "balance_24h": "8697000000000000000000",
+        "quote_rate": 0.04848117,
+        "quote_rate_24h": 0.049667165,
+        "quote": 421.64075,
+        "quote_24h": 431.95532,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 8,
+        "contract_name": "Compound Ether",
+        "contract_ticker_symbol": "cETH",
+        "contract_address": "0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5.png",
+        "last_transferred_at": "2021-10-30T13:59:21Z",
+        "type": "cryptocurrency",
+        "balance": "498617081",
+        "balance_24h": "498617081",
+        "quote_rate": 79.05728,
+        "quote_rate_24h": 80.2278,
+        "quote": 394.1931,
+        "quote_24h": 400.0295,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 8,
+        "contract_name": "Compound USDT",
+        "contract_ticker_symbol": "cUSDT",
+        "contract_address": "0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9.png",
+        "last_transferred_at": "2020-06-16T14:50:10Z",
+        "type": "cryptocurrency",
+        "balance": "1496578332324",
+        "balance_24h": "1496578332324",
+        "quote_rate": 0.021610774,
+        "quote_rate_24h": 0.022002062,
+        "quote": 323.42215,
+        "quote_24h": 329.27808,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "ETH Price Action Candlestick Set",
+        "contract_ticker_symbol": "ETHPA",
+        "contract_address": "0x09e4bdfb273245063ef5e800d891eff7d04f9b83",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x09e4bdfb273245063ef5e800d891eff7d04f9b83.png",
+        "last_transferred_at": "2020-04-25T06:20:58Z",
+        "type": "cryptocurrency",
+        "balance": "100000000000000000",
+        "balance_24h": "100000000000000000",
+        "quote_rate": 2912.3003,
+        "quote_rate_24h": 2952.1902,
+        "quote": 291.23004,
+        "quote_24h": 295.21902,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Balancer",
+        "contract_ticker_symbol": "BAL",
+        "contract_address": "0xba100000625a3754423978a60c9317c58a424e3d",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xba100000625a3754423978a60c9317c58a424e3d.png",
+        "last_transferred_at": "2020-10-20T22:59:53Z",
+        "type": "cryptocurrency",
+        "balance": "15620651498422024764",
+        "balance_24h": "15620651498422024764",
+        "quote_rate": 18.62986,
+        "quote_rate_24h": 18.429487,
+        "quote": 291.01056,
+        "quote_24h": 287.88058,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Uniswap V2",
+        "contract_ticker_symbol": "UNI-V2",
+        "contract_address": "0x12ede161c702d1494612d19f05992f43aa6a26fb",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x12ede161c702d1494612d19f05992f43aa6a26fb.png",
+        "last_transferred_at": "2020-05-19T06:13:15Z",
+        "type": "cryptocurrency",
+        "balance": "1734944351964247751",
+        "balance_24h": "1734944351964247751",
+        "quote_rate": 156.55777,
+        "quote_rate_24h": 158.89825,
+        "quote": 271.61902,
+        "quote_24h": 275.67963,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Uniswap V2",
+        "contract_ticker_symbol": "UNI-V2",
+        "contract_address": "0xa478c2975ab1ea89e8196811f51a7b7ade33eb11",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xa478c2975ab1ea89e8196811f51a7b7ade33eb11.png",
+        "last_transferred_at": "2020-10-01T06:56:02Z",
+        "type": "cryptocurrency",
+        "balance": "1362060537785395105",
+        "balance_24h": "1362060537785395105",
+        "quote_rate": 198.91551,
+        "quote_rate_24h": 201.90286,
+        "quote": 270.93497,
+        "quote_24h": 275.00394,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Matic Token",
+        "contract_ticker_symbol": "MATIC",
+        "contract_address": "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0.png",
+        "last_transferred_at": "2021-01-30T16:44:56Z",
+        "type": "cryptocurrency",
+        "balance": "87134378603339073473",
+        "balance_24h": "87134378603339073473",
+        "quote_rate": 2.5350804,
+        "quote_rate_24h": 2.7019644,
+        "quote": 220.89265,
+        "quote_24h": 235.43399,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Aave Interest bearing DAI",
+        "contract_ticker_symbol": "aDAI",
+        "contract_address": "0xfc1e690f61efd961294b3e1ce3313fbd8aa4f85d",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xfc1e690f61efd961294b3e1ce3313fbd8aa4f85d.png",
+        "last_transferred_at": "2020-07-07T04:57:49Z",
+        "type": "cryptocurrency",
+        "balance": "203118117977481904402",
+        "balance_24h": "203087679609248226138",
+        "quote_rate": 1.006954,
+        "quote_rate_24h": 1.0198348,
+        "quote": 204.5306,
+        "quote_24h": 207.11588,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Uniswap",
+        "contract_ticker_symbol": "UNI",
+        "contract_address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984.png",
+        "last_transferred_at": "2020-09-18T12:21:42Z",
+        "type": "cryptocurrency",
+        "balance": "11662366000000000000",
+        "balance_24h": "11662366000000000000",
+        "quote_rate": 16.677038,
+        "quote_rate_24h": 16.760069,
+        "quote": 194.49373,
+        "quote_24h": 195.46205,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "ETH/BTC Ratio 26 EMA Crossover",
+        "contract_ticker_symbol": "ETHBTC26EMACO",
+        "contract_address": "0xb9ffe0b8ee2d1af94202ffed366520300748a4d8",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xb9ffe0b8ee2d1af94202ffed366520300748a4d8.png",
+        "last_transferred_at": "2020-04-24T15:43:16Z",
+        "type": "cryptocurrency",
+        "balance": "100000000000000000",
+        "balance_24h": "100000000000000000",
+        "quote_rate": 1875.7802,
+        "quote_rate_24h": 1901.4727,
+        "quote": 187.57802,
+        "quote_24h": 190.14726,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Basic Attention Token",
+        "contract_ticker_symbol": "BAT",
+        "contract_address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x0d8775f648430679a709e98d2b0cb6250d2887ef.png",
+        "last_transferred_at": "2020-06-21T03:44:46Z",
+        "type": "cryptocurrency",
+        "balance": "139767303873728024746",
+        "balance_24h": "139767303873728024746",
+        "quote_rate": 1.2663282,
+        "quote_rate_24h": 1.2578561,
+        "quote": 176.99129,
+        "quote_24h": 175.80716,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "UMA Voting Token v1",
+        "contract_ticker_symbol": "UMA",
+        "contract_address": "0x04fa0d235c4abf4bcf4787af4cf447de572ef828",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x04fa0d235c4abf4bcf4787af4cf447de572ef828.png",
+        "last_transferred_at": "2020-06-02T12:07:18Z",
+        "type": "cryptocurrency",
+        "balance": "16980852644647026066",
+        "balance_24h": "16980852644647026066",
+        "quote_rate": 9.4814625,
+        "quote_rate_24h": 9.513769,
+        "quote": 161.00331,
+        "quote_24h": 161.55191,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Curve.fi DAI/USDC/USDT/sUSD",
+        "contract_ticker_symbol": "crvPlain3andSUSD",
+        "contract_address": "0xc25a3a3b969415c80451098fa907ec722572917f",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xc25a3a3b969415c80451098fa907ec722572917f.png",
+        "last_transferred_at": "2020-05-09T16:04:17Z",
+        "type": "cryptocurrency",
+        "balance": "149718525513119178237",
+        "balance_24h": "149718525513119178237",
+        "quote_rate": 1.0442845,
+        "quote_rate_24h": 1.0567974,
+        "quote": 156.34872,
+        "quote_24h": 158.22215,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 8,
+        "contract_name": "Compound Dai",
+        "contract_ticker_symbol": "cDAI",
+        "contract_address": "0x5d3a536e4d6dbd6114cc1ead35777bab948e3643",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x5d3a536e4d6dbd6114cc1ead35777bab948e3643.png",
+        "last_transferred_at": "2020-06-16T14:41:37Z",
+        "type": "cryptocurrency",
+        "balance": "634985147680",
+        "balance_24h": "634985147680",
+        "quote_rate": 0.021785451,
+        "quote_rate_24h": 0.02215078,
+        "quote": 138.33438,
+        "quote_24h": 140.65416,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "BandToken",
+        "contract_ticker_symbol": "BAND",
+        "contract_address": "0xba11d00c5f74255f56a5e366f4f77f5a186d7f55",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xba11d00c5f74255f56a5e366f4f77f5a186d7f55.png",
+        "last_transferred_at": "2020-05-09T16:15:54Z",
+        "type": "cryptocurrency",
+        "balance": "20097409502379000020",
+        "balance_24h": "20097409502379000020",
+        "quote_rate": 5.370744,
+        "quote_rate_24h": 5.423676,
+        "quote": 107.93805,
+        "quote_24h": 109.00184,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "DefiDollar",
+        "contract_ticker_symbol": "DUSD",
+        "contract_address": "0x5bc25f649fc4e26069ddf4cf4010f9f706c23831",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x5bc25f649fc4e26069ddf4cf4010f9f706c23831.png",
+        "last_transferred_at": "2020-10-12T08:53:11Z",
+        "type": "cryptocurrency",
+        "balance": "106915682698270160455",
+        "balance_24h": "106915682698270160455",
+        "quote_rate": 0.99774253,
+        "quote_rate_24h": 1.0115104,
+        "quote": 106.674324,
+        "quote_24h": 108.146324,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Gro Vault Token",
+        "contract_ticker_symbol": "GVT",
+        "contract_address": "0x3adb04e127b9c0a5d36094125669d4603ac52a0c",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x3adb04e127b9c0a5d36094125669d4603ac52a0c.png",
+        "last_transferred_at": "2021-10-30T12:13:44Z",
+        "type": "cryptocurrency",
+        "balance": "612502744040979731",
+        "balance_24h": "612502744040979731",
+        "quote_rate": 166.34666,
+        "quote_rate_24h": 168.24216,
+        "quote": 101.88779,
+        "quote_24h": 103.04878,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Wrapped Ether",
+        "contract_ticker_symbol": "WETH",
+        "contract_address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+        "last_transferred_at": "2021-01-27T03:46:05Z",
+        "type": "cryptocurrency",
+        "balance": "18871302019586868",
+        "balance_24h": "18871302019586868",
+        "quote_rate": 3944.9543,
+        "quote_rate_24h": 4000.415,
+        "quote": 74.44643,
+        "quote_24h": 75.49304,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Chai",
+        "contract_ticker_symbol": "CHAI",
+        "contract_address": "0x06af07097c9eeb7fd685c692751d5c66db49c215",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x06af07097c9eeb7fd685c692751d5c66db49c215.png",
+        "last_transferred_at": "2020-05-19T06:13:15Z",
+        "type": "cryptocurrency",
+        "balance": "53893596182741668368",
+        "balance_24h": "53893596182741668368",
+        "quote_rate": 1.3055979,
+        "quote_rate_24h": 1.3234807,
+        "quote": 70.363365,
+        "quote_24h": 71.32713,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Binance USD",
+        "contract_ticker_symbol": "BUSD",
+        "contract_address": "0x4fabb145d64652a948d72533023f6e7a623c7c53",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x4fabb145d64652a948d72533023f6e7a623c7c53.png",
+        "last_transferred_at": "2020-09-20T04:04:18Z",
+        "type": "cryptocurrency",
+        "balance": "54742710353338684662",
+        "balance_24h": "54742710353338684662",
+        "quote_rate": 1.0011362,
+        "quote_rate_24h": 1.0181835,
+        "quote": 54.80491,
+        "quote_24h": 55.73812,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Dai Stablecoin",
+        "contract_ticker_symbol": "DAI",
+        "contract_address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x6b175474e89094c44da98b954eedeac495271d0f.png",
+        "last_transferred_at": "2021-10-30T12:05:47Z",
+        "type": "stablecoin",
+        "balance": "51463363958932891486",
+        "balance_24h": "51463363958932891486",
+        "quote_rate": 1.0006514,
+        "quote_rate_24h": 1.0163296,
+        "quote": 51.496883,
+        "quote_24h": 52.30374,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "0x Protocol Token",
+        "contract_ticker_symbol": "ZRX",
+        "contract_address": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xe41d2489571d322189246dafa5ebde1f4699f498.png",
+        "last_transferred_at": "2020-06-29T13:18:36Z",
+        "type": "cryptocurrency",
+        "balance": "43662954044883625073",
+        "balance_24h": "43662954044883625073",
+        "quote_rate": 0.83630025,
+        "quote_rate_24h": 0.83731365,
+        "quote": 36.51534,
+        "quote_24h": 36.55959,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Frontier Token",
+        "contract_ticker_symbol": "FRONT",
+        "contract_address": "0xf8c3527cc04340b208c854e985240c02f7b7793f",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xf8c3527cc04340b208c854e985240c02f7b7793f.png",
+        "last_transferred_at": "2021-09-10T19:55:48Z",
+        "type": "cryptocurrency",
+        "balance": "42387832258693263442",
+        "balance_24h": "42387832258693263442",
+        "quote_rate": 0.7194606,
+        "quote_rate_24h": 0.73565996,
+        "quote": 30.496376,
+        "quote_24h": 31.183031,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 8,
+        "contract_name": "HEX",
+        "contract_ticker_symbol": "HEX",
+        "contract_address": "0x2b591e99afe9f32eaa6214f7b7629768c40eeb39",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x2b591e99afe9f32eaa6214f7b7629768c40eeb39.png",
+        "last_transferred_at": "2020-07-27T18:14:56Z",
+        "type": "cryptocurrency",
+        "balance": "10100000000",
+        "balance_24h": "10100000000",
+        "quote_rate": 0.27585787,
+        "quote_rate_24h": 0.28156906,
+        "quote": 27.861645,
+        "quote_24h": 28.438475,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Synth sUSD",
+        "contract_ticker_symbol": "sUSD",
+        "contract_address": "0x57ab1ec28d129707052df4df418d58a2d46d5f51",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x57ab1ec28d129707052df4df418d58a2d46d5f51.png",
+        "last_transferred_at": "2020-07-26T09:38:02Z",
+        "type": "cryptocurrency",
+        "balance": "26031050802478892143",
+        "balance_24h": "26031050802478892143",
+        "quote_rate": 1.0001665,
+        "quote_rate_24h": 1.0139338,
+        "quote": 26.035385,
+        "quote_24h": 26.393763,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Livepeer Token",
+        "contract_ticker_symbol": "LPT",
+        "contract_address": "0x58b6a8a3302369daec383334672404ee733ab239",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x58b6a8a3302369daec383334672404ee733ab239.png",
+        "last_transferred_at": "2020-06-09T17:11:51Z",
+        "type": "cryptocurrency",
+        "balance": "500000000000000000",
+        "balance_24h": "500000000000000000",
+        "quote_rate": 44.93526,
+        "quote_rate_24h": 42.18338,
+        "quote": 22.46763,
+        "quote_24h": 21.09169,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Gitcoin",
+        "contract_ticker_symbol": "GTC",
+        "contract_address": "0xde30da39c46104798bb5aa3fe8b9e0e1f348163f",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xde30da39c46104798bb5aa3fe8b9e0e1f348163f.png",
+        "last_transferred_at": "2021-06-14T05:51:21Z",
+        "type": "cryptocurrency",
+        "balance": "1972099999000035328",
+        "balance_24h": "1972099999000035328",
+        "quote_rate": 11.164729,
+        "quote_rate_24h": 11.080795,
+        "quote": 22.017962,
+        "quote_24h": 21.852436,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Badger",
+        "contract_ticker_symbol": "BADGER",
+        "contract_address": "0x3472a5a71965499acd81997a54bba8d852c6e53d",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x3472a5a71965499acd81997a54bba8d852c6e53d.png",
+        "last_transferred_at": "2021-01-25T16:52:26Z",
+        "type": "cryptocurrency",
+        "balance": "1077809101206306816",
+        "balance_24h": "1077809101206306816",
+        "quote_rate": 15.665236,
+        "quote_rate_24h": 15.723909,
+        "quote": 16.884134,
+        "quote_24h": 16.947372,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Rarible",
+        "contract_ticker_symbol": "RARI",
+        "contract_address": "0xfca59cd816ab1ead66534d82bc21e7515ce441cf",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xfca59cd816ab1ead66534d82bc21e7515ce441cf.png",
+        "last_transferred_at": "2021-02-15T03:19:44Z",
+        "type": "cryptocurrency",
+        "balance": "1186211303016500000",
+        "balance_24h": "1186211303016500000",
+        "quote_rate": 13.455464,
+        "quote_rate_24h": 13.654033,
+        "quote": 15.961024,
+        "quote_24h": 16.196568,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 2,
+        "contract_name": "Rupiah Token",
+        "contract_ticker_symbol": "IDRT",
+        "contract_address": "0x998ffe1e43facffb941dc337dd0468d52ba5b48a",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x998ffe1e43facffb941dc337dd0468d52ba5b48a.png",
+        "last_transferred_at": "2020-06-16T13:41:16Z",
+        "type": "cryptocurrency",
+        "balance": "19384740",
+        "balance_24h": "19384740",
+        "quote_rate": 7.024922E-5,
+        "quote_rate_24h": 7.097487E-5,
+        "quote": 13.617628,
+        "quote_24h": 13.758294,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Hot Cross Token",
+        "contract_ticker_symbol": "HOTCROSS",
+        "contract_address": "0x4297394c20800e8a38a619a243e9bbe7681ff24e",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x4297394c20800e8a38a619a243e9bbe7681ff24e.png",
+        "last_transferred_at": "2021-09-26T21:56:23Z",
+        "type": "cryptocurrency",
+        "balance": "34000000000000000000",
+        "balance_24h": "34000000000000000000",
+        "quote_rate": 0.3936671,
+        "quote_rate_24h": 0.40605298,
+        "quote": 13.384682,
+        "quote_24h": 13.805801,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Curve DAO Token",
+        "contract_ticker_symbol": "CRV",
+        "contract_address": "0xd533a949740bb3306d119cc777fa900ba034cd52",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xd533a949740bb3306d119cc777fa900ba034cd52.png",
+        "last_transferred_at": "2021-02-08T18:13:48Z",
+        "type": "cryptocurrency",
+        "balance": "2551271839777879671",
+        "balance_24h": "2551271839777879671",
+        "quote_rate": 5.033315,
+        "quote_rate_24h": 5.1251807,
+        "quote": 12.841355,
+        "quote_24h": 13.075729,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Kyber Network Crystal",
+        "contract_ticker_symbol": "KNC",
+        "contract_address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xdd974d5c2e2928dea5f71b9825b8b646686bd200.png",
+        "last_transferred_at": "2020-06-29T13:14:47Z",
+        "type": "cryptocurrency",
+        "balance": "9134424689876867554",
+        "balance_24h": "9134424689876867554",
+        "quote_rate": 1.3637754,
+        "quote_rate_24h": 1.3832979,
+        "quote": 12.457303,
+        "quote_24h": 12.635631,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Meta",
+        "contract_ticker_symbol": "MTA",
+        "contract_address": "0xa3bed4e1c75d00fa6f4e5e6922db7261b5e9acd2",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xa3bed4e1c75d00fa6f4e5e6922db7261b5e9acd2.png",
+        "last_transferred_at": "2020-08-03T10:01:34Z",
+        "type": "cryptocurrency",
+        "balance": "15335247845752690000",
+        "balance_24h": "15335247845752690000",
+        "quote_rate": 0.7194606,
+        "quote_rate_24h": 0.7251618,
+        "quote": 11.033107,
+        "quote_24h": 11.120536,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 6,
+        "contract_name": "Aave Interest bearing USDC",
+        "contract_ticker_symbol": "aUSDC",
+        "contract_address": "0x9ba00d6856a4edf4665bca2c2309936572473b7e",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x9ba00d6856a4edf4665bca2c2309936572473b7e.png",
+        "last_transferred_at": "2020-05-02T07:39:05Z",
+        "type": "cryptocurrency",
+        "balance": "10910810",
+        "balance_24h": "10909297",
+        "quote_rate": 1.009378,
+        "quote_rate_24h": 1.0225573,
+        "quote": 11.013131,
+        "quote_24h": 11.155381,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "SushiToken",
+        "contract_ticker_symbol": "SUSHI",
+        "contract_address": "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x6b3595068778dd592e39a122f4f5a5cf09c90fe2.png",
+        "last_transferred_at": "2020-09-10T05:00:15Z",
+        "type": "cryptocurrency",
+        "balance": "1000000000000000000",
+        "balance_24h": "1000000000000000000",
+        "quote_rate": 6.657435,
+        "quote_rate_24h": 6.5366826,
+        "quote": 6.657435,
+        "quote_24h": 6.5366826,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "ZeroSwapToken",
+        "contract_ticker_symbol": "ZEE",
+        "contract_address": "0x2edf094db69d6dcd487f1b3db9febe2eec0dd4c5",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x2edf094db69d6dcd487f1b3db9febe2eec0dd4c5.png",
+        "last_transferred_at": "2020-11-20T06:19:08Z",
+        "type": "cryptocurrency",
+        "balance": "23000000000000000000",
+        "balance_24h": "23000000000000000000",
+        "quote_rate": 0.23028556,
+        "quote_rate_24h": 0.2350878,
+        "quote": 5.296568,
+        "quote_24h": 5.407019,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 9,
+        "contract_name": "Ampleforth",
+        "contract_ticker_symbol": "AMPL",
+        "contract_address": "0xd46ba6d942050d489dbd938a2c909a5d5039a161",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xd46ba6d942050d489dbd938a2c909a5d5039a161.png",
+        "last_transferred_at": "2020-10-01T06:49:04Z",
+        "type": "cryptocurrency",
+        "balance": "5179379020",
+        "balance_24h": "5219648220",
+        "quote_rate": 0.97980446,
+        "quote_rate_24h": 0.99597436,
+        "quote": 5.0747786,
+        "quote_24h": 5.1986356,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "TrueUSD",
+        "contract_ticker_symbol": "TUSD",
+        "contract_address": "0x0000000000085d4780b73119b644ae5ecd22b376",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x0000000000085d4780b73119b644ae5ecd22b376.png",
+        "last_transferred_at": "2020-06-27T12:42:10Z",
+        "type": "stablecoin",
+        "balance": "4845107652843411748",
+        "balance_24h": "4845107652843411748",
+        "quote_rate": 1.0001665,
+        "quote_rate_24h": 1.0143416,
+        "quote": 4.8459144,
+        "quote_24h": 4.914594,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "mStable USD",
+        "contract_ticker_symbol": "mUSD",
+        "contract_address": "0xe2f2a5c287993345a840db3b0845fbc70f5935a5",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xe2f2a5c287993345a840db3b0845fbc70f5935a5.png",
+        "last_transferred_at": "2020-10-01T06:49:04Z",
+        "type": "cryptocurrency",
+        "balance": "4225701000000804526",
+        "balance_24h": "4225701000000804526",
+        "quote_rate": 0.99483365,
+        "quote_rate_24h": 1.011122,
+        "quote": 4.2038693,
+        "quote_24h": 4.2726994,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "DefiDollar DAO",
+        "contract_ticker_symbol": "DFD",
+        "contract_address": "0x20c36f062a31865bed8a5b1e512d9a1a20aa333a",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x20c36f062a31865bed8a5b1e512d9a1a20aa333a.png",
+        "last_transferred_at": "2021-02-28T07:01:57Z",
+        "type": "cryptocurrency",
+        "balance": "47000000000000000000",
+        "balance_24h": "47000000000000000000",
+        "quote_rate": 0.04308391,
+        "quote_rate_24h": 0.04522554,
+        "quote": 2.0249438,
+        "quote_24h": 2.1256003,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "SakeToken",
+        "contract_ticker_symbol": "SAKE",
+        "contract_address": "0x066798d9ef0833ccc719076dab77199ecbd178b0",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x066798d9ef0833ccc719076dab77199ecbd178b0.png",
+        "last_transferred_at": "2020-10-14T11:15:26Z",
+        "type": "cryptocurrency",
+        "balance": "112236918214822267245",
+        "balance_24h": "112236918214822267245",
+        "quote_rate": 0.013468457,
+        "quote_rate_24h": 0.013854265,
+        "quote": 1.5116582,
+        "quote_24h": 1.55496,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Compound",
+        "contract_ticker_symbol": "COMP",
+        "contract_address": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xc00e94cb662c3520282e6f5717214004a7f26888.png",
+        "last_transferred_at": "2020-06-16T14:50:10Z",
+        "type": "cryptocurrency",
+        "balance": "5726630184354795",
+        "balance_24h": "5726630184354795",
+        "quote_rate": 214.54083,
+        "quote_rate_24h": 217.60405,
+        "quote": 1.228596,
+        "quote_24h": 1.246138,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Reputation",
+        "contract_ticker_symbol": "REPv2",
+        "contract_address": "0x221657776846890989a759ba2973e427dff5c9bb",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x221657776846890989a759ba2973e427dff5c9bb.png",
+        "last_transferred_at": "2020-10-25T13:38:03Z",
+        "type": "cryptocurrency",
+        "balance": "67430976234593610",
+        "balance_24h": "67430976234593610",
+        "quote_rate": 17.75623,
+        "quote_rate_24h": 17.796103,
+        "quote": 1.1973199,
+        "quote_24h": 1.2000085,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Synth sETH",
+        "contract_ticker_symbol": "sETH",
+        "contract_address": "0x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb.png",
+        "last_transferred_at": "2020-06-09T13:49:35Z",
+        "type": "cryptocurrency",
+        "balance": "249333525785344",
+        "balance_24h": "249333525785344",
+        "quote_rate": 3952.9355,
+        "quote_rate_24h": 4006.0908,
+        "quote": 0.98559934,
+        "quote_24h": 0.9988527,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "GourmetGalaxy",
+        "contract_ticker_symbol": "GUM",
+        "contract_address": "0x4f5fa8f2d12e5eb780f6082dd656c565c48e0f24",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x4f5fa8f2d12e5eb780f6082dd656c565c48e0f24.png",
+        "last_transferred_at": "2021-07-01T09:27:52Z",
+        "type": "cryptocurrency",
+        "balance": "3000000000000000000",
+        "balance_24h": "3000000000000000000",
+        "quote_rate": 0.31367317,
+        "quote_rate_24h": 0.31511256,
+        "quote": 0.94101954,
+        "quote_24h": 0.9453377,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Furucombo",
+        "contract_ticker_symbol": "COMBO",
+        "contract_address": "0xffffffff2ba8f66d4e51811c5190992176930278",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xffffffff2ba8f66d4e51811c5190992176930278.png",
+        "last_transferred_at": "2021-02-08T18:18:15Z",
+        "type": "cryptocurrency",
+        "balance": "1125000000000000000",
+        "balance_24h": "1125000000000000000",
+        "quote_rate": 0.37427467,
+        "quote_rate_24h": 0.3850204,
+        "quote": 0.421059,
+        "quote_24h": 0.43314797,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Bluzelle Token",
+        "contract_ticker_symbol": "BLZ",
+        "contract_address": "0x5732046a883704404f284ce41ffadd5b007fd668",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x5732046a883704404f284ce41ffadd5b007fd668.png",
+        "last_transferred_at": "2021-09-15T07:47:31Z",
+        "type": "cryptocurrency",
+        "balance": "1000000000000000000",
+        "balance_24h": "1000000000000000000",
+        "quote_rate": 0.23901218,
+        "quote_rate_24h": 0.24176921,
+        "quote": 0.23901218,
+        "quote_24h": 0.24176921,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 0,
+        "contract_name": "Chi Gastoken by 1inch",
+        "contract_ticker_symbol": "CHI",
+        "contract_address": "0x0000000000004946c0e9f43f4dee607b0ef1fa1c",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x0000000000004946c0e9f43f4dee607b0ef1fa1c.png",
+        "last_transferred_at": "2021-01-25T16:54:01Z",
+        "type": "cryptocurrency",
+        "balance": "31",
+        "balance_24h": "31",
+        "quote_rate": 0.16822967,
+        "quote_rate_24h": 0.16641471,
+        "quote": 0.0,
+        "quote_24h": 5.158856,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Rari Stable Pool Token",
+        "contract_ticker_symbol": "RSPT",
+        "contract_address": "0x016bf078abcacb987f0589a6d3beadd4316922b0",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x016bf078abcacb987f0589a6d3beadd4316922b0.png",
+        "last_transferred_at": "2020-09-22T02:27:38Z",
+        "type": "cryptocurrency",
+        "balance": "49964890887229681440",
+        "balance_24h": "49964890887229681440",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Uniswap V2",
+        "contract_ticker_symbol": "UNI-V2",
+        "contract_address": "0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852.png",
+        "last_transferred_at": "2021-08-11T20:32:58Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": 2.38272176E8,
+        "quote_rate_24h": 2.40995408E8,
+        "quote": 0.0,
+        "quote_24h": 0.0,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Balancer Pool Token",
+        "contract_ticker_symbol": "BPT",
+        "contract_address": "0x0d88b55317516b84e78fbba7cde3f910d5686901",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x0d88b55317516b84e78fbba7cde3f910d5686901.png",
+        "last_transferred_at": "2020-11-24T04:24:12Z",
+        "type": "cryptocurrency",
+        "balance": "66629647566971043",
+        "balance_24h": "66629647566971043",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "IdleDAI",
+        "contract_ticker_symbol": "IDLEDAI",
+        "contract_address": "0x10ec0d497824e342bcb0edce00959142aaa766dd",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x10ec0d497824e342bcb0edce00959142aaa766dd.png",
+        "last_transferred_at": "2020-05-08T18:23:10Z",
+        "type": "cryptocurrency",
+        "balance": "46050317495304556430",
+        "balance_24h": "46050317495304556430",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "1INCH Token",
+        "contract_ticker_symbol": "1INCH",
+        "contract_address": "0x111111111117dc0aa78b770fa6a738034120c302",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x111111111117dc0aa78b770fa6a738034120c302.png",
+        "last_transferred_at": "2020-12-25T11:20:37Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": 2.7416103,
+        "quote_rate_24h": 2.725791,
+        "quote": 0.0,
+        "quote_24h": 0.0,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "MX Token",
+        "contract_ticker_symbol": "MX",
+        "contract_address": "0x11eef04c884e24d9b7b4760e7476d06ddf797f36",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x11eef04c884e24d9b7b4760e7476d06ddf797f36.png",
+        "last_transferred_at": "2020-07-31T10:14:23Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": 2.152564,
+        "quote_rate_24h": 2.18237,
+        "quote": 0.0,
+        "quote_24h": 0.0,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "IdleUSDC v3 [Max yield]",
+        "contract_ticker_symbol": "idleUSDCYield",
+        "contract_address": "0x12b98c621e8754ae70d0fdbbc73d6208bc3e3ca6",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x12b98c621e8754ae70d0fdbbc73d6208bc3e3ca6.png",
+        "last_transferred_at": "2020-06-17T06:37:45Z",
+        "type": "cryptocurrency",
+        "balance": "68155281410050657995",
+        "balance_24h": "68155281410050657995",
+        "quote_rate": null,
+        "quote_rate_24h": 1.0723487,
+        "quote": 0.0,
+        "quote_24h": 73.08623,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 8,
+        "contract_name": "Frontier USDF1",
+        "contract_ticker_symbol": "USDF1",
+        "contract_address": "0x19075005eed66441f0111238e5477b81221996de",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x19075005eed66441f0111238e5477b81221996de.png",
+        "last_transferred_at": "2021-01-19T09:47:35Z",
+        "type": "cryptocurrency",
+        "balance": "500000000",
+        "balance_24h": "500000000",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Augur Token",
+        "contract_ticker_symbol": "REP",
+        "contract_address": "0x1985365e9f78359a9b6ad760e32412f4a445e862",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x1985365e9f78359a9b6ad760e32412f4a445e862.png",
+        "last_transferred_at": "2020-10-25T13:38:03Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": 17.136875,
+        "quote_rate_24h": 17.798336,
+        "quote": 0.0,
+        "quote_24h": 0.0,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "ETH/BTC PA Candlestick",
+        "contract_ticker_symbol": "ETHBTCPA",
+        "contract_address": "0x1bcca39ae82e53dede8ec5500c3bcd76cd1e0072",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x1bcca39ae82e53dede8ec5500c3bcd76cd1e0072.png",
+        "last_transferred_at": "2020-06-14T15:03:56Z",
+        "type": "cryptocurrency",
+        "balance": "1000000000000000000",
+        "balance_24h": "1000000000000000000",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 6,
+        "contract_name": "iearn USDC",
+        "contract_ticker_symbol": "yUSDC",
+        "contract_address": "0x26ea744e5b887e5205727f55dfbe8685e3b21951",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x26ea744e5b887e5205727f55dfbe8685e3b21951.png",
+        "last_transferred_at": "2020-05-02T07:38:41Z",
+        "type": "cryptocurrency",
+        "balance": "9936824",
+        "balance_24h": "9936824",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "",
+        "contract_ticker_symbol": "",
+        "contract_address": "0x2a1530c4c41db0b0b2bb646cb5eb1a67b7158667",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x2a1530c4c41db0b0b2bb646cb5eb1a67b7158667.png",
+        "last_transferred_at": "2020-10-01T06:25:57Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "",
+        "contract_ticker_symbol": "",
+        "contract_address": "0x2c4bd064b998838076fa341a83d007fc2fa50957",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x2c4bd064b998838076fa341a83d007fc2fa50957.png",
+        "last_transferred_at": "2020-05-02T07:05:15Z",
+        "type": "cryptocurrency",
+        "balance": "147927576965205251",
+        "balance_24h": "147927576965205251",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "SakeSwap Slippage Token",
+        "contract_ticker_symbol": "SST",
+        "contract_address": "0x3032b62fe902eb1b271a177b31e32dd53f449fa4",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x3032b62fe902eb1b271a177b31e32dd53f449fa4.png",
+        "last_transferred_at": "2020-10-21T12:04:04Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "",
+        "contract_ticker_symbol": "",
+        "contract_address": "0x3958b4ec427f8fa24eb60f42821760e88d485f7f",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x3958b4ec427f8fa24eb60f42821760e88d485f7f.png",
+        "last_transferred_at": "2020-05-02T07:04:22Z",
+        "type": "cryptocurrency",
+        "balance": "65873560088318566",
+        "balance_24h": "65873560088318566",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Businessweek 03 T-Shirt",
+        "contract_ticker_symbol": "NEUE-002",
+        "contract_address": "0x41e5db6ddfa6ef481cf03ee3b996d8c8d1e201cb",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x41e5db6ddfa6ef481cf03ee3b996d8c8d1e201cb.png",
+        "last_transferred_at": "2020-06-12T12:20:29Z",
+        "type": "cryptocurrency",
+        "balance": "1000000000000000000",
+        "balance_24h": "1000000000000000000",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "akSwap.io",
+        "contract_ticker_symbol": "akSwap.io",
+        "contract_address": "0x43661f4b1c67dd6c1e48c6faf2887b22aee3ddf5",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x43661f4b1c67dd6c1e48c6faf2887b22aee3ddf5.png",
+        "last_transferred_at": "2021-09-15T01:45:29Z",
+        "type": "cryptocurrency",
+        "balance": "250000000000000000000000",
+        "balance_24h": "250000000000000000000000",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "DODO bird",
+        "contract_ticker_symbol": "DODO",
+        "contract_address": "0x43dfc4159d86f3a37a5a4b3d4580b888ad7d4ddd",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x43dfc4159d86f3a37a5a4b3d4580b888ad7d4ddd.png",
+        "last_transferred_at": "2021-04-26T10:20:28Z",
+        "type": "dust",
+        "balance": "2000000000000000",
+        "balance_24h": "2000000000000000",
+        "quote_rate": 0.94101954,
+        "quote_rate_24h": 0.95396954,
+        "quote": 0.0,
+        "quote_24h": 0.0019079391,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 6,
+        "contract_name": "Serum",
+        "contract_ticker_symbol": "SRM",
+        "contract_address": "0x476c5e26a75bd202a9683ffd34359c0cc15be0ff",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x476c5e26a75bd202a9683ffd34359c0cc15be0ff.png",
+        "last_transferred_at": "2020-10-29T06:16:30Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": 3.6535413,
+        "quote_rate_24h": 3.7191615,
+        "quote": 0.0,
+        "quote_24h": 0.0,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Balancer Pool Token",
+        "contract_ticker_symbol": "BPT",
+        "contract_address": "0x564f10f2e5deb8d475c20b418c5b6ed071855f2b",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x564f10f2e5deb8d475c20b418c5b6ed071855f2b.png",
+        "last_transferred_at": "2021-06-03T07:27:42Z",
+        "type": "cryptocurrency",
+        "balance": "568016926122528630",
+        "balance_24h": "568016926122528630",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "UnmarshalToken",
+        "contract_ticker_symbol": "MARSH",
+        "contract_address": "0x5a666c7d92e5fa7edcb6390e4efd6d0cdd69cf37",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x5a666c7d92e5fa7edcb6390e4efd6d0cdd69cf37.png",
+        "last_transferred_at": "2021-08-11T11:41:03Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": 0.5628664,
+        "quote_rate_24h": 0.5709355,
+        "quote": 0.0,
+        "quote_24h": 0.0,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Mooniswap V1 (USDT-FRONT)",
+        "contract_ticker_symbol": "MOON-V1-USDT-FRONT",
+        "contract_address": "0x5bd7be2057e7c39807a1743c3bf0e8dc8e95d8ed",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x5bd7be2057e7c39807a1743c3bf0e8dc8e95d8ed.png",
+        "last_transferred_at": "2020-09-22T04:58:28Z",
+        "type": "cryptocurrency",
+        "balance": "3971317231689645110550",
+        "balance_24h": "3971317231689645110550",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Uniswap V2",
+        "contract_ticker_symbol": "UNI-V2",
+        "contract_address": "0x5c47016e8a4a3c6a7c46a765f81dce205d00393e",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x5c47016e8a4a3c6a7c46a765f81dce205d00393e.png",
+        "last_transferred_at": "2020-10-08T06:25:36Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Inverse ETH 20 SMA Crossover",
+        "contract_ticker_symbol": "iETH20SMACO",
+        "contract_address": "0x5cd487ce4db7091292f2e914f7b31445bd4a5e1b",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x5cd487ce4db7091292f2e914f7b31445bd4a5e1b.png",
+        "last_transferred_at": "2020-06-14T15:01:02Z",
+        "type": "cryptocurrency",
+        "balance": "100000000000000000",
+        "balance_24h": "100000000000000000",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "IdleUSDT v3 [Max yield]",
+        "contract_ticker_symbol": "idleUSDTYield",
+        "contract_address": "0x63d27b3da94a9e871222cb0a32232674b02d2f2d",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x63d27b3da94a9e871222cb0a32232674b02d2f2d.png",
+        "last_transferred_at": "2020-06-17T06:39:48Z",
+        "type": "cryptocurrency",
+        "balance": "9337788567478019361",
+        "balance_24h": "9337788567478019361",
+        "quote_rate": null,
+        "quote_rate_24h": 1.0831606,
+        "quote": 0.0,
+        "quote_24h": 10.114325,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "JANGULAR REFLEXXXIONS",
+        "contract_ticker_symbol": "REFLEX",
+        "contract_address": "0x663af1d548f800d75179d839ea3e6c98a4a43d64",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x663af1d548f800d75179d839ea3e6c98a4a43d64.png",
+        "last_transferred_at": "2020-07-20T15:19:02Z",
+        "type": "cryptocurrency",
+        "balance": "1000000000000000000",
+        "balance_24h": "1000000000000000000",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 7,
+        "contract_name": "Opyn ETH Put $200 05/15/20",
+        "contract_ticker_symbol": "oETH $200 Put 05/15/20",
+        "contract_address": "0x684a1d736e934a45f6f5d00c62ddf7a0b7d2064b",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x684a1d736e934a45f6f5d00c62ddf7a0b7d2064b.png",
+        "last_transferred_at": "2020-05-09T13:53:47Z",
+        "type": "cryptocurrency",
+        "balance": "20000000",
+        "balance_24h": "20000000",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "",
+        "contract_ticker_symbol": "",
+        "contract_address": "0x6c3942b383bc3d0efd3f36efa1cbe7c8e12c8a2b",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x6c3942b383bc3d0efd3f36efa1cbe7c8e12c8a2b.png",
+        "last_transferred_at": "2020-05-19T06:13:15Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Mystery Item",
+        "contract_ticker_symbol": "NEUE-004",
+        "contract_address": "0x6c4f16c102d9ac1f64c62e996d7768eb2efb9aa5",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x6c4f16c102d9ac1f64c62e996d7768eb2efb9aa5.png",
+        "last_transferred_at": "2020-06-12T12:23:35Z",
+        "type": "cryptocurrency",
+        "balance": "1000000000000000000",
+        "balance_24h": "1000000000000000000",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Balancer Pool Token",
+        "contract_ticker_symbol": "BPT",
+        "contract_address": "0x72cd8f4504941bf8c5a21d1fd83a96499fd71d2c",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x72cd8f4504941bf8c5a21d1fd83a96499fd71d2c.png",
+        "last_transferred_at": "2021-04-01T10:17:07Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Ampleforth Governance",
+        "contract_ticker_symbol": "FORTH",
+        "contract_address": "0x77fba179c79de5b7653f68b5039af940ada60ce0",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x77fba179c79de5b7653f68b5039af940ada60ce0.png",
+        "last_transferred_at": "2021-04-22T05:34:07Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": 9.342807,
+        "quote_rate_24h": 9.4670105,
+        "quote": 0.0,
+        "quote_24h": 0.0,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "SakeSwap LP Token",
+        "contract_ticker_symbol": "SLP",
+        "contract_address": "0x7af54337b42a4fb7295b7f29c72c983fbd02d258",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x7af54337b42a4fb7295b7f29c72c983fbd02d258.png",
+        "last_transferred_at": "2020-10-14T10:55:44Z",
+        "type": "cryptocurrency",
+        "balance": "3162277660168378331",
+        "balance_24h": "3162277660168378331",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "IdleTUSD v3 [Max yield]",
+        "contract_ticker_symbol": "idleTUSDYield",
+        "contract_address": "0x7db7a4a50b26602e56536189aa94678c80f8e5b6",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x7db7a4a50b26602e56536189aa94678c80f8e5b6.png",
+        "last_transferred_at": "2020-06-17T06:43:02Z",
+        "type": "cryptocurrency",
+        "balance": "54937568856410733208",
+        "balance_24h": "54937568856410733208",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 6,
+        "contract_name": "iearn USDT",
+        "contract_ticker_symbol": "yUSDT",
+        "contract_address": "0x83f798e925bcd4017eb265844fddabb448f1707d",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x83f798e925bcd4017eb265844fddabb448f1707d.png",
+        "last_transferred_at": "2020-05-23T11:36:16Z",
+        "type": "cryptocurrency",
+        "balance": "19601308",
+        "balance_24h": "19601308",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 6,
+        "contract_name": "Element Principal Token yvUSDC-28JAN22",
+        "contract_ticker_symbol": "ePyvUSDC-28JAN22",
+        "contract_address": "0x8a2228705ec979961f0e16df311debcf097a2766",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x8a2228705ec979961f0e16df311debcf097a2766.png",
+        "last_transferred_at": "2021-10-30T11:46:57Z",
+        "type": "cryptocurrency",
+        "balance": "100892522",
+        "balance_24h": "100892522",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "SakeSwap Slippage Token",
+        "contract_ticker_symbol": "SST",
+        "contract_address": "0x8dba4e8b048e18bb99bbf040500c2df835da0ad7",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x8dba4e8b048e18bb99bbf040500c2df835da0ad7.png",
+        "last_transferred_at": "2020-10-21T11:59:18Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Balancer Pool Token",
+        "contract_ticker_symbol": "BPT",
+        "contract_address": "0x92e7eb99a38c8eb655b15467774c6d56fb810bc9",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x92e7eb99a38c8eb655b15467774c6d56fb810bc9.png",
+        "last_transferred_at": "2020-09-22T05:09:52Z",
+        "type": "cryptocurrency",
+        "balance": "901776961242004881",
+        "balance_24h": "901776961242004881",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Rari Fund Token",
+        "contract_ticker_symbol": "RFT",
+        "contract_address": "0x9366b7c00894c3555c7590b0384e5f6a9d55659f",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x9366b7c00894c3555c7590b0384e5f6a9d55659f.png",
+        "last_transferred_at": "2020-07-15T04:33:59Z",
+        "type": "cryptocurrency",
+        "balance": "49964890887229681440",
+        "balance_24h": "49964890887229681440",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "",
+        "contract_ticker_symbol": "",
+        "contract_address": "0x97dec872013f6b5fb443861090ad931542878126",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x97dec872013f6b5fb443861090ad931542878126.png",
+        "last_transferred_at": "2020-10-25T14:49:15Z",
+        "type": "cryptocurrency",
+        "balance": "436317",
+        "balance_24h": "436317",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Balancer Pool Token",
+        "contract_ticker_symbol": "BPT",
+        "contract_address": "0x987d7cc04652710b74fff380403f5c02f82e290a",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x987d7cc04652710b74fff380403f5c02f82e290a.png",
+        "last_transferred_at": "2020-06-02T12:02:40Z",
+        "type": "cryptocurrency",
+        "balance": "321087138733163221936",
+        "balance_24h": "321087138733163221936",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 8,
+        "contract_name": "Opyn cDai Insurance",
+        "contract_ticker_symbol": "ocDai",
+        "contract_address": "0x98cc3bd6af1880fcfda17ac477b2f612980e5e33",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x98cc3bd6af1880fcfda17ac477b2f612980e5e33.png",
+        "last_transferred_at": "2020-05-09T13:51:20Z",
+        "type": "cryptocurrency",
+        "balance": "146637393541",
+        "balance_24h": "146637393541",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Balancer Pool Token",
+        "contract_ticker_symbol": "BPT",
+        "contract_address": "0x9b208194acc0a8ccb2a8dcafeacfbb7dcc093f81",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x9b208194acc0a8ccb2a8dcafeacfbb7dcc093f81.png",
+        "last_transferred_at": "2020-06-02T13:43:34Z",
+        "type": "cryptocurrency",
+        "balance": "43951215192917720",
+        "balance_24h": "43951215192917720",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Maker Token",
+        "contract_ticker_symbol": "MKR",
+        "contract_address": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2.png",
+        "last_transferred_at": "2020-06-02T12:02:40Z",
+        "type": "dust",
+        "balance": "2862",
+        "balance_24h": "2862",
+        "quote_rate": 2450.9346,
+        "quote_rate_24h": 2466.7385,
+        "quote": 0.0,
+        "quote_24h": 7.059806E-12,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 0,
+        "contract_name": "Ethmoji",
+        "contract_ticker_symbol": "EMJ",
+        "contract_address": "0xa6d954d08877f8ce1224f6bfb83484c7d3abf8e9",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xa6d954d08877f8ce1224f6bfb83484c7d3abf8e9.png",
+        "last_transferred_at": "2020-05-07T12:12:03Z",
+        "type": "cryptocurrency",
+        "balance": "1",
+        "balance_24h": "1",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Synth iETH",
+        "contract_ticker_symbol": "iETH",
+        "contract_address": "0xa9859874e1743a32409f75bb11549892138bba1e",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xa9859874e1743a32409f75bb11549892138bba1e.png",
+        "last_transferred_at": "2020-07-26T09:38:02Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": 1093.4618,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "ETH Maximalist Set",
+        "contract_ticker_symbol": "ETH10K",
+        "contract_address": "0xabc754ac2161b557d28062f41dcc0fc18440ac7e",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xabc754ac2161b557d28062f41dcc0fc18440ac7e.png",
+        "last_transferred_at": "2020-04-25T06:18:32Z",
+        "type": "cryptocurrency",
+        "balance": "97000000000000000",
+        "balance_24h": "97000000000000000",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "SakeSwap LP Token",
+        "contract_ticker_symbol": "SLP",
+        "contract_address": "0xaded74c1a6f2983310f8d64e6c12ce33a015992c",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xaded74c1a6f2983310f8d64e6c12ce33a015992c.png",
+        "last_transferred_at": "2020-10-21T12:04:04Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "LuaToken",
+        "contract_ticker_symbol": "LUA",
+        "contract_address": "0xb1f66997a5760428d3a87d68b90bfe0ae64121cc",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xb1f66997a5760428d3a87d68b90bfe0ae64121cc.png",
+        "last_transferred_at": "2020-10-08T06:24:11Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": 0.063510336,
+        "quote_rate_24h": 0.065003335,
+        "quote": 0.0,
+        "quote_24h": 0.0,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Uniswap V2",
+        "contract_ticker_symbol": "UNI-V2",
+        "contract_address": "0xb360ebbeba4c74eb7c960757127b830091e2567a",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xb360ebbeba4c74eb7c960757127b830091e2567a.png",
+        "last_transferred_at": "2020-10-01T06:49:04Z",
+        "type": "cryptocurrency",
+        "balance": "27826228633150",
+        "balance_24h": "27826228633150",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "IdleSUSD v3 [Max yield]",
+        "contract_ticker_symbol": "idleSUSDYield",
+        "contract_address": "0xb39ca0261a1b2986a6a9fe38d344b56374963de5",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xb39ca0261a1b2986a6a9fe38d344b56374963de5.png",
+        "last_transferred_at": "2020-06-17T07:14:01Z",
+        "type": "cryptocurrency",
+        "balance": "25993990664778594877",
+        "balance_24h": "25993990664778594877",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "Ethereum Name Service",
+        "contract_ticker_symbol": "ENS",
+        "contract_address": "0xc18360217d8f7ab5e7c516566761ea12ce7f9d72",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xc18360217d8f7ab5e7c516566761ea12ce7f9d72.png",
+        "last_transferred_at": "2021-11-10T20:30:19Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": 47.094612,
+        "quote_rate_24h": 44.505295,
+        "quote": 0.0,
+        "quote_24h": 0.0,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 6,
+        "contract_name": "iearn USDC",
+        "contract_ticker_symbol": "yUSDC",
+        "contract_address": "0xd6ad7a6750a7593e092a9b218d66c0a814a3436e",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xd6ad7a6750a7593e092a9b218d66c0a814a3436e.png",
+        "last_transferred_at": "2020-05-02T07:07:54Z",
+        "type": "cryptocurrency",
+        "balance": "8685178",
+        "balance_24h": "8685178",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "IdleWBTC v3 [Max yield]",
+        "contract_ticker_symbol": "idleWBTCYield",
+        "contract_address": "0xd6f279b7ccbcd70f8be439d25b9df93aeb60ec55",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xd6f279b7ccbcd70f8be439d25b9df93aeb60ec55.png",
+        "last_transferred_at": "2020-06-17T07:35:02Z",
+        "type": "cryptocurrency",
+        "balance": "2999984130083951",
+        "balance_24h": "2999984130083951",
+        "quote_rate": null,
+        "quote_rate_24h": 49279.285,
+        "quote": 0.0,
+        "quote_24h": 147.83707,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "SakeSwap LP Token",
+        "contract_ticker_symbol": "SLP",
+        "contract_address": "0xdfc86cbc171d742b355738a402b7825dacb1784e",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xdfc86cbc171d742b355738a402b7825dacb1784e.png",
+        "last_transferred_at": "2020-10-21T11:59:18Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "",
+        "contract_ticker_symbol": "",
+        "contract_address": "0xe9cf7887b93150d4f2da7dfc6d502b216438f244",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xe9cf7887b93150d4f2da7dfc6d502b216438f244.png",
+        "last_transferred_at": "2020-06-09T13:49:35Z",
+        "type": "dust",
+        "balance": "0",
+        "balance_24h": "0",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 6,
+        "contract_name": "Fulcrum USDC iToken",
+        "contract_ticker_symbol": "iUSDC",
+        "contract_address": "0xf013406a0b1d544238083df0b93ad0d2cbe0f65f",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xf013406a0b1d544238083df0b93ad0d2cbe0f65f.png",
+        "last_transferred_at": "2020-04-25T12:03:46Z",
+        "type": "cryptocurrency",
+        "balance": "4854141",
+        "balance_24h": "4854141",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "DRONESCAPE3",
+        "contract_ticker_symbol": "YAW",
+        "contract_address": "0xf1ab611e9c4883b10a8f6f0b5138df02bf3744df",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xf1ab611e9c4883b10a8f6f0b5138df02bf3744df.png",
+        "last_transferred_at": "2020-07-20T15:20:52Z",
+        "type": "cryptocurrency",
+        "balance": "1000000000000000000",
+        "balance_24h": "1000000000000000000",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      },
+      {
+        "contract_decimals": 18,
+        "contract_name": "SakeSwap Slippage Token",
+        "contract_ticker_symbol": "SST",
+        "contract_address": "0xf220b808807bc66062fd6eaddff846268a5d4b30",
+        "supports_erc": [
+          "erc20"
+        ],
+        "logo_url": "https://logos.covalenthq.com/tokens/1/0xf220b808807bc66062fd6eaddff846268a5d4b30.png",
+        "last_transferred_at": "2020-10-14T11:05:13Z",
+        "type": "cryptocurrency",
+        "balance": "66082561232801",
+        "balance_24h": "66082561232801",
+        "quote_rate": null,
+        "quote_rate_24h": null,
+        "quote": 0.0,
+        "quote_24h": null,
+        "nft_data": null
+      }
+    ],
+    "pagination": null
+  },
+  "error": false,
+  "error_message": null,
+  "error_code": null
+}

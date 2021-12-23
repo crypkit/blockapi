@@ -36,5 +36,7 @@ dist:
 test:
 	python3 blockapi/test.py
 
+test-v2-api:
+	python3 -m pytest blockapi/test/v2/
 
 .PHONY: dist
