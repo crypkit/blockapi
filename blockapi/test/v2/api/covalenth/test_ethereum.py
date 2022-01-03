@@ -18,9 +18,7 @@ def covalenth_eth_balances_response():
 
 @pytest.fixture
 def eth_covalent_api():
-    return EthCovalentApi(
-        address="0xfc43f5f9dd45258b3aff31bdbe6561d97e8b71de", api_key="test_key"
-    )
+    return EthCovalentApi(api_key="test_key")
 
 
 def test_parse_balance(eth_covalent_api, covalenth_eth_balances_response):

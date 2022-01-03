@@ -23,11 +23,11 @@ class EthplorerApi(BlockchainApi):
 
     supported_requests = {'get_info': '/getAddressInfo/{address}?apiKey={api_key}'}
 
-    def __init__(self, address: str, api_key: str = 'freekey'):
-        super().__init__(address, api_key)
+    def __init__(self, api_key: str = 'freekey'):
+        super().__init__(api_key)
 
-    def get_balance(self) -> List[BalanceItem]:
-        response = self.get('get_info', address=self.address, api_key=self.api_key)
+    def get_balance(self, address: str) -> List[BalanceItem]:
+        response = self.get('get_info', address=address, api_key=self.api_key)
 
         balances = []
 

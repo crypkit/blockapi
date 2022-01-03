@@ -24,14 +24,14 @@ class TerraApi(IBalance):
 
     coin = coin_terra
 
-    def __init__(self, address: str):
-        self.mantle = TerraMantleApi(address)
-        self.fcd = TerraFcdApi(address)
+    def __init__(self):
+        self.mantle = TerraMantleApi()
+        self.fcd = TerraFcdApi()
 
-    def get_balance(self) -> List[BalanceItem]:
-        native_balances = self.fcd.get_native_balances()
-        staking_balances = self.fcd.get_staking_balances()
-        cw20_balances = self.mantle.get_cw20_balances()
+    def get_balance(self, address: str) -> List[BalanceItem]:
+        native_balances = self.fcd.get_native_balances(address)
+        staking_balances = self.fcd.get_staking_balances(address)
+        cw20_balances = self.mantle.get_cw20_balances(address)
         return list(concatv(native_balances, staking_balances, cw20_balances))
 
 
@@ -53,8 +53,8 @@ class TerraFcdApi(BlockchainApi):
         'get_staking_data': '/v1/staking/{address}',
     }
 
-    def get_native_balances(self) -> List[BalanceItem]:
-        response = self.get('get_native_balances', address=self.address)
+    def get_native_balances(self, address: str) -> List[BalanceItem]:
+        response = self.get('get_native_balances', address=address)
 
         balances = []
         for b in response['balance']:
@@ -73,8 +73,8 @@ class TerraFcdApi(BlockchainApi):
 
         return balances
 
-    def get_staking_balances(self) -> List[BalanceItem]:
-        response = self.get('get_staking_data', address=self.address)
+    def get_staking_balances(self, address: str) -> List[BalanceItem]:
+        response = self.get('get_staking_data', address=address)
 
         balances = []
         if int(response['delegationTotal']) > 0:
@@ -178,8 +178,8 @@ class TerraMantleApi(BlockchainApi):
 
         return self._tokens_map
 
-    def get_cw20_balances(self):
-        raw_balances = self._get_raw_balances()
+    def get_cw20_balances(self, address: str):
+        raw_balances = self._get_raw_balances(address)
 
         balances = []
         for contract, result_raw in raw_balances['data'].items():
@@ -211,10 +211,10 @@ class TerraMantleApi(BlockchainApi):
             info=CoinInfo.from_api(logo_url=raw_token.get('icon')),
         )
 
-    def _get_raw_balances(self) -> Dict:
+    def _get_raw_balances(self, address: str) -> Dict:
         cw20_contracts = list(self.tokens_map.keys())
         message = '{\\"balance\\": {\\"address\\": \\"$ADDR\\"}}'.replace(
-            '$ADDR', self.address
+            '$ADDR', address
         )
 
         key_queries = [
@@ -254,4 +254,4 @@ class TerraMantleApi(BlockchainApi):
         err = json_response['errors'][0]
 
         if 'addr_canonicalize' in err['message']:
-            raise InvalidAddressException(f'Invalid address format: {self.address}')
+            raise InvalidAddressException(f'Invalid address format.')

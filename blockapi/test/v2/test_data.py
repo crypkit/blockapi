@@ -30,16 +30,9 @@ BAD_ADDRESSES = [
 ]
 
 
-def yield_api_instances_for_non_empty_valid_addresses():
+def yield_api_instances():
     for api_cls in API_CLASSES:
-        for address in NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL.get(api_cls.coin.symbol, []):
-            yield _pytest_param(api_cls(address))
-
-
-def yield_api_instances_for_bad_addresses():
-    for api_cls in API_CLASSES:
-        for address in BAD_ADDRESSES:
-            yield _pytest_param(api_cls(address))
+        yield _pytest_param(api_cls())
 
 
 def _pytest_param(api_inst):

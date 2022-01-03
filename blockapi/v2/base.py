@@ -18,8 +18,7 @@ class BlockchainApi(ABC):
     # {request_method: request_url}
     supported_requests: Dict[str, str] = {}
 
-    def __init__(self, address: str, api_key: Optional[str] = None):
-        self.address = address
+    def __init__(self, api_key: Optional[str] = None):
         self.api_key = api_key
         self._session = Session()
 
@@ -76,7 +75,7 @@ class BlockchainApi(ABC):
     def __repr__(self):
         return (
             f"{self.__class__.__name__}"
-            f"(coin={self.coin.name},address={self.address})"
+            f"(coin={self.coin.name})"
         )
 
 
