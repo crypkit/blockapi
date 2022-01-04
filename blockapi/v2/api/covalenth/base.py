@@ -3,13 +3,13 @@ from typing import Dict, Optional
 
 from eth_utils import to_checksum_address
 
-from blockapi.v2.base import BlockchainApi
-from blockapi.v2.models import BalanceItem, Blockchain, Coin, CoinInfo
+from blockapi.v2.base import BlockchainApi, IBalance
+from blockapi.v2.models import BalanceItem, Coin, CoinInfo
 
 logger = logging.getLogger(__name__)
 
 
-class CovalentApiBase(BlockchainApi):
+class CovalentApiBase(BlockchainApi, IBalance):
     """
     API docs: https://www.covalenthq.com/docs/api/
     """
