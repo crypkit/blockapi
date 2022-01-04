@@ -16,6 +16,7 @@ class Blockchain(Enum):
     ETHEREUM = 'ethereum'
     SOLANA = 'solana'
     TERRA = 'terra'
+    BINANCE_SMART_CHAIN = "binance-smart-chain"
 
 
 class AssetType(Enum):

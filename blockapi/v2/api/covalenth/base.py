@@ -15,8 +15,8 @@ class CovalentApiBase(BlockchainApi, IBalance):
     """
 
     API_BASE_URL = 'https://api.covalenthq.com/v1'
+    API_BASE_RATE_LIMIT = 0.2
 
-    coin = None  # TODO will be set in childs
     api_options = None  # TODO will be set in childs
 
     supported_requests = {
