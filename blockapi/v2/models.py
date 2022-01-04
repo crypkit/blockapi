@@ -17,6 +17,16 @@ class Blockchain(Enum):
     SOLANA = 'solana'
     TERRA = 'terra'
     BINANCE_SMART_CHAIN = "binance-smart-chain"
+    MOONBEAM_MOONRIVER = "moonbeam-moonriver"  # TODO: is this right?
+    RSK = "rsk"  # TODO: is this right?
+    ARBITRUM = "arbitrum"  # TODO: is this right?
+    FANTOM = "fantom"  # TODO: is this right?
+    PALM = "palm"
+    KLAYTN = "klaytn"
+    HECO = "heco"
+    AXIE = "axie"
+    ASTAR = "astar"
+    IOTEX = "iotex"
 
 
 class AssetType(Enum):
