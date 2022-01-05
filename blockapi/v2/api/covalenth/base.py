@@ -1,4 +1,5 @@
 import logging
+from abc import ABCMeta, abstractmethod
 from typing import Dict, Optional
 
 from eth_utils import to_checksum_address
@@ -9,7 +10,7 @@ from blockapi.v2.models import BalanceItem, Coin, CoinInfo
 logger = logging.getLogger(__name__)
 
 
-class CovalentApiBase(BlockchainApi, IBalance):
+class CovalentApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
     """
     API docs: https://www.covalenthq.com/docs/api/
     """
@@ -17,21 +18,28 @@ class CovalentApiBase(BlockchainApi, IBalance):
     API_BASE_URL = 'https://api.covalenthq.com/v1'
     API_BASE_RATE_LIMIT = 0.2
 
-    api_options = None  # TODO will be set in childs
+    @property
+    @abstractmethod
+    def api_options(self):
+        pass
+
+    @property
+    @abstractmethod
+    def CHAIN_ID(self):
+        pass
 
     supported_requests = {
         'get_balance': '/v1/{chain_id}/address/{address}/balances_v2/'
     }
 
-    def __init__(self, chain_id: int, api_key: str):
+    def __init__(self, api_key: str):
         super().__init__(api_key)
-        self.chain_id = chain_id
 
         # Set http basic auth for requests.
         self._session.auth = (api_key, "")
 
     def get_balance(self, address: str) -> Optional[BalanceItem]:
-        response = self.get('get_balance', chain_id=self.chain_id, address=address)
+        response = self.get('get_balance', chain_id=self.CHAIN_ID, address=address)
 
         return self._parse_items(response)
 

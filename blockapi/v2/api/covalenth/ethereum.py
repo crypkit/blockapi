@@ -12,6 +12,3 @@ class EthCovalentApi(CovalentApiBase):
         base_url=CovalentApiBase.API_BASE_URL,
         rate_limit=CovalentApiBase.API_BASE_RATE_LIMIT,
     )
-
-    def __init__(self, api_key: str):
-        super().__init__(self.CHAIN_ID, api_key)
