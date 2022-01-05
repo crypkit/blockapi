@@ -39,4 +39,7 @@ test:
 test-v2-api:
 	python3 -m pytest blockapi/test/v2/
 
+test-v2-e2e:
+	python3 -m pytest blockapi/test/e2e/v2
+
 .PHONY: dist
