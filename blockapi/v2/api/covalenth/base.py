@@ -28,6 +28,11 @@ class CovalentApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
     def CHAIN_ID(self):
         pass
 
+    @property
+    @abstractmethod
+    def coin(self):
+        pass
+
     supported_requests = {
         'get_balance': '/v1/{chain_id}/address/{address}/balances_v2/'
     }
@@ -58,20 +63,24 @@ class CovalentApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
                 )
                 continue
 
-            coin = Coin.from_api(
-                symbol=raw_balance.get('contract_ticker_symbol'),
-                name=raw_balance.get('contract_name'),
-                decimals=raw_balance.get('contract_decimals', 0),
-                blockchain=self.api_options.blockchain,
-                address=to_checksum_address(raw_balance.get('contract_address')),
-                standards=raw_balance.get("supports_erc", []),
-                info=CoinInfo(logo_url=raw_balance.get("logo_url")),
-            )
+            coin_symbol = raw_balance.get('contract_ticker_symbol')
+            if coin_symbol == self.coin.symbol:
+                # Native coin for given blockchain.
+                coin = self.coin
+            else:
+                coin = Coin.from_api(
+                    symbol=raw_balance.get('contract_ticker_symbol'),
+                    name=raw_balance.get('contract_name'),
+                    decimals=raw_balance.get('contract_decimals', 0),
+                    blockchain=self.api_options.blockchain,
+                    address=to_checksum_address(raw_balance.get('contract_address')),
+                    standards=raw_balance.get("supports_erc", []),
+                    info=CoinInfo(logo_url=raw_balance.get("logo_url")),
+                )
 
             yield BalanceItem.from_api(
                 balance_raw=raw_balance.get('balance'),
                 coin=coin,
-                last_updated=None,
-                # TODO: similar item is "last_transferred_at" should I put it here?
+                last_updated=raw_balance.get('last_transferred_at'),
                 raw=raw_balance,
             )

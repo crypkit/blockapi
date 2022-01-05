@@ -3,7 +3,7 @@ from typing import Dict, Iterable, List, Optional
 from eth_utils import to_checksum_address
 
 from blockapi.v2.base import ApiOptions, BlockchainApi
-from blockapi.v2.coins import coin_eth
+from blockapi.v2.coins import COIN_ETH
 from blockapi.v2.models import BalanceItem, Blockchain, Coin, CoinInfo
 
 
@@ -14,7 +14,7 @@ class EthplorerApi(BlockchainApi):
     Explorer: https://ethplorer.io
     """
 
-    coin = coin_eth
+    coin = COIN_ETH
     api_options = ApiOptions(
         blockchain=Blockchain.ETHEREUM,
         base_url='https://api.ethplorer.io',
