@@ -12,6 +12,7 @@ UNKNOWN = 'unknown'
 
 
 class Blockchain(Enum):
+    AVALANCHE = "avalanche"
     BITCOIN = 'bitcoin'
     ETHEREUM = 'ethereum'
     SOLANA = 'solana'
@@ -19,9 +20,10 @@ class Blockchain(Enum):
     BINANCE_SMART_CHAIN = "binance-smart-chain"
     MOONBEAM_MOONRIVER = "moonbeam-moonriver"  # TODO: is this right?
     RSK = "rsk"  # TODO: is this right?
-    ARBITRUM = "arbitrum"  # TODO: is this right?
-    FANTOM = "fantom"  # TODO: is this right?
+    ARBITRUM = "arbitrum"
+    FANTOM = "fantom"
     PALM = "palm"
+    POLYGON = "polygon"
     KLAYTN = "klaytn"
     HECO = "heco"
     AXIE = "axie"

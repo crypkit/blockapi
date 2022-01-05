@@ -8,7 +8,7 @@ class AvalancheCovalentApi(CovalentApiBase):
     CHAIN_ID = 43114
 
     api_options = ApiOptions(
-        blockchain=Blockchain.ETHEREUM,
+        blockchain=Blockchain.AVALANCHE,
         base_url=CovalentApiBase.API_BASE_URL,
         rate_limit=CovalentApiBase.API_BASE_RATE_LIMIT,
     )

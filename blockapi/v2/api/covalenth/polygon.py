@@ -3,12 +3,12 @@ from blockapi.v2.base import ApiOptions
 from blockapi.v2.models import Blockchain
 
 
-class MaticCovalentApi(CovalentApiBase):
+class PolygonCovalentApi(CovalentApiBase):
 
     CHAIN_ID = 137
 
     api_options = ApiOptions(
-        blockchain=Blockchain.ETHEREUM,
+        blockchain=Blockchain.POLYGON,
         base_url=CovalentApiBase.API_BASE_URL,
         rate_limit=CovalentApiBase.API_BASE_RATE_LIMIT,
     )

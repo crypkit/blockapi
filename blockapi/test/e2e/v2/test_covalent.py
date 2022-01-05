@@ -17,7 +17,7 @@ from blockapi.v2.api.covalenth.iotex import IoTEXCovalentApi
 from blockapi.v2.api.covalenth.klaytn import KlaytnCovalentApi
 from blockapi.v2.api.covalenth.moonbeam import MoonBeamCovalentApi
 from blockapi.v2.api.covalenth.palm import PalmCovalentApi
-from blockapi.v2.api.covalenth.polygon import MaticCovalentApi
+from blockapi.v2.api.covalenth.polygon import PolygonCovalentApi
 from blockapi.v2.api.covalenth.rsk import RskCovalentApi
 
 covalent_api_key = os.getenv("COVALENT_API_KEY")
@@ -39,7 +39,7 @@ API_BASE_RATE_LIMIT = 0.5
         (KlaytnCovalentApi, "0xfc43f5f9dd45258b3aff31bdbe6561d97e8b71de"),
         (MoonBeamCovalentApi, "0xfc43f5f9dd45258b3aff31bdbe6561d97e8b71de"),
         (PalmCovalentApi, "0xfc43f5f9dd45258b3aff31bdbe6561d97e8b71de"),
-        (MaticCovalentApi, "0xfc43f5f9dd45258b3aff31bdbe6561d97e8b71de"),
+        (PolygonCovalentApi, "0xfc43f5f9dd45258b3aff31bdbe6561d97e8b71de"),
         (RskCovalentApi, "0xfc43f5f9dd45258b3aff31bdbe6561d97e8b71de"),
     ],
 )
