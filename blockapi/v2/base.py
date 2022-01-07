@@ -73,14 +73,11 @@ class BlockchainApi(ABC):
         return
 
     def __repr__(self):
-        return (
-            f"{self.__class__.__name__}"
-            f"(coin={self.coin.name})"
-        )
+        return f"{self.__class__.__name__}(coin={self.coin.name})"
 
 
 class IBalance(ABC):
-    def get_balance(self, *args, **kwargs) -> List[BalanceItem]:
+    def get_balance(self, address: str) -> List[BalanceItem]:
         raise NotImplementedError
 
 

@@ -1,6 +1,6 @@
 import logging
 from abc import ABCMeta, abstractmethod
-from typing import Dict, Optional
+from typing import Dict
 
 from eth_utils import to_checksum_address
 
@@ -43,18 +43,27 @@ class CovalentApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
         # Set http basic auth for requests.
         self._session.auth = (api_key, "")
 
-    def get_balance(self, address: str) -> Optional[BalanceItem]:
+    def get_balance(self, address: str) -> [BalanceItem]:
         response = self.get('get_balance', chain_id=self.CHAIN_ID, address=address)
 
         return self._parse_items(response)
 
-    def _parse_items(self, response: Dict) -> Optional[BalanceItem]:
+    @staticmethod
+    def to_checksum_address(address: str):
+        try:
+            return to_checksum_address(address)
+        except ValueError as e:
+            logger.exception(e)
+            return address
+
+    def _parse_items(self, response: Dict) -> [BalanceItem]:
         try:
             raw_balances = response['data']['items']
         except KeyError as e:
             logger.exception(e)
             return []
 
+        balances = []
         for raw_balance in raw_balances:
             if raw_balance.get('balance') is None or raw_balance['balance'] == 0:
                 logger.debug(
@@ -73,14 +82,20 @@ class CovalentApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
                     name=raw_balance.get('contract_name'),
                     decimals=raw_balance.get('contract_decimals', 0),
                     blockchain=self.api_options.blockchain,
-                    address=to_checksum_address(raw_balance.get('contract_address')),
+                    address=self.to_checksum_address(
+                        raw_balance.get('contract_address')
+                    ),
                     standards=raw_balance.get("supports_erc", []),
                     info=CoinInfo(logo_url=raw_balance.get("logo_url")),
                 )
 
-            yield BalanceItem.from_api(
-                balance_raw=raw_balance.get('balance'),
-                coin=coin,
-                last_updated=raw_balance.get('last_transferred_at'),
-                raw=raw_balance,
+            balances.append(
+                BalanceItem.from_api(
+                    balance_raw=raw_balance.get('balance'),
+                    coin=coin,
+                    last_updated=raw_balance.get('last_transferred_at'),
+                    raw=raw_balance,
+                )
             )
+
+        return balances

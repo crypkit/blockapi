@@ -7,19 +7,20 @@ from blockapi.v2.base import (
     ApiException,
     ApiOptions,
     BlockchainApi,
+    IBalance,
     InvalidAddressException,
 )
-from blockapi.v2.coins import coin_sol
+from blockapi.v2.coins import COIN_SOL
 from blockapi.v2.models import BalanceItem, Blockchain, Coin, CoinInfo
 
 
-class SolanaApi(BlockchainApi):
+class SolanaApi(BlockchainApi, IBalance):
     """
     Solana RPC
     API docs: https://docs.solana.com/apps/jsonrpc-api
     """
 
-    coin = coin_sol
+    coin = COIN_SOL
     api_options = ApiOptions(
         blockchain=Blockchain.SOLANA,
         base_url='https://api.mainnet-beta.solana.com/',
@@ -59,7 +60,10 @@ class SolanaApi(BlockchainApi):
 
         return balances
 
-    def _get_sol_balance(self, address: str, ) -> Optional[BalanceItem]:
+    def _get_sol_balance(
+        self,
+        address: str,
+    ) -> Optional[BalanceItem]:
         response = self._request(method='getBalance', params=[address])
         if int(response['result']['value']) == 0:
             return

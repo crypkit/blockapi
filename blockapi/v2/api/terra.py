@@ -12,7 +12,7 @@ from blockapi.v2.base import (
     IBalance,
     InvalidAddressException,
 )
-from blockapi.v2.coins import coin_terra
+from blockapi.v2.coins import COIN_TERRA
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin, CoinInfo
 
 
@@ -22,7 +22,7 @@ class TerraApi(IBalance):
     Explorer: https://finder.terra.money
     """
 
-    coin = coin_terra
+    coin = COIN_TERRA
 
     def __init__(self):
         self.mantle = TerraMantleApi()
@@ -41,7 +41,7 @@ class TerraFcdApi(BlockchainApi):
     API docs: https://fcd.terra.dev/swagger
     """
 
-    coin = coin_terra
+    coin = COIN_TERRA
     api_options = ApiOptions(
         blockchain=Blockchain.TERRA,
         base_url='https://fcd.terra.dev/',
@@ -108,7 +108,7 @@ class TerraFcdApi(BlockchainApi):
     @staticmethod
     def _get_terra_token_by_denom(denom: str) -> Coin:
         if denom == 'uluna':
-            return coin_terra
+            return COIN_TERRA
         else:
             symbol = f'{denom[1:3].upper()}T'
             return Coin.from_api(
@@ -148,7 +148,7 @@ class TerraMantleApi(BlockchainApi):
     API docs: https://mantle.terra.dev
     """
 
-    coin = coin_terra
+    coin = COIN_TERRA
     api_options = ApiOptions(
         blockchain=Blockchain.TERRA,
         base_url='https://mantle.terra.dev',

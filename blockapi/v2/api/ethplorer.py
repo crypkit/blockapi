@@ -2,12 +2,12 @@ from typing import Dict, Iterable, List, Optional
 
 from eth_utils import to_checksum_address
 
-from blockapi.v2.base import ApiOptions, BlockchainApi
+from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance
 from blockapi.v2.coins import COIN_ETH
 from blockapi.v2.models import BalanceItem, Blockchain, Coin, CoinInfo
 
 
-class EthplorerApi(BlockchainApi):
+class EthplorerApi(BlockchainApi, IBalance):
     """
     Ethereum
     API docs: https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API

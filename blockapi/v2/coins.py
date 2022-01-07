@@ -10,7 +10,7 @@ COIN_ETH = Coin(
 )
 
 
-coin_sol = Coin(
+COIN_SOL = Coin(
     symbol='SOL',
     name='Solana',
     decimals=9,
@@ -25,7 +25,7 @@ coin_sol = Coin(
 )
 
 
-coin_terra = Coin(
+COIN_TERRA = Coin(
     symbol='LUNA',
     name='Terra',
     decimals=6,
