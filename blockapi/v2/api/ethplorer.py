@@ -2,19 +2,19 @@ from typing import Dict, Iterable, List, Optional
 
 from eth_utils import to_checksum_address
 
-from blockapi.v2.base import ApiOptions, BlockchainApi
-from blockapi.v2.coins import coin_eth
+from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance
+from blockapi.v2.coins import COIN_ETH
 from blockapi.v2.models import BalanceItem, Blockchain, Coin, CoinInfo
 
 
-class EthplorerApi(BlockchainApi):
+class EthplorerApi(BlockchainApi, IBalance):
     """
     Ethereum
     API docs: https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API
     Explorer: https://ethplorer.io
     """
 
-    coin = coin_eth
+    coin = COIN_ETH
     api_options = ApiOptions(
         blockchain=Blockchain.ETHEREUM,
         base_url='https://api.ethplorer.io',
@@ -23,11 +23,11 @@ class EthplorerApi(BlockchainApi):
 
     supported_requests = {'get_info': '/getAddressInfo/{address}?apiKey={api_key}'}
 
-    def __init__(self, address: str, api_key: str = 'freekey'):
-        super().__init__(address, api_key)
+    def __init__(self, api_key: str = 'freekey'):
+        super().__init__(api_key)
 
-    def get_balance(self) -> List[BalanceItem]:
-        response = self.request('get_info', address=self.address, api_key=self.api_key)
+    def get_balance(self, address: str) -> List[BalanceItem]:
+        response = self.get('get_info', address=address, api_key=self.api_key)
 
         balances = []
 

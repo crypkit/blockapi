@@ -7,19 +7,20 @@ from blockapi.v2.base import (
     ApiException,
     ApiOptions,
     BlockchainApi,
+    IBalance,
     InvalidAddressException,
 )
-from blockapi.v2.coins import coin_sol
+from blockapi.v2.coins import COIN_SOL
 from blockapi.v2.models import BalanceItem, Blockchain, Coin, CoinInfo
 
 
-class SolanaApi(BlockchainApi):
+class SolanaApi(BlockchainApi, IBalance):
     """
     Solana RPC
     API docs: https://docs.solana.com/apps/jsonrpc-api
     """
 
-    coin = coin_sol
+    coin = COIN_SOL
     api_options = ApiOptions(
         blockchain=Blockchain.SOLANA,
         base_url='https://api.mainnet-beta.solana.com/',
@@ -28,11 +29,11 @@ class SolanaApi(BlockchainApi):
         page_offset_step=1,
     )
 
-    # follow used pattern even though this API uses POST requests
-    supported_requests = {'get_balance': '', 'get_txs_signatures': '', 'get_tx': ''}
+    # API uses post requests
+    supported_requests = {}
 
     token_program_id = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
-    _tokens_map: Dict[str, Dict] = None
+    _tokens_map: Optional[Dict[str, Dict]] = None
 
     @property
     def tokens_map(self) -> Dict[str, Dict]:
@@ -46,21 +47,24 @@ class SolanaApi(BlockchainApi):
 
         return self._tokens_map
 
-    def get_balance(self):
+    def get_balance(self, address: str):
         balances = []
 
-        sol_balance = self._get_sol_balance()
+        sol_balance = self._get_sol_balance(address)
         if sol_balance is not None:
             balances.append(sol_balance)
 
-        token_balances = list(self._yield_token_balances())
+        token_balances = list(self._yield_token_balances(address))
         if token_balances:
             balances.extend(token_balances)
 
         return balances
 
-    def _get_sol_balance(self) -> Optional[BalanceItem]:
-        response = self._request(method='getBalance', params=[self.address])
+    def _get_sol_balance(
+        self,
+        address: str,
+    ) -> Optional[BalanceItem]:
+        response = self._request(method='getBalance', params=[address])
         if int(response['result']['value']) == 0:
             return
 
@@ -71,11 +75,11 @@ class SolanaApi(BlockchainApi):
             raw=response,
         )
 
-    def _yield_token_balances(self) -> Iterable[BalanceItem]:
+    def _yield_token_balances(self, address: str) -> Iterable[BalanceItem]:
         response = self._request(
             method='getTokenAccountsByOwner',
             params=[
-                self.address,
+                address,
                 {'programId': self.token_program_id},
                 {'encoding': 'jsonParsed'},
             ],
@@ -131,13 +135,7 @@ class SolanaApi(BlockchainApi):
         body = json.dumps(
             {'jsonrpc': '2.0', 'id': 1, 'method': method, 'params': params}
         )
-
-        return self.request(
-            # request method is not needed, it's included in body
-            request_method=method,
-            body=body,
-            headers={'Content-Type': 'application/json'},
-        )
+        return self.post(body=body, headers={'Content-Type': 'application/json'})
 
     def _opt_raise_on_other_error(self, response: Response) -> None:
         json_response = response.json()
@@ -145,6 +143,6 @@ class SolanaApi(BlockchainApi):
             return
 
         if 'Invalid param' in json_response['error']['message']:
-            raise InvalidAddressException(f'Invalid address format: {self.address}')
+            raise InvalidAddressException(f'Invalid address format.')
         else:
             raise ApiException(json_response['error']['message'])
