@@ -21,7 +21,8 @@ class ChainSoAPI(BlockchainAPI):
 
     supported_requests = {
         'get_balance': '/get_address_balance/{symbol}/{address}',
-        'get_txs': '/address/{symbol}/{address}'
+        'get_txs': '/address/{symbol}/{address}',
+        'get_tx': '/get_tx_outputs/{symbol}/{TXID}',
     }
 
     def __init__(self, address, api_key=None):
@@ -49,15 +50,20 @@ class ChainSoAPI(BlockchainAPI):
 
         return [self.parse_tx(t) for t in txs]
 
+    def get_tx(self, tx_id):
+        return self._request('get_tx', TXID=tx_id)
+
     @staticmethod
     def parse_tx(tx):
         return tx
 
-    def _request(self, method):
+    def _request(self, method, **params):
+        params["symbol"] = self.symbol
+        params["address"] = self.address
+
         response = self.request(
             method,
-            symbol=self.symbol,
-            address=self.address,
+            **params,
             # with_cloudflare=True
         )
         if response['status'] == 'fail':
