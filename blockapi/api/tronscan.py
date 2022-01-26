@@ -22,6 +22,7 @@ class TronscanAPI(BlockchainAPI):
     supported_requests = {
         'get_balance': '/account?address={address}',
         'get_trc10_tokenlist': '/token?limit=10000',
+        'transfers': '/token_trc20/transfers?limit={limit}&start=0&sort=-timestamp&count=true&relatedAddress={address}'
     }
 
     def get_balance(self):
@@ -71,3 +72,16 @@ class TronscanAPI(BlockchainAPI):
                 })
 
         return balances
+
+    def transfers(self, limit=50):
+        response = self.request('transfers', address=self.address, limit=limit)
+
+        transfers = []
+
+        for transfer in response["token_transfers"]:
+            sum_decimal = int(transfer["tokenInfo"]["tokenDecimal"])
+            transfer["quant"] = "{}.{}".format(transfer["quant"][:-sum_decimal], transfer["quant"][sum_decimal:])
+
+            transfers.append(transfer)
+
+        return transfers
