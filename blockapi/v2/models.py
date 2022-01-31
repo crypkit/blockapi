@@ -18,9 +18,10 @@ class Blockchain(Enum):
     SOLANA = 'solana'
     TERRA = 'terra'
     BINANCE_SMART_CHAIN = "binance-smart-chain"
-    MOONBEAM_MOONRIVER = "moonbeam-moonriver"  # TODO: is this right?
-    RSK = "rsk"  # TODO: is this right?
+    MOONBEAM_MOONRIVER = "moonbeam-moonriver"
+    RSK = "rsk"
     ARBITRUM = "arbitrum"
+    OPTIMISM = "optimism"
     FANTOM = "fantom"
     PALM = "palm"
     POLYGON = "polygon"

@@ -17,6 +17,7 @@ from blockapi.v2.api.covalenth.palm import PalmCovalentApi
 from blockapi.v2.api.covalenth.polygon import PolygonCovalentApi
 from blockapi.v2.api.covalenth.rsk import RskCovalentApi
 from blockapi.v2.api.ethplorer import EthplorerApi
+from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
 from blockapi.v2.api.solana import SolanaApi
 from blockapi.v2.api.terra import TerraApi
 
@@ -59,6 +60,7 @@ API_CLASSES = [
     PalmCovalentApi,
     PolygonCovalentApi,
     RskCovalentApi,
+    OptimismEtherscanApi,
 ]
 
 NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL = {
