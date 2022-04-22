@@ -1,0 +1,122 @@
+import json
+import os.path
+import pytest
+import logging
+
+from blockapi.v2.api.debank import DebankApi
+
+@pytest.fixture
+def debank_api():
+    return DebankApi()
+
+
+@pytest.fixture
+def debank_balances_response():
+    json_path = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), 'balance_response.json')
+    )
+    with open(json_path) as f:
+        return json.load(f)
+
+
+@pytest.fixture
+def empty_response():
+    return []
+
+
+@pytest.fixture
+def coin_response():
+    return {
+        "id": "0x14409b0fc5c7f87b5dad20754fe22d29a3de8217",
+        "chain": "eth",
+        "name": "PYRO Network",
+        "symbol": "PYRO",
+        "display_symbol": None,
+        "optimized_symbol": "PYRO",
+        "decimals": 18,
+        "logo_url": "https://static.debank.com/image/eth_token/logo_url/0x14409b0fc5c7f87b5dad20754fe22d29a3de8217/12f825ee65922435c9ed553d1ce6ad95.png",
+        "protocol_id": "",
+        "price": 0,
+        "is_verified": True,
+        "is_core": True,
+        "is_wallet": True,
+        "time_at": 1578203119,
+        "amount": 1500,
+        "raw_amount": 1.5e+21,
+        "raw_amount_hex_str": "0x5150ae84a8cdf00000"
+    }
+
+@pytest.fixture
+def zero_coin_response():
+    return {
+        "id": "0x14409b0fc5c7f87b5dad20754fe22d29a3de8217",
+        "chain": "eth",
+        "name": "PYRO Network",
+        "symbol": "PYRO",
+        "display_symbol": None,
+        "optimized_symbol": "PYRO",
+        "decimals": 18,
+        "logo_url": "https://static.debank.com/image/eth_token/logo_url/0x14409b0fc5c7f87b5dad20754fe22d29a3de8217/12f825ee65922435c9ed553d1ce6ad95.png",
+        "protocol_id": "",
+        "price": 0,
+        "is_verified": True,
+        "is_core": True,
+        "is_wallet": True,
+        "time_at": 1578203119,
+        "amount": 0,
+        "raw_amount": 0,
+        "raw_amount_hex_str": "0x0"
+    }
+
+@pytest.fixture
+def list_with_zero_item_response(zero_coin_response, coin_response):
+    return [coin_response, zero_coin_response]
+
+
+@pytest.fixture
+def error_response():
+    return {
+        "errors": {
+            "id": "User Address Unknown format 0xca8fa8f0b631ecdb18cda619c4fc9d197c8affc, attempted to normalize to 0xca8fa8f0b631ecdb18cda619c4fc9d197c8affc"
+        },
+        "message": "Input payload validation failed"
+}
+
+
+def test_build_request_url(debank_api):
+    url = debank_api._build_request_url('get_balance', address='0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca')
+    assert url == 'https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=false'
+
+
+def test_empty_response(debank_api, empty_response):
+    parsed_items = debank_api._parse_items(empty_response)
+    assert parsed_items == []
+
+
+def test_error_response_returns_empty_balances(debank_api, error_response):
+    parsed_items = debank_api._parse_items(error_response)
+    assert parsed_items == []
+
+
+def test_error_response_logs_error(debank_api, error_response, caplog):
+    expected_log = [
+        'Input payload validation failed',
+        'User Address Unknown format 0xca8fa8f0b631ecdb18cda619c4fc9d197c8affc, attempted'
+            ' to normalize to 0xca8fa8f0b631ecdb18cda619c4fc9d197c8affc'
+    ]
+
+    _ = debank_api._parse_items(error_response)
+    assert expected_log == caplog.messages
+
+
+def test_repr(debank_api):
+    assert repr(debank_api) == ""
+
+
+def test_parse_balace_skips_empty_balances(debank_api, list_with_zero_item_response):
+    parsed_items = debank_api._parse_items(list_with_zero_item_response)
+    assert len(parsed_items) == 1
+
+def test_parse_balance(debank_api, debank_balances_response):
+    parsed_items = debank_api._parse_items(debank_balances_response)
+    assert len(parsed_items) == 28
