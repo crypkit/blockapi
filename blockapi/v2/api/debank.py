@@ -11,13 +11,14 @@ from blockapi.v2.models import BalanceItem, Blockchain, Coin, CoinInfo
 
 logger = logging.getLogger(__name__)
 
+
 class DebankApi(BlockchainApi, IBalance):
     """
     DeBank OpenApi: https://openapi.debank.com/docs
     """
 
     API_BASE_URL = 'https://openapi.debank.com'
-    API_BASE_RATE_LIMIT = 0.05 # 20 req / s
+    API_BASE_RATE_LIMIT = 0.05  # 20 req / s
 
     api_options = ApiOptions(
         blockchain=Blockchain.ETHEREUM,
@@ -73,36 +74,33 @@ class DebankApi(BlockchainApi, IBalance):
         return balances
 
     def _parse_raw_balance(self, raw_balance: Dict) -> BalanceItem:
-            raw_amount = int(raw_balance.get('raw_amount', 0))
-            if raw_amount == 0:
-                logger.debug(
-                    "Skipping coin: '%s' - balance is zero.",
-                    raw_balance.get("name"),
-                )
-
-                return None
-
-            coin = Coin.from_api(
-                symbol=raw_balance.get('symbol'),
-                name=raw_balance.get('name'),
-                decimals=raw_balance.get('decimals', 0),
-                blockchain=raw_balance.get('chain'),
-                address=self.to_checksum_address(
-                    raw_balance.get('id')
-                ),
-                standards=[],
-                info=CoinInfo(logo_url=raw_balance.get("logo_url")),
+        raw_amount = int(raw_balance.get('raw_amount', 0))
+        if raw_amount == 0:
+            logger.debug(
+                "Skipping coin: '%s' - balance is zero.",
+                raw_balance.get("name"),
             )
 
-            balance = BalanceItem.from_api(
-                    balance_raw=raw_amount,
-                    coin=coin,
-                    last_updated=raw_balance.get('time_at'),
-                    raw=None # raw_balance,
-                )
+            return None
 
-            return balance
+        coin = Coin.from_api(
+            symbol=raw_balance.get('symbol'),
+            name=raw_balance.get('name'),
+            decimals=raw_balance.get('decimals', 0),
+            blockchain=raw_balance.get('chain'),
+            address=self.to_checksum_address(raw_balance.get('id')),
+            standards=[],
+            info=CoinInfo(logo_url=raw_balance.get("logo_url")),
+        )
+
+        balance = BalanceItem.from_api(
+            balance_raw=raw_amount,
+            coin=coin,
+            last_updated=raw_balance.get('time_at'),
+            raw=None,  # raw_balance,
+        )
+
+        return balance
 
     def __repr__(self):
         return f"{self.__class__.__name__}"
-
