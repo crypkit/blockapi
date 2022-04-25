@@ -2,6 +2,8 @@ import json
 import os.path
 import pytest
 import logging
+from decimal import Decimal
+from datetime import datetime
 
 from blockapi.v2.api.debank import DebankApi
 
@@ -108,11 +110,6 @@ def test_error_response_logs_error(debank_api, error_response, caplog):
     _ = debank_api._parse_items(error_response)
     assert expected_log == caplog.messages
 
-
-def test_repr(debank_api):
-    assert repr(debank_api) == ""
-
-
 def test_parse_balace_skips_empty_balances(debank_api, list_with_zero_item_response):
     parsed_items = debank_api._parse_items(list_with_zero_item_response)
     assert len(parsed_items) == 1
@@ -120,3 +117,39 @@ def test_parse_balace_skips_empty_balances(debank_api, list_with_zero_item_respo
 def test_parse_balance(debank_api, debank_balances_response):
     parsed_items = debank_api._parse_items(debank_balances_response)
     assert len(parsed_items) == 28
+
+def test_repr_doesnt_fail(debank_api):
+    assert repr(debank_api) == "DebankApi"
+
+
+def test_debank_parses_ra_balance(debank_api, coin_response):
+    item = debank_api._parse_raw_balance(coin_response)
+    assert item.balance_raw == Decimal(1500000000000000000000)
+
+def test_debank_parses_balance(debank_api, coin_response):
+    item = debank_api._parse_raw_balance(coin_response)
+    assert item.balance == Decimal(1500)
+
+def test_debank_parses_last_updated(debank_api, coin_response):
+    item = debank_api._parse_raw_balance(coin_response)
+    assert item.last_updated == datetime(2020, 1, 5, 6, 45, 19)
+
+def test_debank_parses_coin_symbol(debank_api, coin_response):
+    item = debank_api._parse_raw_balance(coin_response)
+    assert item.coin.symbol == "PYRO"
+
+def test_debank_parses_coin_name(debank_api, coin_response):
+    item = debank_api._parse_raw_balance(coin_response)
+    assert item.coin.name == "PYRO Network"
+
+def test_debank_parses_coin_decimals(debank_api, coin_response):
+    item = debank_api._parse_raw_balance(coin_response)
+    assert item.coin.decimals == 18
+
+def test_debank_parses_coin_blockchain(debank_api, coin_response):
+    item = debank_api._parse_raw_balance(coin_response)
+    assert item.coin.blockchain == 'eth'
+
+def test_debank_parses_coin_address(debank_api, coin_response):
+    item = debank_api._parse_raw_balance(coin_response)
+    assert item.coin.address == '0x14409B0Fc5C7f87b5DAd20754fE22d29A3dE8217'

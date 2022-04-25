@@ -73,7 +73,7 @@ class DebankApi(BlockchainApi, IBalance):
         return balances
 
     def _parse_raw_balance(self, raw_balance: Dict) -> BalanceItem:
-            raw_amount = raw_balance.get('raw_amount', 0)
+            raw_amount = int(raw_balance.get('raw_amount', 0))
             if raw_amount == 0:
                 logger.debug(
                     "Skipping coin: '%s' - balance is zero.",
@@ -98,7 +98,11 @@ class DebankApi(BlockchainApi, IBalance):
                     balance_raw=raw_amount,
                     coin=coin,
                     last_updated=raw_balance.get('time_at'),
-                    raw=raw_balance,
+                    raw=None # raw_balance,
                 )
 
             return balance
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}"
+
