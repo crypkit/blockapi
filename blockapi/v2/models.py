@@ -115,6 +115,36 @@ class Coin:
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
+class Protocol:
+    protocol_id: str
+    chain: str
+    name: str
+    site_url: Optional[str] = attr.ib(default=None)
+    logo_url: Optional[str] = attr.ib(default=None)
+    has_supported_portfolio: bool = attr.ib(default=False)
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        protocol_id: str,
+        chain: str,
+        name: str,
+        site_url: Optional[str] = None,
+        logo_url: Optional[str] = None,
+        has_supported_portfolio: Optional[bool] = False
+    ) -> 'Protocol':
+        return cls(
+            protocol_id=protocol_id,
+            chain=chain,
+            name=name,
+            site_url=site_url,
+            logo_url=logo_url,
+            has_supported_portfolio=has_supported_portfolio
+        )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
 class BalanceItem:
     balance: Decimal
     balance_raw: Decimal
@@ -122,6 +152,7 @@ class BalanceItem:
     coin: Coin
     asset_type: AssetType = AssetType.AVAILABLE
     last_updated: Optional[datetime] = attr.ib(default=None)
+    protocol: Optional[Protocol] = attr.ib(default=None)
 
     @classmethod
     def from_api(
@@ -132,6 +163,7 @@ class BalanceItem:
         asset_type: AssetType = AssetType.AVAILABLE,
         raw: Dict,
         last_updated: Optional[Union[int, str]] = None,
+        protocol: Optional[Protocol] = None
     ) -> 'BalanceItem':
         return cls(
             balance_raw=to_decimal(balance_raw),
@@ -140,4 +172,6 @@ class BalanceItem:
             asset_type=asset_type,
             raw=raw,
             last_updated=(parse_dt(last_updated) if last_updated is not None else None),
+            protocol=protocol
         )
+
