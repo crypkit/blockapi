@@ -32,7 +32,7 @@ class DebankApi(BlockchainApi, IBalance):
 
     supported_requests = {
         'get_balance': '/v1/user/token_list?id={address}&is_all=false',
-        'get_protocols': '/v1/protocol/list'
+        'get_protocols': '/v1/protocol/list',
     }
 
     def __init__(self):
@@ -82,7 +82,7 @@ class DebankApi(BlockchainApi, IBalance):
                 name=item.get('name'),
                 site_url=item.get('site_url'),
                 logo_url=item.get('logo_url'),
-                has_supported_portfolio=item.get('has_supported_portfolio', False)
+                has_supported_portfolio=item.get('has_supported_portfolio', False),
             )
             protocols[protocol.protocol_id] = protocol
 
@@ -126,7 +126,7 @@ class DebankApi(BlockchainApi, IBalance):
             coin=coin,
             last_updated=raw_balance.get('time_at'),
             raw=raw_balance,
-            protocol=self._get_protocol(raw_balance.get('protocol_id', ''))
+            protocol=self._get_protocol(raw_balance.get('protocol_id', '')),
         )
 
         return balance

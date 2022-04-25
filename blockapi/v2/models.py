@@ -140,7 +140,7 @@ class Protocol:
             name=name,
             site_url=site_url,
             logo_url=logo_url,
-            has_supported_portfolio=has_supported_portfolio
+            has_supported_portfolio=has_supported_portfolio,
         )
 
 
@@ -172,6 +172,5 @@ class BalanceItem:
             asset_type=asset_type,
             raw=raw,
             last_updated=(parse_dt(last_updated) if last_updated is not None else None),
-            protocol=protocol
+            protocol=protocol,
         )
-
