@@ -197,6 +197,11 @@ def test_debank_parses_last_updated(debank_api, coin_response):
     assert item.last_updated == datetime(2020, 1, 5, 6, 45, 19)
 
 
+def test_debank_keeps_raw_data(debank_api, coin_response):
+    item = debank_api._parse_raw_balance(coin_response)
+    assert item.raw == coin_response
+
+
 def test_debank_parses_coin_symbol(debank_api, coin_response):
     item = debank_api._parse_raw_balance(coin_response)
     assert item.coin.symbol == "PYRO"

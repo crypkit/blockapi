@@ -60,7 +60,7 @@ class DebankApi(BlockchainApi, IBalance):
 
         return message is not None or error is not None
 
-    def _parse_items(self, response: Union[List, Dict]) -> [BalanceItem]:
+    def _parse_items(self, response: Union[List, Dict]) -> List[BalanceItem]:
         if self._has_error(response):
             return []
 
