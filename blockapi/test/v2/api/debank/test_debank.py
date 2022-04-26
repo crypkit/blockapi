@@ -182,7 +182,7 @@ def test_repr_doesnt_fail(debank_api):
     assert repr(debank_api) == "DebankApi"
 
 
-def test_debank_parses_ra_balance(debank_api, coin_response):
+def test_debank_parses_raw_balance(debank_api, coin_response):
     item = debank_api._parse_raw_balance(coin_response)
     assert item.balance_raw == Decimal(1500000000000000000000)
 
