@@ -37,6 +37,18 @@ def raw_to_decimals(
     return remove_exponent(res)
 
 
+def decimals_to_raw(
+    amount: Union[int, str], decimals: Union[int, str]
+) -> Decimal:
+    """
+    Convert decimal value to raw format
+    """
+    amount_ = to_decimal(amount)
+    decimals_ = to_decimal(decimals)
+    res = amount_ * pow(10, decimals_)
+    return remove_exponent(res)
+
+
 def remove_exponent(d: Decimal) -> Decimal:
     """
     https://docs.python.org/3/library/decimal.html#decimal-faq

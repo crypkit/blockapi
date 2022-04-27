@@ -39,6 +39,13 @@ class AssetType(Enum):
     CLAIMABLE = 'claimable'  # rewards, ...
 
 
+class DetailType(Enum):
+    LENDING = 'lending'
+    REWARD = 'reward'
+    COMMON = 'common'
+    LOCKED = 'locked'
+
+
 @attr.s(auto_attribs=True, slots=True)
 class ApiOptions:
     blockchain: Blockchain
@@ -173,4 +180,58 @@ class BalanceItem:
             raw=raw,
             last_updated=(parse_dt(last_updated) if last_updated is not None else None),
             protocol=protocol,
+        )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
+class PortfolioItem:
+    name: str
+    detail_types: List[DetailType]
+    last_updated: Optional[datetime] = attr.ib(default=None)
+    pool_id: Optional[str] = attr.ib(default=None)
+    supply_token_list: Optional[List[BalanceItem]] = attr.ib(default=None)
+    borrow_token_list: Optional[List[BalanceItem]] = attr.ib(default=None)
+    token_list: Optional[List[BalanceItem]] = attr.ib(default=None)
+    raw_portfolio: Optional[Dict] = attr.ib(default=None)
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        name: str,
+        detail_types: List[DetailType],
+        last_updated: Optional[Union[int, str]] = None,
+        pool_id: Optional[str] = None,
+        supply_token_list: Optional[List[BalanceItem]] = None,
+        borrow_token_list: Optional[List[BalanceItem]] = None,
+        token_list: Optional[List[BalanceItem]] = None,
+        raw_portfolio: Optional[Dict] = None
+    ) -> 'PortfolioItem':
+        return cls(
+            name=name,
+            detail_types=detail_types,
+            last_updated=(parse_dt(int(last_updated)) if last_updated is not None else None),
+            pool_id=pool_id,
+            supply_token_list=supply_token_list,
+            borrow_token_list=borrow_token_list,
+            token_list=token_list,
+            raw_portfolio=raw_portfolio
+        )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
+class Portfolio:
+    protocol: Protocol
+    items: List[PortfolioItem]
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        protocol: Protocol,
+        items: List[PortfolioItem],
+    ) -> 'Portfolio':
+        return cls(
+            protocol=protocol,
+            items=items,
         )
