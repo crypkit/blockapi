@@ -166,7 +166,8 @@ def portfolio_response():
                             "amount": 5.3e-7
                         }
                     ],
-                    "health_rate": None
+                    "health_rate": 0.86,
+                    "unlock_at": 1658361600
                 },
                 "proxy_detail": {}
             },
@@ -211,6 +212,145 @@ def portfolio_response():
     }
 
 
+@pytest.fixture
+def portfolio_response_raw():
+    return """[{
+        "id": "avax_traderjoexyz_lending",
+        "chain": "avax",
+        "name": "Trader Joe Lending",
+        "site_url": "https://www.traderjoexyz.com",
+        "logo_url": "https://static.debank.com/image/project/logo_url/avax_traderjoexyz_lending/eab9fd6fb47852d3b7766515bfefe366.png",
+        "has_supported_portfolio": true,
+        "tvl": 162476998.75607753,
+        "portfolio_item_list": [
+            {
+                "stats": {
+                    "asset_usd_value": 547045.4515305705,
+                    "debt_usd_value": 0,
+                    "net_usd_value": 547045.4515305705
+                },
+                "update_at": 1650963061.376993,
+                "name": "Lending",
+                "pool_id": "0xdc13687554205e5b89ac783db14bb5bba4a1edac",
+                "detail_types": [
+                    "lending"
+                ],
+                "detail": {
+                    "supply_token_list": [
+                        {
+                            "id": "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7",
+                            "chain": "avax",
+                            "name": "Wrapped AVAX",
+                            "symbol": "WAVAX",
+                            "display_symbol": "WAVAX",
+                            "optimized_symbol": "WAVAX",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/avax_token/logo_url/0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7/753d82f0137617110f8dec56309b4065.png",
+                            "protocol_id": "yflink",
+                            "price": 72.17,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1607728259,
+                            "amount": 7579.956374263135,
+                            "is_collateral": false
+                        }
+                    ],
+                    "borrow_token_list": [
+                        {
+                            "id": "0x865377367054516e17014ccded1e7d814edc9ce4",
+                            "chain": "eth",
+                            "name": "Dola USD Stablecoin",
+                            "symbol": "DOLA",
+                            "display_symbol": null,
+                            "optimized_symbol": "DOLA",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/eth_token/logo_url/0x865377367054516e17014ccded1e7d814edc9ce4/cf89c85a0a6b374247c072fe3131bacb.png",
+                            "protocol_id": "",
+                            "price": 1,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1614116357,
+                            "amount": 661077.3612934694
+                        },
+                        {
+                            "id": "eth",
+                            "chain": "eth",
+                            "name": "ETH",
+                            "symbol": "ETH",
+                            "display_symbol": null,
+                            "optimized_symbol": "ETH",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+                            "protocol_id": "",
+                            "price": 2996.56,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1483200000,
+                            "amount": 2.97837275242947
+                        },
+                        {
+                            "id": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+                            "chain": "eth",
+                            "name": "Wrapped BTC",
+                            "symbol": "WBTC",
+                            "display_symbol": null,
+                            "optimized_symbol": "WBTC",
+                            "decimals": 8,
+                            "logo_url": "https://static.debank.com/image/eth_token/logo_url/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599/d3c52e7c7449afa8bd4fad1c93f50d93.png",
+                            "protocol_id": "",
+                            "price": 40460.15,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1543095952,
+                            "amount": 5.3e-7
+                        }
+                    ],
+                    "health_rate": null
+                },
+                "proxy_detail": {}
+            },
+            {
+                "stats": {
+                    "asset_usd_value": 220.67854479949355,
+                    "debt_usd_value": 0,
+                    "net_usd_value": 220.67854479949355
+                },
+                "update_at": 1650963061.3988287,
+                "name": "Rewards",
+                "pool_id": "0xdc13687554205e5b89ac783db14bb5bba4a1edac",
+                "detail_types": [
+                    "reward"
+                ],
+                "detail": {
+                    "token_list": [
+                        {
+                            "id": "0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd",
+                            "chain": "avax",
+                            "name": "JoeToken",
+                            "symbol": "JOE",
+                            "display_symbol": null,
+                            "optimized_symbol": "JOE",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/avax_token/logo_url/0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd/25f094b523a2d6c51e084eeb8f60dd2f.png",
+                            "protocol_id": "avax_traderjoexyz_lending",
+                            "price": 1.0898007248925483,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1624780261,
+                            "amount": 202.49440081924328
+                        }
+                    ]
+                },
+                "proxy_detail": {}
+            }
+        ]
+    }]
+    """
 
 
 @pytest.fixture

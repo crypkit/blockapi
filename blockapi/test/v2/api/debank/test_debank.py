@@ -9,6 +9,7 @@ from fixtures import (
     coin_with_protocol_response_raw,
     error_response_raw,
     yflink_protocol_response_raw,
+    portfolio_response_raw,
 
     protocol_yflink,
     yflink_cache_data,
@@ -82,7 +83,7 @@ def test_debank_parse_protocols(
     assert parsed_items == yflink_cache_data
 
 
-def test_debank_fetches_protocols(
+def test_get_balance_fetches_protocols(
     debank_api, yflink_protocol_response_raw, coin_with_protocol_response_raw, requests_mock
 ):
     requests_mock.get(
@@ -94,6 +95,21 @@ def test_debank_fetches_protocols(
     )
     debank_api._protocol_cache.invalidate()
     parsed_items = debank_api.get_balance("0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca")
+    assert parsed_items[0].protocol.name == "YFLink"
+
+
+def test_get_portfolio_fetches_protocols(
+    debank_api, yflink_protocol_response_raw, portfolio_response_raw, requests_mock
+):
+    requests_mock.get(
+        "https://openapi.debank.com/v1/protocol/list", text=yflink_protocol_response_raw
+    )
+    requests_mock.get(
+        "https://openapi.debank.com/v1/user/complex_protocol_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca",
+        text=portfolio_response_raw
+    )
+    debank_api._protocol_cache.invalidate()
+    parsed_items = debank_api.get_portfolio("0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca")
     assert parsed_items[0].protocol.name == "YFLink"
 
 

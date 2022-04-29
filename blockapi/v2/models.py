@@ -37,13 +37,16 @@ class AssetType(Enum):
     STAKED = 'staked'
     VESTED = 'vested'
     CLAIMABLE = 'claimable'  # rewards, ...
-
-
-class DetailType(Enum):
     LENDING = 'lending'
     REWARD = 'reward'
     COMMON = 'common'
     LOCKED = 'locked'
+
+
+class BalanceType(Enum):
+    SUPPLY = 'supply'
+    BORROW = 'borrow'
+    REWARD = 'reward'
 
 
 @attr.s(auto_attribs=True, slots=True)
@@ -160,6 +163,11 @@ class BalanceItem:
     asset_type: AssetType = AssetType.AVAILABLE
     last_updated: Optional[datetime] = attr.ib(default=None)
     protocol: Optional[Protocol] = attr.ib(default=None)
+    root_protocol: Optional[Protocol] = attr.ib(default=None)
+    pool_id: Optional[Protocol] = attr.ib(default=None)
+    balance_type: Optional[BalanceType] = attr.ib(default=None)
+    health_rate: Optional[Decimal] = attr.ib(default=None),
+    locked_until: Optional[datetime] = attr.ib(default=None)
 
     @classmethod
     def from_api(
@@ -170,7 +178,12 @@ class BalanceItem:
         asset_type: AssetType = AssetType.AVAILABLE,
         raw: Dict,
         last_updated: Optional[Union[int, str]] = None,
-        protocol: Optional[Protocol] = None
+        protocol: Optional[Protocol] = None,
+        root_protocol: Optional[Protocol] = None,
+        pool_id: Optional[str] = None,
+        balance_type: Optional[BalanceType] = None,
+        health_rate: Optional[Decimal] = None,
+        locked_until: Optional[Union[int, str]] = None
     ) -> 'BalanceItem':
         return cls(
             balance_raw=to_decimal(balance_raw),
@@ -180,58 +193,63 @@ class BalanceItem:
             raw=raw,
             last_updated=(parse_dt(last_updated) if last_updated is not None else None),
             protocol=protocol,
-        )
-
-
-@attr.s(auto_attribs=True, slots=True, frozen=True)
-class PortfolioItem:
-    name: str
-    detail_types: List[DetailType]
-    last_updated: Optional[datetime] = attr.ib(default=None)
-    pool_id: Optional[str] = attr.ib(default=None)
-    supply_token_list: Optional[List[BalanceItem]] = attr.ib(default=None)
-    borrow_token_list: Optional[List[BalanceItem]] = attr.ib(default=None)
-    token_list: Optional[List[BalanceItem]] = attr.ib(default=None)
-    raw_portfolio: Optional[Dict] = attr.ib(default=None)
-
-    @classmethod
-    def from_api(
-        cls,
-        *,
-        name: str,
-        detail_types: List[DetailType],
-        last_updated: Optional[Union[int, str]] = None,
-        pool_id: Optional[str] = None,
-        supply_token_list: Optional[List[BalanceItem]] = None,
-        borrow_token_list: Optional[List[BalanceItem]] = None,
-        token_list: Optional[List[BalanceItem]] = None,
-        raw_portfolio: Optional[Dict] = None
-    ) -> 'PortfolioItem':
-        return cls(
-            name=name,
-            detail_types=detail_types,
-            last_updated=(parse_dt(int(last_updated)) if last_updated is not None else None),
+            root_protocol=root_protocol,
             pool_id=pool_id,
-            supply_token_list=supply_token_list,
-            borrow_token_list=borrow_token_list,
-            token_list=token_list,
-            raw_portfolio=raw_portfolio
+            balance_type=balance_type,
+            health_rate=health_rate,
+            locked_until=(parse_dt(locked_until) if locked_until is not None else None)
         )
 
 
-@attr.s(auto_attribs=True, slots=True, frozen=True)
-class Portfolio:
-    protocol: Protocol
-    items: List[PortfolioItem]
-
-    @classmethod
-    def from_api(
-        cls,
-        *,
-        protocol: Protocol,
-        items: List[PortfolioItem],
-    ) -> 'Portfolio':
-        return cls(
-            protocol=protocol,
-            items=items,
-        )
+# # @attr.s(auto_attribs=True, slots=True, frozen=True)
+# # class PortfolioItem:
+# #     name: str
+# #     detail_types: List[AssetType]
+# #     last_updated: Optional[datetime] = attr.ib(default=None)
+# #     pool_id: Optional[str] = attr.ib(default=None)
+# #     supply_token_list: Optional[List[BalanceItem]] = attr.ib(default=None)
+# #     borrow_token_list: Optional[List[BalanceItem]] = attr.ib(default=None)
+# #     token_list: Optional[List[BalanceItem]] = attr.ib(default=None)
+# #     raw_portfolio: Optional[Dict] = attr.ib(default=None)
+# #
+# #     @classmethod
+# #     def from_api(
+# #         cls,
+# #         *,
+# #         name: str,
+# #         detail_types: List[AssetType],
+# #         last_updated: Optional[Union[int, str]] = None,
+# #         pool_id: Optional[str] = None,
+# #         supply_token_list: Optional[List[BalanceItem]] = None,
+# #         borrow_token_list: Optional[List[BalanceItem]] = None,
+# #         token_list: Optional[List[BalanceItem]] = None,
+# #         raw_portfolio: Optional[Dict] = None
+# #     ) -> 'PortfolioItem':
+# #         return cls(
+# #             name=name,
+# #             detail_types=detail_types,
+# #             last_updated=(parse_dt(int(last_updated)) if last_updated is not None else None),
+# #             pool_id=pool_id,
+# #             supply_token_list=supply_token_list,
+# #             borrow_token_list=borrow_token_list,
+# #             token_list=token_list,
+# #             raw_portfolio=raw_portfolio
+# #         )
+# #
+#
+# @attr.s(auto_attribs=True, slots=True, frozen=True)
+# class Portfolio:
+#     protocol: Protocol
+#     items: List[PortfolioItem]
+#
+#     @classmethod
+#     def from_api(
+#         cls,
+#         *,
+#         protocol: Protocol,
+#         items: List[PortfolioItem],
+#     ) -> 'Portfolio':
+#         return cls(
+#             protocol=protocol,
+#             items=items,
+#         )
