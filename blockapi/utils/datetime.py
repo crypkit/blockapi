@@ -12,5 +12,7 @@ def parse_dt(dt: Union[int, str]) -> datetime:
         return parse_date(dt)
     elif isinstance(dt, int):
         return datetime.fromtimestamp(dt)
+    elif isinstance(dt, float):
+        return datetime.fromtimestamp(dt)
     else:
         raise TypeError(f'Type {type(dt)} is not supported.')

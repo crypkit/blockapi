@@ -2,7 +2,8 @@ import logging
 from datetime import datetime
 from decimal import Decimal
 
-from blockapi.v2.models import AssetType, BalanceType
+from blockapi.v2.models import AssetType
+
 # noinspection PyUnresolvedReferences
 from fixtures import (
     protocol_cache,
@@ -30,7 +31,7 @@ def test_parse_response(portfolio_parser, portfolio_response):
 
 def test_portfolio_parses_root_protocol(portfolio_parser, portfolio_response, protocol_trader_joe):
     item = portfolio_parser.parse_items(portfolio_response)
-    assert item[0].root_protocol == protocol_trader_joe
+    assert item[0].pool.protocol == protocol_trader_joe
 
 
 def test_portfolio_parses_items(portfolio_parser, portfolio_response):
@@ -45,7 +46,7 @@ def test_portfolio_parses_item_last_updated(portfolio_parser, portfolio_response
 
 def test_portfolio_parses_item_pool_id(portfolio_parser, portfolio_response):
     item = portfolio_parser.parse_items(portfolio_response)[0]
-    assert item.pool_id == '0xdc13687554205E5b89Ac783db14bb5bba4A1eDaC'
+    assert item.pool.pool_id == '0xdc13687554205E5b89Ac783db14bb5bba4A1eDaC'
 
 
 def test_portfolio_parses_item_asset_type(portfolio_parser, portfolio_response):
@@ -59,32 +60,26 @@ def test_portfolio_stores_raw_item(portfolio_parser, portfolio_response):
 
 
 def test_parse_asset_type(portfolio_parser):
-    assert portfolio_parser._parse_detail_type('Lending') == AssetType.LENDING
+    assert portfolio_parser._parse_asset_type('Lending') == AssetType.LENDING
 
 
 def test_parse_unknown_asset_type_logs(portfolio_parser, caplog):
     expected_log = ["'dummy' is not a valid AssetType"]
     with caplog.at_level(level=logging.DEBUG):
-        assert portfolio_parser._parse_detail_type('dummy') is None
+        assert portfolio_parser._parse_asset_type('dummy') is None
         assert expected_log == caplog.messages
 
 
 def test_parse_supply_token_list(portfolio_parser, portfolio_response):
     items = portfolio_parser.parse_items(portfolio_response)
-    filtered = [item for item in items if item.balance_type == BalanceType.SUPPLY]
+    filtered = [item for item in items if item.asset_type == AssetType.LENDING]
     assert len(filtered) == 1
 
 
 def test_parse_borrow_token_list(portfolio_parser, portfolio_response):
     items = portfolio_parser.parse_items(portfolio_response)
-    filtered = [item for item in items if item.balance_type == BalanceType.BORROW]
+    filtered = [item for item in items if item.asset_type == AssetType.LENDING_BORROW]
     assert len(filtered) == 3
-
-
-def test_parse_token_list(portfolio_parser, portfolio_response):
-    items = portfolio_parser.parse_items(portfolio_response)
-    filtered = [item for item in items if item.balance_type is None]
-    assert len(filtered) == 1
 
 
 def test_parse_supply_token_list_parses_balance(portfolio_parser, portfolio_response):
@@ -94,12 +89,12 @@ def test_parse_supply_token_list_parses_balance(portfolio_parser, portfolio_resp
 
 def test_parse_supply_token_list_parses_health_rate(portfolio_parser, portfolio_response):
     item = portfolio_parser.parse_items(portfolio_response)[0]
-    assert item.health_rate == Decimal('0.86')
+    assert item.pool.health_rate == Decimal('0.86')
 
 
 def test_parse_supply_token_list_parses_locked_until(portfolio_parser, portfolio_response):
     item = portfolio_parser.parse_items(portfolio_response)[0]
-    assert item.locked_until == datetime(2022, 7, 21, 2, 0)
+    assert item.pool.locked_until == datetime(2022, 7, 21, 2, 0)
 
 
 def test_parse_portfolio(portfolio_parser, complex_portfolio_response):

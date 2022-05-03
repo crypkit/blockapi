@@ -1,7 +1,4 @@
-import pytest
-
-from blockapi.v2.api.debank import DebankApi, DebankProtocolCache
-from blockapi.v2.models import Protocol
+from blockapi.v2.api.debank import DebankApi
 
 # noinspection PyUnresolvedReferences
 from fixtures import (

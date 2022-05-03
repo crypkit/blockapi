@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import pytest
 
 from blockapi.v2.api.debank import DebankProtocolParser
@@ -43,3 +45,8 @@ def test_can_parse_protocol_logo_url(protocol_parser, yflink_protocol_response):
 def test_can_parse_protocol_has_supported_portfolio(protocol_parser, yflink_protocol_response):
     parsed = protocol_parser.parse(yflink_protocol_response)
     assert parsed['yflink'].has_supported_portfolio is False
+
+
+def test_can_parse_protocol_has_user_deposit(protocol_parser, yflink_protocol_response):
+    parsed = protocol_parser.parse(yflink_protocol_response)
+    assert parsed['yflink'].user_deposit == Decimal('1234.5')

@@ -1,11 +1,12 @@
-from datetime import datetime, timedelta
 import logging
+from datetime import datetime, timedelta
 from typing import Dict, List, Union, Optional
+
 from eth_utils import to_checksum_address
 
-from blockapi.utils.num import decimals_to_raw, to_decimal
+from blockapi.utils.num import decimals_to_raw
 from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance, IPortfolio
-from blockapi.v2.models import BalanceItem, Blockchain, Coin, CoinInfo, Protocol, AssetType, BalanceType
+from blockapi.v2.models import BalanceItem, Blockchain, Coin, CoinInfo, Protocol, AssetType, Pool
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +25,7 @@ class DebankProtocolParser:
             protocol_id=item.get('id'),
             chain=item.get('chain'),
             name=item.get('name'),
+            user_deposit=item.get('tvl'),
             site_url=item.get('site_url'),
             logo_url=item.get('logo_url'),
             has_supported_portfolio=item.get('has_supported_portfolio', False),
@@ -58,16 +60,21 @@ class DebankBalanceParser:
     def __init__(self, protocol_cache: DebankProtocolCache):
         self._protocols = protocol_cache
 
-    def parse(self, response: List, **kwargs) -> List[BalanceItem]:
+    def parse(self, response: List, pool: Pool = None, asset_type: AssetType = None) -> List[BalanceItem]:
         items = []
         for item in response:
-            balance = self.parse_item(item, **kwargs)
+            balance = self.parse_item(item, pool, asset_type)
             if balance is not None:
                 items.append(balance)
 
         return items
 
-    def parse_item(self, raw_balance: dict, **kwargs) -> Optional[BalanceItem]:
+    def parse_item(
+            self,
+            raw_balance: dict,
+            pool: Pool = None,
+            asset_type: AssetType = AssetType.AVAILABLE
+    ) -> Optional[BalanceItem]:
         raw_amount = raw_balance.get('raw_amount', 0)
         amount = raw_balance.get('amount', 0)
 
@@ -95,10 +102,11 @@ class DebankBalanceParser:
         balance = BalanceItem.from_api(
             balance_raw=raw_amount,
             coin=coin,
+            asset_type=asset_type,
             last_updated=raw_balance.get('time_at'),
             raw=raw_balance,
             protocol=self._protocols.get(raw_balance.get('protocol_id', '')),
-            **kwargs
+            pool=pool
         )
 
         return balance
@@ -139,38 +147,36 @@ class DebankPortfolioParser:
 
         return items
 
-    def _parse_portfolio_item(self, item: Dict, root_protocol) -> List[BalanceItem]:
+    def _parse_portfolio_item(self, item: Dict, pool_protocol) -> List[BalanceItem]:
 
         pool_id_raw = item.get('pool_id')
         pool_id = make_checksum_address(pool_id_raw) if pool_id_raw is not None else None
 
         detail = item.get('detail', {})
         health_rate = detail.get('health_rate')
-        unlock_at = detail.get('unlock_at')
+        locked_until = detail.get('unlock_at')
 
-        kwargs = {
-            'root_protocol': root_protocol,
-            'pool_id': pool_id,
-            'asset_type': self._parse_detail_type(item.get('name')),
-            'health_rate': to_decimal(health_rate) if health_rate is not None else None,
-            'locked_until': int(unlock_at) if unlock_at is not None else None
-        }
+        asset_type = self._parse_asset_type(item.get('name'))
+        borrow_type = self._get_borrow_asset_type(asset_type)
+        reward_type = self._get_reward_asset_type(asset_type)
 
-        supply_token_list = self._balance_parser.parse(detail.get('supply_token_list', []),
-                                                       balance_type=BalanceType.SUPPLY, **kwargs)
+        pool = Pool.from_api(
+            pool_id=pool_id,
+            protocol=pool_protocol,
+            locked_until=locked_until,
+            health_rate=health_rate,
+        )
 
-        borrow_token_list = self._balance_parser.parse(detail.get('borrow_token_list', []),
-                                                       balance_type=BalanceType.BORROW, **kwargs)
+        supply_token_list = self._balance_parser.parse(detail.get('supply_token_list', []), pool, asset_type)
+        borrow_token_list = self._balance_parser.parse(detail.get('borrow_token_list', []), pool, borrow_type)
+        reward_token_list = self._balance_parser.parse(detail.get('reward_token_list', []), pool, reward_type)
 
-        reward_token_list = self._balance_parser.parse(detail.get('reward_token_list', []),
-                                                       balance_type=BalanceType.REWARD, **kwargs)
-
-        token_list = self._balance_parser.parse(detail.get('token_list', []), **kwargs)
+        token_list = self._balance_parser.parse(detail.get('token_list', []), pool)
 
         return supply_token_list + borrow_token_list + reward_token_list + token_list
 
     @staticmethod
-    def _parse_detail_type(type_: str) -> Optional[AssetType]:
+    def _parse_asset_type(type_: str) -> Optional[AssetType]:
         # list of valid types: https://docs.open.debank.com/en/reference/api-models/portfolioitemobject
         if type_ is None:
             return None
@@ -179,6 +185,20 @@ class DebankPortfolioParser:
             return AssetType(type_.lower())
         except ValueError as ve:
             logger.error(ve)
+
+    @staticmethod
+    def _get_borrow_asset_type(asset_type):
+        if asset_type == AssetType.LENDING:
+            return AssetType.LENDING_BORROW
+
+        return asset_type
+
+    @staticmethod
+    def _get_reward_asset_type(asset_type):
+        if asset_type == AssetType.LENDING:
+            return AssetType.LENDING_REWARD
+
+        return asset_type
 
 
 class DebankApi(BlockchainApi, IBalance, IPortfolio):

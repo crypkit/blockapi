@@ -1,5 +1,6 @@
 import json
 import os
+from decimal import Decimal
 from typing import List
 
 import pytest
@@ -453,7 +454,6 @@ def coin_with_protocol_response_raw():
     }]'''
 
 
-
 @pytest.fixture
 def yflink_protocol_response():
     return [{
@@ -463,7 +463,7 @@ def yflink_protocol_response():
         "site_url": "https://linkswap.app",
         "logo_url": "https://static.debank.com/image/project/logo_url/yflink/a43f4e05d96b559fecf4984f760bf737.png",
         "has_supported_portfolio": False,
-        "tvl": 0
+        "tvl": 1234.5
     }]
 
 
@@ -477,7 +477,7 @@ def yflink_protocol_response_raw():
         "site_url": "https://linkswap.app",
         "logo_url": "https://static.debank.com/image/project/logo_url/yflink/a43f4e05d96b559fecf4984f760bf737.png",
         "has_supported_portfolio": false,
-        "tvl": 0
+        "tvl": 1234.5
     }]
     """
 
@@ -488,6 +488,7 @@ def protocol_yflink():
         protocol_id="yflink",
         chain="eth",
         name="YFLink",
+        user_deposit=1234.5,
         site_url="https://linkswap.app",
         logo_url="https://static.debank.com/image/project/logo_url/yflink/a43f4e05d96b559fecf4984f760bf737.png",
     )
@@ -499,6 +500,7 @@ def protocol_trader_joe():
         protocol_id="avax_traderjoexyz_lending",
         chain="avax",
         name="Trader Joe Lending",
+        user_deposit='162476998.75607753',
         site_url="https://www.traderjoexyz.com",
         logo_url="https://static.debank.com/image/project/logo_url/avax_traderjoexyz_lending"
                  "/eab9fd6fb47852d3b7766515bfefe366.png",
