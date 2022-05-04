@@ -157,7 +157,7 @@ class Protocol:
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class Pool:
     pool_id: str
-    protocol: Optional[Protocol] = attr.ib(default=None)
+    protocol: Protocol
     locked_until: Optional[datetime] = attr.ib(default=None),
     health_rate: Optional[Decimal] = attr.ib(default=None),
 
@@ -166,7 +166,7 @@ class Pool:
         cls,
         *,
         pool_id: str,
-        protocol: Optional[Protocol] = None,
+        protocol: Protocol,
         locked_until: Optional[Union[int, str, float]] = None,
         health_rate: Optional[Union[float, str]] = None
     ) -> 'Pool':

@@ -20,7 +20,8 @@ class DebankProtocolParser:
 
         return protocols
 
-    def parse_item(self, item):
+    @staticmethod
+    def parse_item(item):
         return Protocol.from_api(
             protocol_id=item.get('id'),
             chain=item.get('chain'),
@@ -231,7 +232,7 @@ class DebankApi(BlockchainApi, IBalance, IPortfolio):
         self._protocol_parser = DebankProtocolParser()
         self._portfolio_parser = DebankPortfolioParser(self._protocol_parser, self._balance_parser)
 
-    def get_balance(self, address: str) -> [BalanceItem]:
+    def get_balance(self, address: str) -> List[BalanceItem]:
         self._maybe_update_protocols()
         response = self.get('get_balance', address=address)
         if self._has_error(response):
