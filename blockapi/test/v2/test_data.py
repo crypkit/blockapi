@@ -16,12 +16,14 @@ from blockapi.v2.api.covalenth.moonbeam import MoonBeamCovalentApi
 from blockapi.v2.api.covalenth.palm import PalmCovalentApi
 from blockapi.v2.api.covalenth.polygon import PolygonCovalentApi
 from blockapi.v2.api.covalenth.rsk import RskCovalentApi
+from blockapi.v2.api.debank import DebankApi
 from blockapi.v2.api.ethplorer import EthplorerApi
 from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
 from blockapi.v2.api.solana import SolanaApi
 from blockapi.v2.api.terra import TerraApi
 
 # TODO create method for auto loading all classes
+from blockapi.v2.base import IBalance
 from blockapi.v2.coins import (
     COIN_AVAX,
     COIN_BNB,
@@ -61,6 +63,7 @@ API_CLASSES = [
     PolygonCovalentApi,
     RskCovalentApi,
     OptimismEtherscanApi,
+    DebankApi
 ]
 
 NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL = {
@@ -123,13 +126,32 @@ BAD_ADDRESSES = [
 
 
 def yield_api_instances():
-    for api_cls in API_CLASSES:
-        if issubclass(api_cls, CovalentApiBase):
-            yield _pytest_param(api_cls(api_key=COVALENT_API_KEY))
-            continue
+    for api_cls in yield_covalent_api_classes():
+        yield _pytest_param(api_cls(api_key=COVALENT_API_KEY))
 
+    for api_cls in yield_api_ibalance_classes():
         yield _pytest_param(api_cls())
 
 
 def _pytest_param(api_inst):
     return pytest.param(api_inst, id=str(api_inst))
+
+
+def yield_covalent_api_classes():
+    return CovalentApiBase.__subclasses__()
+
+
+def yield_api_ibalance_classes():
+    return [x for x in IBalance.__subclasses__() if not issubclass(x, (CovalentApiBase, DebankApi))]
+
+
+def yield_debank_address():
+    result = []
+    for key, items in NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL.items():
+        if key in (COIN_TERRA.symbol, COIN_SOL.symbol):
+            continue
+
+        for item in items:
+            result.append(pytest.param(item, id=key))
+
+    return result

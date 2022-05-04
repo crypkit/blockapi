@@ -43,6 +43,7 @@ class AssetType(Enum):
     REWARD = 'reward'
     COMMON = 'common'
     LOCKED = 'locked'
+    YIELD = 'yield'
 
 
 @attr.s(auto_attribs=True, slots=True)
