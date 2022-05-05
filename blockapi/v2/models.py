@@ -40,7 +40,7 @@ class AssetType(Enum):
     LENDING = 'lending'
     LENDING_BORROW = 'lending-borrow'
     LENDING_REWARD = 'lending-reward'
-    REWARD = 'reward'
+    REWARDS = 'rewards'
     COMMON = 'common'
     LOCKED = 'locked'
     YIELD = 'yield'
@@ -155,11 +155,44 @@ class Protocol:
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
+class BalanceItem:
+    balance: Decimal
+    balance_raw: Decimal
+    raw: Dict
+    coin: Coin
+    asset_type: AssetType = AssetType.AVAILABLE
+    last_updated: Optional[datetime] = attr.ib(default=None)
+    protocol: Optional[Protocol] = attr.ib(default=None)
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        balance_raw: Union[int, float, str],
+        coin: Coin,
+        asset_type: AssetType = AssetType.AVAILABLE,
+        raw: Dict,
+        last_updated: Optional[Union[int, str]] = None,
+        protocol: Optional[Protocol] = None
+    ) -> 'BalanceItem':
+        return cls(
+            balance_raw=to_decimal(balance_raw),
+            balance=raw_to_decimals(balance_raw, coin.decimals),
+            coin=coin,
+            asset_type=asset_type,
+            raw=raw,
+            last_updated=(parse_dt(last_updated) if last_updated is not None else None),
+            protocol=protocol,
+        )
+
+
+@attr.s(auto_attribs=True, slots=True)
 class Pool:
     pool_id: str
     protocol: Protocol
     locked_until: Optional[datetime] = attr.ib(default=None),
     health_rate: Optional[Decimal] = attr.ib(default=None),
+    items: List[BalanceItem] = []
 
     @classmethod
     def from_api(
@@ -175,39 +208,6 @@ class Pool:
             protocol=protocol,
             locked_until=(parse_dt(locked_until) if locked_until is not None else None),
             health_rate=to_decimal(health_rate) if health_rate is not None else None,
+            items=[]
         )
 
-
-@attr.s(auto_attribs=True, slots=True, frozen=True)
-class BalanceItem:
-    balance: Decimal
-    balance_raw: Decimal
-    raw: Dict
-    coin: Coin
-    asset_type: AssetType = AssetType.AVAILABLE
-    last_updated: Optional[datetime] = attr.ib(default=None)
-    protocol: Optional[Protocol] = attr.ib(default=None)
-    pool: Optional[Pool] = attr.ib(default=None)
-
-    @classmethod
-    def from_api(
-        cls,
-        *,
-        balance_raw: Union[int, float, str],
-        coin: Coin,
-        asset_type: AssetType = AssetType.AVAILABLE,
-        raw: Dict,
-        last_updated: Optional[Union[int, str]] = None,
-        protocol: Optional[Protocol] = None,
-        pool: Optional[Pool] = None,
-    ) -> 'BalanceItem':
-        return cls(
-            balance_raw=to_decimal(balance_raw),
-            balance=raw_to_decimals(balance_raw, coin.decimals),
-            coin=coin,
-            asset_type=asset_type,
-            raw=raw,
-            last_updated=(parse_dt(last_updated) if last_updated is not None else None),
-            protocol=protocol,
-            pool=pool,
-        )

@@ -107,7 +107,7 @@ def test_get_portfolio_fetches_protocols(
     )
     debank_api._protocol_cache.invalidate()
     parsed_items = debank_api.get_portfolio("0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca")
-    assert parsed_items[0].protocol.name == "YFLink"
+    assert parsed_items[0].items[0].protocol.name == "YFLink"
 
 
 def test_protocol_cache_is_shared_by_instances():

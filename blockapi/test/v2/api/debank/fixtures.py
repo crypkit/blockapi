@@ -1,6 +1,5 @@
 import json
 import os
-from decimal import Decimal
 from typing import List
 
 import pytest
