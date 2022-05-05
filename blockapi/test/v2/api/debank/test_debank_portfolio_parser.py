@@ -4,20 +4,6 @@ from decimal import Decimal
 
 from blockapi.v2.models import AssetType
 
-# noinspection PyUnresolvedReferences
-from fixtures import (
-    protocol_cache,
-    balance_parser,
-    protocol_parser,
-    portfolio_parser,
-
-    empty_response,
-    portfolio_response,
-    complex_portfolio_response,
-
-    protocol_trader_joe
-)
-
 
 def test_empty_response(portfolio_parser, empty_response):
     parsed_items = portfolio_parser.parse(empty_response)

@@ -1,12 +1,3 @@
-# noinspection PyUnresolvedReferences
-from fixtures import (
-    protocol_cache,
-
-    protocol_yflink,
-    yflink_cache_data
-)
-
-
 def test_protocol_cache_has_timeout(protocol_cache):
     assert protocol_cache._timeout == 3600
 

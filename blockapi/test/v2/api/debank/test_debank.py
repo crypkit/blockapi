@@ -1,19 +1,5 @@
 from blockapi.v2.api.debank import DebankApi
 
-# noinspection PyUnresolvedReferences
-from fixtures import (
-    debank_api,
-    coin_with_protocol_response_raw,
-    error_response_raw,
-    yflink_protocol_response_raw,
-    portfolio_response_raw,
-
-    protocol_yflink,
-    yflink_cache_data,
-
-    protocol_cache
-)
-
 
 def test_build_balance_request_url(debank_api):
     url = debank_api._build_request_url(

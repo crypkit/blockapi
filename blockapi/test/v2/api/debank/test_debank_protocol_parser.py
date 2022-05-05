@@ -1,16 +1,5 @@
 from decimal import Decimal
 
-import pytest
-
-from blockapi.v2.api.debank import DebankProtocolParser
-
-# noinspection PyUnresolvedReferences
-from fixtures import (
-    protocol_parser,
-    yflink_protocol_response
-)
-
-
 def test_can_parse_protocol_id(protocol_parser, yflink_protocol_response):
     parsed = protocol_parser.parse(yflink_protocol_response)
     assert parsed['yflink'].protocol_id == 'yflink'
@@ -19,11 +8,6 @@ def test_can_parse_protocol_id(protocol_parser, yflink_protocol_response):
 def test_can_parse_protocol_chain(protocol_parser, yflink_protocol_response):
     parsed = protocol_parser.parse(yflink_protocol_response)
     assert parsed['yflink'].chain == 'eth'
-
-
-def test_can_parse_protocol_name(protocol_parser, yflink_protocol_response):
-    parsed = protocol_parser.parse(yflink_protocol_response)
-    assert parsed['yflink'].name == 'YFLink'
 
 
 def test_can_parse_protocol_name(protocol_parser, yflink_protocol_response):

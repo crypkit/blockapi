@@ -1,12 +1,6 @@
 from datetime import datetime
 from decimal import Decimal
 
-from fixtures import (
-   protocol_yflink,
-   pool_item,
-   balance_item
-)
-
 
 def test_pool_append_items_copies_pool_id(pool_item, balance_item):
     pool = pool_item.append_items([balance_item])

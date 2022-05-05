@@ -2,24 +2,6 @@ import logging
 from datetime import datetime
 from decimal import Decimal
 
-# noinspection PyUnresolvedReferences
-from fixtures import (
-    protocol_cache,
-    balance_parser,
-
-    empty_response,
-    balances_response,
-    balances_with_zero_coin_response,
-    
-    coin_response,
-    coin_with_zero_amount_response,
-    coin_with_protocol_response,
-
-    protocol_yflink,
-
-    yflink_cache_data
-)
-
 
 def test_empty_response(balance_parser, empty_response):
     parsed_items = balance_parser.parse(empty_response)
