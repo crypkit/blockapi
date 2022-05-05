@@ -142,8 +142,9 @@ class DebankPortfolioParser:
         items = []
         pools = {}
         for item in raw_portfolio_items:
-            parsed = self._parse_portfolio_item(item, root_protocol, pools)
-            items.append(parsed)
+            pool = self._parse_portfolio_item(item, root_protocol, pools)
+            pools[pool.pool_id] = pool
+            items.append(pool)
 
         return items
 
@@ -157,25 +158,26 @@ class DebankPortfolioParser:
 
         pool = pools.get(pool_id)
 
+        asset_type = self._parse_asset_type(item.get('name'))
+        borrow_type = self._get_borrow_asset_type(asset_type)
+        reward_type = self._get_reward_asset_type(asset_type)
+
+        items = self._balance_parser.parse(detail.get('supply_token_list', []), asset_type)
+        items += self._balance_parser.parse(detail.get('borrow_token_list', []), borrow_type)
+        items += self._balance_parser.parse(detail.get('reward_token_list', []), reward_type)
+
+        items += self._balance_parser.parse(detail.get('token_list', []))
+
         if pool is None:
             pool = Pool.from_api(
                 pool_id=pool_id,
                 protocol=pool_protocol,
                 locked_until=locked_until,
                 health_rate=health_rate,
+                items=items
             )
-
-            pools[pool_id] = pool
-
-        asset_type = self._parse_asset_type(item.get('name'))
-        borrow_type = self._get_borrow_asset_type(asset_type)
-        reward_type = self._get_reward_asset_type(asset_type)
-
-        pool.items += self._balance_parser.parse(detail.get('supply_token_list', []), asset_type)
-        pool.items += self._balance_parser.parse(detail.get('borrow_token_list', []), borrow_type)
-        pool.items += self._balance_parser.parse(detail.get('reward_token_list', []), reward_type)
-
-        pool.items += self._balance_parser.parse(detail.get('token_list', []))
+        else:
+            pool = pool.append_items(items)
 
         return pool
 

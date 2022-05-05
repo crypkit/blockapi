@@ -186,13 +186,13 @@ class BalanceItem:
         )
 
 
-@attr.s(auto_attribs=True, slots=True)
+@attr.s(auto_attribs=True, slots=True, frozen=True)
 class Pool:
     pool_id: str
     protocol: Protocol
-    locked_until: Optional[datetime] = attr.ib(default=None),
-    health_rate: Optional[Decimal] = attr.ib(default=None),
-    items: List[BalanceItem] = []
+    items: List[BalanceItem]
+    locked_until: Optional[datetime] = attr.ib(default=None)
+    health_rate: Optional[Decimal] = attr.ib(default=None)
 
     @classmethod
     def from_api(
@@ -201,13 +201,27 @@ class Pool:
         pool_id: str,
         protocol: Protocol,
         locked_until: Optional[Union[int, str, float]] = None,
-        health_rate: Optional[Union[float, str]] = None
+        health_rate: Optional[Union[float, str]] = None,
+        items: List[BalanceItem]
+
     ) -> 'Pool':
         return cls(
             pool_id=pool_id,
             protocol=protocol,
+            items=items,
             locked_until=(parse_dt(locked_until) if locked_until is not None else None),
             health_rate=to_decimal(health_rate) if health_rate is not None else None,
-            items=[]
+        )
+
+    def append_items(
+            self,
+            items: List[BalanceItem]
+    ) -> 'Pool':
+        return Pool(
+            pool_id=self.pool_id,
+            protocol=self.protocol,
+            items=self.items + items,
+            locked_until=self.locked_until,
+            health_rate=self.health_rate,
         )
 

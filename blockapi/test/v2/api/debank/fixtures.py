@@ -6,7 +6,8 @@ import pytest
 
 from blockapi.v2.api.debank import DebankProtocolCache, DebankBalanceParser, DebankProtocolParser, \
     DebankPortfolioParser, DebankApi
-from blockapi.v2.models import Protocol
+from blockapi.v2.coins import COIN_ETH
+from blockapi.v2.models import Protocol, BalanceItem, Coin, Blockchain, Pool
 
 
 def read_json_file(file_name: str) -> List:
@@ -40,6 +41,26 @@ def debank_api(protocol_cache):
 @pytest.fixture
 def portfolio_parser(protocol_parser, balance_parser):
     return DebankPortfolioParser(protocol_parser, balance_parser)
+
+
+@pytest.fixture
+def balance_item():
+    return BalanceItem.from_api(
+        balance_raw='12340000000000000000',
+        coin=COIN_ETH,
+        raw={'balance': '12340000000000000000', 'coin': 'eth'}
+    )
+
+
+@pytest.fixture
+def pool_item(protocol_yflink, balance_item):
+    return Pool.from_api(
+        pool_id="123",
+        protocol=protocol_yflink,
+        items=[balance_item],
+        locked_until=1658361600,
+        health_rate='0.99'
+    )
 
 
 @pytest.fixture
