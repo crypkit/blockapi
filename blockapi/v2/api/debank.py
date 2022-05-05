@@ -21,7 +21,7 @@ class DebankProtocolParser:
         return protocols
 
     @staticmethod
-    def parse_item(item):
+    def parse_item(item) -> Protocol:
         return Protocol.from_api(
             protocol_id=item.get('id'),
             chain=item.get('chain'),
@@ -272,7 +272,7 @@ class DebankApi(BlockchainApi, IBalance, IPortfolio):
         error = response.get('errors')
         message = response.get('message')
         if message is not None:
-            logger.error(message)
+            logger.error('DebankApi Error: %s', message)
 
         if error is not None:
             err_id = error.get('id')

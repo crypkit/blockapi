@@ -39,7 +39,7 @@ def test_error_response_returns_empty_balances(debank_api, protocol_cache, error
 def test_error_response_logs_error(debank_api, protocol_cache, error_response_raw, requests_mock, caplog):
     protocol_cache.update({})
     expected_log = [
-        'Input payload validation failed',
+        'DebankApi Error: Input payload validation failed',
         'User Address Unknown format 0xca8fa8f0b631ecdb18cda619c4fc9d197c8affc, attempted'
         ' to normalize to 0xca8fa8f0b631ecdb18cda619c4fc9d197c8affc',
     ]

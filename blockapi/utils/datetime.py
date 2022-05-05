@@ -4,7 +4,7 @@ from typing import Union
 from dateutil.parser import parse as parse_date
 
 
-def parse_dt(dt: Union[int, str]) -> datetime:
+def parse_dt(dt: Union[str, int, float]) -> datetime:
     """
     Convert datetime from string or timestamp into `datetime.datetime`
     """
