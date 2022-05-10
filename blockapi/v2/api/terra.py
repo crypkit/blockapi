@@ -76,28 +76,38 @@ class TerraFcdApi(BlockchainApi):
     def get_staking_balances(self, address: str) -> List[BalanceItem]:
         response = self.get('get_staking_data', address=address)
 
+        total_staked = 0
         balances = []
+
+        # active stake
         if int(response['delegationTotal']) > 0:
+            total_staked += int(response['delegationTotal'])
+        # undelegated stake
+        if response['undelegations']:
+            total_staked += sum(int(u['amount']) for u in response['undelegations'])
+        # total stake - sum of staked and undelegated
+        # add redelegations?
+        if total_staked:
             balances.append(
                 BalanceItem.from_api(
-                    balance_raw=response['delegationTotal'],
+                    balance_raw=total_staked,
                     coin=self.coin,
                     asset_type=AssetType.STAKED,
                     raw=response,
                 )
             )
 
+        # staking rewards
         if float(response['rewards']['total']) > 0:
-            balances.append(
+            balances.extend(
                 BalanceItem.from_api(
-                    balance_raw=response['rewards']['total'],
-                    coin=self.coin,
+                    balance_raw=d['amount'],
+                    coin=self._get_terra_token_by_denom(d['denom']),
                     asset_type=AssetType.CLAIMABLE,
-                    raw=response,
+                    raw=d,
                 )
+                for d in response['rewards']['denoms']
             )
-
-        # process undelegations
 
         return balances
 
