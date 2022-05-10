@@ -98,15 +98,14 @@ class TerraFcdApi(BlockchainApi):
             )
 
         # staking rewards
-        if float(response['rewards']['total']) > 0:
-            balances.extend(
+        for d in response['rewards']['denoms']:
+            balances.append(
                 BalanceItem.from_api(
                     balance_raw=d['amount'],
                     coin=self._get_terra_token_by_denom(d['denom']),
                     asset_type=AssetType.CLAIMABLE,
                     raw=d,
                 )
-                for d in response['rewards']['denoms']
             )
 
         return balances
