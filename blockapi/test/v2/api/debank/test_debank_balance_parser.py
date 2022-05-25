@@ -2,6 +2,8 @@ import logging
 from datetime import datetime
 from decimal import Decimal
 
+from blockapi.v2.models import AssetType
+
 
 def test_empty_response(balance_parser, empty_response):
     parsed_items = balance_parser.parse(empty_response)
@@ -18,6 +20,8 @@ def test_balance_parser_parses_data(balance_parser, coin_response):
     assert item.balance_raw == Decimal(1500000000000000000000)
     assert item.balance == Decimal(1500)
     assert item.last_updated == datetime(2020, 1, 5, 6, 45, 19)
+    assert item.asset_type == AssetType.AVAILABLE
+    assert item.protocol is None
 
 
 def test_debank_parses_coin(balance_parser, coin_response):
@@ -28,7 +32,6 @@ def test_debank_parses_coin(balance_parser, coin_response):
     assert item.coin.decimals == 18
     assert item.coin.blockchain == 'eth'
     assert item.coin.address == '0x14409B0Fc5C7f87b5DAd20754fE22d29A3dE8217'
-    assert item.protocol is None
 
 
 def test_parse_balance(balance_parser, balances_response, protocol_cache, yflink_cache_data):
