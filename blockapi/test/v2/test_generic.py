@@ -43,4 +43,5 @@ def test_get_balance_for_debank(address):
     balances = api_instance.get_balance(address)
 
     assert all(isinstance(b, BalanceItem) for b in balances)
+    assert all(b.asset_type is not None for b in balances)
     assert len(balances) > 0

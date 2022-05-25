@@ -61,7 +61,7 @@ class DebankBalanceParser:
     def __init__(self, protocol_cache: DebankProtocolCache):
         self._protocols = protocol_cache
 
-    def parse(self, response: List, asset_type: AssetType = None) -> List[BalanceItem]:
+    def parse(self, response: List, asset_type: AssetType = AssetType.AVAILABLE) -> List[BalanceItem]:
         items = []
         for item in response:
             balance = self.parse_item(item, asset_type)
@@ -115,7 +115,7 @@ def make_checksum_address(address: str) -> str:
     try:
         return to_checksum_address(address)
     except ValueError as e:
-        logger.exception(e)
+        logger.warning(f'Cannot parse address "{address}", error: {e}')
         return address
 
 
@@ -162,6 +162,8 @@ class DebankPortfolioParser:
         borrow_type = self._get_borrow_asset_type(asset_type)
         reward_type = self._get_reward_asset_type(asset_type)
 
+        logger.error(f'asset={asset_type}, borrow={borrow_type}, reward={reward_type}')
+
         items = self._balance_parser.parse(detail.get('supply_token_list', []), asset_type)
         items += self._balance_parser.parse(detail.get('borrow_token_list', []), borrow_type)
         items += self._balance_parser.parse(detail.get('reward_token_list', []), reward_type)
@@ -185,12 +187,13 @@ class DebankPortfolioParser:
     def _parse_asset_type(type_: str) -> Optional[AssetType]:
         # list of valid types: https://docs.open.debank.com/en/reference/api-models/portfolioitemobject
         if type_ is None:
-            return None
+            return AssetType.AVAILABLE
 
         try:
             return AssetType(type_.lower())
         except ValueError as ve:
             logger.error(ve)
+            return AssetType.AVAILABLE
 
     @staticmethod
     def _get_borrow_asset_type(asset_type):
