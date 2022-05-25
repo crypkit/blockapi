@@ -31,6 +31,11 @@ class Blockchain(Enum):
     ASTAR = "astar"
     IOTEX = "iotex"
 
+    XDAI = 'xdai'
+    OKT = 'okt'
+    HARMONY = 'hmy'
+    MATIC = 'matic'
+
 
 class AssetType(Enum):
     AVAILABLE = 'available'
@@ -40,10 +45,21 @@ class AssetType(Enum):
     LENDING = 'lending'
     LENDING_BORROW = 'lending-borrow'
     LENDING_REWARD = 'lending-reward'
+    LIQUIDITY_POOL = 'liquidity pool'
     REWARDS = 'rewards'
     COMMON = 'common'
+    FARMING = 'farming'
     LOCKED = 'locked'
     YIELD = 'yield'
+
+
+DEBANK_BLOCKCHAIN = {
+    'arb': Blockchain.ARBITRUM,
+    'avax': Blockchain.AVALANCHE,
+    'bsc': Blockchain.BINANCE_SMART_CHAIN,
+    'eth': Blockchain.ETHEREUM,
+    'ftm': Blockchain.FANTOM,
+}
 
 
 @attr.s(auto_attribs=True, slots=True)
