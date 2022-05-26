@@ -12,24 +12,43 @@ UNKNOWN = 'unknown'
 
 
 class Blockchain(Enum):
-    AVALANCHE = "avalanche"
+    ARBITRUM = 'arbitrum'
+    ASTAR = 'astar'
+    AURORA = 'aurora'
+    AVALANCHE = 'avalanche'
+    AXIE = 'axie'
+    BINANCE_SMART_CHAIN = 'binance-smart-chain'
     BITCOIN = 'bitcoin'
+    BIT_TORRENT = 'bit-torrent'
+    BOBA = 'boba'
+    CELO = 'celo'
+    CRONOS = 'cronos'
+    DEFI_KINGDOMS = 'defi-kingdoms'
     ETHEREUM = 'ethereum'
+    EVM_COSMOS = 'evm-cosmos'
+    FANTOM = 'fantom'
+    FUSE = 'fuse'
+    GNOSIS = 'xdai'
+    HARMONY = 'harmony'
+    HECO = 'heco'
+    IOTEX = 'iotex'
+    KLAYTN = 'klaytn'
+    KU_COIN = 'ku-coin'
+    METIS = 'metis'
+    MOONBEAM = 'moonbeam'
+    MOONBEAM_MOONRIVER = 'moonbeam-moonriver'
+    MOONRIVER = 'moonriver'
+    OEC = 'okt'
+    OPTIMISM = 'optimism'
+    PALM = 'palm'
+    POLYGON = 'polygon'
+    RSK = 'rsk'
+    SHIDEN = 'shiden'
+    SMART_BITCOIN_CASH = 'smart-bitcoin-cash'
     SOLANA = 'solana'
+    SONGBIRD = 'songbird'
     TERRA = 'terra'
-    BINANCE_SMART_CHAIN = "binance-smart-chain"
-    MOONBEAM_MOONRIVER = "moonbeam-moonriver"
-    RSK = "rsk"
-    ARBITRUM = "arbitrum"
-    OPTIMISM = "optimism"
-    FANTOM = "fantom"
-    PALM = "palm"
-    POLYGON = "polygon"
-    KLAYTN = "klaytn"
-    HECO = "heco"
-    AXIE = "axie"
-    ASTAR = "astar"
-    IOTEX = "iotex"
+    WANCHAIN = 'wanchain'
 
 
 class AssetType(Enum):
@@ -40,10 +59,37 @@ class AssetType(Enum):
     LENDING = 'lending'
     LENDING_BORROW = 'lending-borrow'
     LENDING_REWARD = 'lending-reward'
+    LIQUIDITY_POOL = 'liquidity pool'
     REWARDS = 'rewards'
     COMMON = 'common'
+    FARMING = 'farming'
     LOCKED = 'locked'
     YIELD = 'yield'
+
+
+DEBANK_BLOCKCHAIN = {
+    'arb': Blockchain.ARBITRUM,
+    'avax': Blockchain.AVALANCHE,
+    'bsc': Blockchain.BINANCE_SMART_CHAIN,
+    'btt': Blockchain.BIT_TORRENT,
+    'cro': Blockchain.CRONOS,
+    'dfk': Blockchain.DEFI_KINGDOMS,
+    'eth': Blockchain.ETHEREUM,
+    'evmos': Blockchain.EVM_COSMOS,
+    'ftm': Blockchain.FANTOM,
+    'hmy': Blockchain.HARMONY,
+    'iotx': Blockchain.IOTEX,
+    'kcc': Blockchain.KU_COIN,
+    'klay': Blockchain.KLAYTN,
+    'matic': Blockchain.POLYGON,
+    'movr': Blockchain.MOONRIVER,
+    'mobm': Blockchain.MOONBEAM,
+    'op': Blockchain.OPTIMISM,
+    'sbch': Blockchain.SMART_BITCOIN_CASH,
+    'sdn': Blockchain.SHIDEN,
+    'sgb': Blockchain.SONGBIRD,
+    'wan': Blockchain.WANCHAIN,
+}
 
 
 @attr.s(auto_attribs=True, slots=True)

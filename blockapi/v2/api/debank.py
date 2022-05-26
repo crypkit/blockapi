@@ -6,7 +6,16 @@ from eth_utils import to_checksum_address
 
 from blockapi.utils.num import decimals_to_raw
 from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance, IPortfolio
-from blockapi.v2.models import BalanceItem, Blockchain, Coin, CoinInfo, Protocol, AssetType, Pool
+from blockapi.v2.models import (
+    BalanceItem,
+    Blockchain,
+    Coin,
+    CoinInfo,
+    Protocol,
+    AssetType,
+    Pool,
+    DEBANK_BLOCKCHAIN
+)
 
 logger = logging.getLogger(__name__)
 
@@ -90,7 +99,7 @@ class DebankBalanceParser:
             symbol=raw_balance.get('symbol'),
             name=raw_balance.get('name'),
             decimals=raw_balance.get('decimals', 0),
-            blockchain=raw_balance.get('chain'),
+            blockchain=self._convert_blockchain(raw_balance.get('chain')),
             address=make_checksum_address(raw_balance.get('id')),
             standards=[],
             info=CoinInfo(logo_url=raw_balance.get('logo_url')),
@@ -109,6 +118,18 @@ class DebankBalanceParser:
         )
 
         return balance
+
+    @staticmethod
+    def _convert_blockchain(chain):
+        result = DEBANK_BLOCKCHAIN.get(chain)
+        if result is not None:
+            return result
+
+        try:
+            return Blockchain(chain)
+        except ValueError:
+            logger.warning(f"Unknown blockchain '{chain}'")
+            return chain
 
 
 def make_checksum_address(address: str) -> str:
@@ -161,8 +182,6 @@ class DebankPortfolioParser:
         asset_type = self._parse_asset_type(item.get('name'))
         borrow_type = self._get_borrow_asset_type(asset_type)
         reward_type = self._get_reward_asset_type(asset_type)
-
-        logger.error(f'asset={asset_type}, borrow={borrow_type}, reward={reward_type}')
 
         items = self._balance_parser.parse(detail.get('supply_token_list', []), asset_type)
         items += self._balance_parser.parse(detail.get('borrow_token_list', []), borrow_type)
