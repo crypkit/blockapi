@@ -46,3 +46,17 @@ def test_get_balance_for_debank(address):
     assert all(AssetType(b.asset_type) is not None for b in balances)
     assert all(Blockchain(b.coin.blockchain) is not None for b in balances)
     assert len(balances) > 0
+
+
+@pytest.mark.integration
+@pytest.mark.parametrize('address', yield_debank_address())
+def test_get_portfolio_for_debank(address):
+    api_instance = DebankApi()
+    pools = api_instance.get_portfolio(address)
+
+    balances = [item for pool in pools for item in pool.items]
+
+    assert all(isinstance(b, BalanceItem) for b in balances)
+    assert all(AssetType(b.asset_type) is not None for b in balances)
+    assert all(Blockchain(b.coin.blockchain) is not None for b in balances)
+    assert len(balances) > 0
