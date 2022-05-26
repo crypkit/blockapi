@@ -12,43 +12,42 @@ UNKNOWN = 'unknown'
 
 
 class Blockchain(Enum):
-    AVALANCHE = "avalanche"
-    BITCOIN = 'bitcoin'
-    ETHEREUM = 'ethereum'
-    SOLANA = 'solana'
-    TERRA = 'terra'
-    BINANCE_SMART_CHAIN = "binance-smart-chain"
-    MOONBEAM_MOONRIVER = "moonbeam-moonriver"
-    RSK = "rsk"
-    ARBITRUM = "arbitrum"
-    OPTIMISM = "optimism"
-    FANTOM = "fantom"
-    PALM = "palm"
-    POLYGON = "polygon"
-    KLAYTN = "klaytn"
-    HECO = "heco"
-    AXIE = "axie"
-    ASTAR = "astar"
-    IOTEX = "iotex"
-
+    ARBITRUM = 'arbitrum'
+    ASTAR = 'astar'
     AURORA = 'aurora'
+    AVALANCHE = 'avalanche'
+    AXIE = 'axie'
+    BINANCE_SMART_CHAIN = 'binance-smart-chain'
+    BITCOIN = 'bitcoin'
     BIT_TORRENT = 'bit-torrent'
     BOBA = 'boba'
     CELO = 'celo'
     CRONOS = 'cronos'
     DEFI_KINGDOMS = 'defi-kingdoms'
+    ETHEREUM = 'ethereum'
     EVM_COSMOS = 'evm-cosmos'
-    GNOSIS = 'xdai'
+    FANTOM = 'fantom'
     FUSE = 'fuse'
+    GNOSIS = 'xdai'
     HARMONY = 'harmony'
+    HECO = 'heco'
+    IOTEX = 'iotex'
+    KLAYTN = 'klaytn'
     KU_COIN = 'ku-coin'
     METIS = 'metis'
     MOONBEAM = 'moonbeam'
+    MOONBEAM_MOONRIVER = 'moonbeam-moonriver'
     MOONRIVER = 'moonriver'
     OEC = 'okt'
+    OPTIMISM = 'optimism'
+    PALM = 'palm'
+    POLYGON = 'polygon'
+    RSK = 'rsk'
     SHIDEN = 'shiden'
     SMART_BITCOIN_CASH = 'smart-bitcoin-cash'
+    SOLANA = 'solana'
     SONGBIRD = 'songbird'
+    TERRA = 'terra'
     WANCHAIN = 'wanchain'
 
 
