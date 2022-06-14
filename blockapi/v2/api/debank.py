@@ -14,7 +14,8 @@ from blockapi.v2.models import (
     Protocol,
     AssetType,
     Pool,
-    DEBANK_BLOCKCHAIN
+    DEBANK_BLOCKCHAIN,
+    DEBANK_ASSET_TYPES
 )
 
 logger = logging.getLogger(__name__)
@@ -209,7 +210,12 @@ class DebankPortfolioParser:
             return AssetType.AVAILABLE
 
         try:
-            return AssetType(type_.lower())
+            lower = type_.lower()
+            asset_type = DEBANK_ASSET_TYPES.get(lower)
+            if asset_type:
+                return asset_type
+
+            return AssetType(lower)
         except ValueError as ve:
             logger.error(ve)
             return AssetType.AVAILABLE

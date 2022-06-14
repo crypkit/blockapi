@@ -52,8 +52,18 @@ def test_parse_asset_type(portfolio_parser):
     assert portfolio_parser._parse_asset_type('Lending') == AssetType.LENDING
 
 
+def test_parse_asset_type_vesting(portfolio_parser):
+    """ requires conversion Vested -> vesting """
+    assert portfolio_parser._parse_asset_type('Vested') == AssetType.VESTING
+
+
+def test_parse_asset_type_liquidity_pool(portfolio_parser):
+    """ requires conversion: underscore """
+    assert portfolio_parser._parse_asset_type('Liquidity Pool') == AssetType.LIQUIDITY_POOL
+
+
 def test_parse_unknown_asset_type_logs(portfolio_parser, caplog):
     expected_log = ["'dummy' is not a valid AssetType"]
     with caplog.at_level(level=logging.DEBUG):
-        assert portfolio_parser._parse_asset_type('dummy') is None
+        assert portfolio_parser._parse_asset_type('dummy') == AssetType.AVAILABLE
         assert expected_log == caplog.messages
