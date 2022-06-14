@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 from decimal import Decimal
 
-from blockapi.v2.models import AssetType
+from blockapi.v2.models import AssetType, Blockchain
 
 
 def test_empty_response(balance_parser, empty_response):
@@ -30,7 +30,7 @@ def test_debank_parses_coin(balance_parser, coin_response):
     assert item.coin.symbol == "PYRO"
     assert item.coin.name == "PYRO Network"
     assert item.coin.decimals == 18
-    assert item.coin.blockchain == 'eth'
+    assert item.coin.blockchain == Blockchain.ETHEREUM
     assert item.coin.address == '0x14409B0Fc5C7f87b5DAd20754fE22d29A3dE8217'
 
 

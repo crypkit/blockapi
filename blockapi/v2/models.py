@@ -11,7 +11,7 @@ from blockapi.utils.num import raw_to_decimals, to_decimal, to_int
 UNKNOWN = 'unknown'
 
 
-class Blockchain(Enum):
+class Blockchain(str, Enum):
     ARBITRUM = 'arbitrum'
     ASTAR = 'astar'
     AURORA = 'aurora'
@@ -51,19 +51,19 @@ class Blockchain(Enum):
     WANCHAIN = 'wanchain'
 
 
-class AssetType(Enum):
+class AssetType(str, Enum):
     AVAILABLE = 'available'
-    STAKED = 'staked'
-    VESTED = 'vested'
     CLAIMABLE = 'claimable'
-    LENDING = 'lending'
-    LENDING_BORROW = 'lending-borrow'
-    LENDING_REWARD = 'lending-reward'
-    LIQUIDITY_POOL = 'liquidity pool'
-    REWARDS = 'rewards'
     COMMON = 'common'
     FARMING = 'farming'
+    LENDING = 'lending'
+    LENDING_BORROW = 'lending_borrow'
+    LENDING_REWARD = 'lending_reward'
+    LIQUIDITY_POOL = 'liquidity_pool'
     LOCKED = 'locked'
+    REWARDS = 'rewards'
+    STAKED = 'staked'
+    VESTING = 'vesting'
     YIELD = 'yield'
 
 
@@ -89,6 +89,11 @@ DEBANK_BLOCKCHAIN = {
     'sdn': Blockchain.SHIDEN,
     'sgb': Blockchain.SONGBIRD,
     'wan': Blockchain.WANCHAIN,
+}
+
+DEBANK_ASSET_TYPES = {
+    'vested': AssetType.VESTING,
+    'liquidity pool': AssetType.LIQUIDITY_POOL
 }
 
 
