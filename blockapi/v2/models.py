@@ -54,7 +54,10 @@ class Blockchain(str, Enum):
 class AssetType(str, Enum):
     AVAILABLE = 'available'
     CLAIMABLE = 'claimable'
+    COLLATERAL = 'collateral'
     COMMON = 'common'
+    DEBT = 'debt'
+    DEPOSITED = 'deposited'
     FARMING = 'farming'
     LENDING = 'lending'
     LENDING_BORROW = 'lending_borrow'
@@ -63,8 +66,12 @@ class AssetType(str, Enum):
     LOCKED = 'locked'
     REWARDS = 'rewards'
     STAKED = 'staked'
+    UNREALIZED_AVAILABLE = 'unrealized_available'
     VESTING = 'vesting'
     YIELD = 'yield'
+
+    # DEPRECATED
+    ASSET = 'asset'
 
 
 DEBANK_BLOCKCHAIN = {
