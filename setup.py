@@ -8,7 +8,7 @@ PACKAGES = find_packages(where='.')
 
 setuptools.setup(
     name='blockapi',
-    version='0.1.9',
+    version='0.1.10',
     author='Devmons s.r.o.',
     description='BlockAPI library',
     license='MIT',
@@ -27,7 +27,6 @@ setuptools.setup(
         'lxml>=4.4.1',
         'pytest',
         'pytest-vcr',
-        'requests_mock>=1.9.3'
+        'requests_mock>=1.9.3',
     ],
 )
-

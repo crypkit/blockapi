@@ -29,6 +29,7 @@ def test_portfolio_stores_raw_item(portfolio_parser, portfolio_response):
     assert item.balance == Decimal('7579.956374263135')
     assert item.raw is not None
     assert item.asset_type == AssetType.LENDING
+    assert item.is_wallet is False
 
 
 def test_parse_supply_token_list(portfolio_parser, portfolio_response):
@@ -53,13 +54,15 @@ def test_parse_asset_type(portfolio_parser):
 
 
 def test_parse_asset_type_vesting(portfolio_parser):
-    """ requires conversion Vested -> vesting """
+    """requires conversion Vested -> vesting"""
     assert portfolio_parser._parse_asset_type('Vested') == AssetType.VESTING
 
 
 def test_parse_asset_type_liquidity_pool(portfolio_parser):
-    """ requires conversion: underscore """
-    assert portfolio_parser._parse_asset_type('Liquidity Pool') == AssetType.LIQUIDITY_POOL
+    """requires conversion: underscore"""
+    assert (
+        portfolio_parser._parse_asset_type('Liquidity Pool') == AssetType.LIQUIDITY_POOL
+    )
 
 
 def test_parse_unknown_asset_type_logs(portfolio_parser, caplog):

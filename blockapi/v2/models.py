@@ -100,7 +100,7 @@ DEBANK_BLOCKCHAIN = {
 
 DEBANK_ASSET_TYPES = {
     'vested': AssetType.VESTING,
-    'liquidity pool': AssetType.LIQUIDITY_POOL
+    'liquidity pool': AssetType.LIQUIDITY_POOL,
 }
 
 
@@ -199,7 +199,7 @@ class Protocol:
         user_deposit: Union[str, float, int],
         site_url: Optional[str] = None,
         logo_url: Optional[str] = None,
-        has_supported_portfolio: Optional[bool] = False
+        has_supported_portfolio: Optional[bool] = False,
     ) -> 'Protocol':
         return cls(
             protocol_id=protocol_id,
@@ -221,6 +221,7 @@ class BalanceItem:
     asset_type: AssetType = AssetType.AVAILABLE
     last_updated: Optional[datetime] = attr.ib(default=None)
     protocol: Optional[Protocol] = attr.ib(default=None)
+    is_wallet: bool = True
 
     @classmethod
     def from_api(
@@ -231,7 +232,8 @@ class BalanceItem:
         asset_type: AssetType = AssetType.AVAILABLE,
         raw: Dict,
         last_updated: Optional[Union[int, str]] = None,
-        protocol: Optional[Protocol] = None
+        protocol: Optional[Protocol] = None,
+        is_wallet: bool = True,
     ) -> 'BalanceItem':
         return cls(
             balance_raw=to_decimal(balance_raw),
@@ -241,6 +243,7 @@ class BalanceItem:
             raw=raw,
             last_updated=(parse_dt(last_updated) if last_updated is not None else None),
             protocol=protocol,
+            is_wallet=is_wallet,
         )
 
 
@@ -260,8 +263,7 @@ class Pool:
         protocol: Protocol,
         locked_until: Optional[Union[int, str, float]] = None,
         health_rate: Optional[Union[float, str]] = None,
-        items: List[BalanceItem]
-
+        items: List[BalanceItem],
     ) -> 'Pool':
         return cls(
             pool_id=pool_id,
@@ -271,10 +273,7 @@ class Pool:
             health_rate=to_decimal(health_rate) if health_rate is not None else None,
         )
 
-    def append_items(
-            self,
-            items: List[BalanceItem]
-    ) -> 'Pool':
+    def append_items(self, items: List[BalanceItem]) -> 'Pool':
         return Pool(
             pool_id=self.pool_id,
             protocol=self.protocol,
@@ -282,4 +281,3 @@ class Pool:
             locked_until=self.locked_until,
             health_rate=self.health_rate,
         )
-

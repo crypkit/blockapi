@@ -22,6 +22,7 @@ def test_balance_parser_parses_data(balance_parser, coin_response):
     assert item.last_updated == datetime(2020, 1, 5, 6, 45, 19)
     assert item.asset_type == AssetType.AVAILABLE
     assert item.protocol is None
+    assert item.is_wallet
 
 
 def test_debank_parses_coin(balance_parser, coin_response):
