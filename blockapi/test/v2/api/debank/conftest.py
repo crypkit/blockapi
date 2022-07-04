@@ -10,14 +10,6 @@ from blockapi.v2.coins import COIN_ETH
 from blockapi.v2.models import Protocol, BalanceItem, Coin, Blockchain, Pool
 
 
-def read_json_file(file_name: str) -> List:
-    json_path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), file_name)
-    )
-    with open(json_path, encoding="utf-8") as f:
-        return json.load(f)
-
-
 @pytest.fixture
 def protocol_cache():
     return DebankProtocolCache()

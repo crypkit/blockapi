@@ -41,6 +41,7 @@ class Blockchain(str, Enum):
     OEC = 'okt'
     OPTIMISM = 'optimism'
     PALM = 'palm'
+    PERPETUAL = 'perpetual'
     POLYGON = 'polygon'
     RSK = 'rsk'
     SHIDEN = 'shiden'

@@ -1,5 +1,9 @@
 from decimal import Decimal, InvalidOperation
-from typing import Union
+from numbers import Number
+from typing import Union, Optional
+
+
+SupportsNumber = Union[str, Number]
 
 
 def to_int(number: Union[int, str]):
@@ -59,3 +63,18 @@ def remove_exponent(d: Decimal) -> Decimal:
         return d.quantize(Decimal(1)) if d == d.to_integral() else d.normalize()
     except InvalidOperation:
         return d
+
+
+def safe_opt_decimal(obj: Optional[SupportsNumber]) -> Decimal:
+    """
+    This function is primarily for parsing 3rd party APIs that sometimes,
+    despite stating in their docs that *number* is returned, may return null.
+
+    >>> safe_opt_decimal(None)
+    Decimal('0')
+    """
+    if obj is None:
+        return Decimal('0')
+    else:
+        return to_decimal(obj)
+

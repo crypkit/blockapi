@@ -168,6 +168,15 @@ COIN_PALM = Coin(
     address='0x0000000000000000000000000000000000000000',
 )
 
+COIN_PERP = Coin(
+    symbol='PERP',
+    name='Perpetual',
+    decimals=18,
+    blockchain=Blockchain.PERPETUAL,
+    address='0x0000000000000000000000000000000000000000',
+)
+
+
 COIN_RSK = Coin(
     symbol='RBTC',
     name='Rootstock RSK',
