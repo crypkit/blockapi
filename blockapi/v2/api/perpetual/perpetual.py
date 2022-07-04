@@ -139,17 +139,9 @@ class PerpProtocol:
 
     @staticmethod
     def _create_balance(asset_type: AssetType, amount: Decimal) -> BalanceItem:
-        coin = Coin.from_api(
-            blockchain=Blockchain.PERPETUAL,
-            decimals=0,
-            symbol='PERP',
-            name='Perpetual',
-            address=perp_contract_address("PERP"),
-        )
-
         return BalanceItem.from_api(
             balance_raw=amount,
-            coin=coin,
+            coin=COIN_PERP,
             asset_type=asset_type,
             protocol='perpetual',
             raw={},
@@ -228,9 +220,7 @@ class PerpProtocol:
 
 class PerpetualApi(BlockchainApi, IBalance):
     coin = COIN_PERP
-    api_options = ApiOptions(
-        blockchain=Blockchain.PERPETUAL, base_url='...', rate_limit=0.2  # 5/s
-    )
+    api_options = ApiOptions(blockchain=Blockchain.ETHEREUM, rate_limit=0.2)  # 5/s
 
     def __init__(self, provider='infura') -> None:
         super().__init__()

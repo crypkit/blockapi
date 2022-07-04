@@ -171,9 +171,13 @@ COIN_PALM = Coin(
 COIN_PERP = Coin(
     symbol='PERP',
     name='Perpetual',
-    decimals=18,
-    blockchain=Blockchain.PERPETUAL,
-    address='0x0000000000000000000000000000000000000000',
+    decimals=0,
+    blockchain=Blockchain.ETHEREUM,
+    address='0xbC396689893D065F41bc2C6EcbeE5e0085233447',
+    info=CoinInfo(
+        coingecko_id='perpetual-protocol',
+        website='https://perpetual.io/',
+    ),
 )
 
 
