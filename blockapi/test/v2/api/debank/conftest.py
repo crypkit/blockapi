@@ -1,13 +1,19 @@
-import json
-import os
 from typing import List
 
 import pytest
 
-from blockapi.v2.api.debank import DebankProtocolCache, DebankBalanceParser, DebankProtocolParser, \
-    DebankPortfolioParser, DebankApi
+from blockapi.v2.api.debank import (
+    DebankProtocolCache,
+    DebankBalanceParser,
+    DebankProtocolParser,
+    DebankPortfolioParser,
+    DebankApi,
+)
+
 from blockapi.v2.coins import COIN_ETH
-from blockapi.v2.models import Protocol, BalanceItem, Coin, Blockchain, Pool
+from blockapi.v2.models import Protocol, BalanceItem, Pool
+
+from blockapi.test.v2.api.conftest import read_json_file
 
 
 @pytest.fixture
@@ -40,7 +46,7 @@ def balance_item():
     return BalanceItem.from_api(
         balance_raw='12340000000000000000',
         coin=COIN_ETH,
-        raw={'balance': '12340000000000000000', 'coin': 'eth'}
+        raw={'balance': '12340000000000000000', 'coin': 'eth'},
     )
 
 
@@ -51,7 +57,7 @@ def pool_item(protocol_yflink, balance_item):
         protocol=protocol_yflink,
         items=[balance_item],
         locked_until=1658361600,
-        health_rate='0.99'
+        health_rate='0.99',
     )
 
 
@@ -73,12 +79,12 @@ def error_response_raw():
 
 @pytest.fixture
 def balances_response() -> List:
-    return read_json_file("balance_response.json")
+    return read_json_file("debank/balance_response.json")
 
 
 @pytest.fixture
 def complex_portfolio_response() -> List:
-    return read_json_file("complex_portfolio_response.json")
+    return read_json_file("debank/complex_portfolio_response.json")
 
 
 @pytest.fixture
@@ -89,7 +95,7 @@ def portfolio_response():
         "name": "Trader Joe Lending",
         "site_url": "https://www.traderjoexyz.com",
         "logo_url": "https://static.debank.com/image/project/logo_url/avax_traderjoexyz_lending"
-                    "/eab9fd6fb47852d3b7766515bfefe366.png",
+        "/eab9fd6fb47852d3b7766515bfefe366.png",
         "has_supported_portfolio": True,
         "tvl": 162476998.75607753,
         "portfolio_item_list": [
@@ -97,14 +103,12 @@ def portfolio_response():
                 "stats": {
                     "asset_usd_value": 547045.4515305705,
                     "debt_usd_value": 0,
-                    "net_usd_value": 547045.4515305705
+                    "net_usd_value": 547045.4515305705,
                 },
                 "update_at": 1650963061.376993,
                 "name": "Lending",
                 "pool_id": "0xdc13687554205e5b89ac783db14bb5bba4a1edac",
-                "detail_types": [
-                    "lending"
-                ],
+                "detail_types": ["lending"],
                 "detail": {
                     "supply_token_list": [
                         {
@@ -123,7 +127,7 @@ def portfolio_response():
                             "is_wallet": True,
                             "time_at": 1607728259,
                             "amount": 7579.956374263135,
-                            "is_collateral": False
+                            "is_collateral": False,
                         }
                     ],
                     "borrow_token_list": [
@@ -142,7 +146,7 @@ def portfolio_response():
                             "is_core": True,
                             "is_wallet": True,
                             "time_at": 1614116357,
-                            "amount": 661077.3612934694
+                            "amount": 661077.3612934694,
                         },
                         {
                             "id": "eth",
@@ -159,7 +163,7 @@ def portfolio_response():
                             "is_core": True,
                             "is_wallet": True,
                             "time_at": 1483200000,
-                            "amount": 2.97837275242947
+                            "amount": 2.97837275242947,
                         },
                         {
                             "id": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
@@ -176,26 +180,24 @@ def portfolio_response():
                             "is_core": True,
                             "is_wallet": True,
                             "time_at": 1543095952,
-                            "amount": 5.3e-7
-                        }
+                            "amount": 5.3e-7,
+                        },
                     ],
                     "health_rate": 0.86,
-                    "unlock_at": 1658361600
+                    "unlock_at": 1658361600,
                 },
-                "proxy_detail": {}
+                "proxy_detail": {},
             },
             {
                 "stats": {
                     "asset_usd_value": 220.67854479949355,
                     "debt_usd_value": 0,
-                    "net_usd_value": 220.67854479949355
+                    "net_usd_value": 220.67854479949355,
                 },
                 "update_at": 1650963061.3988287,
                 "name": "Rewards",
                 "pool_id": "0xdc13687554205e5b89ac783db14bb5bba4a1edac",
-                "detail_types": [
-                    "reward"
-                ],
+                "detail_types": ["reward"],
                 "detail": {
                     "token_list": [
                         {
@@ -207,21 +209,21 @@ def portfolio_response():
                             "optimized_symbol": "JOE",
                             "decimals": 18,
                             "logo_url": "https://static.debank.com/image/avax_token/logo_url"
-                                        "/0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd/25f094b523a2d6c51e084eeb8f60dd2f"
-                                        ".png",
+                            "/0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd/25f094b523a2d6c51e084eeb8f60dd2f"
+                            ".png",
                             "protocol_id": "avax_traderjoexyz_lending",
                             "price": 1.0898007248925483,
                             "is_verified": True,
                             "is_core": True,
                             "is_wallet": True,
                             "time_at": 1624780261,
-                            "amount": 202.49440081924328
+                            "amount": 202.49440081924328,
                         }
                     ]
                 },
-                "proxy_detail": {}
-            }
-        ]
+                "proxy_detail": {},
+            },
+        ],
     }
 
 
@@ -468,15 +470,17 @@ def coin_with_protocol_response_raw():
 
 @pytest.fixture
 def yflink_protocol_response():
-    return [{
-        "id": "yflink",
-        "chain": "eth",
-        "name": "YFLink",
-        "site_url": "https://linkswap.app",
-        "logo_url": "https://static.debank.com/image/project/logo_url/yflink/a43f4e05d96b559fecf4984f760bf737.png",
-        "has_supported_portfolio": False,
-        "tvl": 1234.5
-    }]
+    return [
+        {
+            "id": "yflink",
+            "chain": "eth",
+            "name": "YFLink",
+            "site_url": "https://linkswap.app",
+            "logo_url": "https://static.debank.com/image/project/logo_url/yflink/a43f4e05d96b559fecf4984f760bf737.png",
+            "has_supported_portfolio": False,
+            "tvl": 1234.5,
+        }
+    ]
 
 
 @pytest.fixture
@@ -515,7 +519,7 @@ def protocol_trader_joe():
         user_deposit='162476998.75607753',
         site_url="https://www.traderjoexyz.com",
         logo_url="https://static.debank.com/image/project/logo_url/avax_traderjoexyz_lending"
-                 "/eab9fd6fb47852d3b7766515bfefe366.png",
+        "/eab9fd6fb47852d3b7766515bfefe366.png",
         has_supported_portfolio=True,
     )
 
@@ -523,4 +527,3 @@ def protocol_trader_joe():
 @pytest.fixture
 def yflink_cache_data(protocol_yflink):
     return {'yflink': protocol_yflink}
-
