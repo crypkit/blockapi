@@ -1,21 +1,21 @@
 import logging
 from datetime import datetime, timedelta
-from typing import Dict, List, Union, Optional
+from typing import Dict, List, Optional, Union
 
 from eth_utils import to_checksum_address
 
 from blockapi.utils.num import decimals_to_raw
 from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance, IPortfolio
 from blockapi.v2.models import (
+    DEBANK_ASSET_TYPES,
+    DEBANK_BLOCKCHAIN,
+    AssetType,
     BalanceItem,
     Blockchain,
     Coin,
     CoinInfo,
-    Protocol,
-    AssetType,
     Pool,
-    DEBANK_BLOCKCHAIN,
-    DEBANK_ASSET_TYPES,
+    Protocol,
 )
 
 logger = logging.getLogger(__name__)
@@ -145,7 +145,7 @@ def make_checksum_address(address: str) -> str:
         return to_checksum_address(address)
     except ValueError as e:
         logger.warning(f'Cannot parse address "{address}", error: {e}')
-        return address
+        return None
 
 
 class DebankPortfolioParser:
