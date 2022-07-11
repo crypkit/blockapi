@@ -152,7 +152,7 @@ class Coin:
     blockchain: Blockchain
     address: Optional[str] = attr.ib(default=None)
     standards: Optional[List[str]] = attr.ib(default=None)
-    protocol: Optional[str] = attr.ib(default=None)
+    protocol_id: Optional[str] = attr.ib(default=None)
     info: Optional[CoinInfo] = attr.ib(default=None)
 
     @classmethod
@@ -164,7 +164,7 @@ class Coin:
         name: Optional[str] = None,
         address: Optional[str] = None,
         standards: Optional[List[str]] = None,
-        protocol: Optional[str] = None,
+        protocol_id: Optional[str] = None,
         info: Optional[CoinInfo] = None,
     ) -> 'Coin':
         return cls(
@@ -174,7 +174,7 @@ class Coin:
             blockchain=blockchain,
             address=address,
             standards=standards,
-            protocol=protocol,
+            protocol_id=protocol_id,
             info=info,
         )
 

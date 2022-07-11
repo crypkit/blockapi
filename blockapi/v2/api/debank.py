@@ -109,6 +109,7 @@ class DebankBalanceParser:
             blockchain=self._convert_blockchain(raw_balance.get('chain')),
             address=make_checksum_address(raw_balance.get('id')),
             standards=[],
+            protocol_id=raw_balance.get('protocol_id'),
             info=CoinInfo(logo_url=raw_balance.get('logo_url')),
         )
 

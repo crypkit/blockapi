@@ -10,13 +10,16 @@ def test_empty_response(balance_parser, empty_response):
     assert parsed_items == []
 
 
-def test_balance_parsers_skips_empty_balances(balance_parser, balances_with_zero_coin_response):
+def test_balance_parsers_skips_empty_balances(
+    balance_parser, balances_with_zero_coin_response
+):
     parsed_items = balance_parser.parse(balances_with_zero_coin_response)
     assert len(parsed_items) == 1
 
 
 def test_balance_parser_parses_data(balance_parser, coin_response):
     item = balance_parser.parse_item(coin_response)
+    assert item.raw == coin_response
     assert item.balance_raw == Decimal(1500000000000000000000)
     assert item.balance == Decimal(1500)
     assert item.last_updated == datetime(2020, 1, 5, 6, 45, 19)
@@ -25,9 +28,21 @@ def test_balance_parser_parses_data(balance_parser, coin_response):
     assert item.is_wallet
 
 
+def test_balance_parser_parses_protocol(
+    balance_parser, coin_with_protocol_response, protocol_cache, yflink_cache_data
+):
+    protocol_cache.update(yflink_cache_data)
+    item = balance_parser.parse_item(coin_with_protocol_response)
+    assert item.protocol.protocol_id == "yflink"
+    assert item.protocol.name == "YFLink"
+    assert item.protocol.chain == "eth"
+    assert item.protocol.user_deposit == Decimal(1234.5)
+
+    assert item.coin.protocol_id == "yflink"
+
+
 def test_debank_parses_coin(balance_parser, coin_response):
     item = balance_parser.parse_item(coin_response)
-    assert item.raw == coin_response
     assert item.coin.symbol == "PYRO"
     assert item.coin.name == "PYRO Network"
     assert item.coin.decimals == 18
@@ -35,7 +50,9 @@ def test_debank_parses_coin(balance_parser, coin_response):
     assert item.coin.address == '0x14409B0Fc5C7f87b5DAd20754fE22d29A3dE8217'
 
 
-def test_parse_balance(balance_parser, balances_response, protocol_cache, yflink_cache_data):
+def test_parse_balance(
+    balance_parser, balances_response, protocol_cache, yflink_cache_data
+):
     protocol_cache.update(yflink_cache_data)
     parsed_items = balance_parser.parse(balances_response)
     assert len(parsed_items) == 28
