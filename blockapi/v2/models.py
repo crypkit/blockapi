@@ -60,6 +60,7 @@ class AssetType(str, Enum):
     DEBT = 'debt'
     DEPOSITED = 'deposited'
     FARMING = 'farming'
+    INVESTMENT = 'investment'
     LENDING = 'lending'
     LENDING_BORROW = 'lending_borrow'
     LENDING_REWARD = 'lending_reward'
@@ -279,6 +280,9 @@ class Pool:
     items: List[BalanceItem]
     locked_until: Optional[datetime] = attr.ib(default=None)
     health_rate: Optional[Decimal] = attr.ib(default=None)
+    token_set: Optional[str] = attr.ib(default=None)
+    project_id: Optional[str] = attr.ib(default=None)
+    adapter_id: Optional[str] = attr.ib(default=None)
 
     @classmethod
     def from_api(
@@ -289,6 +293,9 @@ class Pool:
         locked_until: Optional[Union[int, str, float]] = None,
         health_rate: Optional[Union[float, str]] = None,
         items: List[BalanceItem],
+        token_set: Optional[str] = None,
+        project_id: Optional[str] = None,
+        adapter_id: Optional[str] = None,
     ) -> 'Pool':
         return cls(
             pool_id=pool_id,
@@ -296,13 +303,10 @@ class Pool:
             items=items,
             locked_until=(parse_dt(locked_until) if locked_until is not None else None),
             health_rate=to_decimal(health_rate) if health_rate is not None else None,
+            token_set=token_set,
+            project_id=project_id,
+            adapter_id=adapter_id,
         )
 
-    def append_items(self, items: List[BalanceItem]) -> 'Pool':
-        return Pool(
-            pool_id=self.pool_id,
-            protocol=self.protocol,
-            items=self.items + items,
-            locked_until=self.locked_until,
-            health_rate=self.health_rate,
-        )
+    def append_items(self, items: List[BalanceItem]) -> None:
+        self.items.extend(items)

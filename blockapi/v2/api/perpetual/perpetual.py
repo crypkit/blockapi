@@ -220,7 +220,9 @@ class PerpProtocol:
 
 class PerpetualApi(BlockchainApi, IBalance):
     coin = COIN_PERP
-    api_options = ApiOptions(blockchain=Blockchain.ETHEREUM, rate_limit=0.2)  # 5/s
+    api_options = ApiOptions(
+        blockchain=Blockchain.ETHEREUM, base_url=None, rate_limit=0.2
+    )
 
     def __init__(self, provider='infura') -> None:
         super().__init__()

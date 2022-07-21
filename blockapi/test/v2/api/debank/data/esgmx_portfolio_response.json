@@ -1,0 +1,229 @@
+[
+    {
+        "id": "arb_gmx",
+        "chain": "arb",
+        "name": "GMX",
+        "site_url": "https://gmx.io",
+        "logo_url": "https://static.debank.com/image/project/logo_url/arb_gmx/1a57f390512f4fe108c2b7155dc1fb6d.png",
+        "has_supported_portfolio": true,
+        "tvl": 418174850.8784364,
+        "portfolio_item_list": [
+            {
+                "stats": {
+                    "asset_usd_value": 48015.65052658186,
+                    "debt_usd_value": 0,
+                    "net_usd_value": 48015.65052658186
+                },
+                "asset_dict": {
+                    "0xf42ae1d54fd613c9bb14810b0588faaa09a426ca": 1636.774921425383,
+                    "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a": 64.80618475270688
+                },
+                "update_at": 1658349163.412831,
+                "name": "Yield",
+                "detail_types": [
+                    "common"
+                ],
+                "detail": {
+                    "supply_token_list": [
+                        {
+                            "id": "0xf42ae1d54fd613c9bb14810b0588faaa09a426ca",
+                            "chain": "arb",
+                            "amount": 1636.774921425383,
+                            "name": "Escrowed GMX",
+                            "symbol": "esGMX",
+                            "display_symbol": null,
+                            "optimized_symbol": "esGMX",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/arb_token/logo_url/0xf42ae1d54fd613c9bb14810b0588faaa09a426ca/28fd1e74e9f42ad073992bc8359a073a.png",
+                            "protocol_id": "arb_gmx",
+                            "price": 27.576046088444933,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1626958493
+                        }
+                    ],
+                    "reward_token_list": [
+                        {
+                            "id": "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a",
+                            "chain": "arb",
+                            "amount": 64.80618475270688,
+                            "name": "GMX",
+                            "symbol": "GMX",
+                            "display_symbol": null,
+                            "optimized_symbol": "GMX",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/arb_token/logo_url/0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a/b4e362278f64a738b878e5393fa29837.png",
+                            "protocol_id": "arb_gmx",
+                            "price": 27.576046088444933,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1626958493
+                        }
+                    ],
+                    "description": "GmxVester"
+                },
+                "proxy_detail": {},
+                "pool": {
+                    "id": "0x199070ddfd1cfb69173aa2f7e20906f26b363004",
+                    "chain": "arb",
+                    "project_id": "arb_gmx",
+                    "adapter_id": "gmx_vesting",
+                    "controller": "0x199070ddfd1cfb69173aa2f7e20906f26b363004",
+                    "index": null,
+                    "time_at": 1632990579
+                }
+            },
+            {
+                "stats": {
+                    "asset_usd_value": 152995.50682481803,
+                    "debt_usd_value": 0,
+                    "net_usd_value": 152995.50682481803
+                },
+                "asset_dict": {
+                    "0xf42ae1d54fd613c9bb14810b0588faaa09a426ca": 5421.862682025482
+                },
+                "update_at": 1658349163.4698007,
+                "name": "Staked",
+                "detail_types": [
+                    "common"
+                ],
+                "detail": {
+                    "supply_token_list": [
+                        {
+                            "id": "0xf42ae1d54fd613c9bb14810b0588faaa09a426ca",
+                            "chain": "arb",
+                            "amount": 5089.639749983166,
+                            "name": "Escrowed GMX",
+                            "symbol": "esGMX",
+                            "display_symbol": null,
+                            "optimized_symbol": "esGMX",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/arb_token/logo_url/0xf42ae1d54fd613c9bb14810b0588faaa09a426ca/28fd1e74e9f42ad073992bc8359a073a.png",
+                            "protocol_id": "arb_gmx",
+                            "price": 27.576046088444933,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1626958493
+                        }
+                    ],
+                    "reward_token_list": [
+                        {
+                            "id": "0xf42ae1d54fd613c9bb14810b0588faaa09a426ca",
+                            "chain": "arb",
+                            "amount": 332.22293204231596,
+                            "name": "Escrowed GMX",
+                            "symbol": "esGMX",
+                            "display_symbol": null,
+                            "optimized_symbol": "esGMX",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/arb_token/logo_url/0xf42ae1d54fd613c9bb14810b0588faaa09a426ca/28fd1e74e9f42ad073992bc8359a073a.png",
+                            "protocol_id": "arb_gmx",
+                            "price": 27.576046088444933,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1626958493
+                        }
+                    ]
+                },
+                "proxy_detail": {},
+                "pool": {
+                    "id": "0x908c4d94d34924765f1edc22a1dd098397c59dd4:0xf42ae1d54fd613c9bb14810b0588faaa09a426ca",
+                    "chain": "arb",
+                    "project_id": "arb_gmx",
+                    "adapter_id": "gmx_staking",
+                    "controller": "0x908c4d94d34924765f1edc22a1dd098397c59dd4",
+                    "index": "0xf42ae1d54fd613c9bb14810b0588faaa09a426ca",
+                    "time_at": 1626958565
+                }
+            },
+            {
+                "stats": {
+                    "asset_usd_value": 1485254.9573737758,
+                    "debt_usd_value": 0,
+                    "net_usd_value": 1485254.9573737758
+                },
+                "asset_dict": {
+                    "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a": 52136.93934912433,
+                    "0xf42ae1d54fd613c9bb14810b0588faaa09a426ca": 332.22293204231596,
+                    "arb": 3.1041976636234345
+                },
+                "update_at": 1658349163.5381966,
+                "name": "Staked",
+                "detail_types": [
+                    "common"
+                ],
+                "detail": {
+                    "supply_token_list": [
+                        {
+                            "id": "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a",
+                            "chain": "arb",
+                            "amount": 52136.93934912433,
+                            "name": "GMX",
+                            "symbol": "GMX",
+                            "display_symbol": null,
+                            "optimized_symbol": "GMX",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/arb_token/logo_url/0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a/b4e362278f64a738b878e5393fa29837.png",
+                            "protocol_id": "arb_gmx",
+                            "price": 27.576046088444933,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1626958493
+                        }
+                    ],
+                    "reward_token_list": [
+                        {
+                            "id": "0xf42ae1d54fd613c9bb14810b0588faaa09a426ca",
+                            "chain": "arb",
+                            "amount": 332.22293204231596,
+                            "name": "Escrowed GMX",
+                            "symbol": "esGMX",
+                            "display_symbol": null,
+                            "optimized_symbol": "esGMX",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/arb_token/logo_url/0xf42ae1d54fd613c9bb14810b0588faaa09a426ca/28fd1e74e9f42ad073992bc8359a073a.png",
+                            "protocol_id": "arb_gmx",
+                            "price": 27.576046088444933,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1626958493
+                        },
+                        {
+                            "id": "arb",
+                            "chain": "arb",
+                            "amount": 3.1041976636234345,
+                            "name": "ETH",
+                            "symbol": "ETH",
+                            "display_symbol": null,
+                            "optimized_symbol": "ETH",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/arb_token/logo_url/arb/d61441782d4a08a7479d54aea211679e.png",
+                            "protocol_id": "",
+                            "price": 1486.43,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1622131200
+                        }
+                    ]
+                },
+                "proxy_detail": {},
+                "pool": {
+                    "id": "0x908c4d94d34924765f1edc22a1dd098397c59dd4:0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a",
+                    "chain": "arb",
+                    "project_id": "arb_gmx",
+                    "adapter_id": "gmx_staking",
+                    "controller": "0x908c4d94d34924765f1edc22a1dd098397c59dd4",
+                    "index": "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a",
+                    "time_at": 1626958565
+                }
+            }
+        ]
+    }
+]

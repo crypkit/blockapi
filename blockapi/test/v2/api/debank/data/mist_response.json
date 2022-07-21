@@ -1,0 +1,19 @@
+[{
+    "id": "0x88acdd2a6425c3faae4bc9650fd7e27e0bebb7ab",
+    "chain": "eth",
+    "name": "Alchemist",
+    "symbol": "⚗️",
+    "display_symbol": "MIST",
+    "optimized_symbol": "MIST",
+    "decimals": 18,
+    "logo_url": "https://static.debank.com/image/eth_token/logo_url/0x88acdd2a6425c3faae4bc9650fd7e27e0bebb7ab/bd99a167b17de42b302a00d8ec78f32f.png",
+    "protocol_id": "crucible",
+    "price": 4.415625382902108,
+    "is_verified": true,
+    "is_core": true,
+    "is_wallet": true,
+    "time_at": 1612643126,
+    "amount": 19652.167946993613,
+    "raw_amount": 1.9652167946993614e+22,
+    "raw_amount_hex_str": "0x429589de224780bc62e"
+  }]
