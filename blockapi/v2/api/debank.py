@@ -253,10 +253,12 @@ class DebankPortfolioParser:
 
     @staticmethod
     def _get_tokenset(protocol_id, detail, supply_symbols):
-        return {
-            'tokensets': detail.get('description'),
-            'arb_gmx': supply_symbols[0] if len(supply_symbols) == 1 else None,
-        }.get(protocol_id)
+        description = detail.get('description')
+        if description is not None:
+            return description
+
+        if protocol_id == 'arb_gmx':
+            return supply_symbols[0] if len(supply_symbols) == 1 else None
 
     # TODO: could these two methods be merged?
     @staticmethod
