@@ -63,10 +63,10 @@ class SolanaApi(BlockchainApi, IBalance):
         return balances
 
     def merge_balances_with_same_coin(self, token_balances: list[BalanceItem]):
-        grouped_by_coin = groupby(key=lambda b: b.coin, seq=token_balances)
+        by_coin_address = groupby(key=lambda b: b.coin.address, seq=token_balances)
         merge_result = []
 
-        for coin, group in grouped_by_coin.items():
+        for coin, group in by_coin_address.items():
             if len(group) == 1:
                 merge_result.append(group[0])
                 continue
@@ -169,14 +169,3 @@ class SolanaApi(BlockchainApi, IBalance):
             raise InvalidAddressException(f'Invalid address format.')
         else:
             raise ApiException(json_response['error']['message'])
-
-
-if __name__ == "__main__":
-    from blockapi.v2.api.solana import SolanaApi
-
-    balances = SolanaApi().get_balance('FEeSRuEDk8ENZbpzXjn4uHPz3LQijbeKRzhqVr5zPSJ9')
-
-    y = []
-    for item in balances:
-        if item.coin.address.lower() == 'hel6kguevwygttcjenf9qeab2zg9yr77uswpy9uzvoqj':
-            y.append(item)
