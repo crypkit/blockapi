@@ -63,8 +63,7 @@ def test_merge_balances_with_same_coin(solana_api, balances_with_same_coin):
     assert merged.balance == 12
     assert merged.balance_raw == 12
     assert merged.raw == {
-        balances_with_same_coin[0].coin.address: balances_with_same_coin[0].raw,
-        balances_with_same_coin[1].coin.address: balances_with_same_coin[1].raw,
+        "merged": [balances_with_same_coin[0].raw, balances_with_same_coin[1].raw]
     }
 
 
@@ -270,6 +269,25 @@ def balances_with_mixed_coins():
             protocol=None,
             is_wallet=True,
         ),
+        BalanceItem(
+            balance=Decimal('11'),
+            balance_raw=Decimal('11'),
+            raw={"raw3": "raw3"},
+            coin=Coin(
+                symbol='unknown',
+                name='unknown',
+                decimals=0,
+                blockchain=Blockchain.SOLANA,
+                address='HEL6KGUEvwYgTtcjenf9qeAb2Zg9Yr77usWPY9UZvoQj',
+                standards=None,
+                protocol_id=None,
+                info=None,
+            ),
+            asset_type=AssetType.AVAILABLE,
+            last_updated=None,
+            protocol=None,
+            is_wallet=True,
+        ),
     ]
 
 
@@ -277,4 +295,17 @@ def test_merge_balances_with_different_mixed_coins(
     solana_api, balances_with_mixed_coins
 ):
     merged = solana_api.merge_balances_with_same_coin(balances_with_mixed_coins)
-    assert len(merged) == len(balances_with_mixed_coins) - 1
+    assert len(merged) == len(balances_with_mixed_coins) - 2  # 3 balances merged into 1
+
+    for merged_item in merged:
+        if not merged_item.raw.get("merged"):
+            # skip if not our "merged" item
+            continue
+
+        assert merged_item.raw == {
+            "merged": [
+                balances_with_mixed_coins[2].raw,
+                balances_with_mixed_coins[3].raw,
+                balances_with_mixed_coins[5].raw,
+            ]
+        }
