@@ -71,17 +71,23 @@ class SolanaApi(BlockchainApi, IBalance):
                 merge_result.append(group[0])
                 continue
 
-            merged_balance_items = None
-            for balance_item in group:
-                if not merged_balance_items:
-                    merged_balance_items = balance_item
-                    continue
-
-                merged_balance_items = merged_balance_items + balance_item
-
-            merge_result.append(merged_balance_items)
+            merged_group = self._merge_balances_in_group(group)
+            merge_result.append(merged_group)
 
         return merge_result
+
+    def _merge_balances_in_group(self, group: list[BalanceItem]):
+        merged_balance_items = None
+        for balance_item in group:
+            if not merged_balance_items:
+                # Handle the first item.
+                merged_balance_items = balance_item
+                continue
+
+            # BalanceItem has __add__ defined.
+            merged_balance_items = merged_balance_items + balance_item
+
+        return merged_balance_items
 
     def _get_sol_balance(
         self,
