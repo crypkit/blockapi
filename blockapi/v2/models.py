@@ -246,6 +246,21 @@ class BalanceItem:
             is_wallet=is_wallet,
         )
 
+    def __add__(self, other):
+        return BalanceItem(
+            balance_raw=self.balance_raw + other.balance_raw,
+            balance=self.balance + other.balance,
+            coin=self.coin,
+            asset_type=self.asset_type,
+            raw={
+                self.coin.address: self.raw,
+                other.coin.address: other.raw,
+            },
+            last_updated=self.last_updated,
+            protocol=self.protocol,
+            is_wallet=self.is_wallet,
+        )
+
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class Pool:
