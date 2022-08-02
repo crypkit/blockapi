@@ -1,6 +1,7 @@
 import json
 from typing import Dict, Iterable, Optional
 
+from cytoolz import groupby
 from requests import Response
 
 from blockapi.v2.base import (
@@ -56,9 +57,31 @@ class SolanaApi(BlockchainApi, IBalance):
 
         token_balances = list(self._yield_token_balances(address))
         if token_balances:
-            balances.extend(token_balances)
+            merged_token_balances = self.merge_balances_with_same_coin(token_balances)
+            balances.extend(merged_token_balances)
 
         return balances
+
+    def merge_balances_with_same_coin(self, token_balances: list[BalanceItem]):
+        grouped_by_coin = groupby(key=lambda b: b.coin, seq=token_balances)
+        merge_result = []
+
+        for coin, group in grouped_by_coin.items():
+            if len(group) == 1:
+                merge_result.append(group[0])
+                continue
+
+            merged_balance_items = None
+            for balance_item in group:
+                if not merged_balance_items:
+                    merged_balance_items = balance_item
+                    continue
+
+                merged_balance_items = merged_balance_items + balance_item
+
+            merge_result.append(merged_balance_items)
+
+        return merge_result
 
     def _get_sol_balance(
         self,
@@ -146,3 +169,14 @@ class SolanaApi(BlockchainApi, IBalance):
             raise InvalidAddressException(f'Invalid address format.')
         else:
             raise ApiException(json_response['error']['message'])
+
+
+if __name__ == "__main__":
+    from blockapi.v2.api.solana import SolanaApi
+
+    balances = SolanaApi().get_balance('FEeSRuEDk8ENZbpzXjn4uHPz3LQijbeKRzhqVr5zPSJ9')
+
+    y = []
+    for item in balances:
+        if item.coin.address.lower() == 'hel6kguevwygttcjenf9qeab2zg9yr77uswpy9uzvoqj':
+            y.append(item)

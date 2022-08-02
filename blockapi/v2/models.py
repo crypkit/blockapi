@@ -246,6 +246,27 @@ class BalanceItem:
             is_wallet=is_wallet,
         )
 
+    def __add__(self, other):
+        return BalanceItem(
+            balance_raw=self.balance_raw + other.balance_raw,
+            balance=self.balance + other.balance,
+            coin=self.coin,
+            asset_type=self.asset_type,
+            raw=self._add_raw(other),
+            last_updated=self.last_updated,
+            protocol=self.protocol,
+            is_wallet=self.is_wallet,
+        )
+
+    def _add_raw(self, other):
+        """
+        Used to skip wrapping of "merged" into "merged" key over and over again.
+        """
+        if self.raw.get("merged") and isinstance(self.raw.get("merged"), list):
+            return {"merged": self.raw.get("merged") + [other.raw]}
+        else:
+            return {"merged": [self.raw, other.raw]}
+
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class Pool:
