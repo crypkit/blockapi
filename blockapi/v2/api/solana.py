@@ -1,7 +1,7 @@
 import json
 from typing import Dict, Iterable, Optional
 
-from cytoolz import groupby
+from cytoolz import reduceby
 from requests import Response
 
 from blockapi.v2.base import (
@@ -62,32 +62,17 @@ class SolanaApi(BlockchainApi, IBalance):
 
         return balances
 
-    def merge_balances_with_same_coin(self, token_balances: list[BalanceItem]):
-        by_coin_address = groupby(key=lambda b: b.coin.address, seq=token_balances)
-        merge_result = []
-
-        for coin, group in by_coin_address.items():
-            if len(group) == 1:
-                merge_result.append(group[0])
-                continue
-
-            merged_group = self._merge_balances_in_group(group)
-            merge_result.append(merged_group)
-
-        return merge_result
-
-    def _merge_balances_in_group(self, group: list[BalanceItem]):
-        merged_balance_items = None
-        for balance_item in group:
-            if not merged_balance_items:
-                # Handle the first item.
-                merged_balance_items = balance_item
-                continue
-
-            # BalanceItem has __add__ defined.
-            merged_balance_items = merged_balance_items + balance_item
-
-        return merged_balance_items
+    @staticmethod
+    def merge_balances_with_same_coin(
+        token_balances: list[BalanceItem],
+    ) -> list[BalanceItem]:
+        return list(
+            reduceby(
+                key=lambda b: b.coin.address,
+                binop=lambda v1, v2: v1 + v2,
+                seq=token_balances,
+            ).values()
+        )
 
     def _get_sol_balance(
         self,
