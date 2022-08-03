@@ -246,7 +246,10 @@ class BalanceItem:
             is_wallet=is_wallet,
         )
 
-    def __add__(self, other):
+    def __add__(self, other: 'BalanceItem') -> 'BalanceItem':
+        """
+        Warning: Adding items of different coins leads to wrong results.
+        """
         return BalanceItem(
             balance_raw=self.balance_raw + other.balance_raw,
             balance=self.balance + other.balance,
