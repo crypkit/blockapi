@@ -119,7 +119,7 @@ class TerraFcdApi(BlockchainApi):
         if denom == 'uluna':
             return COIN_TERRA
         else:
-            symbol = f'{denom[1:3].upper()}T'
+            symbol = f'{denom[1:3].upper()}TC'
             return Coin.from_api(
                 symbol=symbol,
                 name=symbol,
@@ -183,7 +183,7 @@ class TerraMantleApi(BlockchainApi):
         if self._tokens_map is None:
             response = self._session.get('https://assets.terra.money/cw20/tokens.json')
             token_list = response.json()
-            self._tokens_map = token_list['mainnet']
+            self._tokens_map = token_list['classic']
 
         return self._tokens_map
 
@@ -216,7 +216,7 @@ class TerraMantleApi(BlockchainApi):
             blockchain=Blockchain.TERRA,
             address=address,
             standards=['CW20'],
-            protocol=raw_token.get('protocol'),
+            protocol_id=raw_token.get('protocol'),
             info=CoinInfo.from_api(logo_url=raw_token.get('icon')),
         )
 
