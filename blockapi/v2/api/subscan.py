@@ -136,7 +136,7 @@ class SubscanApi(BlockchainApi, IBalance):
                     else Decimal(i['amount']) * -1
                 )
 
-            if continuous_count == total_count:
+            if continuous_count >= total_count:
                 return
 
             body['page'] += self.api_options.page_offset_step
