@@ -45,13 +45,16 @@ class BlockchainApi(ABC):
 
         return urljoin(self.api_options.base_url, path_url)
 
-    def post(self, body=None, json=None, headers=None):
+    def post(self, request_method=None, body=None, json=None, headers=None):
         """
         Call request using json.
         """
-        response = self._session.post(
-            self.api_options.base_url, data=body, json=json, headers=headers
+        url = (
+            self._build_request_url(request_method)
+            if request_method
+            else self.api_options.base_url
         )
+        response = self._session.post(url, data=body, json=json, headers=headers)
         return self._check_and_get_from_response(response)
 
     def _check_and_get_from_response(self, response: Response) -> Dict:

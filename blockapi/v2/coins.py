@@ -188,3 +188,12 @@ COIN_RSK = Coin(
     blockchain=Blockchain.RSK,
     address='0x0000000000000000000000000000000000000000',
 )
+
+
+COIN_DOT = Coin(
+    symbol='DOT',
+    name='Polkadot',
+    decimals=10,
+    blockchain=Blockchain.POLKADOT,
+    info=CoinInfo(coingecko_id='polkadot', tags=['native']),
+)

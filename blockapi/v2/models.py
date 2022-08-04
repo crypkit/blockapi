@@ -42,6 +42,7 @@ class Blockchain(str, Enum):
     OPTIMISM = 'optimism'
     PALM = 'palm'
     POLYGON = 'polygon'
+    POLKADOT = 'polkadot'
     RSK = 'rsk'
     SHIDEN = 'shiden'
     SMART_BITCOIN_CASH = 'smart-bitcoin-cash'
