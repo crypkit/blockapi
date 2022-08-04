@@ -10,7 +10,7 @@ from blockapi.v2.models import BalanceItem, Blockchain
 class OptimismEtherscanApi(BlockchainApi, IBalance):
     """
     Optimism
-    Explorer: https://ethplorer.io
+    Explorer: https://optimistic.etherscan.io
     """
 
     coin = COIN_ETH

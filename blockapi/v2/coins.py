@@ -197,3 +197,12 @@ COIN_DOT = Coin(
     blockchain=Blockchain.POLKADOT,
     info=CoinInfo(coingecko_id='polkadot', tags=['native']),
 )
+
+COIN_ATOM = Coin(
+    symbol='ATOM',
+    name='Cosmos HUB',
+    decimals=6,
+    blockchain=Blockchain.COSMOS,
+    address='uatom',
+    info=CoinInfo(coingecko_id='cosmos')
+)
