@@ -260,7 +260,7 @@ class DebankPortfolioParser:
         return pool
 
     @staticmethod
-    def _get_tokenset(protocol_id, detail, supply_symbols):
+    def _get_tokenset(protocol_id, detail, supply_symbols) -> Optional[str]:
         description = detail.get('description')
         if description is not None:
             return description
