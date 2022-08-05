@@ -21,6 +21,14 @@ from blockapi.v2.models import (
 logger = logging.getLogger(__name__)
 
 
+REWARD_ASSET_TYPE_CONVERT = {
+    AssetType.LENDING: AssetType.LENDING_REWARD,
+    AssetType.STAKED: AssetType.REWARDS,
+    AssetType.FARMING: AssetType.REWARDS,
+    AssetType.YIELD: AssetType.REWARDS,
+}
+
+
 class DebankProtocolParser:
     def parse(self, response: List) -> Dict[str, Protocol]:
         protocols = {}
@@ -260,7 +268,6 @@ class DebankPortfolioParser:
         if protocol_id == 'arb_gmx':
             return supply_symbols[0] if len(supply_symbols) == 1 else None
 
-    # TODO: could these two methods be merged?
     @staticmethod
     def _get_from_pool(item: dict, key: str) -> Optional[str]:
         pool = item.get('pool')
@@ -304,12 +311,7 @@ class DebankPortfolioParser:
 
     @staticmethod
     def _get_reward_asset_type(asset_type):
-        return {
-            AssetType.LENDING: AssetType.LENDING_REWARD,
-            AssetType.STAKED: AssetType.REWARDS,
-            AssetType.FARMING: AssetType.REWARDS,
-            AssetType.YIELD: AssetType.REWARDS,
-        }.get(asset_type, asset_type)
+        return REWARD_ASSET_TYPE_CONVERT.get(asset_type, asset_type)
 
 
 class DebankApi(BlockchainApi, IBalance, IPortfolio):
