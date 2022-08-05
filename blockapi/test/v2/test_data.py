@@ -20,6 +20,7 @@ from blockapi.v2.api.debank import DebankApi
 from blockapi.v2.api.ethplorer import EthplorerApi
 from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
 from blockapi.v2.api.solana import SolanaApi
+from blockapi.v2.api.subscan import PolkadotSubscanApi
 from blockapi.v2.api.terra import TerraApi
 
 # TODO create method for auto loading all classes
@@ -27,6 +28,7 @@ from blockapi.v2.base import IBalance
 from blockapi.v2.coins import (
     COIN_AVAX,
     COIN_BNB,
+    COIN_DOT,
     COIN_ETH,
     COIN_FTM,
     COIN_HT,
@@ -63,7 +65,8 @@ API_CLASSES = [
     PolygonCovalentApi,
     RskCovalentApi,
     OptimismEtherscanApi,
-    DebankApi
+    DebankApi,
+    PolkadotSubscanApi,
 ]
 
 NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL = {
@@ -112,6 +115,7 @@ NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL = {
     COIN_RSK.symbol: [
         '0xfc43f5f9dd45258b3aff31bdbe6561d97e8b71de',
     ],
+    COIN_DOT.symbol: ['15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK'],
 }
 
 BAD_ADDRESSES = [
@@ -142,13 +146,17 @@ def yield_covalent_api_classes():
 
 
 def yield_api_ibalance_classes():
-    return [x for x in IBalance.__subclasses__() if not issubclass(x, (CovalentApiBase, DebankApi))]
+    return [
+        x
+        for x in IBalance.__subclasses__()
+        if not issubclass(x, (CovalentApiBase, DebankApi))
+    ]
 
 
 def yield_debank_address():
     result = []
     for key, items in NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL.items():
-        if key in (COIN_TERRA.symbol, COIN_SOL.symbol):
+        if key in (COIN_TERRA.symbol, COIN_SOL.symbol, COIN_DOT.symbol):
             continue
 
         for item in items:
