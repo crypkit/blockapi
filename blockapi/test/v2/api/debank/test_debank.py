@@ -7,7 +7,7 @@ def test_build_balance_request_url(debank_api):
     )
     assert (
         url
-        == 'https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=false'
+        == 'https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=true'
     )
 
 
@@ -31,7 +31,7 @@ def test_error_response_returns_empty_balances(
 ):
     protocol_cache.update({})
     requests_mock.get(
-        "https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=false",
+        "https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=true",
         text=error_response_raw,
     )
     parsed_items = debank_api.get_balance("0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca")
@@ -49,7 +49,7 @@ def test_error_response_logs_error(
     ]
 
     requests_mock.get(
-        "https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=false",
+        "https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=true",
         text=error_response_raw,
     )
     _ = debank_api.get_balance("0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca")
@@ -80,7 +80,7 @@ def test_get_balance_fetches_protocols(
         "https://openapi.debank.com/v1/protocol/list", text=yflink_protocol_response_raw
     )
     requests_mock.get(
-        "https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=false",
+        "https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=true",
         text=coin_with_protocol_response_raw,
     )
     debank_api._protocol_cache.invalidate()

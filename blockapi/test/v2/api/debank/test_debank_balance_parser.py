@@ -73,3 +73,8 @@ def test_debank_parse_protocol_missing_logs_message(
     with caplog.at_level(level=logging.DEBUG):
         _ = balance_parser.parse_item(coin_with_protocol_response)
         assert expected_log == caplog.messages
+
+
+def test_parse_symbol(balance_parser, mist_response):
+    balances = balance_parser.parse(mist_response)
+    assert balances[0].coin.symbol == "MIST"

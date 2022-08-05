@@ -1,0 +1,143 @@
+[
+    {
+        "id": "tokensets",
+        "chain": "eth",
+        "name": "TokenSets",
+        "site_url": "https://tokensets.com",
+        "logo_url": "https://static.debank.com/image/project/logo_url/tokensets/b6ed6c4eb80b279ceaf2c768fbbb3c8d.png",
+        "has_supported_portfolio": true,
+        "tvl": 93817481.70554386,
+        "portfolio_item_list": [
+            {
+                "stats": {
+                    "asset_usd_value": 44.76800502049301,
+                    "debt_usd_value": 0,
+                    "net_usd_value": 44.76800502049301
+                },
+                "asset_dict": {
+                    "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599": 0.003513371143560964,
+                    "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48": -37.24637426922236
+                },
+                "update_at": 1658366543.5898118,
+                "name": "Investment",
+                "detail_types": [
+                    "common"
+                ],
+                "detail": {
+                    "supply_token_list": [
+                        {
+                            "id": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+                            "chain": "eth",
+                            "amount": 0.003513371143560964,
+                            "name": "Wrapped BTC",
+                            "symbol": "WBTC",
+                            "display_symbol": null,
+                            "optimized_symbol": "WBTC",
+                            "decimals": 8,
+                            "logo_url": "https://static.debank.com/image/eth_token/logo_url/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599/d3c52e7c7449afa8bd4fad1c93f50d93.png",
+                            "protocol_id": "",
+                            "price": 22883.07,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1543095952
+                        },
+                        {
+                            "id": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                            "chain": "eth",
+                            "amount": -37.24637426922236,
+                            "name": "USD Coin",
+                            "symbol": "USDC",
+                            "display_symbol": null,
+                            "optimized_symbol": "USDC",
+                            "decimals": 6,
+                            "logo_url": "https://static.debank.com/image/eth_token/logo_url/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48/fffcd27b9efff5a86ab942084c05924d.png",
+                            "protocol_id": "",
+                            "price": 1,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1533324504
+                        }
+                    ],
+                    "description": "BTC2x-FLI"
+                },
+                "proxy_detail": {},
+                "pool": {
+                    "id": "0x0b498ff89709d3838a063f1dfa463091f9801c2b",
+                    "chain": "eth",
+                    "project_id": "tokensets",
+                    "adapter_id": "tokensets_investment2",
+                    "controller": "0x0b498ff89709d3838a063f1dfa463091f9801c2b",
+                    "index": null,
+                    "time_at": 1620238070
+                }
+            },
+            {
+                "stats": {
+                    "asset_usd_value": 21.490495515050725,
+                    "debt_usd_value": 0,
+                    "net_usd_value": 21.490495515050725
+                },
+                "asset_dict": {
+                    "eth": 0.024533209995174,
+                    "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48": -16.29972516521545
+                },
+                "update_at": 1658366543.6132483,
+                "name": "Investment",
+                "detail_types": [
+                    "common"
+                ],
+                "detail": {
+                    "supply_token_list": [
+                        {
+                            "id": "eth",
+                            "chain": "eth",
+                            "amount": 0.024533209995174,
+                            "name": "ETH",
+                            "symbol": "ETH",
+                            "display_symbol": null,
+                            "optimized_symbol": "ETH",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+                            "protocol_id": "",
+                            "price": 1486.69,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1483200000
+                        },
+                        {
+                            "id": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                            "chain": "eth",
+                            "amount": -16.29972516521545,
+                            "name": "USD Coin",
+                            "symbol": "USDC",
+                            "display_symbol": null,
+                            "optimized_symbol": "USDC",
+                            "decimals": 6,
+                            "logo_url": "https://static.debank.com/image/eth_token/logo_url/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48/fffcd27b9efff5a86ab942084c05924d.png",
+                            "protocol_id": "",
+                            "price": 1,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1533324504
+                        }
+                    ],
+                    "description": "ETH2x-FLI"
+                },
+                "proxy_detail": {},
+                "pool": {
+                    "id": "0xaa6e8127831c9de45ae56bb1b0d4d4da6e5665bd",
+                    "chain": "eth",
+                    "project_id": "tokensets",
+                    "adapter_id": "tokensets_investment2",
+                    "controller": "0xaa6e8127831c9de45ae56bb1b0d4d4da6e5665bd",
+                    "index": null,
+                    "time_at": 1615709597
+                }
+            }
+        ]
+    }
+]

@@ -1,0 +1,125 @@
+[
+  {
+    "id": "aave2",
+    "chain": "eth",
+    "name": "Aave V2",
+    "site_url": "https://app.aave.com",
+    "logo_url": "https://static.debank.com/image/project/logo_url/aave2/b8d1ef85570855176b102edf8cda6f8d.png",
+    "has_supported_portfolio": true,
+    "tvl": 8173782123.825125,
+    "portfolio_item_list": [
+      {
+        "stats": {
+          "asset_usd_value": 774543.5923634522,
+          "debt_usd_value": 0,
+          "net_usd_value": 774543.5923634522
+        },
+        "asset_dict": {
+          "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9": 8027.739407643721
+        },
+        "update_at": 1658330454.7264638,
+        "name": "Staked",
+        "detail_types": [
+          "common"
+        ],
+        "detail": {
+          "supply_token_list": [
+            {
+              "id": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+              "chain": "eth",
+              "amount": 7998.24867886407,
+              "name": "Aave Token",
+              "symbol": "AAVE",
+              "display_symbol": null,
+              "optimized_symbol": "AAVE",
+              "decimals": 18,
+              "logo_url": "https://static.debank.com/image/eth_token/logo_url/0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9/eee087b66747b09dbfb4ba0b34fd3697.png",
+              "protocol_id": "aave",
+              "price": 93.7322,
+              "is_verified": true,
+              "is_core": true,
+              "is_wallet": true,
+              "time_at": 1600970788
+            }
+          ],
+          "reward_token_list": [
+            {
+              "id": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+              "chain": "eth",
+              "amount": 29.49072877965175,
+              "name": "Aave Token",
+              "symbol": "AAVE",
+              "display_symbol": null,
+              "optimized_symbol": "AAVE",
+              "decimals": 18,
+              "logo_url": "https://static.debank.com/image/eth_token/logo_url/0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9/eee087b66747b09dbfb4ba0b34fd3697.png",
+              "protocol_id": "aave",
+              "price": 93.7322,
+              "is_verified": true,
+              "is_core": true,
+              "is_wallet": true,
+              "time_at": 1600970788
+            }
+          ]
+        },
+        "proxy_detail": {},
+        "pool": {
+          "id": "0x4da27a545c0c5b758a6ba100e3a049001de870f5",
+          "chain": "eth",
+          "project_id": "aave2",
+          "adapter_id": "aave2_staked",
+          "controller": "0x4da27a545c0c5b758a6ba100e3a049001de870f5",
+          "index": null,
+          "time_at": 1600973075
+        }
+      },
+      {
+        "stats": {
+          "asset_usd_value": 0.011049031540295367,
+          "debt_usd_value": 0,
+          "net_usd_value": 0.011049031540295367
+        },
+        "asset_dict": {
+          "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2": 0.000010736074955347
+        },
+        "update_at": 1658330454.854801,
+        "name": "Lending",
+        "detail_types": [
+          "lending"
+        ],
+        "detail": {
+          "supply_token_list": [
+            {
+              "id": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+              "chain": "eth",
+              "amount": 0.000010736074955347,
+              "name": "Maker",
+              "symbol": "MKR",
+              "display_symbol": null,
+              "optimized_symbol": "MKR",
+              "decimals": 18,
+              "logo_url": "https://static.debank.com/image/eth_token/logo_url/0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2/1d0390168de63ca803e8db7990e4f6ec.png",
+              "protocol_id": "makerdao",
+              "price": 1002.08,
+              "is_verified": true,
+              "is_core": true,
+              "is_wallet": true,
+              "time_at": 1511634257
+            }
+          ],
+          "health_rate": 1.157920892373162e+59
+        },
+        "proxy_detail": {},
+        "pool": {
+          "id": "0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9",
+          "chain": "eth",
+          "project_id": "aave2",
+          "adapter_id": "aave_proxy_lending",
+          "controller": "0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9",
+          "index": null,
+          "time_at": 1606771548
+        }
+      }
+    ]
+  }
+]

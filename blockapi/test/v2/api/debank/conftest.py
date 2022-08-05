@@ -79,12 +79,32 @@ def error_response_raw():
 
 @pytest.fixture
 def balances_response() -> List:
-    return read_json_file("debank/balance_response.json")
+    return read_json_file("debank/data/balance_response.json")
 
 
 @pytest.fixture
 def complex_portfolio_response() -> List:
-    return read_json_file("debank/complex_portfolio_response.json")
+    return read_json_file("debank/data/complex_portfolio_response.json")
+
+
+@pytest.fixture
+def aave_portfolio_response() -> List:
+    return read_json_file("debank/data/aave_portfolio_response.json")
+
+
+@pytest.fixture
+def esgmx_portfolio_response() -> List:
+    return read_json_file("debank/data/esgmx_portfolio_response.json")
+
+
+@pytest.fixture
+def tokenset_portfolio_response() -> List:
+    return read_json_file("debank/data/tokenset_portfolio_response.json")
+
+
+@pytest.fixture
+def mist_response() -> List:
+    return read_json_file("debank/data/mist_response.json")
 
 
 @pytest.fixture

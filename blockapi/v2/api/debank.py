@@ -21,6 +21,14 @@ from blockapi.v2.models import (
 logger = logging.getLogger(__name__)
 
 
+REWARD_ASSET_TYPE_CONVERT = {
+    AssetType.LENDING: AssetType.LENDING_REWARD,
+    AssetType.STAKED: AssetType.REWARDS,
+    AssetType.FARMING: AssetType.REWARDS,
+    AssetType.YIELD: AssetType.REWARDS,
+}
+
+
 class DebankProtocolParser:
     def parse(self, response: List) -> Dict[str, Protocol]:
         protocols = {}
@@ -102,8 +110,10 @@ class DebankBalanceParser:
 
             return None
 
+        symbol = self._get_symbol(raw_balance)
+
         coin = Coin.from_api(
-            symbol=raw_balance.get('symbol'),
+            symbol=symbol,
             name=raw_balance.get('name'),
             decimals=raw_balance.get('decimals', 0),
             blockchain=self._convert_blockchain(raw_balance.get('chain')),
@@ -127,6 +137,14 @@ class DebankBalanceParser:
         )
 
         return balance
+
+    @staticmethod
+    def _get_symbol(raw_balance: dict) -> str:
+        return (
+            raw_balance.get('display_symbol')
+            or raw_balance.get('optimized_symbol')
+            or raw_balance.get('symbol')
+        )
 
     @staticmethod
     def _convert_blockchain(chain):
@@ -160,7 +178,7 @@ class DebankPortfolioParser:
         items = []
         for item in response:
             parsed = self.parse_items(item)
-            items += parsed
+            items.extend(parsed)
 
         return items
 
@@ -179,7 +197,9 @@ class DebankPortfolioParser:
         pools = {}
         for item in raw_portfolio_items:
             pool = self._parse_portfolio_item(item, root_protocol, pools)
-            pools[pool.pool_id] = pool
+            if pool.pool_id:
+                pools[pool.pool_id] = pool
+
             items.append(pool)
 
         return items
@@ -187,24 +207,22 @@ class DebankPortfolioParser:
     def _parse_portfolio_item(
         self, item: Dict, pool_protocol: Protocol, pools: Dict[str, Pool]
     ) -> Pool:
-        pool_id_raw = item.get('pool_id')
-        pool_id = (
-            make_checksum_address(pool_id_raw) if pool_id_raw is not None else None
-        )
+        pool_id = self._get_pool_id(item)
         detail = item.get('detail', {})
 
         health_rate = detail.get('health_rate')
         locked_until = detail.get('unlock_at')
 
-        pool = pools.get(pool_id)
-
         asset_type = self._parse_asset_type(item.get('name'))
         borrow_type = self._get_borrow_asset_type(asset_type)
         reward_type = self._get_reward_asset_type(asset_type)
 
-        items = self._balance_parser.parse(
+        supply_items = self._balance_parser.parse(
             detail.get('supply_token_list', []), asset_type, False
         )
+        supply_symbols = list(set(item.coin.symbol for item in supply_items))
+
+        items = supply_items
 
         items.extend(
             self._balance_parser.parse(
@@ -219,18 +237,53 @@ class DebankPortfolioParser:
 
         items.extend(self._balance_parser.parse(detail.get('token_list', []), False))
 
+        pool = pools.get(pool_id)
+
         if pool is None:
+            token_set = self._get_tokenset(
+                pool_protocol.protocol_id, detail, supply_symbols
+            )
+
             pool = Pool.from_api(
                 pool_id=pool_id,
                 protocol=pool_protocol,
                 locked_until=locked_until,
                 health_rate=health_rate,
                 items=items,
+                token_set=token_set,
+                project_id=self._get_from_pool(item, 'project_id'),
+                adapter_id=self._get_from_pool(item, 'adapter_id'),
             )
         else:
-            pool = pool.append_items(items)
+            pool.append_items(items)
 
         return pool
+
+    @staticmethod
+    def _get_tokenset(protocol_id, detail, supply_symbols) -> Optional[str]:
+        description = detail.get('description')
+        if description is not None:
+            return description
+
+        if protocol_id == 'arb_gmx':
+            return supply_symbols[0] if len(supply_symbols) == 1 else None
+
+    @staticmethod
+    def _get_from_pool(item: dict, key: str) -> Optional[str]:
+        pool = item.get('pool')
+        if pool is None:
+            return None
+
+        return pool.get(key)
+
+    @staticmethod
+    def _get_pool_id(item: dict) -> str:
+        pool = item.get('pool')
+        pool_id_raw = pool.get('id') if pool else item.get('pool_id')
+        if pool_id_raw:
+            return make_checksum_address(pool_id_raw) or pool_id_raw
+
+        return None
 
     @staticmethod
     def _parse_asset_type(type_: str) -> Optional[AssetType]:
@@ -258,10 +311,7 @@ class DebankPortfolioParser:
 
     @staticmethod
     def _get_reward_asset_type(asset_type):
-        if asset_type == AssetType.LENDING:
-            return AssetType.LENDING_REWARD
-
-        return asset_type
+        return REWARD_ASSET_TYPE_CONVERT.get(asset_type, asset_type)
 
 
 class DebankApi(BlockchainApi, IBalance, IPortfolio):
@@ -279,7 +329,7 @@ class DebankApi(BlockchainApi, IBalance, IPortfolio):
     )
 
     supported_requests = {
-        'get_balance': '/v1/user/token_list?id={address}&is_all=false',
+        'get_balance': '/v1/user/token_list?id={address}&is_all=true',
         'get_portfolio': '/v1/user/complex_protocol_list?id={address}',
         'get_protocols': '/v1/protocol/list',
     }

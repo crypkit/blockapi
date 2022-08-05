@@ -70,3 +70,42 @@ def test_parse_unknown_asset_type_logs(portfolio_parser, caplog):
     with caplog.at_level(level=logging.DEBUG):
         assert portfolio_parser._parse_asset_type('dummy') == AssetType.AVAILABLE
         assert expected_log == caplog.messages
+
+
+def test_parse_mutliple_items(portfolio_parser, aave_portfolio_response):
+    parsed = portfolio_parser.parse(aave_portfolio_response)
+    balances = []
+    for item in parsed:
+        balances.extend(item.items)
+
+    assert len(balances) == 3
+
+    staked_aave = balances[0]
+    assert staked_aave.asset_type == AssetType.STAKED
+
+    staked_aave_reward = balances[1]
+    assert staked_aave_reward.asset_type == AssetType.REWARDS
+
+
+def test_parse_esgmx_items(portfolio_parser, esgmx_portfolio_response):
+    parsed = portfolio_parser.parse(esgmx_portfolio_response)
+    balances = []
+    for item in parsed:
+        balances.extend(item.items)
+
+    filtered = [b for b in balances if b.coin.symbol == 'esGMX']
+    assert len(filtered) == 4
+
+    assert parsed[0].token_set == 'GmxVester'
+    assert parsed[1].token_set == 'esGMX'
+    assert parsed[2].token_set == 'GMX'
+
+
+def test_parse_tokenset(portfolio_parser, tokenset_portfolio_response):
+    parsed = portfolio_parser.parse(tokenset_portfolio_response)
+    assert parsed[0].token_set == 'BTC2x-FLI'
+    assert parsed[0].project_id == 'tokensets'
+    assert parsed[0].adapter_id == 'tokensets_investment2'
+    assert parsed[1].token_set == 'ETH2x-FLI'
+    assert parsed[1].project_id == 'tokensets'
+    assert parsed[1].adapter_id == 'tokensets_investment2'
