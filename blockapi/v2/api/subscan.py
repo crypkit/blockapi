@@ -1,6 +1,6 @@
 import json
 from decimal import Decimal
-from typing import Dict, Iterable, List, Optional
+from typing import Iterable, List, Optional
 
 from requests import Response
 
@@ -131,9 +131,9 @@ class SubscanApi(BlockchainApi, IBalance):
 
             for i in response['data']['list']:
                 yield (
-                    Decimal(i['amount'])
+                    to_decimal(i['amount'])
                     if i['event_id'] == 'Rewarded'
-                    else Decimal(i['amount']) * -1
+                    else to_decimal(i['amount']) * -1
                 )
 
             if continuous_count >= total_count:
