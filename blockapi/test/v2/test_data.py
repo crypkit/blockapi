@@ -20,7 +20,7 @@ from blockapi.v2.api.debank import DebankApi
 from blockapi.v2.api.ethplorer import EthplorerApi
 from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
 from blockapi.v2.api.solana import SolanaApi
-from blockapi.v2.api.subscan import SubscanApi
+from blockapi.v2.api.subscan import PolkadotSubscanApi
 from blockapi.v2.api.terra import TerraApi
 
 # TODO create method for auto loading all classes
@@ -66,7 +66,7 @@ API_CLASSES = [
     RskCovalentApi,
     OptimismEtherscanApi,
     DebankApi,
-    SubscanApi,
+    PolkadotSubscanApi,
 ]
 
 NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL = {

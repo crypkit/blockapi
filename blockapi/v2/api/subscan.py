@@ -16,7 +16,7 @@ from blockapi.v2.coins import COIN_DOT
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain
 
 
-class SubscanApi(BlockchainApi, IBalance):
+class PolkadotSubscanApi(BlockchainApi, IBalance):
     """
     API docs: https://docs.api.subscan.io/
     Explorer: https://www.subscan.io
