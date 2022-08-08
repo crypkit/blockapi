@@ -200,9 +200,10 @@ COIN_DOT = Coin(
 
 COIN_ATOM = Coin(
     symbol='ATOM',
-    name='Cosmos HUB',
+    name='Cosmos Hub',
     decimals=6,
     blockchain=Blockchain.COSMOS,
     address='uatom',
-    info=CoinInfo(coingecko_id='cosmos')
+    standards=['staking'],
+    info=CoinInfo(coingecko_id='cosmos'),
 )
