@@ -21,15 +21,15 @@ class CosmosBaseAPI(BlockchainApi, IBalance, metaclass=ABCMeta):
     supported_requests = {
         'get_balances': '/cosmos/bank/v1beta1/balances/{address}',
         'get_staked_balance': (
-            '/cosmos/staking/v1beta1/delegations/{address}' '?pagination.limit=1000'
+            '/cosmos/staking/v1beta1/delegations/{address}?pagination.limit=1000'
         ),
         'get_unbonding_balance': (
-            '/cosmos/staking/v1beta1/delegators/{address}' '/unbonding_delegations'
+            '/cosmos/staking/v1beta1/delegators/{address}/unbonding_delegations'
         ),
-        'get_rewards': ('cosmos/distribution/v1beta1/delegators/{address}/rewards'),
+        'get_rewards': 'cosmos/distribution/v1beta1/delegators/{address}/rewards',
         # TODO support commissions, valid only for validators?
         'get_commission': (
-            'cosmos/distribution/v1beta1/validators/{validator_address}' '/commission'
+            'cosmos/distribution/v1beta1/validators/{validator_address}/commission'
         ),
     }
 

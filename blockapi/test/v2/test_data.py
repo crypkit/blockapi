@@ -26,6 +26,7 @@ from blockapi.v2.api.terra import TerraApi
 # TODO create method for auto loading all classes
 from blockapi.v2.base import IBalance
 from blockapi.v2.coins import (
+    COIN_ATOM,
     COIN_AVAX,
     COIN_BNB,
     COIN_DOT,
@@ -116,6 +117,7 @@ NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL = {
         '0xfc43f5f9dd45258b3aff31bdbe6561d97e8b71de',
     ],
     COIN_DOT.symbol: ['15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK'],
+    COIN_ATOM.symbol: ['cosmos1r4v9t46zyu6df0jwtmtpn0pq864dpn7c5sha5u'],
 }
 
 BAD_ADDRESSES = [
@@ -156,7 +158,12 @@ def yield_api_ibalance_classes():
 def yield_debank_address():
     result = []
     for key, items in NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL.items():
-        if key in (COIN_TERRA.symbol, COIN_SOL.symbol, COIN_DOT.symbol):
+        if key in (
+            COIN_TERRA.symbol,
+            COIN_SOL.symbol,
+            COIN_DOT.symbol,
+            COIN_ATOM.symbol,
+        ):
             continue
 
         for item in items:
