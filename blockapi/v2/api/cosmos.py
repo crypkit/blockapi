@@ -129,7 +129,7 @@ class CosmosBaseAPI(BlockchainApi, IBalance, metaclass=ABCMeta):
 class CosmosAPI(CosmosBaseAPI):
     coin = COIN_ATOM
     api_options = ApiOptions(
-        blockchain=Blockchain.ARBITRUM,
+        blockchain=Blockchain.COSMOS,
         base_url=CosmosBaseAPI.API_BASE_URL,
         rate_limit=CosmosBaseAPI.API_BASE_RATE_LIMIT,
     )
