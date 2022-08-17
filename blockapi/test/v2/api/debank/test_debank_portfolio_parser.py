@@ -96,9 +96,7 @@ def test_parse_esgmx_items(portfolio_parser, esgmx_portfolio_response):
     filtered = [b for b in balances if b.coin.symbol == 'esGMX']
     assert len(filtered) == 4
 
-    assert parsed[0].token_set == 'GmxVester'
-    assert parsed[1].token_set == 'esGMX'
-    assert parsed[2].token_set == 'GMX'
+    assert parsed[2].items[1].token_set == ['ETH', 'esGMX']
 
 
 def test_parse_tokenset(portfolio_parser, tokenset_portfolio_response):

@@ -224,6 +224,7 @@ class BalanceItem:
     last_updated: Optional[datetime] = attr.ib(default=None)
     protocol: Optional[Protocol] = attr.ib(default=None)
     is_wallet: bool = True
+    token_set: Optional[List[str]] = attr.ib(default=None)
 
     @classmethod
     def from_api(
@@ -236,6 +237,7 @@ class BalanceItem:
         last_updated: Optional[Union[int, str]] = None,
         protocol: Optional[Protocol] = None,
         is_wallet: bool = True,
+        token_set: Optional[List[str]] = None,
     ) -> 'BalanceItem':
         return cls(
             balance_raw=to_decimal(balance_raw),
@@ -246,6 +248,7 @@ class BalanceItem:
             last_updated=(parse_dt(last_updated) if last_updated is not None else None),
             protocol=protocol,
             is_wallet=is_wallet,
+            token_set=token_set,
         )
 
     def __add__(self, other: 'BalanceItem') -> 'BalanceItem':
