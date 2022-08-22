@@ -343,7 +343,7 @@ class DebankApi(BlockchainApi, IBalance, IPortfolio):
     ):
         super().__init__()
 
-        self._is_all = 'true' if is_all else 'false'
+        self._is_all = bool(is_all)
         self._protocol_cache = protocol_cache or self.default_protocol_cache
         self._balance_parser = DebankBalanceParser(self._protocol_cache)
         self._protocol_parser = DebankProtocolParser()

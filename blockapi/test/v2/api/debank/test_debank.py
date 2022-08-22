@@ -5,11 +5,11 @@ def test_build_balance_request_url(debank_api):
     url = debank_api._build_request_url(
         'get_balance',
         address='0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca',
-        is_all='true',
+        is_all=True,
     )
     assert (
         url
-        == 'https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=true'
+        == 'https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=True'
     )
 
 
@@ -17,11 +17,11 @@ def test_build_balance_request_url_with_is_all_off(debank_api_all_off):
     url = debank_api_all_off._build_request_url(
         'get_balance',
         address='0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca',
-        is_all='false',
+        is_all=False,
     )
     assert (
         url
-        == 'https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=false'
+        == 'https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=False'
     )
 
 
