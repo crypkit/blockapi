@@ -331,16 +331,19 @@ class DebankApi(BlockchainApi, IBalance, IPortfolio):
     )
 
     supported_requests = {
-        'get_balance': '/v1/user/token_list?id={address}&is_all=true',
+        'get_balance': '/v1/user/token_list?id={address}&is_all={is_all}',
         'get_portfolio': '/v1/user/complex_protocol_list?id={address}',
         'get_protocols': '/v1/protocol/list',
     }
 
     default_protocol_cache = DebankProtocolCache()
 
-    def __init__(self, protocol_cache: Optional[DebankProtocolCache] = None):
+    def __init__(
+        self, is_all: bool, protocol_cache: Optional[DebankProtocolCache] = None
+    ):
         super().__init__()
 
+        self._is_all = 'true' if is_all else 'false'
         self._protocol_cache = protocol_cache or self.default_protocol_cache
         self._balance_parser = DebankBalanceParser(self._protocol_cache)
         self._protocol_parser = DebankProtocolParser()
@@ -350,7 +353,7 @@ class DebankApi(BlockchainApi, IBalance, IPortfolio):
 
     def get_balance(self, address: str) -> List[BalanceItem]:
         self._maybe_update_protocols()
-        response = self.get('get_balance', address=address)
+        response = self.get('get_balance', address=address, is_all=self._is_all)
         if self._has_error(response):
             return []
 
