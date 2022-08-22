@@ -18,7 +18,7 @@ def test_parse_response(portfolio_parser, portfolio_response):
 def test_portfolio_parsing(portfolio_parser, portfolio_response, protocol_trader_joe):
     item = portfolio_parser.parse_items(portfolio_response)[0]
     assert item.protocol == protocol_trader_joe
-    assert item.pool_id == '0xdc13687554205E5b89Ac783db14bb5bba4A1eDaC'
+    assert item.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
     assert item.health_rate == Decimal('0.86')
     assert item.locked_until == datetime(2022, 7, 21, 2, 0)
 
@@ -96,7 +96,7 @@ def test_parse_esgmx_items(portfolio_parser, esgmx_portfolio_response):
     filtered = [b for b in balances if b.coin.symbol == 'esGMX']
     assert len(filtered) == 4
 
-    assert parsed[2].items[1].token_set == ['ETH', 'esGMX']
+    assert parsed[2].items[1].token_set == ['GMX']
 
 
 def test_parse_tokenset(portfolio_parser, tokenset_portfolio_response):

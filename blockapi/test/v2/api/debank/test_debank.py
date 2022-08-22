@@ -3,11 +3,25 @@ from blockapi.v2.api.debank import DebankApi, make_checksum_address
 
 def test_build_balance_request_url(debank_api):
     url = debank_api._build_request_url(
-        'get_balance', address='0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca'
+        'get_balance',
+        address='0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca',
+        is_all=True,
     )
     assert (
         url
-        == 'https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=true'
+        == 'https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=True'
+    )
+
+
+def test_build_balance_request_url_with_is_all_off(debank_api_all_off):
+    url = debank_api_all_off._build_request_url(
+        'get_balance',
+        address='0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca',
+        is_all=False,
+    )
+    assert (
+        url
+        == 'https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=False'
     )
 
 
@@ -88,6 +102,42 @@ def test_get_balance_fetches_protocols(
     assert parsed_items[0].protocol.name == "YFLink"
 
 
+def test_get_balance_uses_correct_url(
+    debank_api,
+    yflink_protocol_response_raw,
+    coin_with_protocol_response_raw,
+    requests_mock,
+):
+    requests_mock.get(
+        "https://openapi.debank.com/v1/protocol/list", text=yflink_protocol_response_raw
+    )
+    requests_mock.get(
+        "https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=true",
+        text=coin_with_protocol_response_raw,
+    )
+    parsed_items = debank_api.get_balance("0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca")
+    assert parsed_items[0].protocol.name == "YFLink"
+
+
+def test_get_balance_with_all_unset_uses_correct_url(
+    debank_api_all_off,
+    yflink_protocol_response_raw,
+    coin_with_protocol_response_raw,
+    requests_mock,
+):
+    requests_mock.get(
+        "https://openapi.debank.com/v1/protocol/list", text=yflink_protocol_response_raw
+    )
+    requests_mock.get(
+        "https://openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=false",
+        text=coin_with_protocol_response_raw,
+    )
+    parsed_items = debank_api_all_off.get_balance(
+        "0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca"
+    )
+    assert parsed_items[0].protocol.name == "YFLink"
+
+
 def test_get_portfolio_fetches_protocols(
     debank_api, yflink_protocol_response_raw, portfolio_response_raw, requests_mock
 ):
@@ -106,8 +156,8 @@ def test_get_portfolio_fetches_protocols(
 
 
 def test_protocol_cache_is_shared_by_instances():
-    one = DebankApi()
-    two = DebankApi()
+    one = DebankApi(True)
+    two = DebankApi(True)
 
     assert one._protocol_cache is two._protocol_cache
 
