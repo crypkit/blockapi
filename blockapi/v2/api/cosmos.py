@@ -8,7 +8,7 @@ from blockapi.v2.coins import COIN_ATOM
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin
 
 
-class CosmosBaseAPI(BlockchainApi, IBalance, metaclass=ABCMeta):
+class CosmosBaseApi(BlockchainApi, IBalance, metaclass=ABCMeta):
     """
     Cosmos RPC
     API docs: https://cosmos.network/rpc/
