@@ -2,6 +2,7 @@ import os
 
 import pytest
 
+from blockapi.v2.api.cosmos import CosmosApi, CosmosApiBase
 from blockapi.v2.api.covalenth.arbitrum import ArbitrumCovalentApi
 from blockapi.v2.api.covalenth.astar import AstarCovalentApi
 from blockapi.v2.api.covalenth.avalanche import AvalancheCovalentApi
@@ -68,6 +69,7 @@ API_CLASSES = [
     OptimismEtherscanApi,
     DebankApi,
     PolkadotSubscanApi,
+    CosmosApi,
 ]
 
 NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL = {
@@ -151,7 +153,7 @@ def yield_api_ibalance_classes():
     return [
         x
         for x in IBalance.__subclasses__()
-        if not issubclass(x, (CovalentApiBase, DebankApi))
+        if not issubclass(x, (CosmosApiBase, CovalentApiBase, DebankApi))
     ]
 
 

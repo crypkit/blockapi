@@ -8,12 +8,14 @@ from blockapi.v2.coins import COIN_ATOM
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin
 
 
-class CosmosBaseApi(BlockchainApi, IBalance, metaclass=ABCMeta):
+class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
     """
     Cosmos RPC
     API docs: https://cosmos.network/rpc/
     Explorer: https://www.mintscan.io
     """
+
+    coin = COIN_ATOM
 
     API_BASE_URL = 'https://lcd-cosmos.cosmostation.io/'
     API_BASE_RATE_LIMIT = 0.2
@@ -126,12 +128,12 @@ class CosmosBaseApi(BlockchainApi, IBalance, metaclass=ABCMeta):
         return to_decimal(response['commission']['commission'][0]['amount'])
 
 
-class CosmosAPI(CosmosBaseAPI):
+class CosmosApi(CosmosApiBase):
     coin = COIN_ATOM
     api_options = ApiOptions(
         blockchain=Blockchain.COSMOS,
-        base_url=CosmosBaseAPI.API_BASE_URL,
-        rate_limit=CosmosBaseAPI.API_BASE_RATE_LIMIT,
+        base_url=CosmosApiBase.API_BASE_URL,
+        rate_limit=CosmosApiBase.API_BASE_RATE_LIMIT,
     )
 
     @property
