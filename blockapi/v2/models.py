@@ -22,6 +22,7 @@ class Blockchain(str, Enum):
     BIT_TORRENT = 'bit-torrent'
     BOBA = 'boba'
     CELO = 'celo'
+    COSMOS = 'cosmos'
     CRONOS = 'cronos'
     DEFI_KINGDOMS = 'defi-kingdoms'
     ETHEREUM = 'ethereum'
