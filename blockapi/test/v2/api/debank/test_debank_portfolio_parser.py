@@ -3,7 +3,7 @@ import pytest
 from datetime import datetime
 from decimal import Decimal
 
-from blockapi.v2.models import AssetType
+from blockapi.v2.models import AssetType, TokenUse
 from blockapi.v2.api.debank import DebankModelPortfolioItem, DebankModelPoolItemDetail
 
 
@@ -37,12 +37,18 @@ def test_portfolio_stores_raw_item(portfolio_parser, portfolio_response):
 def test_parse_supply_token_list(portfolio_parser, portfolio_response):
     items = portfolio_parser.parse([portfolio_response])[0].items
     filtered = [item for item in items if item.asset_type == AssetType.LENDING]
+    for b in filtered:
+        assert b.token_use == TokenUse.SUPPLY
+
     assert len(filtered) == 1
 
 
 def test_parse_borrow_token_list(portfolio_parser, portfolio_response):
     items = portfolio_parser.parse([portfolio_response])[0].items
     filtered = [item for item in items if item.asset_type == AssetType.LENDING_BORROW]
+    for b in filtered:
+        assert b.token_use == TokenUse.BORROW
+
     assert len(filtered) == 3
 
 
