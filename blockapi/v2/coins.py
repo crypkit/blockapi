@@ -209,7 +209,7 @@ COIN_ATOM = Coin(
 
 COIN_XDAI = Coin(
     symbol='XDAI',
-    name='XDAI',
+    name='xDai',
     decimals=18,
     blockchain=Blockchain.GNOSIS,
     info=CoinInfo(coingecko_id='xdai'),
