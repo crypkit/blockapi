@@ -203,6 +203,7 @@ class BalanceItem:
     is_wallet: bool = True
     token_set: Optional[List[str]] = attr.ib(default=None)
     token_use: Optional[TokenUse] = attr.ib(default=None)
+    pool_id: Optional[str] = attr.ib(default=None)
 
     @classmethod
     def from_api(
@@ -217,6 +218,7 @@ class BalanceItem:
         is_wallet: bool = True,
         token_set: Optional[List[str]] = None,
         token_use: Optional[TokenUse] = None,
+        pool_id: Optional[str] = None,
     ) -> 'BalanceItem':
         return cls(
             balance_raw=to_decimal(balance_raw),
@@ -229,6 +231,7 @@ class BalanceItem:
             is_wallet=is_wallet,
             token_set=token_set,
             token_use=token_use,
+            pool_id=pool_id,
         )
 
     def __add__(self, other: 'BalanceItem') -> 'BalanceItem':

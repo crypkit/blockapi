@@ -39,6 +39,7 @@ def test_parse_supply_token_list(portfolio_parser, portfolio_response):
     filtered = [item for item in items if item.asset_type == AssetType.LENDING]
     for b in filtered:
         assert b.token_use == TokenUse.SUPPLY
+        assert b.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
 
     assert len(filtered) == 1
 
@@ -46,10 +47,11 @@ def test_parse_supply_token_list(portfolio_parser, portfolio_response):
 def test_parse_borrow_token_list(portfolio_parser, portfolio_response):
     items = portfolio_parser.parse([portfolio_response])[0].items
     filtered = [item for item in items if item.asset_type == AssetType.LENDING_BORROW]
+    assert len(filtered) == 3
+
     for b in filtered:
         assert b.token_use == TokenUse.BORROW
-
-    assert len(filtered) == 3
+        assert b.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
 
 
 def test_parse_portfolio(portfolio_parser, complex_portfolio_response):
