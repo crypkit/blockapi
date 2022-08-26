@@ -26,7 +26,6 @@ class Blockchain(str, Enum):
     CRONOS = 'cronos'
     DEFI_KINGDOMS = 'defi-kingdoms'
     ETHEREUM = 'ethereum'
-    EVM_COSMOS = 'evm-cosmos'
     FANTOM = 'fantom'
     FUSE = 'fuse'
     GNOSIS = 'xdai'
@@ -50,6 +49,7 @@ class Blockchain(str, Enum):
     SOLANA = 'solana'
     SONGBIRD = 'songbird'
     TERRA = 'terra'
+    TELOS = 'telos'
     WANCHAIN = 'wanchain'
 
 
@@ -75,36 +75,6 @@ class AssetType(str, Enum):
 
     # DEPRECATED
     ASSET = 'asset'
-
-
-DEBANK_BLOCKCHAIN = {
-    'arb': Blockchain.ARBITRUM,
-    'avax': Blockchain.AVALANCHE,
-    'bsc': Blockchain.BINANCE_SMART_CHAIN,
-    'btt': Blockchain.BIT_TORRENT,
-    'cro': Blockchain.CRONOS,
-    'dfk': Blockchain.DEFI_KINGDOMS,
-    'eth': Blockchain.ETHEREUM,
-    'evmos': Blockchain.EVM_COSMOS,
-    'ftm': Blockchain.FANTOM,
-    'hmy': Blockchain.HARMONY,
-    'iotx': Blockchain.IOTEX,
-    'kcc': Blockchain.KU_COIN,
-    'klay': Blockchain.KLAYTN,
-    'matic': Blockchain.POLYGON,
-    'movr': Blockchain.MOONRIVER,
-    'mobm': Blockchain.MOONBEAM,
-    'op': Blockchain.OPTIMISM,
-    'sbch': Blockchain.SMART_BITCOIN_CASH,
-    'sdn': Blockchain.SHIDEN,
-    'sgb': Blockchain.SONGBIRD,
-    'wan': Blockchain.WANCHAIN,
-}
-
-DEBANK_ASSET_TYPES = {
-    'vested': AssetType.VESTING,
-    'liquidity pool': AssetType.LIQUIDITY_POOL,
-}
 
 
 @attr.s(auto_attribs=True, slots=True)

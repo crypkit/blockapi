@@ -5,10 +5,15 @@ from typing import Dict, List, Optional, Union
 from eth_utils import to_checksum_address
 
 from blockapi.utils.num import decimals_to_raw
-from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance, IPortfolio
-from blockapi.v2.models import (
+from blockapi.v2.api.debank_maps import (
     DEBANK_ASSET_TYPES,
     DEBANK_BLOCKCHAIN,
+    NATIVE_COIN_MAP,
+    REWARD_ASSET_TYPE_MAP,
+)
+
+from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance, IPortfolio
+from blockapi.v2.models import (
     AssetType,
     BalanceItem,
     Blockchain,
@@ -19,14 +24,6 @@ from blockapi.v2.models import (
 )
 
 logger = logging.getLogger(__name__)
-
-
-REWARD_ASSET_TYPE_CONVERT = {
-    AssetType.LENDING: AssetType.LENDING_REWARD,
-    AssetType.STAKED: AssetType.REWARDS,
-    AssetType.FARMING: AssetType.REWARDS,
-    AssetType.YIELD: AssetType.REWARDS,
-}
 
 
 class DebankProtocolParser:
@@ -113,17 +110,7 @@ class DebankBalanceParser:
             return None
 
         symbol = self._get_symbol(raw_balance)
-
-        coin = Coin.from_api(
-            symbol=symbol,
-            name=raw_balance.get('name'),
-            decimals=raw_balance.get('decimals', 0),
-            blockchain=self._convert_blockchain(raw_balance.get('chain')),
-            address=make_checksum_address(raw_balance.get('id')),
-            standards=[],
-            protocol_id=raw_balance.get('protocol_id'),
-            info=CoinInfo(logo_url=raw_balance.get('logo_url')),
-        )
+        coin = self._get_coin(symbol, raw_balance)
 
         if asset_type == AssetType.INVESTMENT and amount < 0:
             asset_type = AssetType.DEBT
@@ -144,6 +131,27 @@ class DebankBalanceParser:
         )
 
         return balance
+
+    def _get_coin(self, symbol: str, raw_balance: dict) -> Coin:
+        address = raw_balance.get('id')
+        blockchain = self._convert_blockchain(raw_balance.get('chain'))
+        coin = NATIVE_COIN_MAP.get(address)
+        if coin is not None:
+            logger.error("Coin %r, chain=%r.", coin, blockchain)
+
+        if coin is not None and coin.blockchain == blockchain:
+            return coin
+
+        return Coin.from_api(
+            symbol=symbol,
+            name=raw_balance.get('name'),
+            decimals=raw_balance.get('decimals', 0),
+            blockchain=blockchain,
+            address=make_checksum_address(address),
+            standards=[],
+            protocol_id=raw_balance.get('protocol_id'),
+            info=CoinInfo(logo_url=raw_balance.get('logo_url')),
+        )
 
     @staticmethod
     def _get_symbol(raw_balance: dict) -> str:
@@ -313,7 +321,7 @@ class DebankPortfolioParser:
 
     @staticmethod
     def _get_reward_asset_type(asset_type):
-        return REWARD_ASSET_TYPE_CONVERT.get(asset_type, asset_type)
+        return REWARD_ASSET_TYPE_MAP.get(asset_type, asset_type)
 
 
 class DebankApi(BlockchainApi, IBalance, IPortfolio):
