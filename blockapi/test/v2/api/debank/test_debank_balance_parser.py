@@ -78,3 +78,26 @@ def test_debank_parse_protocol_missing_logs_message(
 def test_parse_symbol(balance_parser, mist_response):
     balances = balance_parser.parse(mist_response)
     assert balances[0].coin.symbol == "MIST"
+
+
+def test_map_eth_to_native_coin(balance_parser):
+    balance = {
+        "id": "eth",
+        "chain": "eth",
+        "name": "ETH",
+        "symbol": "ETH",
+        "display_symbol": None,
+        "optimized_symbol": "ETH",
+        "decimals": 18,
+        "logo_url": "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+        "protocol_id": "",
+        "price": 1660.09,
+        "time_at": 1483200000,
+        "amount": 1012.9471202445193,
+        "raw_amount": 1.0129471202445193e21,
+        "raw_amount_hex_str": "0x36e9771709dd779413",
+    }
+
+    coin = balance_parser._get_coin("ETH", balance)
+
+    assert coin.info.coingecko_id == "ethereum"
