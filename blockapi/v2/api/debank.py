@@ -136,8 +136,6 @@ class DebankBalanceParser:
         address = raw_balance.get('id')
         blockchain = self._convert_blockchain(raw_balance.get('chain'))
         coin = NATIVE_COIN_MAP.get(address)
-        if coin is not None:
-            logger.error("Coin %r, chain=%r.", coin, blockchain)
 
         if coin is not None and coin.blockchain == blockchain:
             return coin
