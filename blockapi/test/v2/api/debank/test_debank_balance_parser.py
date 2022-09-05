@@ -91,6 +91,6 @@ def test_map_eth_to_native_coin(balance_parser):
         amount=Decimal(1),
     )
 
-    coin = balance_parser._get_coin(balance, "ETH")
+    coin = balance_parser.get_coin(balance, "ETH")
 
     assert coin.info.coingecko_id == "ethereum"

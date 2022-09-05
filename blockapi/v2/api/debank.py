@@ -178,7 +178,7 @@ class DebankBalanceParser:
             return None
 
         symbol = self.get_symbol(balance_item)
-        coin = self._get_coin(balance_item, symbol)
+        coin = self.get_coin(balance_item, symbol)
 
         if asset_type == AssetType.INVESTMENT and amount < 0:
             asset_type = AssetType.DEBT
@@ -200,7 +200,7 @@ class DebankBalanceParser:
 
         return balance
 
-    def _get_coin(self, balance_item: DebankModelBalanceItem, symbol: str) -> Coin:
+    def get_coin(self, balance_item: DebankModelBalanceItem, symbol: str) -> Coin:
         address = balance_item.id
         blockchain = self._convert_blockchain(balance_item.chain)
         coin = NATIVE_COIN_MAP.get(address)
@@ -275,7 +275,9 @@ class DebankPortfolioParser:
         return pools
 
     def _parse_portfolio_item_list(
-        self, raw_portfolio_items: List[Dict], root_protocol
+        self,
+        raw_portfolio_items: List[DebankModelPortfolioItem],
+        root_protocol: Protocol,
     ) -> List[Pool]:
         items = []
         pools = {}
