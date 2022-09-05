@@ -171,7 +171,7 @@ class DebankBalanceParser:
 
         if raw_amount == 0 and amount == 0:
             logger.debug(
-                "Skipping coin: '%s' - balance is zero.",
+                "Skipping balance item: '%s' - balance is zero.",
                 balance_item.name,
             )
 
