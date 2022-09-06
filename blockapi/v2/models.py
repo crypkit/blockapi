@@ -81,6 +81,7 @@ class TokenRole(str, Enum):
     SUPPLY = 'supply'
     REWARD = 'reward'
     BORROW = 'borrow'
+    LIQUIDITY_POOL = 'liquidity_pool'
 
 
 @attr.s(auto_attribs=True, slots=True)
