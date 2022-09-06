@@ -77,7 +77,7 @@ class AssetType(str, Enum):
     ASSET = 'asset'
 
 
-class TokenUse(str, Enum):
+class TokenRole(str, Enum):
     SUPPLY = 'supply'
     REWARD = 'reward'
     BORROW = 'borrow'
@@ -202,7 +202,7 @@ class BalanceItem:
     protocol: Optional[Protocol] = attr.ib(default=None)
     is_wallet: bool = True
     token_set: Optional[List[str]] = attr.ib(default=None)
-    token_use: Optional[TokenUse] = attr.ib(default=None)
+    token_role: Optional[TokenRole] = attr.ib(default=None)
     pool_id: Optional[str] = attr.ib(default=None)
 
     @classmethod
@@ -217,7 +217,7 @@ class BalanceItem:
         protocol: Optional[Protocol] = None,
         is_wallet: bool = True,
         token_set: Optional[List[str]] = None,
-        token_use: Optional[TokenUse] = None,
+        token_role: Optional[TokenRole] = None,
         pool_id: Optional[str] = None,
     ) -> 'BalanceItem':
         return cls(
@@ -230,7 +230,7 @@ class BalanceItem:
             protocol=protocol,
             is_wallet=is_wallet,
             token_set=token_set,
-            token_use=token_use,
+            token_role=token_role,
             pool_id=pool_id,
         )
 

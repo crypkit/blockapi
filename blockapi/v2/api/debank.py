@@ -22,7 +22,7 @@ from blockapi.v2.models import (
     CoinInfo,
     Pool,
     Protocol,
-    TokenUse,
+    TokenRole,
 )
 
 logger = logging.getLogger(__name__)
@@ -148,7 +148,7 @@ class DebankBalanceParser:
         asset_type: AssetType = AssetType.AVAILABLE,
         is_wallet: bool = True,
         token_set: Optional[List[str]] = None,
-        token_use: Optional[TokenUse] = None,
+        token_role: Optional[TokenRole] = None,
         pool_id: Optional[str] = None,
     ) -> List[BalanceItem]:
         items = []
@@ -156,7 +156,7 @@ class DebankBalanceParser:
             balance_item = DebankModelBalanceItem(**item)
             balance_item.raw_value = item
 
-            balance = self.parse_item(balance_item, asset_type, is_wallet, token_set, token_use, pool_id)
+            balance = self.parse_item(balance_item, asset_type, is_wallet, token_set, token_role, pool_id)
             if balance is not None:
                 items.append(balance)
 
@@ -168,7 +168,7 @@ class DebankBalanceParser:
         asset_type: AssetType = AssetType.AVAILABLE,
         is_wallet: bool = True,
         token_set: Optional[List[str]] = None,
-        token_use: Optional[TokenUse] = None,
+        token_role: Optional[TokenRole] = None,
         pool_id: Optional[str] = None,
     ) -> Optional[BalanceItem]:
         raw_amount = balance_item.raw_amount or 0
@@ -201,7 +201,7 @@ class DebankBalanceParser:
             protocol=self._protocols.get(balance_item.protocol_id),
             is_wallet=is_wallet,
             token_set=token_set,
-            token_use=token_use,
+            token_role=token_role,
             pool_id=pool_id,
         )
 
@@ -315,9 +315,9 @@ class DebankPortfolioParser:
 
         items = []
 
-        tokens = self._update_items(items, detail.supply_token_list, asset_type, token_use=TokenUse.SUPPLY, pool_id=pool_id)
-        self._update_items(items, detail.borrow_token_list, borrow_type, tokens, token_use=TokenUse.BORROW, pool_id=pool_id)
-        self._update_items(items, detail.reward_token_list, reward_type, tokens, token_use=TokenUse.REWARD, pool_id=pool_id)
+        tokens = self._update_items(items, detail.supply_token_list, asset_type, token_use=TokenRole.SUPPLY, pool_id=pool_id)
+        self._update_items(items, detail.borrow_token_list, borrow_type, tokens, token_use=TokenRole.BORROW, pool_id=pool_id)
+        self._update_items(items, detail.reward_token_list, reward_type, tokens, token_use=TokenRole.REWARD, pool_id=pool_id)
         self._update_items(items, detail.token_list, asset_type, pool_id=pool_id)
 
         pool = pools.get(pool_id)
@@ -344,7 +344,7 @@ class DebankPortfolioParser:
         raw_balances: list[dict],
         asset_type: AssetType,
         tokens: Optional[List[str]] = None,
-        token_use: Optional[TokenUse] = None,
+        token_role: Optional[TokenRole] = None,
         pool_id: Optional[str] = None,
     ):
         if not raw_balances:
@@ -367,7 +367,7 @@ class DebankPortfolioParser:
             asset_type,
             False,
             token_set=tokens if len(raw_balances) > 1 else None,
-            token_use=token_use,
+            token_role=token_role,
             pool_id=pool_id,
         )
 
