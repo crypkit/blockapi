@@ -398,10 +398,10 @@ class DebankPortfolioParser:
 
 class DebankApi(BlockchainApi, IBalance, IPortfolio):
     """
-    DeBank OpenApi: https://openapi.debank.com/docs
+    DeBank OpenApi: https://open.debank.com/
     """
 
-    API_BASE_URL = 'https://openapi.debank.com'
+    API_BASE_URL = 'https://pro-openapi.debank.com'
     API_BASE_RATE_LIMIT = 0.05  # 20 req / s
 
     api_options = ApiOptions(
@@ -419,11 +419,15 @@ class DebankApi(BlockchainApi, IBalance, IPortfolio):
     default_protocol_cache = DebankProtocolCache()
 
     def __init__(
-        self, is_all: bool, protocol_cache: Optional[DebankProtocolCache] = None
+        self,
+        api_key: str,
+        is_all: bool,
+        protocol_cache: Optional[DebankProtocolCache] = None,
     ):
         super().__init__()
 
         self._is_all = bool(is_all)
+        self._headers = {'AccessKey': api_key}
         self._protocol_cache = protocol_cache or self.default_protocol_cache
         self._balance_parser = DebankBalanceParser(self._protocol_cache)
         self._protocol_parser = DebankProtocolParser()
@@ -433,14 +437,16 @@ class DebankApi(BlockchainApi, IBalance, IPortfolio):
 
     def get_balance(self, address: str) -> List[BalanceItem]:
         self._maybe_update_protocols()
-        response = self.get('get_balance', address=address, is_all=self._is_all)
+        response = self.get(
+            'get_balance', headers=self._headers, address=address, is_all=self._is_all
+        )
         if self._has_error(response):
             return []
 
         return self._balance_parser.parse(response)
 
     def get_protocols(self) -> Dict[str, Protocol]:
-        response = self.get('get_protocols')
+        response = self.get('get_protocols', headers=self._headers)
         if self._has_error(response):
             return {}
 
@@ -448,7 +454,7 @@ class DebankApi(BlockchainApi, IBalance, IPortfolio):
 
     def get_portfolio(self, address: str) -> List[Pool]:
         self._maybe_update_protocols()
-        response = self.get('get_portfolio', address=address)
+        response = self.get('get_portfolio', headers=self._headers, address=address)
         if self._has_error(response):
             return []
 

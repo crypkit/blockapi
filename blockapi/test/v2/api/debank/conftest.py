@@ -33,12 +33,12 @@ def protocol_parser():
 
 @pytest.fixture
 def debank_api(protocol_cache):
-    return DebankApi(True, protocol_cache)
+    return DebankApi('0x12345', True, protocol_cache)
 
 
 @pytest.fixture
 def debank_api_all_off(protocol_cache):
-    return DebankApi(False, protocol_cache)
+    return DebankApi('0x12345', False, protocol_cache)
 
 
 @pytest.fixture
