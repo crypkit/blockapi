@@ -1,8 +1,10 @@
 import logging
+import pytest
 from datetime import datetime
 from decimal import Decimal
 
 from blockapi.v2.models import AssetType
+from blockapi.v2.api.debank import DebankModelPortfolioItem, DebankModelPoolItemDetail
 
 
 def test_empty_response(portfolio_parser, empty_response):
@@ -16,7 +18,7 @@ def test_parse_response(portfolio_parser, portfolio_response):
 
 
 def test_portfolio_parsing(portfolio_parser, portfolio_response, protocol_trader_joe):
-    item = portfolio_parser.parse_items(portfolio_response)[0]
+    item = portfolio_parser.parse([portfolio_response])[0]
     assert item.protocol == protocol_trader_joe
     assert item.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
     assert item.health_rate == Decimal('0.86')
@@ -24,7 +26,7 @@ def test_portfolio_parsing(portfolio_parser, portfolio_response, protocol_trader
 
 
 def test_portfolio_stores_raw_item(portfolio_parser, portfolio_response):
-    item = portfolio_parser.parse_items(portfolio_response)[0].items[0]
+    item = portfolio_parser.parse([portfolio_response])[0].items[0]
     assert item.last_updated == datetime(2020, 12, 12, 0, 10, 59)
     assert item.balance == Decimal('7579.956374263135')
     assert item.raw is not None
@@ -33,13 +35,13 @@ def test_portfolio_stores_raw_item(portfolio_parser, portfolio_response):
 
 
 def test_parse_supply_token_list(portfolio_parser, portfolio_response):
-    items = portfolio_parser.parse_items(portfolio_response)[0].items
+    items = portfolio_parser.parse([portfolio_response])[0].items
     filtered = [item for item in items if item.asset_type == AssetType.LENDING]
     assert len(filtered) == 1
 
 
 def test_parse_borrow_token_list(portfolio_parser, portfolio_response):
-    items = portfolio_parser.parse_items(portfolio_response)[0].items
+    items = portfolio_parser.parse([portfolio_response])[0].items
     filtered = [item for item in items if item.asset_type == AssetType.LENDING_BORROW]
     assert len(filtered) == 3
 
@@ -107,3 +109,12 @@ def test_parse_tokenset(portfolio_parser, tokenset_portfolio_response):
     assert parsed[1].token_set == 'ETH2x-FLI'
     assert parsed[1].project_id == 'tokensets'
     assert parsed[1].adapter_id == 'tokensets_investment2'
+
+
+def test_require_pool_or_pool_id():
+    with pytest.raises(ValueError, match="either pool or pool_id must have a value"):
+        detail = DebankModelPoolItemDetail()
+
+        DebankModelPortfolioItem(
+            name='portfolio', detail=detail, pool=None, pool_id=None
+        )

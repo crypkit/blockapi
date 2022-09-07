@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 from decimal import Decimal
+from blockapi.v2.api.debank import DebankModelBalanceItem
 
 from blockapi.v2.models import AssetType, Blockchain
 
@@ -18,7 +19,7 @@ def test_balance_parsers_skips_empty_balances(
 
 
 def test_balance_parser_parses_data(balance_parser, coin_response):
-    item = balance_parser.parse_item(coin_response)
+    item = balance_parser.parse([coin_response])[0]
     assert item.raw == coin_response
     assert item.balance_raw == Decimal(1500000000000000000000)
     assert item.balance == Decimal(1500)
@@ -32,7 +33,7 @@ def test_balance_parser_parses_protocol(
     balance_parser, coin_with_protocol_response, protocol_cache, yflink_cache_data
 ):
     protocol_cache.update(yflink_cache_data)
-    item = balance_parser.parse_item(coin_with_protocol_response)
+    item = balance_parser.parse([coin_with_protocol_response])[0]
     assert item.protocol.protocol_id == "yflink"
     assert item.protocol.name == "YFLink"
     assert item.protocol.chain == "eth"
@@ -42,7 +43,7 @@ def test_balance_parser_parses_protocol(
 
 
 def test_debank_parses_coin(balance_parser, coin_response):
-    item = balance_parser.parse_item(coin_response)
+    item = balance_parser.parse([coin_response])[0]
     assert item.coin.symbol == "PYRO"
     assert item.coin.name == "PYRO Network"
     assert item.coin.decimals == 18
@@ -62,7 +63,7 @@ def test_debank_parses_protocol(
     balance_parser, coin_with_protocol_response, protocol_yflink, yflink_cache_data
 ):
     balance_parser._protocols.update(yflink_cache_data)
-    item = balance_parser.parse_item(coin_with_protocol_response)
+    item = balance_parser.parse([coin_with_protocol_response])[0]
     assert item.protocol == protocol_yflink
 
 
@@ -71,7 +72,7 @@ def test_debank_parse_protocol_missing_logs_message(
 ):
     expected_log = ["Protocol 'yflink' not found."]
     with caplog.at_level(level=logging.DEBUG):
-        _ = balance_parser.parse_item(coin_with_protocol_response)
+        _ = balance_parser.parse([coin_with_protocol_response])
         assert expected_log == caplog.messages
 
 
@@ -81,23 +82,15 @@ def test_parse_symbol(balance_parser, mist_response):
 
 
 def test_map_eth_to_native_coin(balance_parser):
-    balance = {
-        "id": "eth",
-        "chain": "eth",
-        "name": "ETH",
-        "symbol": "ETH",
-        "display_symbol": None,
-        "optimized_symbol": "ETH",
-        "decimals": 18,
-        "logo_url": "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
-        "protocol_id": "",
-        "price": 1660.09,
-        "time_at": 1483200000,
-        "amount": 1012.9471202445193,
-        "raw_amount": 1.0129471202445193e21,
-        "raw_amount_hex_str": "0x36e9771709dd779413",
-    }
+    balance = DebankModelBalanceItem(
+        id="eth",
+        chain="eth",
+        name="Ethereum",
+        symbol="ETH",
+        decimals=18,
+        amount=Decimal(1),
+    )
 
-    coin = balance_parser._get_coin("ETH", balance)
+    coin = balance_parser.get_coin(balance, "ETH")
 
     assert coin.info.coingecko_id == "ethereum"
