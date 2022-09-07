@@ -156,7 +156,9 @@ class DebankBalanceParser:
             balance_item = DebankModelBalanceItem(**item)
             balance_item.raw_value = item
 
-            balance = self.parse_item(balance_item, asset_type, is_wallet, token_set, token_role, pool_id)
+            balance = self.parse_item(
+                balance_item, asset_type, is_wallet, token_set, token_role, pool_id
+            )
             if balance is not None:
                 items.append(balance)
 
@@ -315,9 +317,29 @@ class DebankPortfolioParser:
 
         items = []
 
-        tokens = self._update_items(items, detail.supply_token_list, asset_type, token_use=TokenRole.SUPPLY, pool_id=pool_id)
-        self._update_items(items, detail.borrow_token_list, borrow_type, tokens, token_use=TokenRole.BORROW, pool_id=pool_id)
-        self._update_items(items, detail.reward_token_list, reward_type, tokens, token_use=TokenRole.REWARD, pool_id=pool_id)
+        tokens = self._update_items(
+            items,
+            detail.supply_token_list,
+            asset_type,
+            token_role=TokenRole.SUPPLY,
+            pool_id=pool_id,
+        )
+        self._update_items(
+            items,
+            detail.borrow_token_list,
+            borrow_type,
+            tokens,
+            token_role=TokenRole.BORROW,
+            pool_id=pool_id,
+        )
+        self._update_items(
+            items,
+            detail.reward_token_list,
+            reward_type,
+            tokens,
+            token_role=TokenRole.REWARD,
+            pool_id=pool_id,
+        )
         self._update_items(items, detail.token_list, asset_type, pool_id=pool_id)
 
         pool = pools.get(pool_id)
