@@ -190,8 +190,8 @@ def test_get_portfolio_fetches_protocols(
 
 
 def test_protocol_cache_is_shared_by_instances():
-    one = DebankApi('0x0', True)
-    two = DebankApi('0x0', True)
+    one = DebankApi('dummy-key', True)
+    two = DebankApi('dummy-key', True)
 
     assert one._protocol_cache is two._protocol_cache
 
