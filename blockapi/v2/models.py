@@ -77,6 +77,13 @@ class AssetType(str, Enum):
     ASSET = 'asset'
 
 
+class TokenRole(str, Enum):
+    SUPPLY = 'supply'
+    REWARD = 'reward'
+    BORROW = 'borrow'
+    LIQUIDITY_POOL = 'liquidity_pool'
+
+
 @attr.s(auto_attribs=True, slots=True)
 class ApiOptions:
     blockchain: Blockchain
@@ -196,6 +203,8 @@ class BalanceItem:
     protocol: Optional[Protocol] = attr.ib(default=None)
     is_wallet: bool = True
     token_set: Optional[List[str]] = attr.ib(default=None)
+    token_role: Optional[TokenRole] = attr.ib(default=None)
+    pool_id: Optional[str] = attr.ib(default=None)
 
     @classmethod
     def from_api(
@@ -209,6 +218,8 @@ class BalanceItem:
         protocol: Optional[Protocol] = None,
         is_wallet: bool = True,
         token_set: Optional[List[str]] = None,
+        token_role: Optional[TokenRole] = None,
+        pool_id: Optional[str] = None,
     ) -> 'BalanceItem':
         return cls(
             balance_raw=to_decimal(balance_raw),
@@ -220,6 +231,8 @@ class BalanceItem:
             protocol=protocol,
             is_wallet=is_wallet,
             token_set=token_set,
+            token_role=token_role,
+            pool_id=pool_id,
         )
 
     def __add__(self, other: 'BalanceItem') -> 'BalanceItem':
