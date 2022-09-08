@@ -77,7 +77,7 @@ def test_get_balance_has_api_key_header(debank_api, protocol_cache, requests_moc
     )
     protocol_cache.update({})
     debank_api.get_balance("0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca")
-    assert req.last_request.headers.get('AccessKey') == '0x12345'
+    assert req.last_request.headers.get('AccessKey') == 'dummy-key'
 
 
 def test_get_portfolio_has_api_key_header(debank_api, protocol_cache, requests_mock):
@@ -87,7 +87,7 @@ def test_get_portfolio_has_api_key_header(debank_api, protocol_cache, requests_m
     )
     protocol_cache.update({})
     debank_api.get_portfolio("0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca")
-    assert req.last_request.headers.get('AccessKey') == '0x12345'
+    assert req.last_request.headers.get('AccessKey') == 'dummy-key'
 
 
 def test_get_protocol(debank_api, requests_mock):
@@ -96,7 +96,7 @@ def test_get_protocol(debank_api, requests_mock):
         text='{}',
     )
     debank_api.get_protocols()
-    assert req.last_request.headers.get('AccessKey') == '0x12345'
+    assert req.last_request.headers.get('AccessKey') == 'dummy-key'
 
 
 def test_repr_doesnt_fail(debank_api):
