@@ -423,9 +423,11 @@ class DebankApi(BlockchainApi, IBalance, IPortfolio):
         api_key: str,
         is_all: bool,
         protocol_cache: Optional[DebankProtocolCache] = None,
+        base_url: Optional[str] = None,
     ):
         super().__init__()
 
+        self.api_options.base_url = base_url or self.API_BASE_URL
         self._is_all = bool(is_all)
         self._headers = {'AccessKey': api_key}
         self._protocol_cache = protocol_cache or self.default_protocol_cache
