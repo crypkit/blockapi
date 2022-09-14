@@ -444,9 +444,9 @@ class DebankApi(BlockchainApi, IBalance, IPortfolio):
     )
 
     supported_requests = {
-        'get_balance': '/v1/user/token_list?id={address}&is_all={is_all}',
-        'get_portfolio': '/v1/user/complex_protocol_list?id={address}',
-        'get_protocols': '/v1/protocol/list',
+        'get_balance': '/v1/user/all_token_list?id={address}&is_all={is_all}',
+        'get_portfolio': '/v1/user/all_complex_protocol_list?id={address}',
+        'get_protocols': '/v1/protocol/all_list',
     }
 
     default_protocol_cache = DebankProtocolCache()

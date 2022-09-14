@@ -41,7 +41,7 @@ def test_build_balance_request_url_with_is_all_off(debank_api_all_off):
 
 def test_build_protocols_request_url(debank_api):
     url = debank_api._build_request_url('get_protocols')
-    assert url == 'https://pro-openapi.debank.com/v1/protocol/list'
+    assert url == 'https://pro-openapi.debank.com/v1/protocol/all_list'
 
 
 def test_build_portfolio_request_url(debank_api):
@@ -50,7 +50,7 @@ def test_build_portfolio_request_url(debank_api):
     )
     assert (
         url
-        == 'https://pro-openapi.debank.com/v1/user/complex_protocol_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca'
+        == 'https://pro-openapi.debank.com/v1/user/all_complex_protocol_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca'
     )
 
 
@@ -59,7 +59,7 @@ def test_error_response_returns_empty_balances(
 ):
     protocol_cache.update({})
     requests_mock.get(
-        "https://pro-openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=true",
+        "https://pro-openapi.debank.com/v1/user/all_token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=true",
         text=error_response_raw,
     )
     parsed_items = debank_api.get_balance("0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca")
