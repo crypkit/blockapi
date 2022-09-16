@@ -36,7 +36,7 @@ def test_balance_parser_parses_protocol(
     item = balance_parser.parse([coin_with_protocol_response])[0]
     assert item.protocol.protocol_id == "yflink"
     assert item.protocol.name == "YFLink"
-    assert item.protocol.chain == "eth"
+    assert item.protocol.chain == Blockchain.ETHEREUM
     assert item.protocol.user_deposit == Decimal(1234.5)
 
     assert item.coin.protocol_id == "yflink"

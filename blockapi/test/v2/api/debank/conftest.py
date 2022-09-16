@@ -14,7 +14,7 @@ from blockapi.v2.coins import COIN_ETH
 from blockapi.v2.models import Protocol, BalanceItem, Pool
 
 from blockapi.test.v2.api.conftest import read_json_file
-
+from blockapi.v2.models import Blockchain
 
 @pytest.fixture
 def protocol_cache():
@@ -527,7 +527,7 @@ def yflink_protocol_response_raw():
 def protocol_yflink():
     return Protocol.from_api(
         protocol_id="yflink",
-        chain="eth",
+        chain=Blockchain.ETHEREUM,
         name="YFLink",
         user_deposit=1234.5,
         site_url="https://linkswap.app",
@@ -539,7 +539,7 @@ def protocol_yflink():
 def protocol_trader_joe():
     return Protocol.from_api(
         protocol_id="avax_traderjoexyz_lending",
-        chain="avax",
+        chain=Blockchain.AVALANCHE,
         name="Trader Joe Lending",
         user_deposit='162476998.75607753',
         site_url="https://www.traderjoexyz.com",

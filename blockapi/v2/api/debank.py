@@ -90,8 +90,7 @@ class DebankModelProtocol(BaseModel):
 class DebankModelPortfolio(DebankModelProtocol):
     portfolio_item_list: List[DebankModelPortfolioItem]
 
-
-class DebankProtocolParser:
+class DebankProtocolParser():
     def parse(self, response: List) -> Dict[str, Protocol]:
         protocols = {}
         for item in response:
@@ -103,9 +102,10 @@ class DebankProtocolParser:
 
     @staticmethod
     def parse_item(item: DebankModelProtocol) -> Protocol:
+        blockchain = DebankBalanceParser._convert_blockchain(item.chain)
         return Protocol.from_api(
             protocol_id=item.id,
-            chain=item.chain,
+            chain=blockchain,
             name=item.name,
             user_deposit=item.tvl,
             site_url=item.site_url,
@@ -251,7 +251,7 @@ class DebankBalanceParser:
             return chain
 
 
-def make_checksum_address(address: str) -> str:
+def make_checksum_address(address: str) -> Optional[str]:
     try:
         return to_checksum_address(address)
     except ValueError as e:
