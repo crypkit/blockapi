@@ -162,7 +162,7 @@ class Coin:
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class Protocol:
     protocol_id: str
-    chain: str
+    chain: Blockchain
     name: str
     user_deposit: Decimal
     site_url: Optional[str] = attr.ib(default=None)
@@ -174,7 +174,7 @@ class Protocol:
         cls,
         *,
         protocol_id: str,
-        chain: str,
+        chain: Blockchain,
         name: str,
         user_deposit: Union[str, float, int],
         site_url: Optional[str] = None,
