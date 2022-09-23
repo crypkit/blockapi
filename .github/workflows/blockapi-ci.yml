@@ -24,4 +24,4 @@ jobs:
         uses: psf/black@stable
       - name: Run unit tests
         run: |
-          pytest --cov-report xml --cov=src --ignore=src/new_api --ignore=services/ --junit-xml=test_report.xml -m "not integration"
+          pytest -m "not integration"
