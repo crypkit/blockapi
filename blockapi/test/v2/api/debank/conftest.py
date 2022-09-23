@@ -2,19 +2,17 @@ from typing import List
 
 import pytest
 
-from blockapi.v2.api.debank import (
-    DebankProtocolCache,
-    DebankBalanceParser,
-    DebankProtocolParser,
-    DebankPortfolioParser,
-    DebankApi,
-)
-
-from blockapi.v2.coins import COIN_ETH
-from blockapi.v2.models import Protocol, BalanceItem, Pool
-
 from blockapi.test.v2.api.conftest import read_json_file
-from blockapi.v2.models import Blockchain
+from blockapi.v2.api.debank import (
+    DebankApi,
+    DebankBalanceParser,
+    DebankPortfolioParser,
+    DebankProtocolCache,
+    DebankProtocolParser,
+)
+from blockapi.v2.coins import COIN_ETH
+from blockapi.v2.models import BalanceItem, Blockchain, Pool, Protocol
+
 
 @pytest.fixture
 def protocol_cache():

@@ -3,7 +3,6 @@ from blockapi.test.v2.test_data import (
     yield_covalent_api_classes,
     yield_debank_address,
 )
-
 from blockapi.v2.api.covalenth.arbitrum import ArbitrumCovalentApi
 from blockapi.v2.api.covalenth.astar import AstarCovalentApi
 from blockapi.v2.api.covalenth.avalanche import AvalancheCovalentApi
@@ -21,10 +20,10 @@ from blockapi.v2.api.covalenth.rsk import RskCovalentApi
 
 
 def test_enumerate_subclasses():
-    assert len(yield_api_ibalance_classes()) == 5
+    assert len(yield_api_ibalance_classes()) == 6
 
 
-def test_enumerate_convalent_all_classes():
+def test_enumerate_covalent_all_classes():
     assert [
         ArbitrumCovalentApi,
         AstarCovalentApi,
@@ -43,7 +42,7 @@ def test_enumerate_convalent_all_classes():
     ] == yield_covalent_api_classes()
 
 
-def test_enumerate_convalent_classes():
+def test_enumerate_covalent_classes():
     assert len(yield_covalent_api_classes()) == 14
 
 
