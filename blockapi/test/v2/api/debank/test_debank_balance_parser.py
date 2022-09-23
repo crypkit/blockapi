@@ -1,8 +1,8 @@
 import logging
 from datetime import datetime
 from decimal import Decimal
-from blockapi.v2.api.debank import DebankModelBalanceItem
 
+from blockapi.v2.api.debank import DebankModelBalanceItem
 from blockapi.v2.models import AssetType, Blockchain
 
 
@@ -23,7 +23,7 @@ def test_balance_parser_parses_data(balance_parser, coin_response):
     assert item.raw == coin_response
     assert item.balance_raw == Decimal(1500000000000000000000)
     assert item.balance == Decimal(1500)
-    assert item.last_updated == datetime(2020, 1, 5, 6, 45, 19)
+    assert item.last_updated == datetime(2020, 1, 5, 5, 45, 19)
     assert item.asset_type == AssetType.AVAILABLE
     assert item.protocol is None
     assert item.is_wallet

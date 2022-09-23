@@ -24,4 +24,4 @@ jobs:
         uses: psf/black@stable
       - name: Run unit tests
         run: |
-          pytest -m "not integration"
+          TZ=UTC pytest -m "not integration"
