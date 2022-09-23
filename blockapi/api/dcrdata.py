@@ -2,11 +2,7 @@ from datetime import datetime
 
 import pytz
 
-from blockapi.services import (
-    AddressNotExist,
-    BlockchainAPI,
-    set_default_args_values
-)
+from blockapi.services import AddressNotExist, BlockchainAPI, set_default_args_values
 
 
 class DcrdataAPI(BlockchainAPI):
@@ -27,7 +23,7 @@ class DcrdataAPI(BlockchainAPI):
     supported_requests = {
         'get_balance': '/address/{address}/totals',
         'get_transaction': '/tx/{tx_hash}?spends=true',
-        'get_txs': '/address/{address}/count/{count}/skip/{skip}/raw'
+        'get_txs': '/address/{address}/count/{count}/skip/{skip}/raw',
     }
 
     def process_error_response(self, response):
@@ -42,12 +38,7 @@ class DcrdataAPI(BlockchainAPI):
 
     @set_default_args_values
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
-        txs = self.request(
-            'get_txs',
-            address=self.address,
-            count=limit,
-            skip=offset
-        )
+        txs = self.request('get_txs', address=self.address, count=limit, skip=offset)
         return [self.parse_tx(tx) for tx in txs]
 
     def get_tx(self, tx_hash):
@@ -64,7 +55,7 @@ class DcrdataAPI(BlockchainAPI):
             'transaction': self.parse_regular_tx,
             'ticket': self.parse_ticket,
             'vote': self.parse_vote,
-            'revocation': self.parse_revocation
+            'revocation': self.parse_revocation,
         }.get(kind)(tx)
         return {'kind': kind, 'result': parsed}
 
@@ -83,10 +74,16 @@ class DcrdataAPI(BlockchainAPI):
 
     def parse_regular_tx(self, tx):
         # Tx in decred could contain several addresses, filter only mine
-        ins = [v for v in tx['vin']
-               if self.address in v.get('prevOut', {}).get('addresses', [])]
-        outs = [o for o in tx['vout'] if self.address
-                in o.get('scriptPubKey', {}).get('addresses', [])]
+        ins = [
+            v
+            for v in tx['vin']
+            if self.address in v.get('prevOut', {}).get('addresses', [])
+        ]
+        outs = [
+            o
+            for o in tx['vout']
+            if self.address in o.get('scriptPubKey', {}).get('addresses', [])
+        ]
 
         # get_txs has time attribute, get_tx has block.time attribute
         if 'time' in tx:
@@ -96,54 +93,61 @@ class DcrdataAPI(BlockchainAPI):
 
         parsed = []
         for i in ins:
-            parsed.append({
-                'date': date,
-                'from_address': self.address,
-                'to_address': None,  # multiple, TODO check it
-                'amount': i['amountin'],
-                'fee': None,
-                'gas_limit': None,
-                'hash': tx['txid'],
-                'confirmed': tx['confirmations'] > self.confirmed_num,
-                'is_error': False,
-                'type': 'normal',
-                'kind': 'transaction',
-                'direction': 'outgoing',
-                'status': None,
-                'raw': tx
-            })
+            parsed.append(
+                {
+                    'date': date,
+                    'from_address': self.address,
+                    'to_address': None,  # multiple, TODO check it
+                    'amount': i['amountin'],
+                    'fee': None,
+                    'gas_limit': None,
+                    'hash': tx['txid'],
+                    'confirmed': tx['confirmations'] > self.confirmed_num,
+                    'is_error': False,
+                    'type': 'normal',
+                    'kind': 'transaction',
+                    'direction': 'outgoing',
+                    'status': None,
+                    'raw': tx,
+                }
+            )
 
         for o in outs:
-            parsed.append({
-                'date': date,
-                'from_address': None,  # multiple, TODO check it
-                'to_address': self.address,
-                'amount': o['value'],
-                'fee': None,
-                'gas_limit': None,
-                'hash': tx['txid'],
-                'confirmed': tx['confirmations'] > self.confirmed_num,
-                'is_error': False,
-                'type': 'normal',
-                'kind': 'transaction',
-                'direction': 'incoming',
-                'status': None,
-                'raw': tx
-            })
+            parsed.append(
+                {
+                    'date': date,
+                    'from_address': None,  # multiple, TODO check it
+                    'to_address': self.address,
+                    'amount': o['value'],
+                    'fee': None,
+                    'gas_limit': None,
+                    'hash': tx['txid'],
+                    'confirmed': tx['confirmations'] > self.confirmed_num,
+                    'is_error': False,
+                    'type': 'normal',
+                    'kind': 'transaction',
+                    'direction': 'incoming',
+                    'status': None,
+                    'raw': tx,
+                }
+            )
         return parsed
 
     @staticmethod
     def parse_ticket(tx):
         investment = sum(v['amountin'] for v in tx['vin'])
-        ticket_cost = next((v['value'] for v in tx['vout']
-                            if v['scriptPubKey']['type'] == 'stakesubmission'),
-                           0)
+        ticket_cost = next(
+            (
+                v['value']
+                for v in tx['vout']
+                if v['scriptPubKey']['type'] == 'stakesubmission'
+            ),
+            0,
+        )
 
         # pool fee is lower value then ticket cost,
         # but not sure if it's correct
-        pool_fee = (min([v['amountin'] for v in tx['vin']])
-                    if len(tx['vin']) > 1
-                    else 0)
+        pool_fee = min([v['amountin'] for v in tx['vin']]) if len(tx['vin']) > 1 else 0
 
         return {
             'hash': tx['txid'],
@@ -156,7 +160,7 @@ class DcrdataAPI(BlockchainAPI):
             'pool_fee': pool_fee,
             'block_hash': tx['blockhash'],
             'block_height': None,  # TODO
-            'status': DcrdataAPI.get_ticket_status(tx)
+            'status': DcrdataAPI.get_ticket_status(tx),
         }
 
     @staticmethod
@@ -205,7 +209,7 @@ class DcrdataAPI(BlockchainAPI):
             'spent_ticket_hash': ticket_hash,
             'reward': reward,
             'fee': total_input - total_output,
-            'block_hash': tx['blockhash']
+            'block_hash': tx['blockhash'],
         }
 
     @staticmethod
@@ -219,5 +223,5 @@ class DcrdataAPI(BlockchainAPI):
             'revocated_on': datetime.fromtimestamp(tx['time'], pytz.utc),
             'spent_ticket_hash': ticket_hash,
             'fee': total_input - total_output,
-            'block_hash': tx['blockhash']
+            'block_hash': tx['blockhash'],
         }

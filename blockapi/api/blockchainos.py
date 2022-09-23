@@ -1,4 +1,5 @@
 import dateutil.parser
+
 from blockapi.services import BlockchainAPI
 
 
@@ -22,12 +23,11 @@ class BlockchainosAPI(BlockchainAPI):
     supported_requests = {
         'get_balance': '/api/v1/accounts/{address}',
         'get_txs': '/api/v1/accounts/{address}'
-                   '/transactions?limit={limit}&reverse=true',
+        '/transactions?limit={limit}&reverse=true',
     }
 
     def get_balance(self):
-        response = self.request('get_balance',
-                                address=self.address)
+        response = self.request('get_balance', address=self.address)
         if not response:
             return None
 
@@ -40,16 +40,12 @@ class BlockchainosAPI(BlockchainAPI):
 
     def get_txs(self, offset=None, limit=100, unconfirmed=False):
         if 'get_txs_next' not in self.supported_requests:
-            response = self.request('get_txs',
-                                    address=self.address,
-                                    limit=limit)
-            self.supported_requests['get_txs_next']\
-                = response['_links']['prev']['href']
+            response = self.request('get_txs', address=self.address, limit=limit)
+            self.supported_requests['get_txs_next'] = response['_links']['prev']['href']
 
         else:
             response = self.request('get_txs_next')
-            self.supported_requests['get_txs_next']\
-                = response['_links']['prev']['href']
+            self.supported_requests['get_txs_next'] = response['_links']['prev']['href']
 
         return [self.parse_tx(tx) for tx in response['_embedded']['records']]
 
@@ -57,8 +53,9 @@ class BlockchainosAPI(BlockchainAPI):
         operations = []
 
         operation_url = tx['_links']['operations']['href']
-        self.supported_requests['get_operations']\
-            = operation_url.replace('{?cursor,limit,order}', '')
+        self.supported_requests['get_operations'] = operation_url.replace(
+            '{?cursor,limit,order}', ''
+        )
         response = self.request('get_operations')
 
         for operation in response['_embedded']['records']:
@@ -68,16 +65,20 @@ class BlockchainosAPI(BlockchainAPI):
             op_amount = operation['body']['amount']
             op_type = operation['type']
             op_confirmed = dateutil.parser.parse(operation['confirmed'])
-            operations.append({'from_address': op_from_address,
-                               'to_address': op_to_address,
-                               'hash': op_hash,
-                               'amount': float(op_amount) * self.coef,
-                               'type': op_type,
-                               'direction': 'outgoing'
-                               if op_from_address == self.address
-                               else 'incoming',
-                               'confirmed': op_confirmed,
-                               'raw': operation})
+            operations.append(
+                {
+                    'from_address': op_from_address,
+                    'to_address': op_to_address,
+                    'hash': op_hash,
+                    'amount': float(op_amount) * self.coef,
+                    'type': op_type,
+                    'direction': 'outgoing'
+                    if op_from_address == self.address
+                    else 'incoming',
+                    'confirmed': op_confirmed,
+                    'raw': operation,
+                }
+            )
 
         return {
             'date': dateutil.parser.parse(tx['created']),
@@ -87,5 +88,5 @@ class BlockchainosAPI(BlockchainAPI):
             'kind': 'transaction',
             'status': 'confirmed',
             'operations': operations,
-            'raw': tx
+            'raw': tx,
         }

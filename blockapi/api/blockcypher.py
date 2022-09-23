@@ -31,9 +31,7 @@ class BlockcypherAPI(BlockchainAPI):
 
     def get_balance(self):
         response = self.request(
-            'get_balance',
-            coin=self.symbol.lower(),
-            address=self.address
+            'get_balance', coin=self.symbol.lower(), address=self.address
         )
         if not response:
             return None

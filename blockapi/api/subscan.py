@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from decimal import Decimal
 
-from blockapi.services import BlockchainAPI, AddressNotExist, APIError
+from blockapi.services import AddressNotExist, APIError, BlockchainAPI
 from blockapi.utils.num import to_decimal
 
 
@@ -24,51 +24,43 @@ class SubscanAPI(BlockchainAPI):
         'get_balance': '/api/v2/scan/search',
         'get_txs': '/api/scan/transfers',
         'get_rewards': '/api/scan/account/reward_slash',
-        'get_staking': '/api/v2/scan/search'
+        'get_staking': '/api/v2/scan/search',
     }
 
     def __init__(self, address, api_key=None, *args, **kwargs):
         super().__init__(address, api_key)
-        self._headers = {
-            'Content-Type': 'application/json'
-        }
+        self._headers = {'Content-Type': 'application/json'}
 
     def get_balance(self):
-        body = json.dumps({
-            'key': self.address,
-            'row': 1,
-            'page': 0,
-        })
+        body = json.dumps(
+            {
+                'key': self.address,
+                'row': 1,
+                'page': 0,
+            }
+        )
 
         response = self.request(
-            'get_balance',
-            body=body,
-            headers=self._headers,
-            api_key=self.api_key
+            'get_balance', body=body, headers=self._headers, api_key=self.api_key
         )
 
         if response['code'] == 0:
-            return [{
-                'symbol': self.symbol,
-                'amount': to_decimal(response['data']['account']['balance'])
-            }]
+            return [
+                {
+                    'symbol': self.symbol,
+                    'amount': to_decimal(response['data']['account']['balance']),
+                }
+            ]
         elif response['code'] == 10004:
             raise AddressNotExist()
         else:
             raise APIError(response['message'])
 
     def get_txs(self, offset=0, limit=10, unconfirmed=False):
-        body = json.dumps({
-            'address': self.address,
-            'page': offset,
-            'row': limit
-        })
+        body = json.dumps({'address': self.address, 'page': offset, 'row': limit})
 
         response = self.request(
-            'get_txs',
-            body=body,
-            headers=self._headers,
-            api_key=self.api_key
+            'get_txs', body=body, headers=self._headers, api_key=self.api_key
         )
 
         if response['code'] == 0:
@@ -97,26 +89,25 @@ class SubscanAPI(BlockchainAPI):
             'type': 'normal',
             'kind': 'transaction',
             'direction': direction,
-            'raw': tx
+            'raw': tx,
         }
 
     def get_rewards(self, offset=0, limit=20):
-        body = json.dumps({
-            'address': self.address,
-            'row': limit,
-            'page': offset
-        })
+        body = json.dumps({'address': self.address, 'row': limit, 'page': offset})
 
         response = self.request(
-            'get_rewards',
-            body=body,
-            headers=self._headers,
-            api_key=self.api_key
+            'get_rewards', body=body, headers=self._headers, api_key=self.api_key
         )
 
         if response['code'] == 0:
-            return [self._parse_reward(r) for r in
-                    (response['data']['list'] if response['data']['list'] is not None else [])]
+            return [
+                self._parse_reward(r)
+                for r in (
+                    response['data']['list']
+                    if response['data']['list'] is not None
+                    else []
+                )
+            ]
         elif response['code'] == 10004:
             raise AddressNotExist()
         else:
@@ -131,21 +122,14 @@ class SubscanAPI(BlockchainAPI):
         return {
             'amount': to_decimal(reward['amount']) * self.coef * sign,
             'hash': reward['extrinsic_hash'],
-            'event_index': reward['event_index']
+            'event_index': reward['event_index'],
         }
 
     def get_staking(self, offset=0, limit=20):
-        body = json.dumps({
-            'key': self.address,
-            'row': limit,
-            'page': offset
-        })
+        body = json.dumps({'key': self.address, 'row': limit, 'page': offset})
 
         response = self.request(
-            'get_staking',
-            body=body,
-            headers=self._headers,
-            api_key=self.api_key
+            'get_staking', body=body, headers=self._headers, api_key=self.api_key
         )
 
         if response['code'] == 0:

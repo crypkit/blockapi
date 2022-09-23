@@ -30,11 +30,9 @@ class TrezorAPI(BlockchainAPI):
 
     def get_balance(self):
         if len(self.address) == 111:
-            response = self.request('get_balance_xpub',
-                                    address=self.address)
+            response = self.request('get_balance_xpub', address=self.address)
         else:
-            response = self.request('get_balance',
-                                    address=self.address)
+            response = self.request('get_balance', address=self.address)
 
         if not response:
             return None
@@ -43,15 +41,14 @@ class TrezorAPI(BlockchainAPI):
         return [{'symbol': self.symbol, 'amount': retval}]
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
-        response = self.request('get_txs',
-                                address=self.address,
-                                confirmed=not unconfirmed)
+        response = self.request(
+            'get_txs', address=self.address, confirmed=not unconfirmed
+        )
 
         return [self.parse_tx(tx) for tx in response]
 
     def parse_tx(self, tx):
-        txdata = self.request('get_tx',
-                              tx_hash=tx['txid'])
+        txdata = self.request('get_tx', tx_hash=tx['txid'])
 
         if self.address in txdata['vin'][0]['addresses']:
             direction = 'outgoing'
@@ -70,9 +67,8 @@ class TrezorAPI(BlockchainAPI):
             'type': 'normal',
             'kind': 'transaction',
             'direction': direction,
-            'status': 'confirmed' if txdata['confirmations'] > 0
-            else 'unconfirmed',
-            'raw': txdata
+            'status': 'confirmed' if txdata['confirmations'] > 0 else 'unconfirmed',
+            'raw': txdata,
         }
 
 

@@ -22,19 +22,17 @@ class EtherscanAPI(BlockchainAPI):
 
     supported_requests = {
         'get_balance': '/api?module=account&action=balance'
-                       '&address={address}&tag=latest&apikey={api_key}',
+        '&address={address}&tag=latest&apikey={api_key}',
         'get_txs': '/api?module=account&action={action}&offset={offset}'
-                   '&sort={sort}&page={page}&address={address}'
-                   '&apikey={api_key}',
+        '&sort={sort}&page={page}&address={address}'
+        '&apikey={api_key}',
         'get_abi': '/api?module=contract&action=getabi&address={address}'
-                   '&apikey={api_key}'
+        '&apikey={api_key}',
     }
 
     def get_balance(self):
         balance_dict = self.request(
-            'get_balance',
-            address=self.address,
-            api_key=self.api_key
+            'get_balance', address=self.address, api_key=self.api_key
         )
 
         # returns only balance for ETH; ERC20 and ERC721 tokens are omitted
@@ -61,11 +59,7 @@ class EtherscanAPI(BlockchainAPI):
         return [self.parse_tx(t, 'token') for t in txs]
 
     def get_abi(self, contract):
-        abi = self.request(
-            'get_abi',
-            address=contract,
-            api_key=self.api_key
-        )
+        abi = self.request('get_abi', address=contract, api_key=self.api_key)
 
         return abi
 
@@ -78,7 +72,7 @@ class EtherscanAPI(BlockchainAPI):
             sort='desc',
             page=offset,
             address=self.address,
-            api_key=self.api_key
+            api_key=self.api_key,
         )
 
         if not response:
@@ -108,7 +102,7 @@ class EtherscanAPI(BlockchainAPI):
             token_data = {
                 'name': tx.get('tokenName'),
                 'symbol': tx.get('tokenSymbol'),
-                'decimals': float(tx.get('tokenDecimal'))
+                'decimals': float(tx.get('tokenDecimal')),
             }
             symbol = token_data['symbol']
             amount = float(tx['value']) * pow(10, -token_data['decimals'])
@@ -128,21 +122,21 @@ class EtherscanAPI(BlockchainAPI):
             * self.coef,
             'gas': {
                 'gas': float(tx['gas']),
-                'gas_price': float(tx['gasPrice']) if tx.get('gasPrice')
-                else None,
+                'gas_price': float(tx['gasPrice']) if tx.get('gasPrice') else None,
                 'cumulative_gas_used': float(tx['cumulativeGasUsed'])
-                if tx.get('cumulativeGasUsed') else None,
-                'gas_used': float(tx['gasUsed']) if tx.get('gasUsed')
-                else None
+                if tx.get('cumulativeGasUsed')
+                else None,
+                'gas_used': float(tx['gasUsed']) if tx.get('gasUsed') else None,
             },
             'hash': tx['hash'],
             'confirmations': int(tx['confirmations'])
-            if tx.get('confirmations') else None,
+            if tx.get('confirmations')
+            else None,
             'confirmed': None,
             'is_error': tx.get('isError') == '1',
             'type': tx_type,
             'kind': 'transaction',
             'direction': direction,
             'token_data': token_data,
-            'raw': tx
+            'raw': tx,
         }

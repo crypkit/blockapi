@@ -11,7 +11,6 @@ from blockapi.api import EtherscanAPI
 
 
 class Ethereum:
-
     def __init__(self, node_url, etherscan_api_key):
         self.node_url = node_url
         self.etherscan_api_key = etherscan_api_key
@@ -29,8 +28,9 @@ class Ethereum:
         # fallback to automatic loading if ABI is not set from outside
         if self.abi is None:
             self.load_abi(contract)
-        return self.web3.eth.contract(address=Web3.toChecksumAddress(
-            contract), abi=self.abi)
+        return self.web3.eth.contract(
+            address=Web3.toChecksumAddress(contract), abi=self.abi
+        )
 
     def get_tx_by_hash(self, txhash):
         tx = self.web3.eth.getTransaction(txhash)
@@ -38,8 +38,7 @@ class Ethereum:
 
     @staticmethod
     def get_function_by_inputdata(tx_input):
-        tx_input_decoded = AbiMethod.from_input_lookup(
-            bytes.fromhex(tx_input[2:]))
+        tx_input_decoded = AbiMethod.from_input_lookup(bytes.fromhex(tx_input[2:]))
         tx_input_values = list(tx_input_decoded.values())
         tx_function = tx_input_values[0]
         return tx_function
@@ -51,22 +50,20 @@ class Ethereum:
 
         tokens_ch = []
         for token in tokens:
-            tokens_ch.append(
-                Web3.toChecksumAddress(tokens[token]['contract_address']))
+            tokens_ch.append(Web3.toChecksumAddress(tokens[token]['contract_address']))
 
         bal_sc = self.get_contract(addr)
-        balances = bal_sc.functions.batchTokenBalances([address],
-                                                       tokens_ch).call()
+        balances = bal_sc.functions.batchTokenBalances([address], tokens_ch).call()
 
         decimals = [tokens[token]['decimals'] for token in tokens]
         symbols = [token for token in tokens]
-        contract_addresses = [tokens[token]['contract_address']
-                              for token in tokens]
+        contract_addresses = [tokens[token]['contract_address'] for token in tokens]
 
-        return [{'amount': float(b) * pow(10, -d),
-                 'symbol': symbol, 'contract_address': sc}
-                for b, d, symbol, sc in
-                zip(balances, decimals, symbols, contract_addresses) if b > 0]
+        return [
+            {'amount': float(b) * pow(10, -d), 'symbol': symbol, 'contract_address': sc}
+            for b, d, symbol, sc in zip(balances, decimals, symbols, contract_addresses)
+            if b > 0
+        ]
 
 
 class Infura(Ethereum):
@@ -75,8 +72,9 @@ class Infura(Ethereum):
         self.api_prefix = network if network != "mainnet" else "api"
         self.api_key = api_key
         self.etherscan_api_key = etherscan_api_key
-        self.infura_url = 'https://{}.infura.io/v3/{}'.format(self.network,
-                                                              self.api_key)
+        self.infura_url = 'https://{}.infura.io/v3/{}'.format(
+            self.network, self.api_key
+        )
         super().__init__(self.infura_url, etherscan_api_key)
 
 
@@ -104,8 +102,7 @@ class ERC20Token:
             status_code, rows = self._get_table_rows(page)
             if status_code != 200:
                 scrape_result = False
-                result_msg = 'error {} on page {}'.format(status_code,
-                                                          page)
+                result_msg = 'error {} on page {}'.format(status_code, page)
                 break
 
             if rows is None:
@@ -115,20 +112,24 @@ class ERC20Token:
                 result = self._parse_table_row(row)
                 decimals = self._get_token_details(result[2])
 
-                self.tokens[result[0]] = \
-                    {'currency_name': result[1],
-                     'contract_address': result[2],
-                     'price': float(result[3]),
-                     'change': result[4],
-                     'volume': result[5],
-                     'market_cap': result[6],
-                     'holders': result[7],
-                     'decimals': decimals}
+                self.tokens[result[0]] = {
+                    'currency_name': result[1],
+                    'contract_address': result[2],
+                    'price': float(result[3]),
+                    'change': result[4],
+                    'volume': result[5],
+                    'market_cap': result[6],
+                    'holders': result[7],
+                    'decimals': decimals,
+                }
 
             page += 1
 
-        return {'result': scrape_result, 'result_msg': result_msg,
-                'tokens': self.tokens}
+        return {
+            'result': scrape_result,
+            'result_msg': result_msg,
+            'tokens': self.tokens,
+        }
 
     def _get_token_details(self, contract_address):
         token_details_url = self.token_url.format(contract_address)
@@ -150,8 +151,7 @@ class ERC20Token:
             return None
 
         soup = BeautifulSoup(result.text, "lxml")
-        decimals_div = soup.body.find("div",
-                                      {"id": "ContentPlaceHolder1_trDecimals"})
+        decimals_div = soup.body.find("div", {"id": "ContentPlaceHolder1_trDecimals"})
         if decimals_div is None:
             return None
 
@@ -199,22 +199,27 @@ class ERC20Token:
         row_tds = row.find_all('td')
         row_tds[2].find('div').decompose()
 
-        currency_price = ERC20Token._get_number(row_tds[2].text,
-                                                float)
-        currency_change = ERC20Token._get_number(row_tds[3].text,
-                                                 float)
+        currency_price = ERC20Token._get_number(row_tds[2].text, float)
+        currency_change = ERC20Token._get_number(row_tds[3].text, float)
         currency_volume = ERC20Token._get_number(row_tds[4].text, int)
         market_cap = ERC20Token._get_number(row_tds[5].text, int)
         holders = ERC20Token._get_number(row_tds[6].text, int)
 
-        return (currency_symbol, currency_name, coin_sc, currency_price,
-                currency_change, currency_volume, market_cap, holders)
+        return (
+            currency_symbol,
+            currency_name,
+            coin_sc,
+            currency_price,
+            currency_change,
+            currency_volume,
+            market_cap,
+            holders,
+        )
 
     @staticmethod
     def _get_currency_symbol(cointext):
         try:
-            currency_symbol = re.search('\([A-Za-z0-9]+\)',
-                                        cointext).group(0)[1:-1]
+            currency_symbol = re.search('\([A-Za-z0-9]+\)', cointext).group(0)[1:-1]
         except AttributeError:
             currency_symbol = cointext
 
@@ -238,8 +243,7 @@ class ERC20Token:
         :return: number converted from the string to the desired type
         """
         try:
-            result = rtype(
-                re.sub('[$,%]', '', num_string))
+            result = rtype(re.sub('[$,%]', '', num_string))
         except ValueError:
             result = None
 

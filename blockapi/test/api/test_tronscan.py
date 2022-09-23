@@ -12,6 +12,5 @@ class TestTronscanAPI:
         api = TronscanAPI(address=self.ADDRESS)
         result = api.get_balance()
 
-        assert next((r["amount"] for r in result if r["symbol"] == "TRX")) == \
-               0.588285
+        assert next((r["amount"] for r in result if r["symbol"] == "TRX")) == 0.588285
         assert len(result) == 55

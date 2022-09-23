@@ -23,18 +23,16 @@ class InsightAPI(BlockchainAPI):
         if not response:
             return []
 
-        return [{
-            'symbol': self.symbol,
-            'amount': response * self.coef
-        }]
+        return [{'symbol': self.symbol, 'amount': response * self.coef}]
 
 
 class BitpayAPI(InsightAPI):
     """
     coins: bitcoin
-    API docs: 
-    Explorer: 
+    API docs:
+    Explorer:
     """
+
     active = False  # no longer available
     symbol = 'BTC'
     base_url = 'https://insight.bitpay.com/api'
@@ -46,6 +44,7 @@ class MercerweissAPI(InsightAPI):
     API docs: http://insight.mercerweiss.com/api
     Explorer: http://insight.mercerweiss.com/
     """
+
     active = False  # no longer available
     symbol = 'ZEC'
     base_url = 'http://insight.mercerweiss.com/api'
@@ -57,6 +56,7 @@ class RavencoinAPI(InsightAPI):
     API docs: https://github.com/RavenDevKit/insight-api
     Explorer: https://ravencoin.network
     """
+
     symbol = 'RVN'
     base_url = 'https://ravencoin.network/api'
 
@@ -64,9 +64,10 @@ class RavencoinAPI(InsightAPI):
 class InsightLitecoreAPI(InsightAPI):
     """
     coins: litecoin
-    API docs: 
+    API docs:
     Explorer: https://insight.litecore.io
     """
+
     active = False
     symbol = 'LTC'
     base_url = 'https://insight.litecore.io/api'
@@ -78,5 +79,6 @@ class InsightDcrdataAPI(InsightAPI):
     API docs: https://github.com/decred/dcrdata/blob/master/api/Insight_API_documentation.md
     Explorer: https://explorer.dcrdata.org
     """
+
     symbol = 'DCR'
     base_url = 'https://explorer.dcrdata.org/insight/api'

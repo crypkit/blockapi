@@ -22,8 +22,7 @@ class BinanceAPI(BlockchainAPI):
 
     supported_requests = {
         'get_balance': '/account/{address}',
-        'get_txs': '/transactions?address={address}&offset={offset}'
-                   '&limit={limit}'
+        'get_txs': '/transactions?address={address}&offset={offset}' '&limit={limit}',
     }
 
     def get_balance(self):
@@ -32,18 +31,17 @@ class BinanceAPI(BlockchainAPI):
             return None
 
         try:
-            return [{
-                'symbol': bal['symbol'],
-                'amount': float(bal['free']) * self.coef
-            } for bal in response['balances']]
+            return [
+                {'symbol': bal['symbol'], 'amount': float(bal['free']) * self.coef}
+                for bal in response['balances']
+            ]
         except ValueError:
             return None
 
     def get_txs(self, offset=0, limit=100, unconfirmed=False):
-        response = self.request('get_txs',
-                                address=self.address,
-                                offset=offset,
-                                limit=limit)
+        response = self.request(
+            'get_txs', address=self.address, offset=offset, limit=limit
+        )
 
         return [self.parse_tx(t) for t in response['tx']]
 
@@ -73,5 +71,5 @@ class BinanceAPI(BlockchainAPI):
             'type': 'normal',
             'kind': 'transaction',
             'direction': direction,
-            'raw': tx
+            'raw': tx,
         }

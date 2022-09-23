@@ -2,11 +2,7 @@ from datetime import datetime
 
 import pytz
 
-from blockapi.services import (
-    BlockchainAPI,
-    APIError,
-    AddressNotExist,
-)
+from blockapi.services import AddressNotExist, APIError, BlockchainAPI
 
 
 class CardanoExplorerAPI(BlockchainAPI):
@@ -21,9 +17,7 @@ class CardanoExplorerAPI(BlockchainAPI):
     rate_limit = 0
     coef = 1e-6
 
-    supported_requests = {
-        'get_summary': '/addresses/summary/{address}'
-    }
+    supported_requests = {'get_summary': '/addresses/summary/{address}'}
 
     def get_balance(self):
         summary = self._get_summary()
@@ -36,26 +30,25 @@ class CardanoExplorerAPI(BlockchainAPI):
         return [self.parse_tx(t) for t in txs]
 
     def parse_tx(self, tx):
-        my_input = next((i for i in tx['ctbInputs']
-                         if i[0].lower() == self.address.lower()), None)
+        my_input = next(
+            (i for i in tx['ctbInputs'] if i[0].lower() == self.address.lower()), None
+        )
 
-        my_output = next((i for i in tx['ctbOutputs']
-                          if i[0].lower() == self.address.lower()), None)
+        my_output = next(
+            (i for i in tx['ctbOutputs'] if i[0].lower() == self.address.lower()), None
+        )
 
         fee = None
 
         if my_input:
-            fee = (int(tx['ctbInputSum']['getCoin'])
-                   - int(tx['ctbOutputSum']['getCoin']))
+            fee = int(tx['ctbInputSum']['getCoin']) - int(tx['ctbOutputSum']['getCoin'])
 
-            to_address = (tx['ctbInputs'][0][0]
-                          if len(tx['ctbInputs']) else None)
+            to_address = tx['ctbInputs'][0][0] if len(tx['ctbInputs']) else None
             from_address = self.address
             amount = int(my_input[1]['getCoin']) * self.coef
 
         else:
-            from_address = (tx['ctbOutputs'][0][0]
-                            if len(tx['ctbOutputs']) else None)
+            from_address = tx['ctbOutputs'][0][0] if len(tx['ctbOutputs']) else None
             to_address = self.address
             amount = int(my_output[1]['getCoin']) * self.coef
 
@@ -72,7 +65,7 @@ class CardanoExplorerAPI(BlockchainAPI):
             'type': 'normal',
             'kind': 'transaction',
             'direction': 'outgoing' if my_input else 'incoming',
-            'raw': tx
+            'raw': tx,
         }
 
     def _get_summary(self):

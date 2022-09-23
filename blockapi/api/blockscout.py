@@ -18,11 +18,11 @@ class BlockscoutAPI(BlockchainAPI):
 
     supported_requests = {
         'eth_get_balance': '?module=account&action=eth_get_balance'
-                           '&address={address}',
+        '&address={address}',
         'get_balance': '?module=account&action=balance&address={address}',
         'get_token_list': '?module=account&action=tokenlist&address={address}',
         'get_token_balance': '?module=account&action=tokenbalance'
-                             '&contractaddress={contract}&address={address}'
+        '&contractaddress={contract}&address={address}',
     }
 
     def eth_get_balance(self):
@@ -31,10 +31,7 @@ class BlockscoutAPI(BlockchainAPI):
             return []
 
         amount = int(response['result'], 16) * self.coef
-        return [{
-            'symbol': self.symbol,
-            'amount': amount
-        }]
+        return [{'symbol': self.symbol, 'amount': amount}]
 
     def get_balance(self):
         balances = []
@@ -54,18 +51,18 @@ class BlockscoutAPI(BlockchainAPI):
         if response['message'] != 'OK':
             return
 
-        return {
-            'symbol': self.symbol,
-            'amount': int(response['result']) * self.coef
-        }
+        return {'symbol': self.symbol, 'amount': int(response['result']) * self.coef}
 
     def _get_token_balances(self):
         response = self.request('get_token_list', address=self.address)
         if response['message'] != 'OK':
             return
 
-        return [self._parse_token_balance(t)
-                for t in response['result'] if int(t['balance'])]
+        return [
+            self._parse_token_balance(t)
+            for t in response['result']
+            if int(t['balance'])
+        ]
 
     @staticmethod
     def _parse_token_balance(raw):
@@ -74,11 +71,14 @@ class BlockscoutAPI(BlockchainAPI):
         return {
             'symbol': raw.get('symbol', 'UNKNOWN'),
             'address': raw['contractAddress'],
-            'amount': (float(raw['balance']) * pow(10, -decimals)
-                       if decimals else float(raw['amount'])),
+            'amount': (
+                float(raw['balance']) * pow(10, -decimals)
+                if decimals
+                else float(raw['amount'])
+            ),
             'name': raw.get('name', 'Unknown'),
             'type': raw.get('type', 'UNKNOWN'),
-            'decimals': decimals
+            'decimals': decimals,
         }
 
 

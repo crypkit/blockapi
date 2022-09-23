@@ -18,9 +18,7 @@ class OntioAPI(BlockchainAPI):
     page_offset_step = None
     confirmed_num = None
 
-    supported_requests = {
-        'get_balance': '/v2/addresses/{address}/all/balances'
-    }
+    supported_requests = {'get_balance': '/v2/addresses/{address}/all/balances'}
 
     def get_balance(self):
         response = self.request('get_balance', address=self.address)
@@ -31,8 +29,7 @@ class OntioAPI(BlockchainAPI):
         for r in response['result']:
             # what about 'waitboundong' and 'unboundong'?
             if r['asset_name'] in ['ont', 'ong']:
-                balances.append({
-                    'symbol': r['asset_name'].upper(),
-                    'amount': float(r['balance'])
-                })
+                balances.append(
+                    {'symbol': r['asset_name'].upper(), 'amount': float(r['balance'])}
+                )
         return balances

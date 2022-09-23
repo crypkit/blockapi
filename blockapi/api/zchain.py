@@ -23,8 +23,7 @@ class ZchainAPI(BlockchainAPI):
     }
 
     def get_balance(self):
-        response = self.request('get_balance',
-                                address=self.address)
+        response = self.request('get_balance', address=self.address)
         if not response:
             return None
 

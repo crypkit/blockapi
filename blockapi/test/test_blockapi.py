@@ -1,12 +1,14 @@
 from decimal import Decimal
 
-from blockapi import (check_address_valid, get_all_supported_coins,
-                      get_api_classes_for_coin)
+from blockapi import (
+    check_address_valid,
+    get_all_supported_coins,
+    get_api_classes_for_coin,
+)
 from blockapi.test_data import get_test_api_key, test_addresses
 
 
 class TestBlockApiProviders:
-
     def __init__(self, data=None, methods=None):
         """State what currencies should be tested on which addresses
         with which expected values
@@ -39,11 +41,13 @@ class TestBlockApiProviders:
             if not test_addresses.get(currency):
                 continue
 
-            data.append({
-                'currency': currency,
-                'address': test_addresses[currency][0],
-                'value': '0'
-            })
+            data.append(
+                {
+                    'currency': currency,
+                    'address': test_addresses[currency][0],
+                    'value': '0',
+                }
+            )
 
         self.data = data
         self.run()
@@ -60,31 +64,32 @@ class TestBlockApiProviders:
                 api_key = get_test_api_key(class_.__name__)
                 try:
                     class_instance = class_(
-                        address=currency['address'],
-                        api_key=api_key
+                        address=currency['address'], api_key=api_key
                     )
                 except Exception as e:
-                    self.error_api.append({
-                        'api': class_.__name__,
-                        'error': 'Init error',
-                        'message': e
-                    })
+                    self.error_api.append(
+                        {'api': class_.__name__, 'error': 'Init error', 'message': e}
+                    )
                     continue
 
                 for method in self.methods:
                     try:
-                        self.results[method].append({
-                            'result': getattr(class_instance, method)(),
-                            'api': class_.__name__,
-                            'currency': currency['currency'],
-                            'success': True
-                        })
+                        self.results[method].append(
+                            {
+                                'result': getattr(class_instance, method)(),
+                                'api': class_.__name__,
+                                'currency': currency['currency'],
+                                'success': True,
+                            }
+                        )
                     except Exception as e:
-                        self.error_api.append({
-                            'api': class_.__name__,
-                            'error': f'{method} error',
-                            'message': e
-                        })
+                        self.error_api.append(
+                            {
+                                'api': class_.__name__,
+                                'error': f'{method} error',
+                                'message': e,
+                            }
+                        )
 
     def get_diagnostic(self, method=None):
         """Returns info about results"""
@@ -100,21 +105,27 @@ class TestBlockApiProviders:
 
         return {
             'api_with_error': [a['api'] for a in self.error_api],
-            'api_with_result_none': [r['api'] for r in self.results[method]
-                                     if r['result'] is None],
-            'api_with_structure_error': [r['api'] for r in self.results[method]
-                                         if not isinstance(r['result'], list)],
+            'api_with_result_none': [
+                r['api'] for r in self.results[method] if r['result'] is None
+            ],
+            'api_with_structure_error': [
+                r['api']
+                for r in self.results[method]
+                if not isinstance(r['result'], list)
+            ],
             'api_with_results': {
                 c: {
                     'results': [
-                        r for r in self.results[method]
+                        r
+                        for r in self.results[method]
                         if r['result'] is not None
                         and r['currency'] == c
                         and isinstance(r['result'], list)
                     ],
-                    'mean': self._mean(method=method, currency=c)
-                } for c in self.currencies
-            }
+                    'mean': self._mean(method=method, currency=c),
+                }
+                for c in self.currencies
+            },
         }
 
     @property
@@ -128,26 +139,19 @@ class TestBlockApiProviders:
         for d in _data:
 
             if d['currency'] not in self.currencies:
-                not_valid_data.append({
-                    'message': 'Symbol not valid',
-                    'data': d
-                })
+                not_valid_data.append({'message': 'Symbol not valid', 'data': d})
                 continue
 
             if not check_address_valid(d['currency'], d['address']):
-                not_valid_data.append({
-                    'message': 'Check address not successful',
-                    'data': d
-                })
+                not_valid_data.append(
+                    {'message': 'Check address not successful', 'data': d}
+                )
                 continue
 
             try:
                 d['value'] = Decimal(d['value'])
             except ValueError:
-                not_valid_data.append({
-                    'message': 'Value is not a number',
-                    'data': d
-                })
+                not_valid_data.append({'message': 'Value is not a number', 'data': d})
                 continue
 
             valid_data.append(d)
@@ -155,12 +159,18 @@ class TestBlockApiProviders:
         self._data = valid_data
 
     def _mean(self, method, currency):
-        records = [r['result'] for r in self.results[method]
-                   if r['result'] is not None and r['currency'] == currency
-                   and isinstance(r['result'], list)]
+        records = [
+            r['result']
+            for r in self.results[method]
+            if r['result'] is not None
+            and r['currency'] == currency
+            and isinstance(r['result'], list)
+        ]
 
-        sum_ = sum([
-            next((i['amount'] for i in r if i['symbol'] == currency), 0)
-            for r in records
-        ])
+        sum_ = sum(
+            [
+                next((i['amount'] for i in r if i['symbol'] == currency), 0)
+                for r in records
+            ]
+        )
         return sum_ / len(records) if records else 0

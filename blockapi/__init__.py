@@ -5,6 +5,7 @@ import coinaddrng
 
 import blockapi.api
 import blockapi.utils
+
 from .services import APIError
 from .test_data import test_addresses
 
@@ -33,7 +34,7 @@ COINS = {
     'tezos': 'XTZ',
     'tron': 'TRX',
     'vechain': 'VET',
-    'zcash': 'ZEC'
+    'zcash': 'ZEC',
 }
 
 
@@ -46,14 +47,12 @@ def get_balance_from_random_api(symbol, address):
 
 def get_shuffled_suitable_api_classes_for_coin(symbol, address):
     api_classes = get_shuffled_api_classes_for_coin(symbol)
-    filtered_api_classes = filter_suitable_api_classes(api_classes, symbol,
-                                                       address)
+    filtered_api_classes = filter_suitable_api_classes(api_classes, symbol, address)
     return filtered_api_classes
 
 
 def _call_method_from_random_api(symbol, address, method):
-    filtered_api_classes = get_shuffled_suitable_api_classes_for_coin(symbol,
-                                                                      address)
+    filtered_api_classes = get_shuffled_suitable_api_classes_for_coin(symbol, address)
     for cl in filtered_api_classes:
         try:
             inst = cl(address)
@@ -70,8 +69,7 @@ def get_shuffled_api_classes_for_coin(symbol):
 
 
 def get_api_classes_for_coin(symbol):
-    return [i for i in get_active_api_classes() if
-            i.symbol and i.symbol == symbol]
+    return [i for i in get_active_api_classes() if i.symbol and i.symbol == symbol]
 
 
 def filter_suitable_api_classes(api_classes, symbol, address):
@@ -93,8 +91,7 @@ def get_random_api_class_for_coin(symbol, exclude=None):
 
 
 def get_all_supported_coins():
-    return list(set(c.symbol for c in get_active_api_classes()
-                    if c.symbol))
+    return list(set(c.symbol for c in get_active_api_classes() if c.symbol))
 
 
 def get_active_api_classes():
@@ -115,8 +112,7 @@ def _inheritors(klass):
 
 
 def _get_subclasses(class_name):
-    return [getattr(class_name, x) for x in dir(class_name)
-            if not x.startswith('__')]
+    return [getattr(class_name, x) for x in dir(class_name) if not x.startswith('__')]
 
 
 def _get_all_inheritors():
@@ -127,8 +123,10 @@ def _get_all_inheritors():
     for trida in tridy:
         tridy_sub = _get_subclasses(trida)
         for trida_sub in tridy_sub:
-            if (inspect.isclass(trida_sub) and
-                    blockapi.services.BlockchainAPI in trida_sub.__bases__):
+            if (
+                inspect.isclass(trida_sub)
+                and blockapi.services.BlockchainAPI in trida_sub.__bases__
+            ):
                 all_inheritors.append(trida_sub)
                 grandchildren = _inheritors(trida_sub)
                 if len(grandchildren) > 0:
@@ -199,5 +197,5 @@ def get_address_info(symbol: str, address: str):
             valid=True,
             network='',
             address_type='',
-            is_extended=False
+            is_extended=False,
         )

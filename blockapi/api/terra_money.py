@@ -21,7 +21,7 @@ class TerraMoneyApi(BlockchainAPI):
     supported_requests = {
         'get_balance': '/bank/{address}',
         'get_delegations': '/staking/{address}',
-        'get_txs': '/txs?account={address}&limit={limit}&page={page}'
+        'get_txs': '/txs?account={address}&limit={limit}&page={page}',
     }
 
     # https://github.com/terra-money/fcd/blob/365c6dbd4b8803d38d03f9cfd573425f69493617/src/lib/common.ts#L24
@@ -45,7 +45,7 @@ class TerraMoneyApi(BlockchainAPI):
     tx_kinds = {
         'bank/MsgSend': 'deposit',
         'staking/MsgDelegate': 'delegation',
-        'distribution/MsgWithdrawDelegationReward': 'delegation_withdrawal'
+        'distribution/MsgWithdrawDelegationReward': 'delegation_withdrawal',
     }
 
     def get_balance(self):
@@ -55,22 +55,27 @@ class TerraMoneyApi(BlockchainAPI):
 
         return_balances = []
         for bal in balances['balance']:
-            return_balances.append({
-                'symbol': self._get_symbol(bal['denom']),
-                'amount': to_decimal(bal['available']) * self.coef
-            })
+            return_balances.append(
+                {
+                    'symbol': self._get_symbol(bal['denom']),
+                    'amount': to_decimal(bal['available']) * self.coef,
+                }
+            )
 
         # Add staked amount in LUNA
         for delegation in balances['delegations']:
-            luna = next((b for b in return_balances if b['symbol'] == 'LUNA'),
-                        {'symbol': 'LUNA', 'amount': 0})
+            luna = next(
+                (b for b in return_balances if b['symbol'] == 'LUNA'),
+                {'symbol': 'LUNA', 'amount': 0},
+            )
             luna['amount'] += to_decimal(delegation['amount']) * self.coef
 
         return return_balances
 
     def get_txs(self, offset=1, limit=100, unconfirmed=False):
-        txs_req = self.request('get_txs', address=self.address, limit=limit,
-                               page=offset)
+        txs_req = self.request(
+            'get_txs', address=self.address, limit=limit, page=offset
+        )
         if not txs_req:
             return None
 
@@ -78,7 +83,7 @@ class TerraMoneyApi(BlockchainAPI):
         for tx in txs_req['txs']:
             tx_item = {
                 'kind': self.tx_kinds.get(tx['tx']['value']['msg'][0]['type']),
-                'result': self.parse_tx(tx)
+                'result': self.parse_tx(tx),
             }
             txs.append(tx_item)
 
@@ -95,11 +100,14 @@ class TerraMoneyApi(BlockchainAPI):
         msg = tx['tx']['value']['msg']
         return {
             'date': tx['timestamp'],
-            'fee': [{
-                'symbol': self._get_symbol(f['denom']),
-                'amount': to_decimal(f['amount']) * self.coef
-            } for f in fee['amount']],
-            'amount': [self.parse_tx_amount(m['value'])for m in msg]
+            'fee': [
+                {
+                    'symbol': self._get_symbol(f['denom']),
+                    'amount': to_decimal(f['amount']) * self.coef,
+                }
+                for f in fee['amount']
+            ],
+            'amount': [self.parse_tx_amount(m['value']) for m in msg],
         }
 
     def parse_tx_amount(self, tx_value):
@@ -109,14 +117,17 @@ class TerraMoneyApi(BlockchainAPI):
 
         tx_amount = tx_value['amount']
         if isinstance(tx_amount, list):
-            amount = [{
-                'symbol': self._get_symbol(t['denom']),
-                'amount': to_decimal(t['amount']) * self.coef
-            } for t in tx_amount]
+            amount = [
+                {
+                    'symbol': self._get_symbol(t['denom']),
+                    'amount': to_decimal(t['amount']) * self.coef,
+                }
+                for t in tx_amount
+            ]
         else:
             amount = {
                 'symbol': self._get_symbol(tx_amount['denom']),
-                'amount': to_decimal(tx_amount['amount']) * self.coef
+                'amount': to_decimal(tx_amount['amount']) * self.coef,
             }
         return amount
 

@@ -19,12 +19,12 @@ class EosparkAPI(BlockchainAPI):
 
     supported_requests = {
         'get_balance': '?module=account&action=get_account_balance'
-                       '&apikey={api_key}&account={address}',
+        '&apikey={api_key}&account={address}',
         'get_token_balances': '?module=account&action=get_token_list'
-                              '&apikey={api_key}&account={address}',
+        '&apikey={api_key}&account={address}',
         'get_txs': '?module=account&action=get_account_related_trx_info'
-                   '&apikey={api_key}&account={address}'
-                   '&page={page}&size={size}'
+        '&apikey={api_key}&account={address}'
+        '&page={page}&size={size}',
     }
 
     def get_balance(self):
@@ -52,7 +52,6 @@ class EosparkAPI(BlockchainAPI):
             'is_error': False,
             'type': 'normal' if tx['symbol'] == 'EOS' else 'token',
             'kind': 'transaction',
-            'direction': 'outgoing' if self.address == tx['sender']
-            else 'incoming',
-            'raw': tx
+            'direction': 'outgoing' if self.address == tx['sender'] else 'incoming',
+            'raw': tx,
         }

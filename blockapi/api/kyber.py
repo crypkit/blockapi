@@ -18,7 +18,7 @@ class KyberAPI(BlockchainAPI):
         'get_staker_epoch_info': 'stakers/{address}?epoch={epoch}',
         'get_user_actions': 'stakers/{address}/actions',
         'get_staker_rewards': 'stakers/{address}/rewards',
-        'get_staker_votes': 'stakers/{address}/votes'
+        'get_staker_votes': 'stakers/{address}/votes',
     }
 
     def __init__(self, address: str, network: str = 'mainnet'):
@@ -47,8 +47,9 @@ class KyberAPI(BlockchainAPI):
                 "delegate": str, - Ethereum address of the delegate
             }
         """
-        result = self.request('get_staker_epoch_info', address=self.address,
-                              epoch=epoch)
+        result = self.request(
+            'get_staker_epoch_info', address=self.address, epoch=epoch
+        )
         if not result['success'] or not result['data']:
             return {}
         return self._parse_staker_epoch_info(result['data'])
@@ -59,7 +60,7 @@ class KyberAPI(BlockchainAPI):
             'stake_amount': Decimal(info['stake_amount']),
             'delegated_stake_amount': Decimal(info['delegated_stake_amount']),
             'pending_stake_amount': Decimal(info['pending_stake_amount']),
-            'delegate': info['delegate']
+            'delegate': info['delegate'],
         }
 
     def get_user_actions(self) -> List[Dict]:
@@ -84,13 +85,15 @@ class KyberAPI(BlockchainAPI):
     def _parse_user_actions(raw_actions: List) -> List[Dict]:
         actions = []
         for action in raw_actions:
-            actions.append({
-                'epoch': Decimal(action['epoch']),
-                'type': action['type'],
-                'tx_hash': action['tx_hash'],
-                'meta': action['meta'],
-                'action_date': datetime.utcfromtimestamp(action['timestamp'])
-            })
+            actions.append(
+                {
+                    'epoch': Decimal(action['epoch']),
+                    'type': action['type'],
+                    'tx_hash': action['tx_hash'],
+                    'meta': action['meta'],
+                    'action_date': datetime.utcfromtimestamp(action['timestamp']),
+                }
+            )
         return actions
 
     def get_staker_rewards(self) -> List[Dict]:
@@ -121,15 +124,17 @@ class KyberAPI(BlockchainAPI):
     def _parse_staker_rewards(raw_rewards: List) -> List[Dict]:
         rewards = []
         for reward in raw_rewards:
-            rewards.append({
-                'epoch': Decimal(reward['epoch']),
-                'amount': Decimal(reward['amount']),
-                'claimed': reward['claimed'],
-                'tx_hash': reward['tx_hash'],
-                'total_stake': Decimal(reward['total_stake']),
-                'total_reward': Decimal(reward['total_reward']),
-                'total_voted': Decimal(reward['total_voted']),
-            })
+            rewards.append(
+                {
+                    'epoch': Decimal(reward['epoch']),
+                    'amount': Decimal(reward['amount']),
+                    'claimed': reward['claimed'],
+                    'tx_hash': reward['tx_hash'],
+                    'total_stake': Decimal(reward['total_stake']),
+                    'total_reward': Decimal(reward['total_reward']),
+                    'total_voted': Decimal(reward['total_voted']),
+                }
+            )
         return rewards
 
     def get_staker_votes(self) -> List[Dict]:
@@ -155,13 +160,15 @@ class KyberAPI(BlockchainAPI):
     def _parse_staker_votes(raw_votes: List) -> List[Dict]:
         votes = []
         for vote in raw_votes:
-            votes.append({
-                'staker': vote['staker'],
-                'epoch': Decimal(vote['epoch']),
-                'campaign_id': Decimal(vote['campaign_id']),
-                'option': Decimal(vote['option']),
-                'power': vote['power'],
-            })
+            votes.append(
+                {
+                    'staker': vote['staker'],
+                    'epoch': Decimal(vote['epoch']),
+                    'campaign_id': Decimal(vote['campaign_id']),
+                    'option': Decimal(vote['option']),
+                    'power': vote['power'],
+                }
+            )
         return votes
 
     def get_balance(self):

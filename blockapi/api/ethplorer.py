@@ -17,9 +17,7 @@ class EthplorerAPI(BlockchainAPI):
     max_items_per_page = None
     page_offset_step = None
 
-    supported_requests = {
-        'get_info': '/getAddressInfo/{address}?apiKey={api_key}'
-    }
+    supported_requests = {'get_info': '/getAddressInfo/{address}?apiKey={api_key}'}
 
     def __init__(self, address, api_key=None):
         if not api_key:
@@ -38,21 +36,22 @@ class EthplorerAPI(BlockchainAPI):
         response = self.info
 
         if response.get('ETH', {}).get('balance'):
-            balances.append({
-                'symbol': self.symbol,
-                'amount': response['ETH']['balance']
-            })
+            balances.append(
+                {'symbol': self.symbol, 'amount': response['ETH']['balance']}
+            )
 
         for token in response.get('tokens', []):
             info = token['tokenInfo']
             decimals = int(info['decimals']) if info.get('decimals') else 18
 
-            balances.append({
-                'symbol': info.get('symbol', 'unknown'),
-                'address': info['address'],
-                'amount': token['balance'] * pow(10, -decimals),
-                'name': info.get('name', 'Unknown')
-            })
+            balances.append(
+                {
+                    'symbol': info.get('symbol', 'unknown'),
+                    'address': info['address'],
+                    'amount': token['balance'] * pow(10, -decimals),
+                    'name': info.get('name', 'Unknown'),
+                }
+            )
 
         if not balances:
             return None
@@ -63,8 +62,6 @@ class EthplorerAPI(BlockchainAPI):
     def info(self):
         if not self._info:
             self._info = self.request(
-                'get_info',
-                address=self.address,
-                api_key=self.api_key
+                'get_info', address=self.address, api_key=self.api_key
             )
         return self._info

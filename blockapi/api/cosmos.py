@@ -4,10 +4,10 @@ from copy import deepcopy
 import dateutil.parser
 
 from blockapi.services import (
-    BlockchainAPI,
+    AddressNotExist,
     APIError,
+    BlockchainAPI,
     set_default_args_values,
-    AddressNotExist
 )
 
 
@@ -30,14 +30,13 @@ class CosmosAPI(BlockchainAPI):
     supported_requests = {
         'get_info': '/auth/accounts/{address}',
         'get_balance': '/bank/balances/{address}',
-        'get_txs': '/txs?action={action}&{role}={address}&page={page}'
-                   '&limit={limit}',
+        'get_txs': '/txs?action={action}&{role}={address}&page={page}' '&limit={limit}',
         'get_delegations': '/staking/delegators/{address}/delegations',
         'get_unbonding_delegations': '/staking/delegators/{address}'
-                                     '/unbonding_delegations',
+        '/unbonding_delegations',
         'get_redelegations': '/staking/redelegations?delegator={address}',
         'get_delegation_reward': '/distribution/delegators/{address}'
-                                 '/rewards/{validator_address}',
+        '/rewards/{validator_address}',
         'get_proposals': '/gov/proposals',
         'query_votes': '/gov/proposals/{proposal_id}/votes',
     }
@@ -59,10 +58,9 @@ class CosmosAPI(BlockchainAPI):
         balances_result = []
         for b in balances['result']:
             symbol = self.symbol if b['denom'] == 'uatom' else b['denom']
-            balances_result.append({
-                'symbol': symbol,
-                'amount': int(b['amount']) * self.coef
-            })
+            balances_result.append(
+                {'symbol': symbol, 'amount': int(b['amount']) * self.coef}
+            )
         return balances_result
 
     def get_delegations(self):
@@ -75,9 +73,11 @@ class CosmosAPI(BlockchainAPI):
         return self.request('get_redelegations', address=self.address)
 
     def get_delegation_reward(self, validator_address):
-        return self.request('get_delegation_reward',
-                            address=self.address,
-                            validator_address=validator_address)
+        return self.request(
+            'get_delegation_reward',
+            address=self.address,
+            validator_address=validator_address,
+        )
 
     def get_proposals(self):
         return self.request('get_proposals')
@@ -86,8 +86,7 @@ class CosmosAPI(BlockchainAPI):
         votes = []
         for prop in self.get_proposals():
             try:
-                vote = self.request('query_votes',
-                                    proposal_id=prop['proposal_id'])
+                vote = self.request('query_votes', proposal_id=prop['proposal_id'])
                 if vote is None:
                     continue
                 for v in vote:
@@ -107,14 +106,11 @@ class CosmosAPI(BlockchainAPI):
         txs = self._get_txs('send', 'sender', offset, limit, unconfirmed)
         return self.parse_txs(txs)
 
-    def get_multi_incoming_txs(self, offset=None, limit=None,
-                               unconfirmed=False):
-        txs = self._get_txs('multisend', 'recipient', offset, limit,
-                            unconfirmed)
+    def get_multi_incoming_txs(self, offset=None, limit=None, unconfirmed=False):
+        txs = self._get_txs('multisend', 'recipient', offset, limit, unconfirmed)
         return self.parse_txs(txs)
 
-    def get_multi_outgoing_txs(self, offset=None, limit=None,
-                               unconfirmed=False):
+    def get_multi_outgoing_txs(self, offset=None, limit=None, unconfirmed=False):
         txs = self._get_txs('multisend', 'sender', offset, limit, unconfirmed)
         return self.parse_txs(txs)
 
@@ -133,14 +129,14 @@ class CosmosAPI(BlockchainAPI):
             'fee': fee_amount * self.coef if fee_amount else None,
             'gas': {
                 'gas_used': int(tx['gas_used']),
-                'gas_limit': int(tx['gas_wanted'])
+                'gas_limit': int(tx['gas_wanted']),
             },
             'hash': tx['txhash'],
             'confirmed': None,
             'type': 'normal',
             'kind': 'transaction',
             'description': tx['tx']['value']['memo'],
-            'raw': tx
+            'raw': tx,
         }
 
         # for every message (sub tx?) create new tx
@@ -157,8 +153,7 @@ class CosmosAPI(BlockchainAPI):
 
     #
     def get_rewards_withdrawals(self, offset=None, limit=None):
-        items = self._get_txs('withdraw_delegator_reward', 'delegator', offset,
-                              limit)
+        items = self._get_txs('withdraw_delegator_reward', 'delegator', offset, limit)
         return self.parse_other_txs(items)
 
     #
@@ -182,8 +177,7 @@ class CosmosAPI(BlockchainAPI):
 
     # only for validators
     def get_validator_edits(self, offset=None, limit=None):
-        items = self._get_txs('edit_validator', 'destination-validator',
-                              offset, limit)
+        items = self._get_txs('edit_validator', 'destination-validator', offset, limit)
         return self.parse_other_txs(items)
 
     # create validator
@@ -199,8 +193,7 @@ class CosmosAPI(BlockchainAPI):
         return parsed_txs
 
     @set_default_args_values
-    def _get_txs(self, action, role, offset=None, limit=None,
-                 unconfirmed=None):
+    def _get_txs(self, action, role, offset=None, limit=None, unconfirmed=None):
         return self.request(
             'get_txs',
             action=action,
@@ -208,24 +201,23 @@ class CosmosAPI(BlockchainAPI):
             address=self.address,
             page=offset,
             limit=limit,
-            unconfirmed=unconfirmed
+            unconfirmed=unconfirmed,
         )
 
     def _parse_other_tx(self, tx):
         fee_data = tx['tx']['value']['fee']['amount']
-        fee_amount = int(fee_data[0]['amount']) * self.coef if fee_data \
-            else None
+        fee_amount = int(fee_data[0]['amount']) * self.coef if fee_data else None
 
         base_tx = {
             'date': dateutil.parser.parse(tx['timestamp']),
             'fee': fee_amount,
             'gas': {
                 'gas_used': int(tx['gas_used']),
-                'gas_limit': int(tx['gas_wanted'])
+                'gas_limit': int(tx['gas_wanted']),
             },
             'hash': tx['txhash'],
             'description': tx['tx']['value']['memo'],
-            'raw': tx
+            'raw': tx,
         }
 
         # for every message (sub tx?) create new tx
@@ -243,8 +235,9 @@ class CosmosAPI(BlockchainAPI):
         # only reward has values in separated dict
         r = re.compile("([0-9]+)([a-zA-Z]+)")
         # [($number, $coin), ...]
-        rewards = [r.match(t['value']).groups()
-                   for t in tx['tags'] if t['key'] == 'rewards']
+        rewards = [
+            r.match(t['value']).groups() for t in tx['tags'] if t['key'] == 'rewards'
+        ]
 
         parsed_msgs = []
         for msg in tx['tx']['value']['msg']:
@@ -273,7 +266,7 @@ class CosmosAPI(BlockchainAPI):
             'cosmos-sdk/MsgWithdrawDelegationReward': 'reward',
             'cosmos-sdk/MsgDelegate': 'delegate',
             'cosmos-sdk/MsgBeginRedelegate': 'redelegate',
-            'cosmos-sdk/MsgVote': 'vote'
+            'cosmos-sdk/MsgVote': 'vote',
         }.get(raw_type, raw_type)
 
     def _get_msg_data(self, msg_type, msg_value):
@@ -297,35 +290,50 @@ class CosmosAPI(BlockchainAPI):
             elif isinstance(amount_obj, dict):
                 amount_data = amount_obj
 
-            msg_info['amount'] = (int(amount_data['amount']) * self.coef
-                                  if amount_data else None)
+            msg_info['amount'] = (
+                int(amount_data['amount']) * self.coef if amount_data else None
+            )
 
         return msg_info
 
     def _process_msg_type_multisend(self, msg_value):
-        my_input = next((i for i in msg_value['inputs']
-                         if i['address'].lower() == self.address.lower()),
-                        None)
+        my_input = next(
+            (
+                i
+                for i in msg_value['inputs']
+                if i['address'].lower() == self.address.lower()
+            ),
+            None,
+        )
 
-        my_output = next((i for i in msg_value['outputs']
-                          if i['address'].lower() == self.address.lower()),
-                         None)
+        my_output = next(
+            (
+                i
+                for i in msg_value['outputs']
+                if i['address'].lower() == self.address.lower()
+            ),
+            None,
+        )
 
         if my_input:
-            to_address = (msg_value['outputs'][0]['address']
-                          if len(msg_value['outputs']) == 1
-                          else 'multiple')
+            to_address = (
+                msg_value['outputs'][0]['address']
+                if len(msg_value['outputs']) == 1
+                else 'multiple'
+            )
             return {
                 'from_address': self.address,
                 'to_address': to_address,
-                'amount': int(my_input['coins'][0]['amount']) * self.coef
+                'amount': int(my_input['coins'][0]['amount']) * self.coef,
             }
         if my_output:
-            from_address = (msg_value['inputs'][0]['address']
-                            if len(msg_value['inputs']) == 1
-                            else 'multiple')
+            from_address = (
+                msg_value['inputs'][0]['address']
+                if len(msg_value['inputs']) == 1
+                else 'multiple'
+            )
             return {
                 'from_address': from_address,
                 'to_address': self.address,
-                'amount': int(my_output['coins'][0]['amount']) * self.coef
+                'amount': int(my_output['coins'][0]['amount']) * self.coef,
             }
