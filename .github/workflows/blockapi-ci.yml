@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install dependencies
+      - name: Restore cache
         uses: actions/cache@v1
         id: pip-cache
         with:
@@ -24,6 +24,8 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: |
              ${{ runner.os }}-pip-
+
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install .
@@ -45,7 +47,7 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install dependencies
+      - name: Restore cache
         uses: actions/cache@v1
         id: pip-cache
         with:
@@ -53,6 +55,8 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: |
              ${{ runner.os }}-pip-
+
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install .
@@ -76,7 +80,7 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install dependencies
+      - name: Restore cache
         uses: actions/cache@v1
         id: pip-cache
         with:
@@ -84,11 +88,13 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: |
              ${{ runner.os }}-pip-
+
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install .
+          pip install python-semantic-release
 
       - name: Update version
         run: |
-          pip install python-semantic-release
           semantic-release version
