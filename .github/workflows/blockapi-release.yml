@@ -24,38 +24,38 @@ jobs:
     needs: check-tag
     concurrency: release
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v1
-        with:
-          python-version: '3.9'
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.9'
 
-      - name: Restore cache
-        uses: actions/cache@v3
-        id: pip-cache
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
-          restore-keys: |
-             ${{ runner.os }}-pip-
+    - name: Restore cache
+      uses: actions/cache@v3
+      id: pip-cache
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+        restore-keys: |
+           ${{ runner.os }}-pip-
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install .
-          pip install wheel twine
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .
+        pip install wheel twine
 
-      - name: Build
-      - run: |
-          rm -f dist/*
-          python setup.py sdist bdist_wheel
+    - name: Build
+      run: |
+        rm -f dist/*
+        python setup.py sdist bdist_wheel
 
-      - name: Publish package to PyPI
-        uses: pypa/gh-action-pypi-publish@master
-        with:
-          user: __token__
-          password: ${{ secrets.pypi_token }}
+    - name: Publish package to PyPI
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.pypi_token }}
