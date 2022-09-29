@@ -1,5 +1,8 @@
 name: Release
 on:
+  workflow_dispatch:
+    branches:
+      - feat/github-actions
   push:
     branches:
       - master
@@ -18,5 +21,7 @@ jobs:
       uses: relekang/python-semantic-release@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        upload_to_release: false
+        repository_url: test.pypi.org
         repository_username: __token__
         repository_password: ${{ secrets.PYPI_TOKEN }}
