@@ -40,7 +40,7 @@ jobs:
   version:
     runs-on: ubuntu-latest
     needs: test
-    if: ${{ success() && github.ref == 'refs/heads/feat/github-actions-2' }}
+    if: ${{ success() && github.ref == 'refs/heads/master' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
