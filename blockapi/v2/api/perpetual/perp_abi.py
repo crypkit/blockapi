@@ -40,9 +40,7 @@ rewards_abi = [
     {
         "inputs": [],
         "name": "candidate",
-        "outputs": [
-            {"internalType": "address", "name": "", "type": "address"}
-        ],
+        "outputs": [{"internalType": "address", "name": "", "type": "address"}],
         "stateMutability": "view",
         "type": "function",
     },
@@ -125,9 +123,7 @@ rewards_abi = [
     {
         "inputs": [],
         "name": "getLengthOfMerkleRoots",
-        "outputs": [
-            {"internalType": "uint256", "name": "", "type": "uint256"}
-        ],
+        "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
         "stateMutability": "view",
         "type": "function",
     },
@@ -152,18 +148,14 @@ rewards_abi = [
     {
         "inputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
         "name": "merkleRootIndexes",
-        "outputs": [
-            {"internalType": "uint256", "name": "", "type": "uint256"}
-        ],
+        "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
         "stateMutability": "view",
         "type": "function",
     },
     {
         "inputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
         "name": "merkleRootTimestampMap",
-        "outputs": [
-            {"internalType": "uint256", "name": "", "type": "uint256"}
-        ],
+        "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
         "stateMutability": "view",
         "type": "function",
     },
@@ -173,18 +165,14 @@ rewards_abi = [
             {"internalType": "uint256", "name": "_end", "type": "uint256"},
         ],
         "name": "merkleRoots",
-        "outputs": [
-            {"internalType": "bytes32[]", "name": "", "type": "bytes32[]"}
-        ],
+        "outputs": [{"internalType": "bytes32[]", "name": "", "type": "bytes32[]"}],
         "stateMutability": "view",
         "type": "function",
     },
     {
         "inputs": [],
         "name": "owner",
-        "outputs": [
-            {"internalType": "address", "name": "", "type": "address"}
-        ],
+        "outputs": [{"internalType": "address", "name": "", "type": "address"}],
         "stateMutability": "view",
         "type": "function",
     },
@@ -215,9 +203,7 @@ rewards_abi = [
         "type": "function",
     },
     {
-        "inputs": [
-            {"internalType": "address", "name": "newOwner", "type": "address"}
-        ],
+        "inputs": [{"internalType": "address", "name": "newOwner", "type": "address"}],
         "name": "setOwner",
         "outputs": [],
         "stateMutability": "nonpayable",
@@ -226,9 +212,7 @@ rewards_abi = [
     {
         "inputs": [],
         "name": "token",
-        "outputs": [
-            {"internalType": "contract IERC20", "name": "", "type": "address"}
-        ],
+        "outputs": [{"internalType": "contract IERC20", "name": "", "type": "address"}],
         "stateMutability": "view",
         "type": "function",
     },
@@ -266,18 +250,14 @@ rewards_abi = [
     {
         "inputs": [],
         "name": "vestingPeriod",
-        "outputs": [
-            {"internalType": "uint256", "name": "", "type": "uint256"}
-        ],
+        "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
         "stateMutability": "view",
         "type": "function",
     },
     {
         "inputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
         "name": "weekMerkleRoots",
-        "outputs": [
-            {"internalType": "bytes32", "name": "", "type": "bytes32"}
-        ],
+        "outputs": [{"internalType": "bytes32", "name": "", "type": "bytes32"}],
         "stateMutability": "view",
         "type": "function",
     },

@@ -26,7 +26,7 @@ class BlockonomicsAPI(BlockchainAPI):
     supported_requests = {
         'get_balance': '/balance',
         'get_txs': '/searchhistory',
-        'get_tx': '/tx_detail?txid={txid}'
+        'get_tx': '/tx_detail?txid={txid}',
     }
 
     def __init__(self, address, api_key):
@@ -43,14 +43,12 @@ class BlockonomicsAPI(BlockchainAPI):
 
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
         body = '{"addr": "' + self.address + '"}'
-        txs = self.request('get_txs',
-                           body=body)
+        txs = self.request('get_txs', body=body)
 
         return [self.parse_tx(t) for t in txs['history']]
 
     def parse_tx(self, tx):
-        tx_data = self.request('get_tx', 
-                               txid=tx['txid'])
+        tx_data = self.request('get_tx', txid=tx['txid'])
 
         amount = tx['value']
         from_address = [adr['address'] for adr in tx_data['vin']]
@@ -74,5 +72,5 @@ class BlockonomicsAPI(BlockchainAPI):
             'type': 'normal',
             'kind': 'transaction',
             'direction': direction,
-            'raw': tx 
+            'raw': tx,
         }

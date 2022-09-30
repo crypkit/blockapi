@@ -19,14 +19,14 @@ class AmberdataAPI(BlockchainAPI):
     supported_requests = {
         'get_balance': '/addresses/{address}/account-balances/latest',
         'get_token_balance': '/addresses/{address}/tokens?page={page}&size={size}',
-        'get_token_info': '/addresses/{address}/information?include_price={include_price}'
+        'get_token_info': '/addresses/{address}/information?include_price={include_price}',
     }
 
     def __init__(self, address, api_key):
         super().__init__(address, api_key)
         self._headers = {
             'x-amberdata-blockchain-id': 'ethereum-mainnet',
-            'x-api-key': self.api_key
+            'x-api-key': self.api_key,
         }
 
     def get_balance(self):
@@ -44,16 +44,14 @@ class AmberdataAPI(BlockchainAPI):
 
     def _get_eth_balance(self):
         response = self.request(
-            'get_balance',
-            address=self.address,
-            headers=self._headers
+            'get_balance', address=self.address, headers=self._headers
         )
         if response['status'] != 200:
             return
 
         return {
             'symbol': 'ETH',
-            'amount': int(response['payload']['value']) * self.coef
+            'amount': int(response['payload']['value']) * self.coef,
         }
 
     def _get_token_balances(self):
@@ -66,13 +64,14 @@ class AmberdataAPI(BlockchainAPI):
                 address=self.address,
                 page=page,
                 size=self.max_items_per_page,
-                headers=self._headers
+                headers=self._headers,
             )
             if response['status'] != 200:
                 break
 
-            balances += [self._parse_token_balance(b)
-                         for b in response['payload']['records']]
+            balances += [
+                self._parse_token_balance(b) for b in response['payload']['records']
+            ]
 
             if len(balances) == int(response['payload']['totalRecords']):
                 break
@@ -105,10 +104,11 @@ class AmberdataAPI(BlockchainAPI):
         return {
             'symbol': raw.get('symbol', 'UNKNOWN'),
             'address': raw['address'],
-            'amount': (float(raw['amount']) * pow(10, -decimals)
-                       if decimals is not None else 0),
+            'amount': (
+                float(raw['amount']) * pow(10, -decimals) if decimals is not None else 0
+            ),
             'name': raw.get('name', 'Unknown'),
-            'type': type_
+            'type': type_,
         }
 
     @classmethod
@@ -119,7 +119,7 @@ class AmberdataAPI(BlockchainAPI):
             address=token_address,
             include_price=include_price,
             api_key=api.api_key,
-            headers=api._headers
+            headers=api._headers,
         )
         if response['status'] != 200:
             return
@@ -148,5 +148,5 @@ class AmberdataAPI(BlockchainAPI):
             'address': token_address,
             'name': name,
             'decimals': decimals,
-            'type': type_
+            'type': type_,
         }

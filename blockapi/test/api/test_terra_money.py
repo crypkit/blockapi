@@ -20,26 +20,11 @@ class TestTerraMoneyApi:
         result = api.get_balance()
 
         assert result == [
-            {
-                'symbol': 'LUNA',
-                'amount': Decimal('34682.501828')
-            },
-            {
-                'symbol': 'KRT',
-                'amount': Decimal('9412.963717')
-            },
-            {
-                'symbol': 'SDT',
-                'amount': Decimal('0.052803')
-            },
-            {
-                'symbol': 'UST',
-                'amount': Decimal('0.012112')
-            },
-            {
-                'symbol': 'MNT',
-                'amount': Decimal('1122.501887')
-            }
+            {'symbol': 'LUNA', 'amount': Decimal('34682.501828')},
+            {'symbol': 'KRT', 'amount': Decimal('9412.963717')},
+            {'symbol': 'SDT', 'amount': Decimal('0.052803')},
+            {'symbol': 'UST', 'amount': Decimal('0.012112')},
+            {'symbol': 'MNT', 'amount': Decimal('1122.501887')},
         ]
 
     @mark.vcr()

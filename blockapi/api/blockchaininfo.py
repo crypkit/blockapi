@@ -2,11 +2,7 @@ from datetime import datetime
 
 import pytz
 
-from blockapi.services import (
-    BlockchainAPI,
-    set_default_args_values,
-    AddressNotExist,
-)
+from blockapi.services import AddressNotExist, BlockchainAPI, set_default_args_values
 
 
 class BlockchainInfoAPI(BlockchainAPI):
@@ -28,7 +24,7 @@ class BlockchainInfoAPI(BlockchainAPI):
 
     supported_requests = {
         'get_balance': '/balance?active={address}',
-        'get_txs': '/multiaddr?active={address}&n={number}&offset={offset}'
+        'get_txs': '/multiaddr?active={address}&n={number}&offset={offset}',
     }
 
     def process_error_response(self, response):
@@ -48,10 +44,7 @@ class BlockchainInfoAPI(BlockchainAPI):
     def get_txs(self, offset=None, limit=None, unconfirmed=False):
         # always returns confimed transactions
         response = self.request(
-            'get_txs',
-            address=self.address,
-            number=limit,
-            offset=offset
+            'get_txs', address=self.address, number=limit, offset=offset
         )
         return [self.parse_tx(t) for t in response['txs']]
 
@@ -59,8 +52,9 @@ class BlockchainInfoAPI(BlockchainAPI):
         out_addresses = [o['addr'] for o in tx['out']]
         in_addresses = [i['prev_out']['addr'] for i in tx['inputs']]
         is_incoming = next((True for o in tx['out'] if o.get('xpub')), False)
-        is_outgoing = next((True for i in tx['inputs']
-                            if i['prev_out'].get('xpub')), False)
+        is_outgoing = next(
+            (True for i in tx['inputs'] if i['prev_out'].get('xpub')), False
+        )
         direction = 'incoming' if is_incoming else 'outgoing'
 
         if is_outgoing:
@@ -83,5 +77,5 @@ class BlockchainInfoAPI(BlockchainAPI):
             'kind': 'transaction',
             'direction': direction,
             'status': 'confirmed',
-            'raw': tx
+            'raw': tx,
         }

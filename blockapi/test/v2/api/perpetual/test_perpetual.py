@@ -1,6 +1,6 @@
 import pytest
 
-from blockapi.v2.api.perpetual.perpetual import perp_contract_address, PerpetualApi
+from blockapi.v2.api.perpetual.perpetual import PerpetualApi, perp_contract_address
 
 
 @pytest.fixture
@@ -31,6 +31,7 @@ def filter_infura_key(request):
     return request
 
 
+@pytest.mark.integration
 @pytest.mark.vcr(before_record_request=filter_infura_key)
 def test_perp_get_balances(perp_api):
     balances = perp_api.get_balance(test_address)

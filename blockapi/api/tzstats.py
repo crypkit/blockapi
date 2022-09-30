@@ -15,22 +15,15 @@ class TzStatsAPI(BlockchainAPI):
     max_items_per_page = 50
     page_offset_step = 1
 
-    supported_requests = {
-        'get_account': 'explorer/account/{address}'
-    }
+    supported_requests = {'get_account': 'explorer/account/{address}'}
 
     def get_balance(self):
         balance = self.request('get_account', address=self.address)
-        return [{
-            'symbol': self.symbol,
-            'amount': float(balance['spendable_balance'])
-        }]
+        return [{'symbol': self.symbol, 'amount': float(balance['spendable_balance'])}]
 
     def get_account(self):
         response = self.request('get_account', address=self.address)
 
-        response['manager'] = self.request('get_account',
-                                           address=response['manager'])
-        response['delegate'] = self.request('get_account',
-                                            address=response['delegate'])
+        response['manager'] = self.request('get_account', address=response['manager'])
+        response['delegate'] = self.request('get_account', address=response['delegate'])
         return response

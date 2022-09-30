@@ -20,9 +20,7 @@ def assert_balance(api_cls: Type[BlockchainAPI], address: str):
     api_inst = api_cls(address, api_key)
 
     balances = api_inst.get_balance()
-    check_balance = next((
-        b for b in balances if b['symbol'] == api_inst.symbol
-    ), None)
+    check_balance = next((b for b in balances if b['symbol'] == api_inst.symbol), None)
 
     assert check_balance, (
         f"No balance for symbol {api_inst.symbol} and API "

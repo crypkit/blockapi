@@ -6,7 +6,7 @@ class ChainSoAPI(BlockchainAPI):
     Multi coins: bitcoin, litecoin, dogecoin, zcash, dash
     Does't support xpub/ypub/zpub :(
     API docs: https://sochain.com/api
-    Explorer: 
+    Explorer:
     """
 
     active = True
@@ -21,7 +21,7 @@ class ChainSoAPI(BlockchainAPI):
 
     supported_requests = {
         'get_balance': '/get_address_balance/{symbol}/{address}',
-        'get_txs': '/address/{symbol}/{address}'
+        'get_txs': '/address/{symbol}/{address}',
     }
 
     def __init__(self, address, api_key=None):

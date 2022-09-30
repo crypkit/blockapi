@@ -1,9 +1,9 @@
 import logging
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Union
-from pydantic import BaseModel, validator
 
 from eth_utils import to_checksum_address
+from pydantic import BaseModel, validator
 
 from blockapi.utils.num import decimals_to_raw
 from blockapi.v2.api.debank_maps import (
@@ -12,7 +12,6 @@ from blockapi.v2.api.debank_maps import (
     NATIVE_COIN_MAP,
     REWARD_ASSET_TYPE_MAP,
 )
-
 from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance, IPortfolio
 from blockapi.v2.models import (
     AssetType,
@@ -90,7 +89,8 @@ class DebankModelProtocol(BaseModel):
 class DebankModelPortfolio(DebankModelProtocol):
     portfolio_item_list: List[DebankModelPortfolioItem]
 
-class DebankProtocolParser():
+
+class DebankProtocolParser:
     def parse(self, response: List) -> Dict[str, Protocol]:
         protocols = {}
         for item in response:

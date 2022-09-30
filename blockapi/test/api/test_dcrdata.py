@@ -51,8 +51,10 @@ class TestDcrdataAPI:
         assert len(result) == 28
         check_item = result[7]
         assert check_item["kind"] == "ticket"
-        assert check_item["result"]["hash"] == "51f27646cd8b98873816d820281bb" \
-                                               "bf850de79564440e3b18eceef46ef56cfae"
+        assert (
+            check_item["result"]["hash"] == "51f27646cd8b98873816d820281bb"
+            "bf850de79564440e3b18eceef46ef56cfae"
+        )
         assert check_item["result"]["purchased_on"].year == 2020
         assert check_item["result"]["purchased_on"].month == 6
         assert check_item["result"]["purchased_on"].day == 5
@@ -64,8 +66,7 @@ class TestDcrdataAPI:
 
     @mark.vcr()
     def test_get_tx(self):
-        hash_ = "193b59d8926588181aad5a5bed672e1fccf443f4d05dc1" \
-                "6a0cdaacf3b4b4ed7c"
+        hash_ = "193b59d8926588181aad5a5bed672e1fccf443f4d05dc1" "6a0cdaacf3b4b4ed7c"
         api = DcrdataAPI(address=self.ADDRESS)
         result = api.get_tx(tx_hash=hash_)
 

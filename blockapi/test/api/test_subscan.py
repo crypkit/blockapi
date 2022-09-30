@@ -39,4 +39,3 @@ class TestSubscanAPI:
 
         assert isinstance(result, Decimal)
         assert result == Decimal('0.98039999247')
-

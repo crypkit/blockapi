@@ -33,8 +33,15 @@ class Service(ABC):
             return self.base_url + path_url.format(**params)
         return self.base_url
 
-    def request(self, request_method, with_rate_limit=False,
-                with_cloudflare=False, body=None, headers=None, **params):
+    def request(
+        self,
+        request_method,
+        with_rate_limit=False,
+        with_cloudflare=False,
+        body=None,
+        headers=None,
+        **params
+    ):
         request_url = self.build_request_url(request_method, **params)
 
         if not request_url:
@@ -95,25 +102,32 @@ class Service(ABC):
         if response.status_code == 504:
             raise GatewayTimeOut('Error 504: Gateway timeout.')
 
-        raise APIError('Following error occured: {}, status code: {}.'.format(
-            response.text, response.status_code))
+        raise APIError(
+            'Following error occured: {}, status code: {}.'.format(
+                response.text, response.status_code
+            )
+        )
 
 
 # Decorator that set default args
 def set_default_args_values(f):
     def wrapper(*args, **kwargs):
         args, kwargs = _set_default_arg(
-            f, 'offset', args[0].start_offset, *args, **kwargs)
+            f, 'offset', args[0].start_offset, *args, **kwargs
+        )
         args, kwargs = _set_default_arg(
-            f, 'limit', args[0].max_items_per_page, *args, **kwargs)
+            f, 'limit', args[0].max_items_per_page, *args, **kwargs
+        )
 
         return f(*args, **kwargs)
 
     def _set_default_arg(f_, arg_name, default_value, *args, **kwargs):
         sig = inspect.signature(f_)
-        arg_idx, _ = next((i, par) for i, (name, par)
-                          in enumerate(sig.parameters.items())
-                          if name == arg_name)
+        arg_idx, _ = next(
+            (i, par)
+            for i, (name, par) in enumerate(sig.parameters.items())
+            if name == arg_name
+        )
 
         # check if its argument is in *args
         if len(args) > arg_idx:
@@ -135,13 +149,11 @@ def on_failure_return_none():
         def applicator(*args, **kwargs):
             try:
                 return f(*args, **kwargs)
-            except (APIError,
-                    InternalServerError,
-                    BadGateway,
-                    GatewayTimeOut):
+            except (APIError, InternalServerError, BadGateway, GatewayTimeOut):
                 return None
 
         return applicator
+
     return decorate
 
 
@@ -206,8 +218,7 @@ class BlockchainAPI(Service, BlockchainInterface, ABC):
         Service.__init__(self, api_key)
         BlockchainInterface.__init__(self, address)
 
-        self.address_info = blockapi.get_address_info(self.symbol.lower(),
-                                                      address)
+        self.address_info = blockapi.get_address_info(self.symbol.lower(), address)
         self.update_network()
 
     def update_network(self):

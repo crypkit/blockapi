@@ -23,18 +23,19 @@ class StellarAPI(BlockchainAPI):
     }
 
     def get_balance(self):
-        response = self.request('get_balance',
-                                address=self.address)
+        response = self.request('get_balance', address=self.address)
         if not response:
             return None
 
-        balances = [{
-            'symbol': bal['asset_code'],
-            'amount': float(bal['balance'])
-        } for bal in response['balances'] if 'asset_code' in bal]
-        balance_stellar = [{
-            'symbol': 'XLM',
-            'amount': float(bal['balance'])
-        } for bal in response['balances'] if bal['asset_type'] == 'native']
+        balances = [
+            {'symbol': bal['asset_code'], 'amount': float(bal['balance'])}
+            for bal in response['balances']
+            if 'asset_code' in bal
+        ]
+        balance_stellar = [
+            {'symbol': 'XLM', 'amount': float(bal['balance'])}
+            for bal in response['balances']
+            if bal['asset_type'] == 'native'
+        ]
 
         return balances + balance_stellar

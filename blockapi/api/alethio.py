@@ -22,23 +22,21 @@ class AlethioAPI(BlockchainAPI):
     max_items_per_page = 100
     page_offset_step = None
     confirmed_num = None
-    has_next = {'normal': True,
-                'token': True}
+    has_next = {'normal': True, 'token': True}
     collect_logs = True
 
     supported_requests = {
         'get_balance': '/accounts/{address}/etherBalances',
         'get_token_balances': '/accounts/{address}/tokenBalances',
         'get_token_info': '/tokens/{token_id}',
-        'get_txs':
-            '/transactions?filter[account]={address}&page[limit]={limit}'
-            '&page[next]={page}',
+        'get_txs': '/transactions?filter[account]={address}&page[limit]={limit}'
+        '&page[next]={page}',
         'get_txs_next': None,
         'get_token_txs': '/token-transfers?filter[account]={address}'
-                         '&page[limit]={limit}&page[next]={page}',
+        '&page[limit]={limit}&page[next]={page}',
         'get_token_txs_next': None,
         'get_logs': None,
-        'get_info': '/accounts/{address}'
+        'get_info': '/accounts/{address}',
     }
 
     def __init__(self, address, api_key=None):
@@ -51,11 +49,11 @@ class AlethioAPI(BlockchainAPI):
         super().__init__(address, api_key)
 
     def _query_api(self, request_method, **kwargs):
-        return self.request(request_method,
-                            headers={
-                                'Authorization': 'Bearer {}'.format(
-                                    self.api_key)},
-                            **kwargs)
+        return self.request(
+            request_method,
+            headers={'Authorization': 'Bearer {}'.format(self.api_key)},
+            **kwargs
+        )
 
     def get_balance(self):
         """
@@ -68,11 +66,8 @@ class AlethioAPI(BlockchainAPI):
             return None
 
         amount = int(response['data'][0]['attributes']['balance']) * self.coef
-        balance_eth = [{
-            'symbol': self.symbol,
-            'amount': amount,
-            'name': 'Ethereum',
-            'address': ''}
+        balance_eth = [
+            {'symbol': self.symbol, 'amount': amount, 'name': 'Ethereum', 'address': ''}
         ]
         balances_tokens = self._get_token_balances()
         if balances_tokens is None:
@@ -81,8 +76,7 @@ class AlethioAPI(BlockchainAPI):
         return balance_eth + balances_tokens
 
     def _get_token_balances(self):
-        response = self._query_api('get_token_balances',
-                                   address=self.address)
+        response = self._query_api('get_token_balances', address=self.address)
         if not response:
             return None
 
@@ -94,8 +88,7 @@ class AlethioAPI(BlockchainAPI):
                 continue
 
             token_id = token['relationships']['token']['data']['id']
-            token_info = self._query_api('get_token_info',
-                                         token_id=token_id)
+            token_info = self._query_api('get_token_info', token_id=token_id)
             if not token_info:
                 return None
 
@@ -106,15 +99,18 @@ class AlethioAPI(BlockchainAPI):
 
             token_balance = int(bal) * pow(10, -token_decimals)
 
-            balances.append({'address': token_id,
-                             'name': token_name,
-                             'symbol': token_symbol,
-                             'amount': token_balance})
+            balances.append(
+                {
+                    'address': token_id,
+                    'name': token_name,
+                    'symbol': token_symbol,
+                    'amount': token_balance,
+                }
+            )
 
         return balances
 
-    def get_txs(self, page=None, limit=None, unconfirmed=False,
-                collect_logs=True):
+    def get_txs(self, page=None, limit=None, unconfirmed=False, collect_logs=True):
         """
         Returns the list of collected transactions, subsequent calls
         download next transactions if available
@@ -141,8 +137,7 @@ class AlethioAPI(BlockchainAPI):
         """
         return self._get_txs(tx_type='token', page=page, limit=limit)
 
-    def _get_txs(self, tx_type='normal', page=None, limit=None,
-                 unconfirmed=False):
+    def _get_txs(self, tx_type='normal', page=None, limit=None, unconfirmed=False):
         if tx_type == 'normal':
             fetch_req = 'get_txs'
             fetch_next_req = 'get_txs_next'
@@ -165,15 +160,17 @@ class AlethioAPI(BlockchainAPI):
             limit = self.max_items_per_page
 
         if self.supported_requests[fetch_next_req] is None:
-            txs = self._query_api(fetch_req, address=self.address,
-                                  page=page, limit=limit)
+            txs = self._query_api(
+                fetch_req, address=self.address, page=page, limit=limit
+            )
         else:
             txs = self._query_api(fetch_next_req)
 
         if txs['meta']['page']['hasNext']:
             self.has_next[tx_type] = True
-            self.supported_requests[fetch_next_req] = \
-                txs['links']['next'].replace(self.base_url, '')
+            self.supported_requests[fetch_next_req] = txs['links']['next'].replace(
+                self.base_url, ''
+            )
         else:
             self.has_next[tx_type] = False
 
@@ -189,30 +186,31 @@ class AlethioAPI(BlockchainAPI):
         tx_to_address = relationships['to']['data']['id']
         tx_contract_address = relationships['token']['data']['id']
 
-        tx_direction = self._get_tx_direction(tx_from_address, tx_to_address,
-                                              tx_contract_address)
+        tx_direction = self._get_tx_direction(
+            tx_from_address, tx_to_address, tx_contract_address
+        )
         tx_token_data = {
             'name': None,  # there's no such field
             'symbol': tx_symbol,
-            'decimals': attributes['decimals']
+            'decimals': attributes['decimals'],
         }
 
         return {
             'symbol': tx_symbol,
-            'date':
-                datetime.fromtimestamp(int(attributes['blockCreationTime']),
-                                       pytz.utc),
+            'date': datetime.fromtimestamp(
+                int(attributes['blockCreationTime']), pytz.utc
+            ),
             'from_address': tx_from_address,
             'to_address': tx_to_address,
             'contract_address': tx_contract_address,
-            'amount': float(attributes['value']) *
-                pow(10, -attributes['decimals']),
+            'amount': float(attributes['value']) * pow(10, -attributes['decimals']),
             'fee': 0.0,
             'gas': {
                 'gas': float(attributes['transactionGasLimit']),
                 'gas_price': float(attributes['transactionGasPrice']),
                 'cumulative_gas_used': None,
-                'gas_used': float(attributes['transactionGasUsed'])},
+                'gas_used': float(attributes['transactionGasUsed']),
+            },
             'hash': relationships['transaction']['data']['id'],
             'confirmations': None,
             'confirmed': None,
@@ -222,7 +220,7 @@ class AlethioAPI(BlockchainAPI):
             'direction': tx_direction,
             'token_data': tx_token_data,
             'page': attributes['cursor'],
-            'raw': tx
+            'raw': tx,
         }
 
     def _parse_tx(self, tx):
@@ -236,11 +234,11 @@ class AlethioAPI(BlockchainAPI):
         else:
             tx_contract_address = ''
 
-        tx_direction = self._get_tx_direction(tx_from_address, tx_to_address,
-                                              tx_contract_address)
+        tx_direction = self._get_tx_direction(
+            tx_from_address, tx_to_address, tx_contract_address
+        )
         log_entries_req = relationships['logEntries']['links']['related']
-        self.supported_requests['get_logs'] = \
-            log_entries_req.replace(self.base_url, '')
+        self.supported_requests['get_logs'] = log_entries_req.replace(self.base_url, '')
 
         if self.collect_logs:
             parsed_logs = self._get_logs()
@@ -249,9 +247,9 @@ class AlethioAPI(BlockchainAPI):
 
         return {
             'symbol': 'ETH',
-            'date':
-                datetime.fromtimestamp(int(attributes['blockCreationTime']),
-                                       pytz.utc),
+            'date': datetime.fromtimestamp(
+                int(attributes['blockCreationTime']), pytz.utc
+            ),
             'from_address': tx_from_address,
             'to_address': tx_to_address,
             'contract_address': tx_contract_address,
@@ -261,7 +259,8 @@ class AlethioAPI(BlockchainAPI):
                 'gas': float(attributes['msgGasLimit']),
                 'gas_price': float(attributes['txGasPrice']),
                 'cumulative_gas_used': None,
-                'gas_used': float(attributes['txGasUsed'])},
+                'gas_used': float(attributes['txGasUsed']),
+            },
             'hash': attributes['txHash'],
             'confirmations': None,
             'confirmed': None,
@@ -272,11 +271,10 @@ class AlethioAPI(BlockchainAPI):
             'token_data': None,
             'page': attributes['cursor'],
             'raw': tx,
-            'event_logs': parsed_logs
+            'event_logs': parsed_logs,
         }
 
-    def _get_tx_direction(self, tx_from_address, tx_to_address,
-                          tx_contract_address):
+    def _get_tx_direction(self, tx_from_address, tx_to_address, tx_contract_address):
         tx_direction = None
         if self.address.lower() == tx_from_address.lower():
             tx_direction = 'outgoing'
@@ -300,8 +298,9 @@ class AlethioAPI(BlockchainAPI):
                 logs.append(self._parse_log(log))
             next_logs = response['meta']['page']['hasNext']
             if next_logs:
-                self.supported_requests['get_logs'] = \
-                    response['links']['next'].replace(self.base_url, '')
+                self.supported_requests['get_logs'] = response['links']['next'].replace(
+                    self.base_url, ''
+                )
                 response = self._query_api('get_logs')
 
         return logs
@@ -321,7 +320,7 @@ class AlethioAPI(BlockchainAPI):
             'log_data': attributes['logData'],
             'event': event_name,
             'inputs': inputs,
-            'address': relationships['loggedBy']['data']['id']
+            'address': relationships['loggedBy']['data']['id'],
         }
 
         topics = attributes['hasLogTopics']
@@ -342,9 +341,11 @@ class AlethioAPI(BlockchainAPI):
                 else:
                     is_indexed = False
 
-                parsed_log = {'name': inp['name'],
-                              'type': inp['type'],
-                              'is_indexed': is_indexed}
+                parsed_log = {
+                    'name': inp['name'],
+                    'type': inp['type'],
+                    'is_indexed': is_indexed,
+                }
                 if 'value' in inp:
                     parsed_log['value'] = inp['value']
                 if 'components' in inp:

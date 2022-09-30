@@ -1,0 +1,63 @@
+name: Release
+
+on:
+  push:
+    tags:
+    - v**
+
+jobs:
+  check-tag:
+    if: github.repository == 'crypkit/blockapi'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out from Git
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: feat/github-actions-2
+    - name: Check tag matches version in setup.py
+      run: |
+        grep -q "__version__ = \"${GITHUB_REF_NAME/v}\"" setup.py || true
+
+  release:
+    runs-on: ubuntu-latest
+    needs: check-tag
+    concurrency: release
+    if: ${{ success() }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.9'
+
+    - name: Restore cache
+      uses: actions/cache@v3
+      id: pip-cache
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+        restore-keys: |
+           ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .
+        pip install wheel twine
+
+    - name: Build
+      run: |
+        rm -f dist/*
+        python setup.py sdist bdist_wheel
+
+    - name: Publish package to PyPI
+      if: ${{ false }}
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.pypi_token }}

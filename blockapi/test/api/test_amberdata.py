@@ -23,7 +23,7 @@ class TestAmberdataAPI:
     def test_get_token_info(self):
         result = AmberdataAPI.get_token_info(
             token_address='0xdac17f958d2ee523a2206206994597c13d831ec7',
-            api_key=self.API_KEY
+            api_key=self.API_KEY,
         )
 
         assert result['symbol'] == 'USDT'

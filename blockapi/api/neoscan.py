@@ -2,14 +2,14 @@ from datetime import datetime
 
 import pytz
 
-from blockapi.services import BlockchainAPI, APIError
+from blockapi.services import APIError, BlockchainAPI
 
 
 class NeoscanAPI(BlockchainAPI):
     """
     coins: neocoin
     API docs: https://neoscan.io/docs/index.html#api-v1
-    Explorer: 
+    Explorer:
     """
 
     active = True
@@ -24,7 +24,7 @@ class NeoscanAPI(BlockchainAPI):
 
     supported_requests = {
         'get_balance': '/get_balance/{address}',
-        'get_txs': '/get_address_abstracts/{address}/{page}'
+        'get_txs': '/get_address_abstracts/{address}/{page}',
     }
 
     def __init__(self, address, api_key=None):
@@ -37,27 +37,27 @@ class NeoscanAPI(BlockchainAPI):
             self.total_txs_count = paging_params[2]
 
     def get_balance(self):
-        response = self.request('get_balance',
-                                address=self.address)
+        response = self.request('get_balance', address=self.address)
         if not response:
             return None
 
         for bal in response['balance']:
             if bal.get('asset_symbol') == self.symbol:
-                return [{'symbol': self.symbol,
-                         'amount': bal.get('amount') * self.coef}]
+                return [
+                    {'symbol': self.symbol, 'amount': bal.get('amount') * self.coef}
+                ]
 
         return None
 
     def get_tx_paging_params(self):
         # total pages can be found on the first page
-        response = self.request('get_txs',
-                                address=self.address,
-                                page=1)
+        response = self.request('get_txs', address=self.address, page=1)
         if 'total_pages' in response and 'page_size' in response:
-            return (int(response['total_pages']),
-                    int(response['page_size']),
-                    int(response['total_entries']))
+            return (
+                int(response['total_pages']),
+                int(response['page_size']),
+                int(response['total_entries']),
+            )
         else:
             return None
 
@@ -71,9 +71,7 @@ class NeoscanAPI(BlockchainAPI):
         result = []
 
         while True:
-            response = self.request('get_txs',
-                                    address=self.address,
-                                    page=page)
+            response = self.request('get_txs', address=self.address, page=page)
 
             if 'entries' in response:
                 for t in response['entries']:
@@ -105,5 +103,5 @@ class NeoscanAPI(BlockchainAPI):
             'kind': 'transaction',
             'direction': direction,
             'status': 'confirmed',
-            'raw': tx
+            'raw': tx,
         }

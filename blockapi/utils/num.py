@@ -1,7 +1,6 @@
 from decimal import Decimal, InvalidOperation
 from numbers import Number
-from typing import Union, Optional
-
+from typing import Optional, Union
 
 SupportsNumber = Union[str, Number]
 
@@ -29,9 +28,7 @@ def to_decimal(number: Union[int, float, str, Decimal]) -> Decimal:
         raise TypeError(f'Type {type(number)} is not supported.')
 
 
-def raw_to_decimals(
-    raw: Union[int, str], decimals: Union[int, str]
-) -> Decimal:
+def raw_to_decimals(raw: Union[int, str], decimals: Union[int, str]) -> Decimal:
     """
     Conversion of raw (gwei/satoshi/...) format to decimals.
     """
@@ -41,9 +38,7 @@ def raw_to_decimals(
     return remove_exponent(res)
 
 
-def decimals_to_raw(
-    amount: Union[int, str], decimals: Union[int, str]
-) -> Decimal:
+def decimals_to_raw(amount: Union[int, str], decimals: Union[int, str]) -> Decimal:
     """
     Convert decimal value to raw format
     """
@@ -77,4 +72,3 @@ def safe_opt_decimal(obj: Optional[SupportsNumber]) -> Decimal:
         return Decimal('0')
     else:
         return to_decimal(obj)
-

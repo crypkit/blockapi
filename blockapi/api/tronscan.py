@@ -25,8 +25,7 @@ class TronscanAPI(BlockchainAPI):
     }
 
     def get_balance(self):
-        response = self.request('get_balance',
-                                address=self.address)
+        response = self.request('get_balance', address=self.address)
         if not response:
             return None
 
@@ -36,7 +35,7 @@ class TronscanAPI(BlockchainAPI):
         for token in trc10_tokenlist:
             token_map[token['tokenID']] = {
                 'abbr': token['abbr'],
-                'precision': token['precision']
+                'precision': token['precision'],
             }
 
         balances = []
@@ -54,20 +53,23 @@ class TronscanAPI(BlockchainAPI):
 
                 symbol = token_map[int(coin['name'])]['abbr']
                 owner_address = coin['owner_address']
-                coin_coef = pow(-10,
-                                int(token_map[int(coin['name'])]['precision']))
+                coin_coef = pow(-10, int(token_map[int(coin['name'])]['precision']))
 
-            balances.append({'symbol': symbol,
-                             'amount': float(coin['balance']) * coin_coef,
-                             'address': owner_address})
+            balances.append(
+                {
+                    'symbol': symbol,
+                    'amount': float(coin['balance']) * coin_coef,
+                    'address': owner_address,
+                }
+            )
 
         for coin in response['trc20token_balances']:
             balances.append(
                 {
                     'symbol': coin['symbol'],
-                    'amount': float(coin['balance'])
-                    * pow(-10, int(coin['decimals'])),
-                    'address': None
-                })
+                    'amount': float(coin['balance']) * pow(-10, int(coin['decimals'])),
+                    'address': None,
+                }
+            )
 
         return balances

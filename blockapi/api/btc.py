@@ -23,15 +23,13 @@ class BtcAPI(BlockchainAPI):
     }
 
     def get_balance(self):
-        response = self.request('get_balance',
-                                address=self.address)
+        response = self.request('get_balance', address=self.address)
         if response is None:
             return None
 
         if response['data'] is None:
             return None
 
-        return [{
-            'symbol': self.symbol,
-            'amount': response['data']['balance'] * self.coef
-        }]
+        return [
+            {'symbol': self.symbol, 'amount': response['data']['balance'] * self.coef}
+        ]

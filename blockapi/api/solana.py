@@ -20,11 +20,7 @@ class SolanaApi(BlockchainAPI):
     page_offset_step = 1
 
     # follow used pattern even though this API uses POST requests
-    supported_requests = {
-        'get_balance': '',
-        'get_txs_signatures': '',
-        'get_tx': ''
-    }
+    supported_requests = {'get_balance': '', 'get_txs_signatures': '', 'get_tx': ''}
 
     token_program_id = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
 
@@ -63,9 +59,7 @@ class SolanaApi(BlockchainAPI):
 
     def __init__(self, address, *args, **kwargs):
         super().__init__(address)
-        self._headers = {
-            'Content-Type': 'application/json'
-        }
+        self._headers = {'Content-Type': 'application/json'}
 
     def get_balance(self):
         balances = []
@@ -81,14 +75,11 @@ class SolanaApi(BlockchainAPI):
         return balances
 
     def _get_sol_balance(self):
-        response = self._request(
-            method='getBalance',
-            params=[self.address]
-        )
+        response = self._request(method='getBalance', params=[self.address])
 
         return {
             'symbol': self.symbol,
-            'amount': to_decimal(response['result']['value']) * self.coef
+            'amount': to_decimal(response['result']['value']) * self.coef,
         }
 
     def _get_token_balances(self):
@@ -96,19 +87,12 @@ class SolanaApi(BlockchainAPI):
             method='getTokenAccountsByOwner',
             params=[
                 self.address,
-                {
-                    'programId': self.token_program_id
-                },
-                {
-                    'encoding': 'jsonParsed'
-                }
-            ]
+                {'programId': self.token_program_id},
+                {'encoding': 'jsonParsed'},
+            ],
         )
 
-        balances = [
-            self._parse_token_balance(b)
-            for b in response['result']['value']
-        ]
+        balances = [self._parse_token_balance(b) for b in response['result']['value']]
 
         return [b for b in balances if b['amount'] > Decimal(0)]
 
@@ -131,7 +115,7 @@ class SolanaApi(BlockchainAPI):
             'address': token_address,
             'amount': amount,
             'name': token_info['name'] if token_info else 'Unknown',
-            'account_address': raw['pubkey']
+            'account_address': raw['pubkey'],
         }
 
     def get_txs_signatures(self, limit=None):
@@ -140,45 +124,30 @@ class SolanaApi(BlockchainAPI):
 
         response = self._request(
             method='getConfirmedSignaturesForAddress2',
-            params=[
-                self.address,
-                {
-                    'limit': limit
-                }
-            ]
+            params=[self.address, {'limit': limit}],
         )
 
         return [
-            {
-                'signature': r['signature'],
-                'error': bool(r['err'])
-            }
+            {'signature': r['signature'], 'error': bool(r['err'])}
             for r in response['result']
         ]
 
     def get_tx(self, signature):
         response = self._request(
-            method='getConfirmedTransaction',
-            params=[
-                signature,
-                'jsonParsed'
-            ]
+            method='getConfirmedTransaction', params=[signature, 'jsonParsed']
         )
         return response['result']
 
     def _request(self, method, params):
-        body = json.dumps({
-            'jsonrpc': '2.0',
-            'id': 1,
-            'method': method,
-            'params': params
-        })
+        body = json.dumps(
+            {'jsonrpc': '2.0', 'id': 1, 'method': method, 'params': params}
+        )
 
         response = self.request(
             # request method is not needed, it's included in body
             request_method=None,
             body=body,
-            headers=self._headers
+            headers=self._headers,
         )
         if response.get('error'):
             raise APIError(response['error'])
