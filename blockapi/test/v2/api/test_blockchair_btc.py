@@ -59,3 +59,44 @@ def btc_transactions_response():
 @pytest.fixture
 def btc_balance_response():
     return read_file('data/blockchair_btc_balance_response.json')
+    assert balances[0].balance == Decimal('64363')
+
+
+def test_fetch_transactions(
+    requests_mock, btc_balance_response, btc_transactions_response
+):
+    requests_mock.get(
+        f'https://api.blockchair.com/bitcoin/dashboards/address/{btc_test_address}?limit=3,0&offset=0,0',
+        text=btc_balance_response,
+    )
+
+    # noinspection SpellCheckingInspection
+    addresses = [
+        "3fcb8ac40fd7e1bfe2a95b6704d8af3bbd88640c0177ec118e26e06d3a06cc07",
+        "e39457afee2730fa3eac9016efa02dac1c28998b60e87efdaa604ed0d175567f",
+        "21cc75fd255111ebc9a4c81ce08c45f26e8d8721b4a8912452648ca9ff9d54c1",
+    ]
+
+    requests_mock.get(
+        'https://api.blockchair.com/bitcoin/dashboards/transactions/'
+        + ','.join(addresses),
+        text=btc_transactions_response,
+    )
+
+    api = BlockchairBitcoinApi()
+
+    txs = api.get_transactions(btc_test_address, limit=3)
+    assert len(txs) == 1
+    assert txs[0].fee == Decimal('56963')
+    assert len(txs[0].operations) == 1
+    assert txs[0].operations[0].amount == Decimal('20087268')
+
+
+@pytest.fixture()
+def btc_transactions_response():
+    return read_file('data/blockchair_btc_transaction_response.json')
+
+
+@pytest.fixture
+def btc_balance_response():
+    return read_file('data/blockchair_btc_balance_response.json')
