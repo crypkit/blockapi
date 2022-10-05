@@ -168,7 +168,7 @@ class BlockchairApi(BlockchainApi, IBalance, ABC):
                 operations=[
                     OperationItem.from_api(
                         amount_raw=outgoing.get('value'),
-                        coin=self.coin,
+                        coin=self.coin, 
                         from_address=address,
                         to_address=(
                             tx['outputs'][0]['recipient']
