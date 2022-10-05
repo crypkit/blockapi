@@ -107,9 +107,8 @@ class BlockchairApi(BlockchainApi, IBalance, ABC):
         addr = dashboard.get('address')
         balance = addr.get('balance')
 
-        yield BalanceItem(
-            balance_raw=to_decimal(balance),
-            balance=to_decimal(balance),
+        yield BalanceItem.from_api(
+            balance_raw=balance,
             coin=self.coin,
             asset_type=AssetType.AVAILABLE,
             raw=dashboard,
@@ -134,17 +133,15 @@ class BlockchairApi(BlockchainApi, IBalance, ABC):
         tx_data = tx.get('transaction')
 
         if incoming:
-            return TransactionItem(
-                fee_raw=to_decimal(tx_data.get('fee')),
-                fee=to_decimal(tx_data.get('fee')),
+            return TransactionItem.from_api(
+                fee_raw=tx_data.get('fee'),
                 coin=self.coin,
                 date=tx.get('time'),
                 hash=incoming.get('hash'),
                 status=TransactionStatus.CONFIRMED,
                 operations=[
-                    OperationItem(
-                        amount_raw=to_decimal(incoming.get('value')),
-                        amount=to_decimal(incoming.get('value')),
+                    OperationItem.from_api(
+                        amount_raw=incoming.get('value'),
                         coin=self.coin,
                         to_address=address,
                         from_address=(
@@ -163,17 +160,15 @@ class BlockchairApi(BlockchainApi, IBalance, ABC):
             )
 
         if outgoing:
-            return TransactionItem(
+            return TransactionItem.from_api(
                 fee_raw=tx.get('fee'),
-                fee=to_decimal(tx.get('fee')),
                 coin=self.coin,
                 date=tx.get('created'),
                 hash=outgoing.get('hash'),
                 status=TransactionStatus.CONFIRMED,
                 operations=[
-                    OperationItem(
-                        amount_raw=to_decimal(incoming.get('value')),
-                        amount=to_decimal(incoming.get('value')),
+                    OperationItem.from_api(
+                        amount_raw=outgoing.get('value'),
                         coin=self.coin,
                         from_address=address,
                         to_address=(

@@ -18,7 +18,7 @@ def test_fetch_balances(requests_mock, btc_balance_response):
     api = BlockchairBitcoinApi()
     balances = api.get_balance(btc_test_address)
     assert len(balances) == 1
-    assert balances[0].balance == Decimal('64363')
+    assert balances[0].balance == Decimal('0.00064363')
 
 
 def test_fetch_transactions(
@@ -46,9 +46,9 @@ def test_fetch_transactions(
 
     txs = api.get_transactions(btc_test_address, limit=3)
     assert len(txs) == 1
-    assert txs[0].fee == Decimal('56963')
+    assert txs[0].fee == Decimal('0.00056963')
     assert len(txs[0].operations) == 1
-    assert txs[0].operations[0].amount == Decimal('20087268')
+    assert txs[0].operations[0].amount == Decimal('0.20087268')
 
 
 @pytest.fixture()
