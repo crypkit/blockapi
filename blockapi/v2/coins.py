@@ -366,6 +366,8 @@ COIN_TLOS = Coin(
     blockchain=Blockchain.TELOS,
 )
 
+COIN_BOS = Coin(symbol='BOS', name="BosCoin", decimals=7, blockchain=Blockchain.BOS)
+
 COIN_BTC = Coin(
     symbol='BTC',
     name='Bitcoin',

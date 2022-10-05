@@ -1,0 +1,19 @@
+{
+    "_links": {
+        "operations": {
+            "href": "/api/v1/accounts/GCPQQIX2LRX2J63C7AHWDXEMNGMZR2UI2PRN5TCSOVMEMF7BAUADMKH5/operations{?cursor,limit,order}",
+            "templated": true
+        },
+        "self": {
+            "href": "/api/v1/accounts/GCPQQIX2LRX2J63C7AHWDXEMNGMZR2UI2PRN5TCSOVMEMF7BAUADMKH5"
+        },
+        "transactions": {
+            "href": "/api/v1/accounts/GCPQQIX2LRX2J63C7AHWDXEMNGMZR2UI2PRN5TCSOVMEMF7BAUADMKH5/transactions{?cursor,limit,order}",
+            "templated": true
+        }
+    },
+    "address": "GCPQQIX2LRX2J63C7AHWDXEMNGMZR2UI2PRN5TCSOVMEMF7BAUADMKH5",
+    "balance": "10123569937570000",
+    "linked": "",
+    "sequence_id": 13
+}
