@@ -374,6 +374,15 @@ COIN_BTC = Coin(
     info=CoinInfo(coingecko_id='bitcoin'),
 )
 
+COIN_LTC = Coin(
+    symbol='LTC',
+    name='Litecoin',
+    decimals=8,
+    blockchain=Blockchain.LITECOIN,
+    info=CoinInfo(coingecko_id='litecoin'),
+)
+
+
 COIN_DOGE = Coin(
     symbol='DOGE',
     name='Dogecoin',
