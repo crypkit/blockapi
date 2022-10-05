@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Iterable, List
 
-from blockapi.utils.num import to_decimal
 from blockapi.v2.base import BlockchainApi, IBalance
-from blockapi.v2.coins import COIN_BTC
+from blockapi.v2.coins import COIN_BTC, COIN_DOGE
 from blockapi.v2.models import (
     ApiOptions,
     AssetType,
@@ -192,3 +191,8 @@ class BlockchairBitcoinApi(BlockchairApi):
     blockchain = Blockchain.BITCOIN
     name = 'bitcoin'
 
+
+class BlockchairDogecoinApi(BlockchairApi):
+    coin = COIN_DOGE
+    blockchain = Blockchain.DOGECOIN
+    name = 'dogecoin'
