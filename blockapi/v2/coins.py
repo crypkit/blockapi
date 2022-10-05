@@ -105,7 +105,7 @@ COIN_FTM = Coin(
     name='Fantom',
     decimals=18,
     blockchain=Blockchain.FANTOM,
-    address='0x0000000000000000000000000000000000000000',
+    address='0x4e15361fd6b4bb609fa63c81a2be19d873717870',
     info=CoinInfo(
         coingecko_id='fantom',
         website='https://fantom.foundation',
@@ -213,15 +213,6 @@ COIN_XDAI = Coin(
     decimals=18,
     blockchain=Blockchain.GNOSIS,
     info=CoinInfo(coingecko_id='xdai'),
-)
-
-COIN_FTM = Coin(
-    symbol='FTM',
-    name='Fantom',
-    decimals=18,
-    blockchain=Blockchain.FANTOM,
-    address='0x4e15361fd6b4bb609fa63c81a2be19d873717870',
-    info=CoinInfo(coingecko_id='fantom'),
 )
 
 COIN_OKT = Coin(
