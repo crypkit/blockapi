@@ -287,7 +287,7 @@ class OperationItem:
     hash: str
     type: OperationType
     direction: OperationDirection
-    confirmed: datetime
+    confirmed: Optional[datetime]
     raw: dict
 
     @classmethod
@@ -322,7 +322,7 @@ class OperationItem:
 class TransactionItem:
     fee: Decimal
     fee_raw: Decimal
-    date: Decimal
+    date: datetime
     coin: Coin
     hash: str
     status: TransactionStatus
@@ -342,10 +342,10 @@ class TransactionItem:
         raw: dict,
     ) -> 'TransactionItem':
         return cls(
-            fee_raw=to_decimal(fee_raw),
-            fee=raw_to_decimals(fee_raw, coin.decimals),
+            fee_raw=to_decimal(fee_raw or '0'),
+            fee=raw_to_decimals(fee_raw or '0', coin.decimals),
             coin=coin,
-            date=parse_dt(date),
+            date=(parse_dt(date) if date is not None else None),
             hash=hash,
             status=status,
             operations=operations,
