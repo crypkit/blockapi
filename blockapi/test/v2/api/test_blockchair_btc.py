@@ -59,3 +59,4 @@ def btc_transactions_response():
 @pytest.fixture
 def btc_balance_response():
     return read_file('data/blockchair_btc_balance_response.json')
+

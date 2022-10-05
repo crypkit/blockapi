@@ -191,3 +191,4 @@ class BlockchairBitcoinApi(BlockchairApi):
     coin = COIN_BTC
     blockchain = Blockchain.BITCOIN
     name = 'bitcoin'
+

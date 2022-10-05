@@ -358,6 +358,14 @@ COIN_TLOS = Coin(
     blockchain=Blockchain.TELOS,
 )
 
+COIN_BTC = Coin(
+    symbol='BTC',
+    name='Bitcoin',
+    decimals=8,
+    blockchain=Blockchain.BITCOIN,
+    info=CoinInfo(coingecko_id='bitcoin'),
+)
+
 COIN_SNX = Coin(
     symbol='SNX',
     name='Synthetix',
@@ -367,10 +375,3 @@ COIN_SNX = Coin(
     info=CoinInfo(coingecko_id='havven'),
 )
 
-COIN_BTC = Coin(
-    symbol='BTC',
-    name='Bitcoin',
-    decimals=8,
-    blockchain=Blockchain.BITCOIN,
-    info=CoinInfo(coingecko_id='bitcoin'),
-)
