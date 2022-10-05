@@ -151,7 +151,7 @@ class BlockchairApi(BlockchainApi, IBalance, ABC):
                         ),
                         hash=tx_data.get('hash'),
                         type=OperationType.TRANSACTION,
-                        direction=OperationDirection.OUTGOING,
+                        direction=OperationDirection.INCOMING,
                         raw={},
                         confirmed=None,
                     )
