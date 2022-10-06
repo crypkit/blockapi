@@ -45,7 +45,7 @@ COIN_MATIC = Coin(
     name='Matic',
     decimals=18,
     blockchain=Blockchain.POLYGON,
-    address='0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0',
+    address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
         coingecko_id='polygon',
         website='https://polygon.technology/',
@@ -105,7 +105,7 @@ COIN_FTM = Coin(
     name='Fantom',
     decimals=18,
     blockchain=Blockchain.FANTOM,
-    address='0x4e15361fd6b4bb609fa63c81a2be19d873717870',
+    address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
         coingecko_id='fantom',
         website='https://fantom.foundation',
@@ -129,7 +129,7 @@ COIN_IOTX = Coin(
     name='IoTeX',
     decimals=18,
     blockchain=Blockchain.IOTEX,
-    address='0x6fb3e0a217407efff7ca062d46c26e5d60a14d69',
+    address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
         coingecko_id='iotex',
         website='https://iotex.io/',
@@ -237,7 +237,7 @@ COIN_CELO = Coin(
     name='Celo',
     decimals=18,
     blockchain=Blockchain.CELO,
-    address='0x471ece3750da237f93b8e339c536989b8978a438',
+    address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(coingecko_id='celo'),
 )
 
@@ -246,7 +246,7 @@ COIN_CRO = Coin(
     name='Cronos',
     decimals=18,
     blockchain=Blockchain.CRONOS,
-    address='0xa0b73e1ff0b80914ab6fe0444e65848c4c34450b',
+    address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(coingecko_id='crypto-com-chain'),
 )
 
@@ -264,7 +264,7 @@ COIN_METIS = Coin(
     name='Metis',
     decimals=18,
     blockchain=Blockchain.METIS,
-    address='0x9e32b13ce7f2e80a01932b42553652e053d6ed8e',
+    address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(coingecko_id='metis-token'),
 )
 
@@ -299,7 +299,7 @@ COIN_FUSE = Coin(
     name='Fuse',
     decimals=18,
     blockchain=Blockchain.FUSE,
-    address='0x970b9bb2c0444f5e81e9d0efb84c8ccdcdcaf84d',
+    address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(coingecko_id='fuse-network-token'),
 )
 
@@ -367,12 +367,4 @@ COIN_SNX = Coin(
     info=CoinInfo(coingecko_id='havven'),
 )
 
-# TODO: HECO
-# TODO: Arbitrum
-# TODO: SmartBch
-# TODO: Shiden
-# TODO: Palm
-# TODO: KCC
-# TODO: DFK
-# TODO: Swimmer
-# TODO: Arbitrum Nova
+
