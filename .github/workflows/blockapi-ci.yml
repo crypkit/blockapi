@@ -65,15 +65,65 @@ jobs:
       - name: Update version
         run: |
           VER=$(semantic-release print-version)
-          semantic-release version
-          git commit -m "Update to v${VER}" -a 
-          git tag -d "v${VER}"
-          git tag "v${VER}"
-          git status -v
-          git tag -n
+          if [ ! -z "$VER" ]; then
+            semantic-release version
+            git commit -m "Update to v${VER}" -a 
+            git tag -d "v${VER}"
+            git tag "v${VER}"
+          fi
+          [ ! -z "$VER" ]
 
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
+          tags: true
+
+  release:
+    runs-on: ubuntu-latest
+    needs: version
+    concurrency: release
+    if: ${{ success() && github.ref == 'refs/heads/master' }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        ref: 'master'
+        fetch-depth: 0
+
+    - name: Verify tag
+      run:
+        VER=$(git tag --points-at HEAD)
+        [ -z "$VER" ] && grep -q "__version__ = \"${VER/v}\"" setup.py || true
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.9'
+
+    - name: Restore cache
+      uses: actions/cache@v3
+      id: pip-cache
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+        restore-keys: |
+           ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .
+        pip install wheel twine
+
+    - name: Build
+      run: |
+        rm -f dist/*
+        python setup.py sdist bdist_wheel
+
+    - name: Publish package to PyPI
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_TOKEN }}
