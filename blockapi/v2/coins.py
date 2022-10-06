@@ -255,7 +255,7 @@ COIN_BOBA = Coin(
     name='Boba Network',
     decimals=18,
     blockchain=Blockchain.BOBA,
-    address='0x42bbfa2e77757c645eeaad1655e0911a7553efbc',
+    address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(coingecko_id='boba-network'),
 )
 
