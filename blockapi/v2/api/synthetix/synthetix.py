@@ -67,8 +67,6 @@ class Synth(TypedDict):
     symbol: str
     contract_address: str
 
-    pass
-
 
 # noinspection PyBroadException
 @lru_cache(maxsize=128)
@@ -164,9 +162,9 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         """
         Fetch all balances for snx and synth tokens.
         """
-        staking = self.fetch_staking(address)
-
         logger.info("Called Synthetix.yield_balances for address: %s", address)
+
+        staking = self.fetch_staking(address)
 
         if staking['transferable']:
             yield self._create_balance(
@@ -276,7 +274,7 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         )
         c_ratio = easy_call(snx_contract, 'collateralisationRatio', address)
         if c_ratio:
-            ratio = raw_to_decimals(c_ratio, self.decimals)
+            ratio = raw_to_decimals(c_ratio, int(self.decimals))
             return {
                 'collateralization_ratio': ratio,
                 'collateralization_ratio_perc': 1 / ratio * 100,
@@ -341,28 +339,6 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
             },
         }
 
-    def get_fee_period_info(self) -> Dict:
-        """
-        Returns fee pool period info (start, end, duration, id).
-        """
-        fee_pool_contract = self.w3.eth.contract(
-            snx_contract_address('FeePool', self.network), abi=feepool_abi
-        )
-
-        fee_period_duration = easy_call(fee_pool_contract, 'feePeriodDuration') / 86400
-        recent_fee_period = easy_call(fee_pool_contract, 'recentFeePeriods', 0)
-
-        fee_period_start = datetime.fromtimestamp(recent_fee_period[2])
-        fee_period_end = fee_period_start + timedelta(days=fee_period_duration)
-        fee_period_ends_in = fee_period_end - datetime.utcnow()
-
-        return {
-            'period_id': recent_fee_period[0],
-            'fee_period_start': fee_period_start,
-            'fee_period_end': fee_period_end,
-            'fee_period_ends_in': fee_period_ends_in.total_seconds(),
-        }
-
     def yield_token_staking_data(
         self, address: str, synths: List[Tuple[str, str]]
     ) -> Iterable[StakingToken]:
@@ -415,20 +391,6 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         )
 
         return to_decimal(total_escrowed)
-
-    def get_total_rewards(self, address: str) -> Decimal:
-        """
-        Return the number of **all** tokens claimed by address.
-        """
-        rewards_escrow_contract = self.w3.eth.contract(
-            snx_contract_address('RewardEscrowV2', self.network),
-            abi=rewards_escrow_v2_abi,
-        )
-        total_vested = easy_call(
-            rewards_escrow_contract, "totalVestedAccountBalance", address
-        )
-
-        return to_decimal(total_vested)
 
     def get_token_xchg_rates(self, synths: List[Synth]) -> Dict:
         """
