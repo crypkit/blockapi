@@ -84,6 +84,23 @@ class TokenRole(str, Enum):
     LIQUIDITY_POOL = 'liquidity_pool'
 
 
+class OperationType(str, Enum):
+    UNKNOWN = 'unknown'
+    INFLATION = 'inflation'
+    TRANSACTION = 'transaction'
+    COLLECT_TX_FEE = 'collect-tx-fee'
+
+
+class OperationDirection(str, Enum):
+    OUTGOING = 'outgoing'
+    INCOMING = 'incoming'
+
+
+class TransactionStatus(str, Enum):
+    CONFIRMED = 'confirmed'
+    PENDING = 'pending'
+
+
 @attr.s(auto_attribs=True, slots=True)
 class ApiOptions:
     blockchain: Blockchain
@@ -258,6 +275,82 @@ class BalanceItem:
             return {"merged": self.raw.get("merged") + [other.raw]}
         else:
             return {"merged": [self.raw, other.raw]}
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
+class OperationItem:
+    amount: Decimal
+    amount_raw: Decimal
+    coin: Coin
+    from_address: str
+    to_address: str
+    hash: str
+    type: OperationType
+    direction: OperationDirection
+    confirmed: Optional[datetime]
+    raw: dict
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        amount_raw: Union[int, float, str],
+        coin: Coin,
+        from_address: str,
+        to_address: str,
+        hash: str,
+        type: OperationType,
+        direction: OperationDirection,
+        raw: dict,
+        confirmed: Optional[Union[int, str]] = None,
+    ) -> 'OperationItem':
+        return cls(
+            amount_raw=to_decimal(amount_raw),
+            amount=raw_to_decimals(amount_raw, coin.decimals),
+            coin=coin,
+            from_address=from_address,
+            to_address=to_address,
+            hash=hash,
+            type=type,
+            direction=direction,
+            confirmed=(parse_dt(confirmed) if confirmed is not None else None),
+            raw=raw,
+        )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
+class TransactionItem:
+    fee: Decimal
+    fee_raw: Decimal
+    date: datetime
+    coin: Coin
+    hash: str
+    status: TransactionStatus
+    operations: List[OperationItem]
+    raw: dict
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        fee_raw: Union[int, float, str],
+        coin: Coin,
+        date: Union[int, str],
+        hash: str,
+        status: TransactionStatus = TransactionStatus.CONFIRMED,
+        operations: List[OperationItem],
+        raw: dict,
+    ) -> 'TransactionItem':
+        return cls(
+            fee_raw=to_decimal(fee_raw or '0'),
+            fee=raw_to_decimals(fee_raw or '0', coin.decimals),
+            coin=coin,
+            date=(parse_dt(date) if date is not None else None),
+            hash=hash,
+            status=status,
+            operations=operations,
+            raw=raw,
+        )
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
