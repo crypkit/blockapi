@@ -56,8 +56,7 @@ jobs:
         python setup.py sdist bdist_wheel
 
     - name: Publish package to PyPI
-      if: ${{ false }}
       uses: pypa/gh-action-pypi-publish@master
       with:
         user: __token__
-        password: ${{ secrets.pypi_token }}
+        password: ${{ secrets.PYPI_TOKEN }}
