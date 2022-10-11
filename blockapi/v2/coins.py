@@ -368,7 +368,12 @@ COIN_TLOS = Coin(
 )
 
 COIN_SNX = Coin(
-    symbol='SNX', name='Synthetix', decimals=18, info=CoinInfo(coingecko_id='havven')
+    symbol='SNX',
+    name='Synthetix',
+    decimals=18,
+    address='0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
+    blockchain=Blockchain.ETHEREUM,
+    info=CoinInfo(coingecko_id='havven'),
 )
 
 # TODO: HECO
