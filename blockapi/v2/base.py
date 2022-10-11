@@ -79,6 +79,18 @@ class BlockchainApi(ABC):
         return f"{self.__class__.__name__}(coin={self.coin.name})"
 
 
+class CustomizableBlockchainApi(BlockchainApi, ABC):
+    """
+    Class for handling blockchain API services with customizable base URL.
+    """
+
+    API_BASE_URL: str = NotImplemented
+
+    def __init__(self, base_url: str = None, api_key: Optional[str] = None):
+        super().__init__(api_key)
+        self.api_options.base_url = base_url or self.API_BASE_URL
+
+
 class IBalance(ABC):
     def get_balance(self, address: str) -> List[BalanceItem]:
         raise NotImplementedError
