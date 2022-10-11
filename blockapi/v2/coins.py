@@ -367,6 +367,10 @@ COIN_TLOS = Coin(
     blockchain=Blockchain.TELOS,
 )
 
+COIN_SNX = Coin(
+    symbol='SNX', name='Synthetix', decimals=18, info=CoinInfo(coingecko_id='havven')
+)
+
 # TODO: HECO
 # TODO: Arbitrum
 # TODO: SmartBch
