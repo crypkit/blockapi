@@ -12,7 +12,7 @@ from blockapi.v2.api.debank_maps import (
     NATIVE_COIN_MAP,
     REWARD_ASSET_TYPE_MAP,
 )
-from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance, IPortfolio
+from blockapi.v2.base import ApiOptions, CustomizableBlockchainApi, IBalance, IPortfolio
 from blockapi.v2.models import (
     AssetType,
     BalanceItem,
@@ -429,7 +429,7 @@ class DebankPortfolioParser:
         return REWARD_ASSET_TYPE_MAP.get(asset_type, asset_type)
 
 
-class DebankApi(BlockchainApi, IBalance, IPortfolio):
+class DebankApi(CustomizableBlockchainApi, IBalance, IPortfolio):
     """
     DeBank OpenApi: https://open.debank.com/
     """
@@ -458,9 +458,8 @@ class DebankApi(BlockchainApi, IBalance, IPortfolio):
         protocol_cache: Optional[DebankProtocolCache] = None,
         base_url: Optional[str] = None,
     ):
-        super().__init__()
+        super().__init__(base_url)
 
-        self.api_options.base_url = base_url or self.API_BASE_URL
         self._is_all = bool(is_all)
         self._headers = {'AccessKey': api_key}
         self._protocol_cache = protocol_cache or self.default_protocol_cache

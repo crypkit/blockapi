@@ -7,7 +7,7 @@ from requests import Response
 from blockapi.v2.base import (
     ApiException,
     ApiOptions,
-    BlockchainApi,
+    CustomizableBlockchainApi,
     IBalance,
     InvalidAddressException,
 )
@@ -15,16 +15,18 @@ from blockapi.v2.coins import COIN_SOL
 from blockapi.v2.models import BalanceItem, Blockchain, Coin, CoinInfo
 
 
-class SolanaApi(BlockchainApi, IBalance):
+class SolanaApi(CustomizableBlockchainApi, IBalance):
     """
     Solana RPC
     API docs: https://docs.solana.com/apps/jsonrpc-api
     """
 
+    API_BASE_URL = 'https://api.mainnet-beta.solana.com/'
+
     coin = COIN_SOL
     api_options = ApiOptions(
         blockchain=Blockchain.SOLANA,
-        base_url='https://api.mainnet-beta.solana.com/',
+        base_url=API_BASE_URL,
         start_offset=0,
         max_items_per_page=1000,
         page_offset_step=1,

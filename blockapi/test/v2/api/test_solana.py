@@ -325,3 +325,14 @@ def test_get_balance(solana_api):
     assert len(merged_balance) == 1
     merged_balance = merged_balance[0]
     assert len(merged_balance.raw.get("merged")) == 2
+
+
+def test_use_custom_url():
+    api = SolanaApi('https://proxy/solana/')
+    assert api.api_options.base_url == 'https://proxy/solana/'
+
+
+def test_use_base_url():
+    api = SolanaApi()
+    assert api.API_BASE_URL
+    assert api.api_options.base_url == api.API_BASE_URL
