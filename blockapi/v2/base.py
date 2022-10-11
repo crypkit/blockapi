@@ -85,11 +85,16 @@ class CustomizableBlockchainApi(BlockchainApi, ABC):
     e.g. proxy, testnet, RPC services, alternative sources
     """
 
-    API_BASE_URL: str = NotImplemented
+    API_BASE_URL: str = None
 
     def __init__(self, base_url: str = None, api_key: Optional[str] = None):
         super().__init__(api_key)
         self.api_options.base_url = base_url or self.API_BASE_URL
+
+        if not self.api_options.base_url:
+            raise NotImplementedError(
+                'API_BASE_URL is not defined and no base_url was provided'
+            )
 
 
 class IBalance(ABC):
