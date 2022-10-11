@@ -334,4 +334,5 @@ def test_use_custom_url():
 
 def test_use_base_url():
     api = SolanaApi()
+    assert api.API_BASE_URL
     assert api.api_options.base_url == api.API_BASE_URL

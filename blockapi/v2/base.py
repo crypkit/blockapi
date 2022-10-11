@@ -81,7 +81,8 @@ class BlockchainApi(ABC):
 
 class CustomizableBlockchainApi(BlockchainApi, ABC):
     """
-    Class for handling blockchain API services with customizable base URL.
+    Class for handling blockchain API services with customizable base URL,
+    e.g. proxy, testnet, RPC services, alternative sources
     """
 
     API_BASE_URL: str = NotImplemented
