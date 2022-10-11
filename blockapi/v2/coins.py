@@ -366,5 +366,3 @@ COIN_SNX = Coin(
     blockchain=Blockchain.ETHEREUM,
     info=CoinInfo(coingecko_id='havven'),
 )
-
-
