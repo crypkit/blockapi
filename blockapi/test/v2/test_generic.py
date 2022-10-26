@@ -2,14 +2,16 @@ import pytest
 
 from blockapi.test.v2.test_data import (
     BAD_ADDRESSES,
+    DEBANK_API_KEY,
     NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL,
+    yield_all_api_classes,
     yield_api_instances,
     yield_debank_address,
 )
 from blockapi.v2.api.debank import DebankApi
 from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
 from blockapi.v2.base import ApiException
-from blockapi.v2.models import BalanceItem, Blockchain, AssetType
+from blockapi.v2.models import AssetType, BalanceItem, Blockchain
 
 
 @pytest.mark.integration
@@ -39,7 +41,7 @@ def test_get_balance_for_bad_address(api_instance):
 @pytest.mark.integration
 @pytest.mark.parametrize('address', yield_debank_address())
 def test_get_balance_for_debank(address):
-    api_instance = DebankApi()
+    api_instance = DebankApi(DEBANK_API_KEY, False)
     balances = api_instance.get_balance(address)
 
     assert all(isinstance(b, BalanceItem) for b in balances)
@@ -51,7 +53,7 @@ def test_get_balance_for_debank(address):
 @pytest.mark.integration
 @pytest.mark.parametrize('address', yield_debank_address())
 def test_get_portfolio_for_debank(address):
-    api_instance = DebankApi()
+    api_instance = DebankApi(DEBANK_API_KEY, False)
     pools = api_instance.get_portfolio(address)
 
     balances = [item for pool in pools for item in pool.items]
@@ -60,3 +62,8 @@ def test_get_portfolio_for_debank(address):
     assert all(AssetType(b.asset_type) is not None for b in balances)
     assert all(Blockchain(b.coin.blockchain) is not None for b in balances)
     assert len(balances) > 0
+
+
+@pytest.mark.parametrize('api_instance', yield_all_api_classes())
+def test_verify_repr_for_instance(api_instance):
+    assert repr(api_instance)

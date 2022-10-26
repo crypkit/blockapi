@@ -76,7 +76,10 @@ class BlockchainApi(ABC):
         return
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(coin={self.coin.name})"
+        if self.coin is None:
+            return self.__class__.__name__
+
+        return f'{self.__class__.__name__}(coin={self.coin.name})'
 
 
 class CustomizableBlockchainApi(BlockchainApi, ABC):
