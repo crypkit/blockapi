@@ -27,6 +27,7 @@ from blockapi.v2.api.web3_utils import (
     get_eth_client,
 )
 from blockapi.v2.base import BlockchainApi, IBalance
+from blockapi.v2.coins import COIN_SNX
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin
 
 logger = logging.getLogger(__name__)
@@ -147,6 +148,7 @@ def get_staking_tokens(network: str) -> List[Tuple[str, str]]:
 
 class SynthetixApi(BlockchainApi, IBalance, ABC):
     decimals: Decimal = Decimal('18')
+    coin = COIN_SNX
 
     def __init__(self, network="mainnet", provider="infura"):
         super().__init__()

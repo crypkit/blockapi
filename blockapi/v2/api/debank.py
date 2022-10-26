@@ -443,6 +443,8 @@ class DebankApi(CustomizableBlockchainApi, IBalance, IPortfolio):
         rate_limit=API_BASE_RATE_LIMIT,
     )
 
+    coin = None
+
     supported_requests = {
         'get_balance': '/v1/user/all_token_list?id={address}&is_all={is_all}',
         'get_portfolio': '/v1/user/all_complex_protocol_list?id={address}',

@@ -20,8 +20,10 @@ from blockapi.v2.api.covalenth.rsk import RskCovalentApi
 from blockapi.v2.api.debank import DebankApi
 from blockapi.v2.api.ethplorer import EthplorerApi
 from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
+from blockapi.v2.api.perpetual import PerpetualApi
 from blockapi.v2.api.solana import SolanaApi
 from blockapi.v2.api.subscan import PolkadotSubscanApi
+from blockapi.v2.api.synthetix import SynthetixApi
 from blockapi.v2.api.terra import TerraApi
 
 # TODO create method for auto loading all classes
@@ -47,6 +49,7 @@ from blockapi.v2.coins import (
 )
 
 COVALENT_API_KEY = os.getenv("COVALENT_API_KEY")
+DEBANK_API_KEY = os.getenv("DEBANK_API_KEY")
 
 API_CLASSES = [
     EthplorerApi,
@@ -70,6 +73,8 @@ API_CLASSES = [
     DebankApi,
     PolkadotSubscanApi,
     CosmosApi,
+    SynthetixApi,
+    PerpetualApi,
 ]
 
 NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL = {
@@ -155,6 +160,10 @@ def yield_api_ibalance_classes():
         for x in IBalance.__subclasses__()
         if not issubclass(x, (CosmosApiBase, CovalentApiBase, DebankApi))
     ]
+
+
+def yield_all_api_classes():
+    return [x for x in IBalance.__subclasses__()]
 
 
 def yield_debank_address():
