@@ -1,6 +1,6 @@
 import pytest
 
-from blockapi.v2.api.perpetual.perpetual import PerpetualApi, perp_contract_address
+from blockapi.v2.api.perpetual import PerpetualApi, perp_contract_address
 
 
 @pytest.fixture

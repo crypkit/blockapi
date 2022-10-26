@@ -3,10 +3,7 @@ from decimal import Decimal
 import pytest
 
 from blockapi.test.v2.api.conftest import read_file
-from blockapi.v2.api.synthetix.synthetix import (
-    SynthetixOptimismApi,
-    snx_contract_address,
-)
+from blockapi.v2.api.synthetix import SynthetixOptimismApi, snx_contract_address
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin
 
 test_address = '0xE2e4F2A725E42D0F0EF6291F46c430F963482001'
