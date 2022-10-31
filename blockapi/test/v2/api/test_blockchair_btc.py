@@ -30,7 +30,7 @@ def test_fetch_transactions(
     )
 
     # noinspection SpellCheckingInspection
-    addresses = [
+    transactions = [
         "3fcb8ac40fd7e1bfe2a95b6704d8af3bbd88640c0177ec118e26e06d3a06cc07",
         "e39457afee2730fa3eac9016efa02dac1c28998b60e87efdaa604ed0d175567f",
         "21cc75fd255111ebc9a4c81ce08c45f26e8d8721b4a8912452648ca9ff9d54c1",
@@ -38,7 +38,7 @@ def test_fetch_transactions(
 
     requests_mock.get(
         'https://api.blockchair.com/bitcoin/dashboards/transactions/'
-        + ','.join(addresses),
+        + ','.join(transactions),
         text=btc_transactions_response,
     )
 
