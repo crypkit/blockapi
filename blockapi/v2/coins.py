@@ -366,3 +366,11 @@ COIN_SNX = Coin(
     blockchain=Blockchain.ETHEREUM,
     info=CoinInfo(coingecko_id='havven'),
 )
+
+COIN_BTC = Coin(
+    symbol='BTC',
+    name='Bitcoin',
+    decimals=8,
+    blockchain=Blockchain.BITCOIN,
+    info=CoinInfo(coingecko_id='bitcoin'),
+)

@@ -1,7 +1,9 @@
+import inspect
 import os
 
 import pytest
 
+from blockapi.v2.api.blockchair import BlockchairBitcoinApi
 from blockapi.v2.api.cosmos import CosmosApi, CosmosApiBase
 from blockapi.v2.api.covalenth.arbitrum import ArbitrumCovalentApi
 from blockapi.v2.api.covalenth.astar import AstarCovalentApi
@@ -75,6 +77,7 @@ API_CLASSES = [
     CosmosApi,
     SynthetixApi,
     PerpetualApi,
+    BlockchairBitcoinApi,
 ]
 
 NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL = {
@@ -159,6 +162,7 @@ def yield_api_ibalance_classes():
         x
         for x in IBalance.__subclasses__()
         if not issubclass(x, (CosmosApiBase, CovalentApiBase, DebankApi))
+        and not inspect.isabstract(x)
     ]
 
 
