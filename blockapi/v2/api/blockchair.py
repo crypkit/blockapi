@@ -41,11 +41,11 @@ class BlockchairApi(BlockchainApi, IBalance, ABC):
     }
 
     def __init__(self):
-        super().__init__()
-
         self.api_options = ApiOptions(
             blockchain=self.blockchain, base_url=self.BASE_URL, rate_limit=0
         )
+
+        super().__init__()
 
     def get_balance(self, address: str) -> List[BalanceItem]:
         dashboard = self._get_dashboard(address)
