@@ -44,7 +44,7 @@ def test_time_from_retry_after_seconds():
 
 
 def test_time_from_retry_after_time():
-    time = RateLimiter.time_from_retry_after('Wed, 21 Oct 2015 07:28:00 CET')
+    time = RateLimiter.time_from_retry_after('Wed, 21 Oct 2015 07:28:00 +0200')
     assert time == datetime(2015, 10, 21, 5, 28, tzinfo=UTC)
 
 
