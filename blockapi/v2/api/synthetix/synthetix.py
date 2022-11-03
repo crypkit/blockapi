@@ -1,15 +1,15 @@
 import logging
 from abc import ABC
-from datetime import datetime, timedelta
 from decimal import Decimal
 from functools import lru_cache
-from typing import Dict, Iterable, List, Tuple
+from typing import Dict, Iterable, List, Optional, Tuple, Union
 
-import requests
 from bs4 import BeautifulSoup
 from eth_typing import ChecksumAddress
 from typing_extensions import TypedDict
 from web3 import Web3
+from web3.contract import Contract
+from web3.types import BlockIdentifier
 
 from blockapi.utils.num import raw_to_decimals, safe_decimal, to_decimal
 from blockapi.v2.api.synthetix.synthetix_abi import (
@@ -26,9 +26,9 @@ from blockapi.v2.api.web3_utils import (
     ensure_checksum_address,
     get_eth_client,
 )
-from blockapi.v2.base import BlockchainApi, IBalance
+from blockapi.v2.base import BlockchainApi, IBalance, rate_limiter
 from blockapi.v2.coins import COIN_SNX
-from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin
+from blockapi.v2.models import ApiOptions, AssetType, BalanceItem, Blockchain, Coin
 
 logger = logging.getLogger(__name__)
 
@@ -69,66 +69,6 @@ class Synth(TypedDict):
     contract_address: str
 
 
-# noinspection PyBroadException
-@lru_cache(maxsize=128)
-def snx_contract_address(
-    contract_name: str, network: str = "mainnet"
-) -> ChecksumAddress:
-    """
-    Dynamically converts Synthetix contract name into its
-    Ethereum address.
-    """
-    if network == 'optimism':
-        return snx_optimism_contract_address(contract_name)
-
-    base = "https://contracts.synthetix.io"
-    url = (
-        f"{base}/{contract_name}"
-        if network == "mainnet"
-        else f"{base}/{network}/{contract_name}"
-    )
-
-    result = requests.get(url)
-
-    # contract address is obtained from redirected etherscan url,
-    # as last 42 characters
-    try:
-        contract_address = result.url[-42:]
-        return Web3.toChecksumAddress(contract_address)
-    except Exception:
-        raise ValueError(f'Contract {contract_name} not found.')
-
-
-# noinspection PyBroadException
-def snx_optimism_contract_address(
-    contract_name: str,
-) -> ChecksumAddress:
-    """
-    Dynamically converts Synthetix contract name into its
-    Ethereum address on Optimism L2.
-    """
-    try:
-        page = requests.get('https://docs.synthetix.io/addresses/')
-        soup = BeautifulSoup(page.text, 'lxml')
-
-        # find table with Mainnet Optimism contracts
-        # https://docs.synthetix.io/addresses/#mainnet-optimism-l2
-        header = soup.body.find('h2', {'id': 'mainnet-optimism-l2'})
-        table = header.find_next(name='table')
-
-        # find row where (any) cell's text equals contract_name
-        row = table.find('td', text=contract_name).parent
-
-        # our contract address is in 6th cell, raw row's content looks
-        # like this:
-        # `\n, name, \n, url to contract's source, \n, CONTRACT_ADDRESS, \n`
-        # + remove all possible whitespaces and format address to checksum
-        return Web3.toChecksumAddress(row.contents[5].text.strip())
-
-    except Exception:
-        raise ValueError(f'Contract {contract_name} not found.')
-
-
 def get_staking_tokens(network: str) -> List[Tuple[str, str]]:
     """
     Get supported staking tokens for network.
@@ -150,11 +90,32 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
     decimals: Decimal = Decimal('18')
     coin = COIN_SNX
 
+    supported_requests = {
+        'get_contract': '/{contract_name}',
+        'get_contract_network': '/{network}/{contract_name}',
+        'get_contract_optimism': 'https://docs.synthetix.io/addresses/',
+    }
+
     def __init__(self, network="mainnet", provider="infura"):
+        self.api_options = ApiOptions(
+            base_url='https://contracts.synthetix.io',
+            rate_limit=0.5,
+            blockchain=Blockchain.ETHEREUM
+            if network == 'mainnet'
+            else Blockchain.OPTIMISM,
+        )
+
         super().__init__()
         self.network = network
+        self.limiter_url = (
+            'https://mainnet.optimism.io/'
+            if network == 'optimism'
+            else 'https://etherscan.io/'
+        )
         self.blockchain = self.get_blockchain(self.network)
         self.w3 = get_eth_client(network, provider)
+
+        rate_limiter.set_rate(self.limiter_url, 0.5)
 
     def get_balance(self, address: str) -> List[BalanceItem]:
         address = ensure_checksum_address(address)
@@ -225,6 +186,61 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
     def get_blockchain(network: str) -> Blockchain:
         return Blockchain.OPTIMISM if network == 'optimism' else Blockchain.ETHEREUM
 
+    # noinspection PyBroadException
+    @lru_cache(maxsize=128)
+    def get_contract_address(self, contract_name: str) -> ChecksumAddress:
+        """
+        Dynamically converts Synthetix contract name into its
+        Ethereum address.
+        """
+        if self.network == 'optimism':
+            return self.get_optimism_contract_address(contract_name)
+
+        if self.network == "mainnet":
+            result = self.get_response("get_contract", contract_name=contract_name)
+        else:
+            result = self.get_response(
+                "get_contract_network", contract_name=contract_name, network=network
+            )
+
+        # contract address is obtained from redirected etherscan url,
+        # as last 42 characters
+        try:
+            contract_address = result.url[-42:]
+            return Web3.toChecksumAddress(contract_address)
+        except Exception:
+            raise ValueError(f'Contract {contract_name} not found.')
+
+    # noinspection PyBroadException
+    def get_optimism_contract_address(
+        self,
+        contract_name: str,
+    ) -> ChecksumAddress:
+        """
+        Dynamically converts Synthetix contract name into its
+        Ethereum address on Optimism L2.
+        """
+        try:
+            page = self.get_response('get_contract_optimism')
+            soup = BeautifulSoup(page.text, 'lxml')
+
+            # find table with Mainnet Optimism contracts
+            # https://docs.synthetix.io/addresses/#mainnet-optimism-l2
+            header = soup.body.find('h2', {'id': 'mainnet-optimism-l2'})
+            table = header.find_next(name='table')
+
+            # find row where (any) cell's text equals contract_name
+            row = table.find('td', text=contract_name).parent
+
+            # our contract address is in 6th cell, raw row's content looks
+            # like this:
+            # `\n, name, \n, url to contract's source, \n, CONTRACT_ADDRESS, \n`
+            # + remove all possible whitespaces and format address to checksum
+            return Web3.toChecksumAddress(row.contents[5].text.strip())
+
+        except Exception:
+            raise ValueError(f'Contract {contract_name} not found.')
+
     # noinspection PyTypeChecker
     def fetch_staking(self, address: str) -> Staking:
         """
@@ -251,9 +267,9 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         Returns total amount of unlocked SNX tokens.
         """
         snx_contract = self.w3.eth.contract(
-            snx_contract_address('Synthetix', self.network), abi=synthetix_abi
+            self.get_contract_address('Synthetix'), abi=synthetix_abi
         )
-        amount = easy_call(snx_contract, 'transferableSynthetix', address)
+        amount = self._call_method(snx_contract, 'transferableSynthetix', address)
         return to_decimal(amount)
 
     def get_total_debt_owed(self, address: str) -> Decimal:
@@ -261,9 +277,9 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         Returns total debt owed in sUSD.
         """
         snx_contract = self.w3.eth.contract(
-            snx_contract_address('Synthetix', self.network), abi=synthetix_abi
+            self.get_contract_address('Synthetix'), abi=synthetix_abi
         )
-        debt = easy_call(snx_contract, 'debtBalanceOf', address, b'sUSD')
+        debt = self._call_method(snx_contract, 'debtBalanceOf', address, b'sUSD')
         return to_decimal(debt)
 
     @lru_cache(maxsize=128)
@@ -272,9 +288,9 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         Returns collateralization ratio in %.
         """
         snx_contract = self.w3.eth.contract(
-            snx_contract_address('Synthetix', self.network), abi=synthetix_abi
+            self.get_contract_address('Synthetix'), abi=synthetix_abi
         )
-        c_ratio = easy_call(snx_contract, 'collateralisationRatio', address)
+        c_ratio = self._call_method(snx_contract, 'collateralisationRatio', address)
         if c_ratio:
             ratio = raw_to_decimals(c_ratio, int(self.decimals))
             return {
@@ -293,9 +309,9 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         Return collateral.
         """
         snx_contract = self.w3.eth.contract(
-            snx_contract_address('Synthetix', self.network), abi=synthetix_abi
+            self.get_contract_address('Synthetix'), abi=synthetix_abi
         )
-        collateral = easy_call(snx_contract, 'collateral', address)
+        collateral = self._call_method(snx_contract, 'collateral', address)
         return to_decimal(collateral)
 
     def compute_snx_staked_amount(self, address: str) -> Decimal:
@@ -303,10 +319,10 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         Return total staked snx amount.
         """
         system_contract = self.w3.eth.contract(
-            snx_contract_address('SystemSettings', self.network),
+            self.get_contract_address('SystemSettings'),
             abi=system_settings_abi,
         )
-        i_ratio = easy_call(system_contract, 'issuanceRatio')
+        i_ratio = self._call_method(system_contract, 'issuanceRatio')
         i_ratio = raw_to_decimals(i_ratio, int(self.decimals))
 
         collateral = self.get_collateral(address)
@@ -326,9 +342,9 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         The current one is zeroed at the beginning of next fee period.
         """
         fee_pool_contract = self.w3.eth.contract(
-            snx_contract_address('FeePool', self.network), abi=feepool_abi
+            self.get_contract_address('FeePool'), abi=feepool_abi
         )
-        fees = easy_call(fee_pool_contract, 'feesByPeriod', address)
+        fees = self._call_method(fee_pool_contract, 'feesByPeriod', address)
 
         return {
             "prev_week": {
@@ -346,12 +362,12 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
     ) -> Iterable[StakingToken]:
         for symbol, contract_name in synths:
             staking_contract = self.w3.eth.contract(
-                snx_contract_address(contract_name, self.network),
+                self.get_contract_address(contract_name),
                 abi=staking_rewards_abi,
             )
 
-            staked = easy_call(staking_contract, 'balanceOf', address)
-            rewards = easy_call(staking_contract, 'earned', address)
+            staked = self._call_method(staking_contract, 'balanceOf', address)
+            rewards = self._call_method(staking_contract, 'earned', address)
             yield {
                 'symbol': symbol,
                 'staked': to_decimal(staked),
@@ -364,17 +380,17 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         Get synth contract address.
         """
         snx_contract = self.w3.eth.contract(
-            snx_contract_address('Synthetix', self.network), abi=synthetix_abi
+            self.get_contract_address('Synthetix'), abi=synthetix_abi
         )
 
         if symbol == 'SNX':
-            synth_addr = easy_call(snx_contract, 'proxy')
+            synth_addr = self._call_method(snx_contract, 'proxy')
         else:
             synth_contract_addr = Web3.toChecksumAddress(
-                easy_call(snx_contract, 'synths', symbol.encode())
+                self._call_method(snx_contract, 'synths', symbol.encode())
             )
             synth_contract = self.w3.eth.contract(synth_contract_addr, abi=erc20_abi)
-            synth_addr = easy_call(synth_contract, 'proxy')
+            synth_addr = self._call_method(synth_contract, 'proxy')
 
         return synth_addr
 
@@ -383,10 +399,10 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         Return number of SNX tokens escrowed.
         """
         rewards_escrow_contract = self.w3.eth.contract(
-            snx_contract_address('RewardEscrowV2', self.network),
+            self.get_contract_address('RewardEscrowV2'),
             abi=rewards_escrow_v2_abi,
         )
-        total_escrowed = easy_call(
+        total_escrowed = self._call_method(
             rewards_escrow_contract,
             "totalEscrowedAccountBalance",
             address,
@@ -400,7 +416,7 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         calculations.
         """
         xchg_contract = self.w3.eth.contract(
-            snx_contract_address('ExchangeRates', self.network),
+            self.get_contract_address('ExchangeRates'),
             abi=exchangerates_abi,
         )
         xchg_rates = {}
@@ -413,7 +429,7 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
             )
 
             xchg_rates[synth['contract_address']] = raw_to_decimals(
-                easy_call(
+                self._call_method(
                     xchg_contract,
                     'rateForCurrency',
                     symbol.encode('utf-8'),
@@ -422,10 +438,20 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
             )
 
         xchg_rates['XDR'] = safe_decimal(
-            easy_call(xchg_contract, 'effectiveValue', b'XDR', 1, b'sUSD')
+            self._call_method(xchg_contract, 'effectiveValue', b'XDR', 1, b'sUSD')
         )
 
         return xchg_rates
+
+    def _call_method(
+        self,
+        contract: Contract,
+        function_name: str,
+        *f_args: Union[bytes, int, str, List[str], Tuple[str]],
+        block: Optional[BlockIdentifier] = None,
+    ) -> Union[int, str, dict, List[dict]]:
+        rate_limiter.limit_url(self.limiter_url)
+        return easy_call(contract, function_name, *f_args, block)
 
 
 class SynthetixMainnetApi(SynthetixApi):

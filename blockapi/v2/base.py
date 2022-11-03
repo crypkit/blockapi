@@ -89,7 +89,19 @@ class BlockchainApi(ABC):
         **req_args,
     ) -> Dict:
         """
-        Call specific request method with params and return raw response.
+        Call specific request method with params and return dict from response body.
+        """
+        response = self.get_response(request_method, headers, **req_args)
+        return self._check_and_get_from_response(response)
+
+    def get_response(
+        self,
+        request_method: str,
+        headers=None,
+        **req_args,
+    ) -> Response:
+        """
+        Call specific request method with params and return complete response.
         """
         url = self._build_request_url(request_method, **req_args)
         rate_limiter.limit_url(url)
@@ -100,7 +112,7 @@ class BlockchainApi(ABC):
             rate_limiter.limit_url(url, retry_after=retry_after)
             response = self._session.get(url, headers=headers)
 
-        return self._check_and_get_from_response(response)
+        return response
 
     def post(self, request_method=None, body=None, json=None, headers=None):
         """

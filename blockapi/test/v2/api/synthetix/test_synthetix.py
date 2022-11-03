@@ -3,7 +3,7 @@ from decimal import Decimal
 import pytest
 
 from blockapi.test.v2.api.conftest import read_file
-from blockapi.v2.api.synthetix import SynthetixOptimismApi, snx_contract_address
+from blockapi.v2.api.synthetix import SynthetixMainnetApi, SynthetixOptimismApi
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin
 
 test_address = '0xE2e4F2A725E42D0F0EF6291F46c430F963482001'
@@ -23,8 +23,10 @@ def test_snx_contract_address_mainnet(requests_mock):
         text='',
     )
 
+    api = SynthetixMainnetApi()
+
     assert (
-        snx_contract_address(contract_name)
+        api.get_contract_address(contract_name)
         == '0x08F30Ecf2C15A783083ab9D5b9211c22388d0564'
     )
 
@@ -33,8 +35,10 @@ def test_snx_contract_address_optimism(requests_mock):
     text = read_file('synthetix/data/contract-optimism.html')
     requests_mock.get('https://docs.synthetix.io/addresses/', text=text)
 
+    api = SynthetixOptimismApi()
+
     assert (
-        snx_contract_address(contract_name, 'optimism')
+        api.get_contract_address(contract_name)
         == '0xFE8E48Bf36ccC3254081eC8C65965D1c8b2E744D'
     )
 
@@ -42,16 +46,20 @@ def test_snx_contract_address_optimism(requests_mock):
 def test_invalid_contract_raises(requests_mock):
     requests_mock.get('https://contracts.synthetix.io/abc', status_code=404)
 
+    api = SynthetixMainnetApi()
+
     with pytest.raises(ValueError, match='Contract abc not found'):
-        snx_contract_address('abc')
+        api.get_contract_address('abc')
 
 
 def test_invalid_contract_optimism_raises(requests_mock):
     text = read_file('synthetix/data/contract-optimism.html')
     requests_mock.get('https://docs.synthetix.io/addresses/', text=text)
 
+    api = SynthetixOptimismApi()
+
     with pytest.raises(ValueError, match='Contract abc not found'):
-        snx_contract_address('abc', 'optimism')
+        api.get_contract_address('abc')
 
 
 @pytest.mark.vcr()
