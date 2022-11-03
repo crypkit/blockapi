@@ -3,7 +3,7 @@ from abc import ABC
 from datetime import datetime, timedelta
 from decimal import Decimal
 from functools import lru_cache
-from typing import Dict, Iterable, List, Tuple
+from typing import Dict, Iterable, List, Optional, Tuple
 
 import requests
 from bs4 import BeautifulSoup
@@ -150,11 +150,17 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
     decimals: Decimal = Decimal('18')
     coin = COIN_SNX
 
-    def __init__(self, network="mainnet", provider="infura"):
+    def __init__(
+        self,
+        network="mainnet",
+        provider="infura",
+        api_key: Optional[str] = None,
+        api_url: Optional[str] = None,
+    ):
         super().__init__()
         self.network = network
         self.blockchain = self.get_blockchain(self.network)
-        self.w3 = get_eth_client(network, provider)
+        self.w3 = get_eth_client(network, provider, api_key, api_url)
 
     def get_balance(self, address: str) -> List[BalanceItem]:
         address = ensure_checksum_address(address)
@@ -429,10 +435,22 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
 
 
 class SynthetixMainnetApi(SynthetixApi):
-    def __init__(self, provider: str = 'infura'):
-        super().__init__(provider=provider)
+    def __init__(
+        self,
+        provider: str = 'infura',
+        api_key: Optional[str] = None,
+        api_url: Optional[str] = None,
+    ):
+        super().__init__(provider=provider, api_key=api_key, api_url=api_url)
 
 
 class SynthetixOptimismApi(SynthetixApi):
-    def __init__(self, provider: str = 'to_be_done'):
-        super().__init__('optimism', provider)
+    def __init__(
+        self,
+        provider: str = 'optimism',
+        api_key: Optional[str] = None,
+        api_url: Optional[str] = None,
+    ):
+        super().__init__(
+            'optimism', provider=provider, api_key=api_key, api_url=api_url
+        )
