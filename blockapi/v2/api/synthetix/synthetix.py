@@ -6,6 +6,7 @@ from typing import Dict, Iterable, List, Optional, Tuple, Union
 
 from bs4 import BeautifulSoup
 from eth_typing import ChecksumAddress
+from requests import HTTPError
 from typing_extensions import TypedDict
 from web3 import Web3
 from web3.contract import Contract
@@ -112,10 +113,13 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
             if network == 'optimism'
             else 'https://etherscan.io/'
         )
+
+        rate = 1 if network == 'optimism' else 0.5
+
         self.blockchain = self.get_blockchain(self.network)
         self.w3 = get_eth_client(network, provider)
 
-        rate_limiter.set_rate(self.limiter_url, 0.5)
+        rate_limiter.set_rate(self.limiter_url, rate)
 
     def get_balance(self, address: str) -> List[BalanceItem]:
         address = ensure_checksum_address(address)
@@ -200,7 +204,9 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
             result = self.get_response("get_contract", contract_name=contract_name)
         else:
             result = self.get_response(
-                "get_contract_network", contract_name=contract_name, network=network
+                "get_contract_network",
+                contract_name=contract_name,
+                network=self.network,
             )
 
         # contract address is obtained from redirected etherscan url,
@@ -451,7 +457,10 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         block: Optional[BlockIdentifier] = None,
     ) -> Union[int, str, dict, List[dict]]:
         rate_limiter.limit_url(self.limiter_url)
-        return easy_call(contract, function_name, *f_args, block)
+        try:
+            return easy_call(contract, function_name, *f_args, block=block)
+        except HTTPError as e:
+            raise
 
 
 class SynthetixMainnetApi(SynthetixApi):

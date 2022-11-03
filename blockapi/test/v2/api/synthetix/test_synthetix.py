@@ -63,6 +63,7 @@ def test_invalid_contract_optimism_raises(requests_mock):
 
 
 @pytest.mark.vcr()
+@pytest.mark.integration
 def test_synthetix_optimism_api():
     api = SynthetixOptimismApi()
     balances = api.get_balance(test_address)
