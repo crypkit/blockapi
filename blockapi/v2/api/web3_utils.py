@@ -103,6 +103,8 @@ def get_eth_client(
     Args:
         network (string): name of the network (mainnet, ropsten, ...)
         provider_name (string): name of the provider (anyblock, infura)
+        api_key (string): API key if the provider requires
+        api_url (string): Full API URL
     """
 
     if api_url:
