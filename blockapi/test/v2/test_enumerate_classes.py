@@ -20,7 +20,7 @@ from blockapi.v2.api.covalenth.rsk import RskCovalentApi
 
 
 def test_enumerate_subclasses():
-    assert len(yield_api_ibalance_classes()) == 7
+    assert len(yield_api_ibalance_classes()) == 5
 
 
 def test_enumerate_covalent_all_classes():
