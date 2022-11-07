@@ -161,7 +161,9 @@ def yield_api_ibalance_classes():
     return [
         x
         for x in IBalance.__subclasses__()
-        if not issubclass(x, (CosmosApiBase, CovalentApiBase, DebankApi))
+        if not issubclass(
+            x, (CosmosApiBase, CovalentApiBase, DebankApi, PerpetualApi, SynthetixApi)
+        )
         and not inspect.isabstract(x)
     ]
 
