@@ -1,3 +1,5 @@
+import os
+
 import pytest
 
 from blockapi.v2.api.perpetual import PerpetualApi, perp_contract_address
@@ -5,7 +7,7 @@ from blockapi.v2.api.perpetual import PerpetualApi, perp_contract_address
 
 @pytest.fixture
 def perp_api():
-    return PerpetualApi()
+    return PerpetualApi('http://localhost:2048/')
 
 
 test_address = '0x134089B387E22f52b1e06CC80d9a5F622032EF74'
@@ -33,7 +35,9 @@ def filter_infura_key(request):
 
 @pytest.mark.integration
 @pytest.mark.vcr(before_record_request=filter_infura_key)
-def test_perp_get_balances(perp_api):
+def test_perp_get_balances():
+    key = os.environ.get('INFURA_API_KEY')
+    perp_api = PerpetualApi(f'https://mainnet.infura.io/v3/{key}')
     balances = perp_api.get_balance(test_address)
     assert balances[0].balance
     assert balances[1].balance
