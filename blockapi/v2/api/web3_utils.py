@@ -93,46 +93,14 @@ def easy_call(
 
 
 def get_eth_client(
-    network: str = 'mainnet',
-    provider_name: str = 'anyblock',
-    api_key: Optional[str] = None,
     api_url: Optional[str] = None,
 ) -> Web3:
     """
     Get web3 client.
     Args:
-        network (string): name of the network (mainnet, ropsten, ...)
-        provider_name (string): name of the provider (anyblock, infura)
-        api_key (string): API key if the provider requires
         api_url (string): Full API URL
     """
-
-    if api_url:
-        return Web3(Web3.HTTPProvider(api_url))
-
-    if network == 'optimism':
-        url = {
-            'optimism': 'https://mainnet.optimism.io',
-            'alchemy': 'https://opt-mainnet.g.alchemy.com/v2/demo',
-            '1rpc': 'https://1rpc.io/op',
-        }.get(provider_name)
-    else:
-        url = {
-            'anyblock': (
-                'https://api.anyblock.tools/ethereum/ethereum/'
-                f'{network}/rpc/{api_key}/'
-            ),
-            'infura': f'https://{network}.infura.io/v3/{api_key}',
-            'pokt': env_variables.get('POKT_NODE'),
-            'local': env_variables.get('LOCAL_ETH_NODE'),
-        }.get(provider_name)
-
-    if not url:
-        raise ValueError(
-            f'Invalid provider name: {provider_name} for network {network}'
-        )
-
-    return Web3(Web3.HTTPProvider(url))
+    return Web3(Web3.HTTPProvider(api_url))
 
 
 def map_struct(raw_result, abi, func_name):
