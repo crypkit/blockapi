@@ -1,9 +1,8 @@
 import logging
 from abc import ABC
-from datetime import datetime, timedelta
 from decimal import Decimal
 from functools import lru_cache
-from typing import Dict, Iterable, List, Tuple
+from typing import Dict, Iterable, List, Optional, Tuple
 
 import requests
 from bs4 import BeautifulSoup
@@ -150,11 +149,11 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
     decimals: Decimal = Decimal('18')
     coin = COIN_SNX
 
-    def __init__(self, network="mainnet", provider="infura"):
+    def __init__(self, network: str, api_url: str):
         super().__init__()
         self.network = network
         self.blockchain = self.get_blockchain(self.network)
-        self.w3 = get_eth_client(network, provider)
+        self.w3 = get_eth_client(api_url)
 
     def get_balance(self, address: str) -> List[BalanceItem]:
         address = ensure_checksum_address(address)
@@ -429,10 +428,16 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
 
 
 class SynthetixMainnetApi(SynthetixApi):
-    def __init__(self, provider: str = 'infura'):
-        super().__init__(provider=provider)
+    def __init__(
+        self,
+        api_url: str,
+    ):
+        super().__init__(network="mainnet", api_url=api_url)
 
 
 class SynthetixOptimismApi(SynthetixApi):
-    def __init__(self, provider: str = 'to_be_done'):
-        super().__init__('optimism', provider)
+    def __init__(
+        self,
+        api_url: str,
+    ):
+        super().__init__(network='optimism', api_url=api_url)

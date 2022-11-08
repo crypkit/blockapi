@@ -3,7 +3,11 @@ from decimal import Decimal
 import pytest
 
 from blockapi.test.v2.api.conftest import read_file
-from blockapi.v2.api.synthetix import SynthetixOptimismApi, snx_contract_address
+from blockapi.v2.api.synthetix import (
+    SynthetixMainnetApi,
+    SynthetixOptimismApi,
+    snx_contract_address,
+)
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin
 
 test_address = '0xE2e4F2A725E42D0F0EF6291F46c430F963482001'
@@ -54,9 +58,19 @@ def test_invalid_contract_optimism_raises(requests_mock):
         snx_contract_address('abc', 'optimism')
 
 
+def test_create_with_custom_api():
+    api = SynthetixMainnetApi(api_url='http://localhost:1234/')
+    assert api.w3.provider.endpoint_uri == 'http://localhost:1234/'
+
+
+def test_create_with_custom_optimism_api():
+    api = SynthetixOptimismApi(api_url='http://localhost:1234/')
+    assert api.w3.provider.endpoint_uri == 'http://localhost:1234/'
+
+
 @pytest.mark.vcr()
 def test_synthetix_optimism_api():
-    api = SynthetixOptimismApi()
+    api = SynthetixOptimismApi(api_url='https://mainnet.optimism.io')
     balances = api.get_balance(test_address)
 
     assert balances == [
