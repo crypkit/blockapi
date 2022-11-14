@@ -7,12 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Set up Python 3.9
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
@@ -43,12 +43,12 @@ jobs:
     if: ${{ success() && github.ref == 'refs/heads/master' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Set up Python 3.9
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
@@ -88,7 +88,7 @@ jobs:
     if: ${{ success() && github.ref == 'refs/heads/master' }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: 'master'
         fetch-depth: 0
@@ -99,7 +99,7 @@ jobs:
         [ -z "$VER" ] && grep -q "__version__ = \"${VER/v}\"" setup.py || true
 
     - name: Set up Python 3.9
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4
       with:
         python-version: '3.9'
 
