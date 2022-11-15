@@ -8,11 +8,11 @@ from pydantic import BaseModel, validator
 from blockapi.utils.num import decimals_to_raw
 from blockapi.v2.api.debank_maps import (
     DEBANK_ASSET_TYPES,
-    DEBANK_BLOCKCHAIN,
     NATIVE_COIN_MAP,
     REWARD_ASSET_TYPE_MAP,
 )
 from blockapi.v2.base import ApiOptions, CustomizableBlockchainApi, IBalance, IPortfolio
+from blockapi.v2.blockchain_mapping import get_blockchain_from_debank_chain
 from blockapi.v2.models import (
     AssetType,
     BalanceItem,
@@ -96,13 +96,18 @@ class DebankProtocolParser:
         for item in response:
             model = DebankModelProtocol(**item)
             protocol = self.parse_item(model)
-            protocols[protocol.protocol_id] = protocol
+            if protocol:
+                protocols[protocol.protocol_id] = protocol
 
         return protocols
 
     @staticmethod
-    def parse_item(item: DebankModelProtocol) -> Protocol:
-        blockchain = DebankBalanceParser._convert_blockchain(item.chain)
+    def parse_item(item: DebankModelProtocol) -> Optional[Protocol]:
+        blockchain = get_blockchain_from_debank_chain(item.chain)
+        if not blockchain:
+            logger.warning(f'No blockchain found for protocol {item.id}')
+            return None
+
         return Protocol.from_api(
             protocol_id=item.id,
             chain=blockchain,
@@ -237,18 +242,6 @@ class DebankBalanceParser:
             or raw_balance.optimized_symbol
             or raw_balance.symbol
         )
-
-    @staticmethod
-    def _convert_blockchain(chain):
-        result = DEBANK_BLOCKCHAIN.get(chain)
-        if result is not None:
-            return result
-
-        try:
-            return Blockchain(chain)
-        except ValueError:
-            logger.warning(f"Unknown blockchain '{chain}'")
-            return chain
 
 
 def make_checksum_address(address: str) -> Optional[str]:
