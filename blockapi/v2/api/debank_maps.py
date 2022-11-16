@@ -1,5 +1,3 @@
-from blockapi.v2.models import AssetType, Blockchain
-
 from blockapi.v2.coins import (
     COIN_ASTR,
     COIN_AURORA,
@@ -28,32 +26,7 @@ from blockapi.v2.coins import (
     COIN_WAN,
     COIN_XDAI,
 )
-
-
-DEBANK_BLOCKCHAIN = {
-    'arb': Blockchain.ARBITRUM,
-    'avax': Blockchain.AVALANCHE,
-    'bsc': Blockchain.BINANCE_SMART_CHAIN,
-    'btt': Blockchain.BIT_TORRENT,
-    'cro': Blockchain.CRONOS,
-    'dfk': Blockchain.DEFI_KINGDOMS,
-    'eth': Blockchain.ETHEREUM,
-    'evmos': Blockchain.COSMOS,
-    'ftm': Blockchain.FANTOM,
-    'hmy': Blockchain.HARMONY,
-    'iotx': Blockchain.IOTEX,
-    'kcc': Blockchain.KU_COIN,
-    'klay': Blockchain.KLAYTN,
-    'matic': Blockchain.POLYGON,
-    'movr': Blockchain.MOONRIVER,
-    'mobm': Blockchain.MOONBEAM,
-    'op': Blockchain.OPTIMISM,
-    'sbch': Blockchain.SMART_BITCOIN_CASH,
-    'sdn': Blockchain.SHIDEN,
-    'sgb': Blockchain.SONGBIRD,
-    'tlos': Blockchain.TELOS,
-    'wan': Blockchain.WANCHAIN,
-}
+from blockapi.v2.models import AssetType, Blockchain
 
 DEBANK_ASSET_TYPES = {
     'vested': AssetType.VESTING,

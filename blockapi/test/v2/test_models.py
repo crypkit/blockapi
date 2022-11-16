@@ -1,7 +1,7 @@
 from decimal import Decimal
 
-from blockapi.v2.models import Protocol, BalanceItem
 from blockapi.v2.coins import COIN_ETH
+from blockapi.v2.models import BalanceItem, Blockchain, Protocol
 
 
 def test_create_protocol_from_api():

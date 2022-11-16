@@ -211,7 +211,7 @@ COIN_XDAI = Coin(
     symbol='XDAI',
     name='xDai',
     decimals=18,
-    blockchain=Blockchain.GNOSIS,
+    blockchain=Blockchain.XDAI,
     info=CoinInfo(coingecko_id='xdai'),
 )
 
