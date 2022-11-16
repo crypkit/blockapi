@@ -1,7 +1,8 @@
 from decimal import Decimal
 
-from blockapi.v2.models import Protocol, BalanceItem
+from blockapi.v2.blockchain_mapping import get_blockchain_from_rango_chain
 from blockapi.v2.coins import COIN_ETH
+from blockapi.v2.models import BalanceItem, Blockchain, Protocol
 
 
 def test_create_protocol_from_api():
@@ -38,3 +39,7 @@ def test_balance_protocol_can_be_set():
         balance_raw="3", coin=COIN_ETH, raw={}, protocol=protocol
     )
     assert balance.protocol == protocol
+
+
+def test_convert_case():
+    assert get_blockchain_from_rango_chain('terra') == Blockchain.TERRA
