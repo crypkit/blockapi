@@ -121,14 +121,14 @@ CHAIN_ID_BLOCKCHAINS_MAP = {
 }
 
 RANGO_BLOCKCHAINS_MAP = {
-    'AVAX_CCHAIN': Blockchain.AVALANCHE,
-    'BNB': Blockchain.BINANCE_CHAIN,
-    'BSC': Blockchain.BINANCE_SMART_CHAIN,
-    'BTC': Blockchain.BITCOIN,
-    'CRYPTO_ORG': Blockchain.CRYPTO_ORG,
-    'DOGE': Blockchain.DOGE,
-    'ETH': Blockchain.ETHEREUM,
-    'LTC': Blockchain.LITECOIN,
+    'avax_cchain': Blockchain.AVALANCHE,
+    'bnb': Blockchain.BINANCE_CHAIN,
+    'bsc': Blockchain.BINANCE_SMART_CHAIN,
+    'btc': Blockchain.BITCOIN,
+    'crypto_org': Blockchain.CRYPTO_ORG,
+    'doge': Blockchain.DOGE,
+    'eth': Blockchain.ETHEREUM,
+    'ltc': Blockchain.LITECOIN,
 }
 
 WORMHOLE_BLOCKCHAINS_MAP = {
@@ -142,38 +142,41 @@ WORMHOLE_BLOCKCHAINS_MAP = {
 
 
 def _get_chain_mapping(
-    chain: str, source: str, mapping: dict[str, Blockchain]
+    chain: Optional[str], source: str, mapping: dict[str, Blockchain]
 ) -> Optional[Blockchain]:
-    try:
-        blockchain = mapping.get(chain)
-        if blockchain:
-            return blockchain
-
-        return Blockchain(chain)
-    except ValueError:
-        if logger:
-            logger.warning(
-                f'Cannot convert chain id "{chain}" to Blockchain for {source}'
-            )
-
+    if not chain:
         return None
 
+    chain_lower = chain.lower()
 
-def get_blockchain_from_debank_chain(chain: str) -> Optional[Blockchain]:
+    blockchain = mapping.get(chain_lower)
+    if blockchain:
+        return blockchain
+
+    if chain_lower in Blockchain.__members__.values():
+        return Blockchain(chain_lower)
+
+    if logger:
+        logger.warning(f'Cannot convert chain id "{chain}" to Blockchain for {source}')
+
+    return None
+
+
+def get_blockchain_from_debank_chain(chain: Optional[str]) -> Optional[Blockchain]:
     return _get_chain_mapping(chain, 'DeBank', DEBANK_BLOCKCHAINS_MAP)
 
 
-def get_blockchain_from_coingecko_chain(chain: str) -> Optional[Blockchain]:
+def get_blockchain_from_coingecko_chain(chain: Optional[str]) -> Optional[Blockchain]:
     return _get_chain_mapping(chain, 'CoinGecko', COINGECKO_BLOCKCHAINS_MAP)
 
 
-def get_blockchain_from_chain_id(chain: str) -> Optional[Blockchain]:
+def get_blockchain_from_chain_id(chain: Optional[str]) -> Optional[Blockchain]:
     return _get_chain_mapping(chain, 'Chain ID', CHAIN_ID_BLOCKCHAINS_MAP)
 
 
-def get_blockchain_from_rango_chain(chain: str) -> Optional[Blockchain]:
+def get_blockchain_from_rango_chain(chain: Optional[str]) -> Optional[Blockchain]:
     return _get_chain_mapping(chain, 'Rango', RANGO_BLOCKCHAINS_MAP)
 
 
-def get_blockchain_from_wormhole_chain(chain: str) -> Optional[Blockchain]:
+def get_blockchain_from_wormhole_chain(chain: Optional[str]) -> Optional[Blockchain]:
     return _get_chain_mapping(chain, 'Wormhole', WORMHOLE_BLOCKCHAINS_MAP)
