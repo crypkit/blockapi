@@ -216,7 +216,7 @@ class DebankBalanceParser:
 
     def get_coin(self, balance_item: DebankModelBalanceItem, symbol: str) -> Coin:
         address = balance_item.id
-        blockchain = self._convert_blockchain(balance_item.chain)
+        blockchain = get_blockchain_from_debank_chain(balance_item.chain)
         coin = NATIVE_COIN_MAP.get(address)
 
         if coin is not None and coin.blockchain == blockchain:
