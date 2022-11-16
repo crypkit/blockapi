@@ -65,7 +65,7 @@ jobs:
           git config --local user.name "GitHub Action"
 
       - name: Update version
-      - id: update_version
+        id: update_version
         run: |
           VER=$(semantic-release print-version)
           if [ ! -z "$VER" ]; then
