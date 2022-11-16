@@ -156,9 +156,7 @@ def _get_chain_mapping(
     if chain_lower in Blockchain.__members__.values():
         return Blockchain(chain_lower)
 
-    if logger:
-        logger.warning(f'Cannot convert chain id "{chain}" to Blockchain for {source}')
-
+    logger.warning(f'Cannot convert chain id "{chain}" to Blockchain for {source}')
     return None
 
 
