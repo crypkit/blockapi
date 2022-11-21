@@ -370,7 +370,7 @@ COIN_DOGE = Coin(
     symbol='DOGE',
     name='Dogecoin',
     decimals=8,
-    blockchain=Blockchain.DOGECOIN,
+    blockchain=Blockchain.DOGE,
     info=CoinInfo(coingecko_id='dogecoin'),
 )
 
@@ -382,4 +382,3 @@ COIN_SNX = Coin(
     blockchain=Blockchain.ETHEREUM,
     info=CoinInfo(coingecko_id='havven'),
 )
-

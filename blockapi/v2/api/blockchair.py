@@ -194,5 +194,5 @@ class BlockchairBitcoinApi(BlockchairApi):
 
 class BlockchairDogecoinApi(BlockchairApi):
     coin = COIN_DOGE
-    blockchain = Blockchain.DOGECOIN
+    blockchain = Blockchain.DOGE
     name = 'dogecoin'
