@@ -64,6 +64,7 @@ class Blockchain(str, Enum):
     KLAYTN = 'klaytn'
     KLAYTN_CYPRESS = 'klaytn_cypress'
     KU_COIN = 'ku-coin'
+    KUSAMA = 'kusama'
     LITECOIN = 'litecoin'
     METIS = 'metis'
     MILKOMEDA_C1 = 'milkomeda_c1'

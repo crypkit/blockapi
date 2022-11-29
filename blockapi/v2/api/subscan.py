@@ -1,4 +1,5 @@
 import json
+from abc import ABC
 from decimal import Decimal
 from typing import Iterable, List, Optional
 
@@ -12,24 +13,18 @@ from blockapi.v2.base import (
     IBalance,
     InvalidAddressException,
 )
-from blockapi.v2.coins import COIN_DOT
+from blockapi.v2.coins import COIN_DOT, COIN_KSM
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain
 
 
-class PolkadotSubscanApi(BlockchainApi, IBalance):
+class SubscanApi(BlockchainApi, IBalance, ABC):
     """
     API docs: https://docs.api.subscan.io/
     Explorer: https://www.subscan.io
     """
 
-    coin = COIN_DOT
-    api_options = ApiOptions(
-        blockchain=Blockchain.POLKADOT,
-        base_url='https://polkadot.api.subscan.io',
-        start_offset=0,
-        max_items_per_page=100,
-        page_offset_step=1,
-    )
+    coin = None
+    api_options = None
 
     supported_requests = {
         'get_balance': '/api/v2/scan/search',
@@ -153,3 +148,27 @@ class PolkadotSubscanApi(BlockchainApi, IBalance):
             raise InvalidAddressException('Invalid address format.')
         elif code:
             raise ApiException(json_response['message'])
+
+    @staticmethod
+    def _get_api_options(blockchain: Blockchain, base_url: str) -> ApiOptions:
+        return ApiOptions(
+            blockchain=blockchain,
+            base_url=base_url,
+            start_offset=0,
+            max_items_per_page=100,
+            page_offset_step=1,
+        )
+
+
+class PolkadotSubscanApi(SubscanApi):
+    coin = COIN_DOT
+    api_options = SubscanApi._get_api_options(
+        blockchain=Blockchain.POLKADOT, base_url='https://polkadot.api.subscan.io'
+    )
+
+
+class KusamaSubscanApi(SubscanApi):
+    coin = COIN_KSM
+    api_options = SubscanApi._get_api_options(
+        blockchain=Blockchain.KUSAMA, base_url='https://kusama.api.subscan.io'
+    )

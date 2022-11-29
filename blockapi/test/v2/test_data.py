@@ -24,7 +24,7 @@ from blockapi.v2.api.ethplorer import EthplorerApi
 from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
 from blockapi.v2.api.perpetual import PerpetualApi
 from blockapi.v2.api.solana import SolanaApi
-from blockapi.v2.api.subscan import PolkadotSubscanApi
+from blockapi.v2.api.subscan import KusamaSubscanApi, PolkadotSubscanApi, SubscanApi
 from blockapi.v2.api.synthetix import SynthetixApi
 from blockapi.v2.api.terra import TerraApi
 
@@ -40,6 +40,7 @@ from blockapi.v2.coins import (
     COIN_HT,
     COIN_IOTX,
     COIN_KLAY,
+    COIN_KSM,
     COIN_MATIC,
     COIN_MOVR,
     COIN_PALM,
@@ -74,6 +75,7 @@ API_CLASSES = [
     OptimismEtherscanApi,
     DebankApi,
     PolkadotSubscanApi,
+    KusamaSubscanApi,
     CosmosApi,
     SynthetixApi,
     PerpetualApi,
@@ -128,6 +130,7 @@ NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL = {
     ],
     COIN_DOT.symbol: ['15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK'],
     COIN_ATOM.symbol: ['cosmos1r4v9t46zyu6df0jwtmtpn0pq864dpn7c5sha5u'],
+    COIN_KSM.symbol: ['EK8HP4biJ8FBktaREBd9Bt3E85QsVTmpYzn5aou7iiUDDgB'],
 }
 
 BAD_ADDRESSES = [
@@ -162,7 +165,15 @@ def yield_api_ibalance_classes():
         x
         for x in IBalance.__subclasses__()
         if not issubclass(
-            x, (CosmosApiBase, CovalentApiBase, DebankApi, PerpetualApi, SynthetixApi)
+            x,
+            (
+                CosmosApiBase,
+                CovalentApiBase,
+                DebankApi,
+                PerpetualApi,
+                SynthetixApi,
+                SubscanApi,
+            ),
         )
         and not inspect.isabstract(x)
     ]
@@ -179,6 +190,7 @@ def get_debank_addresses():
             COIN_TERRA.symbol,
             COIN_SOL.symbol,
             COIN_DOT.symbol,
+            COIN_KSM.symbol,
             COIN_ATOM.symbol,
         ):
             continue
