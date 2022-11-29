@@ -197,6 +197,14 @@ COIN_DOT = Coin(
     info=CoinInfo(coingecko_id='polkadot', tags=['native']),
 )
 
+COIN_KSM = Coin(
+    symbol='KSM',
+    name='Kusama',
+    decimals=12,
+    blockchain=Blockchain.KUSAMA,
+    info=CoinInfo(coingecko_id='kusama', tags=['native']),
+)
+
 COIN_ATOM = Coin(
     symbol='ATOM',
     name='Cosmos Hub',
