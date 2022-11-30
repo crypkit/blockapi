@@ -4,9 +4,9 @@ from blockapi.test.v2.test_data import (
     BAD_ADDRESSES,
     DEBANK_API_KEY,
     NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL,
+    get_debank_addresses,
     yield_all_api_classes,
     yield_api_instances,
-    yield_debank_address,
 )
 from blockapi.v2.api.debank import DebankApi
 from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
@@ -39,7 +39,7 @@ def test_get_balance_for_bad_address(api_instance):
 
 
 @pytest.mark.integration
-@pytest.mark.parametrize('address', yield_debank_address())
+@pytest.mark.parametrize('address', get_debank_addresses())
 def test_get_balance_for_debank(address):
     api_instance = DebankApi(DEBANK_API_KEY, False)
     balances = api_instance.get_balance(address)
@@ -51,7 +51,7 @@ def test_get_balance_for_debank(address):
 
 
 @pytest.mark.integration
-@pytest.mark.parametrize('address', yield_debank_address())
+@pytest.mark.parametrize('address', get_debank_addresses())
 def test_get_portfolio_for_debank(address):
     api_instance = DebankApi(DEBANK_API_KEY, False)
     pools = api_instance.get_portfolio(address)

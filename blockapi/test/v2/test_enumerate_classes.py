@@ -1,7 +1,10 @@
+import re
+
+from blockapi.api import SolanaApi
 from blockapi.test.v2.test_data import (
+    get_debank_addresses,
     yield_api_ibalance_classes,
     yield_covalent_api_classes,
-    yield_debank_address,
 )
 from blockapi.v2.api.covalenth.arbitrum import ArbitrumCovalentApi
 from blockapi.v2.api.covalenth.astar import AstarCovalentApi
@@ -17,10 +20,24 @@ from blockapi.v2.api.covalenth.moonbeam import MoonBeamCovalentApi
 from blockapi.v2.api.covalenth.palm import PalmCovalentApi
 from blockapi.v2.api.covalenth.polygon import PolygonCovalentApi
 from blockapi.v2.api.covalenth.rsk import RskCovalentApi
+from blockapi.v2.api.debank import DebankApi
+from blockapi.v2.api.ethplorer import EthplorerApi
+from blockapi.v2.api.perpetual import PerpetualApi
+from blockapi.v2.api.synthetix import SynthetixApi
 
 
 def test_enumerate_subclasses():
-    assert len(yield_api_ibalance_classes()) == 5
+    classes = [x.__name__ for x in yield_api_ibalance_classes()]
+
+    assert classes
+    assert SolanaApi.__name__ in classes
+    assert EthplorerApi.__name__ in classes
+    assert DebankApi.__name__ not in classes
+    assert PerpetualApi.__name__ not in classes
+    assert SynthetixApi.__name__ not in classes
+
+    for cls in classes:
+        assert 'Base' not in cls
 
 
 def test_enumerate_covalent_all_classes():
@@ -42,9 +59,7 @@ def test_enumerate_covalent_all_classes():
     ] == yield_covalent_api_classes()
 
 
-def test_enumerate_covalent_classes():
-    assert len(yield_covalent_api_classes()) == 14
-
-
 def test_yield_debank_address():
-    assert len(yield_debank_address()) == 13
+    for param in get_debank_addresses():
+        for address in param.values:
+            assert re.match('^0x[a-fA-F0-9]{40}$', address)
