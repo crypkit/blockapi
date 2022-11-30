@@ -183,7 +183,7 @@ def yield_all_api_classes():
     return [x for x in IBalance.__subclasses__()]
 
 
-def yield_debank_address():
+def get_debank_addresses():
     result = []
     for key, items in NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL.items():
         if key in (
