@@ -2,9 +2,9 @@ import re
 
 from blockapi.api import SolanaApi
 from blockapi.test.v2.test_data import (
+    get_debank_addresses,
     yield_api_ibalance_classes,
     yield_covalent_api_classes,
-    yield_debank_address,
 )
 from blockapi.v2.api.covalenth.arbitrum import ArbitrumCovalentApi
 from blockapi.v2.api.covalenth.astar import AstarCovalentApi
@@ -60,6 +60,6 @@ def test_enumerate_covalent_all_classes():
 
 
 def test_yield_debank_address():
-    for param in yield_debank_address():
+    for param in get_debank_addresses():
         for address in param.values:
             assert re.match('^0x[a-fA-F0-9]{40}$', address)
