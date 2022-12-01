@@ -227,7 +227,7 @@ COIN_OKT = Coin(
     symbol='OKT',
     name='OKC',
     decimals=18,
-    blockchain=Blockchain.OEC,
+    blockchain=Blockchain.OKT,
     info=CoinInfo(coingecko_id='oec-token'),
 )
 
@@ -378,7 +378,7 @@ COIN_DOGE = Coin(
     symbol='DOGE',
     name='Dogecoin',
     decimals=8,
-    blockchain=Blockchain.DOGE,
+    blockchain=Blockchain.DOGECHAIN,
     info=CoinInfo(coingecko_id='dogecoin'),
 )
 
