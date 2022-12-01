@@ -9,7 +9,7 @@ class RskCovalentApi(CovalentApiBase):
     CHAIN_ID = 30
 
     api_options = ApiOptions(
-        blockchain=Blockchain.RSK,
+        blockchain=Blockchain.ROOTSTOCK,
         base_url=CovalentApiBase.API_BASE_URL,
         rate_limit=CovalentApiBase.API_BASE_RATE_LIMIT,
     )

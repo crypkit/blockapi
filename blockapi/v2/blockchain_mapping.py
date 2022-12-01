@@ -17,30 +17,34 @@ DEBANK_BLOCKCHAINS_MAP = {
     'ftm': Blockchain.FANTOM,
     'hmy': Blockchain.HARMONY,
     'iotx': Blockchain.IOTEX,
-    'kcc': Blockchain.KU_COIN,
-    'klay': Blockchain.KLAYTN,
+    'kcc': Blockchain.KUCOIN,
+    'klay': Blockchain.KLAY_TOKEN,
     'matic': Blockchain.POLYGON,
     'movr': Blockchain.MOONRIVER,
     'mobm': Blockchain.MOONBEAM,
     'op': Blockchain.OPTIMISM,
     'sbch': Blockchain.SMART_BITCOIN_CASH,
-    'sdn': Blockchain.SHIDEN,
+    'sdn': Blockchain.SHIDEN_NETWORK,
     'sgb': Blockchain.SONGBIRD,
     'tlos': Blockchain.TELOS,
     'wan': Blockchain.WANCHAIN,
 }
 
 COINGECKO_BLOCKCHAINS_MAP = {
-    'polygon-pos': Blockchain.POLYGON,
+    'defi-kingdom-blockchain': Blockchain.DEFI_KINGDOMS,
     'harmony-shard-0': Blockchain.HARMONY,
-    'oec': Blockchain.OEC,
-    'astar_network': Blockchain.ASTAR,
-    'shiden_network': Blockchain.SHIDEN,
+    'kucoin-community-chain': Blockchain.KUCOIN,
+    'polygon-pos': Blockchain.POLYGON,
+    'oec': Blockchain.OKT,
+    'ShibChain': Blockchain.SHIBA_CHAIN,
+    'shiden network': Blockchain.SHIDEN_NETWORK,
+    'smartbch': Blockchain.SMART_BITCOIN_CASH,
+    'thorchain': Blockchain.THOR,
 }
 
 CHAIN_ID_BLOCKCHAINS_MAP = {
     '1': Blockchain.ETHEREUM,
-    '2': Blockchain.EXPANSE,
+    '2': Blockchain.EXPANSE_NETWORK,
     '3': None,  # testnet - Ropsten
     '4': None,  # testnet,
     '5': None,  # testnet,
@@ -52,18 +56,18 @@ CHAIN_ID_BLOCKCHAINS_MAP = {
     '14': Blockchain.FLARE,
     '16': None,  # testnet - Flare Testnet Coston
     '17': Blockchain.THAI_CHAIN_2_THAI_FI,
-    '19': Blockchain.SONGBIRD_CANARY_NETWORK,
-    '20': Blockchain.ELASTOS_SMART_CHAIN,
+    '19': Blockchain.SONGBIRD,
+    '20': Blockchain.ELASTOS,
     '21': None,  # testnet - ELA-ETH-Sidechain Testnet
     '22': Blockchain.ELA_DID_SIDECHAIN,
     '23': None,  # testnet - ELA-DID-Sidechain Testnet
     '24': Blockchain.DITHEREUM,
     '25': Blockchain.CRONOS,
     '26': None,  # testnet - Genesis L1 testnet
-    '27': Blockchain.SHIBA,
+    '27': Blockchain.SHIBA_CHAIN,
     '28': None,  # testnet
     '29': Blockchain.GENESIS_L1,
-    '30': Blockchain.RSK,
+    '30': Blockchain.ROOTSTOCK,
     '31': None,  # testnet - rsk
     '32': None,  # testnet - good data
     '35': Blockchain.TBWG_CHAIN,
@@ -73,37 +77,37 @@ CHAIN_ID_BLOCKCHAINS_MAP = {
     '40': Blockchain.TELOS,
     '44': Blockchain.DARWINIA_CRAB_NETWORK,
     '56': Blockchain.BINANCE_SMART_CHAIN,
-    '57': Blockchain.SYSCOIN_NEVM,
+    '57': Blockchain.SYSCOIN,
     '58': Blockchain.ONTOLOGY,
     '61': Blockchain.ETHEREUM_CLASSIC,
-    '66': Blockchain.OEC,
+    '66': Blockchain.OKT,
     '69': None,  # testnet
     '97': None,  # testnet
     '100': Blockchain.GNOSIS,
-    '106': Blockchain.VELAS_EVM,
+    '106': Blockchain.VELAS,
     '122': Blockchain.FUSE,
-    '128': Blockchain.HUOBI,
+    '128': Blockchain.HUOBI_TOKEN,
     '137': Blockchain.POLYGON,
     '250': Blockchain.FANTOM,
     '256': None,  # testnet
     '288': Blockchain.BOBA,
     '321': Blockchain.KCC,
-    '336': Blockchain.SHIDEN,
+    '336': Blockchain.SHIDEN_NETWORK,
     '416': Blockchain.SX_NETWORK,
     '592': Blockchain.ASTAR,
     '1024': Blockchain.CLV_PARACHAIN,
-    '1030': Blockchain.CONFLUX_E_SPACE,
-    '1088': Blockchain.METIS,
+    '1030': Blockchain.CONFLUX,
+    '1088': Blockchain.METIS_ANDROMEDA,
     '1284': Blockchain.MOONBEAM,
     '1285': Blockchain.MOONRIVER,
-    '2000': Blockchain.DOGE,
+    '2000': Blockchain.DOGECHAIN,
     '2001': Blockchain.MILKOMEDA_C1,
-    '2222': Blockchain.KAVA_EVM,
+    '2222': Blockchain.KAVA,
     '4689': Blockchain.IOTEX,
     '8217': Blockchain.KLAYTN_CYPRESS,
     '9001': Blockchain.EVMOS,
     # "16350": None, #TODO: Not found
-    '32659': Blockchain.FUSION,
+    '32659': Blockchain.FUSION_NETWORK,
     '42161': Blockchain.ARBITRUM,
     '42170': Blockchain.ARBITRUM_NOVA,
     '42220': Blockchain.CELO,
@@ -122,11 +126,11 @@ CHAIN_ID_BLOCKCHAINS_MAP = {
 
 RANGO_BLOCKCHAINS_MAP = {
     'avax_cchain': Blockchain.AVALANCHE,
-    'bnb': Blockchain.BINANCE_CHAIN,
+    'bnb': Blockchain.BINANCECOIN,
     'bsc': Blockchain.BINANCE_SMART_CHAIN,
     'btc': Blockchain.BITCOIN,
     'crypto_org': Blockchain.CRYPTO_ORG,
-    'doge': Blockchain.DOGE,
+    'doge': Blockchain.DOGECHAIN,
     'eth': Blockchain.ETHEREUM,
     'ltc': Blockchain.LITECOIN,
 }

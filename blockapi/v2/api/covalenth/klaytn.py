@@ -9,7 +9,7 @@ class KlaytnCovalentApi(CovalentApiBase):
     CHAIN_ID = 8217
 
     api_options = ApiOptions(
-        blockchain=Blockchain.KLAYTN,
+        blockchain=Blockchain.KLAY_TOKEN,
         base_url=CovalentApiBase.API_BASE_URL,
         rate_limit=CovalentApiBase.API_BASE_RATE_LIMIT,
     )
