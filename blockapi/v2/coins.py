@@ -140,7 +140,7 @@ COIN_KLAY = Coin(
     symbol='KLAY',
     name='Klaytn',
     decimals=18,
-    blockchain=Blockchain.KLAYTN,
+    blockchain=Blockchain.KLAY_TOKEN,
     address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
         coingecko_id='klaytn',
@@ -185,7 +185,7 @@ COIN_RSK = Coin(
     symbol='RBTC',
     name='Rootstock RSK',
     decimals=18,  # TODO verify this.
-    blockchain=Blockchain.RSK,
+    blockchain=Blockchain.ROOTSTOCK,
     address='0x0000000000000000000000000000000000000000',
 )
 
@@ -271,7 +271,7 @@ COIN_METIS = Coin(
     symbol='METIS',
     name='Metis',
     decimals=18,
-    blockchain=Blockchain.METIS,
+    blockchain=Blockchain.METIS_ANDROMEDA,
     address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(coingecko_id='metis-token'),
 )
@@ -339,7 +339,7 @@ COIN_KCS = Coin(
     symbol='KCS',
     name='KuCoin',
     decimals=18,
-    blockchain=Blockchain.KU_COIN,
+    blockchain=Blockchain.KUCOIN,
     info=CoinInfo(coingecko_id='kucoin-shares'),
 )
 
