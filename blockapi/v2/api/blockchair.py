@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Iterable, List
 
 from blockapi.v2.base import BlockchainApi, IBalance
-from blockapi.v2.coins import COIN_BTC, COIN_DOGE
+from blockapi.v2.coins import COIN_BTC, COIN_DOGE, COIN_LTC
 from blockapi.v2.models import (
     ApiOptions,
     AssetType,
@@ -196,3 +196,9 @@ class BlockchairDogecoinApi(BlockchairApi):
     coin = COIN_DOGE
     blockchain = Blockchain.DOGECHAIN
     name = 'dogecoin'
+
+
+class BlockchairLitecoinApi(BlockchairApi):
+    coin = COIN_LTC
+    blockchain = Blockchain.LITECOIN
+    name = 'litecoin'
