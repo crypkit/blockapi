@@ -34,6 +34,7 @@ class Blockchain(str, Enum):
     BLOCKNET = 'blocknet'
     BNB_BEACON_CHAIN = 'bnb-beacon-chain'
     BOBA = 'boba'
+    BOS = 'bos'
     CANTO = 'canto'
     CARDANO = 'cardano'
     CELER_NETWORK = 'celer-network'

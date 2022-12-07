@@ -1,0 +1,26 @@
+{
+  "_links": {
+    "self": {
+      "href": "/api/v1/transactions/R1nddzPKA5uh5a7ZTjS113aUth9t1Bv68hjjjxGCqgS/operations/0"
+    },
+    "transaction": {
+      "href": "/api/v1/transactions/R1nddzPKA5uh5a7ZTjS113aUth9t1Bv68hjjjxGCqgS"
+    }
+  },
+  "block_height": 24191899,
+  "body": {
+    "target": "GCPQQIX2LRX2J63C7AHWDXEMNGMZR2UI2PRN5TCSOVMEMF7BAUADMKH5",
+    "amount": "0",
+    "txs": 0,
+    "block-height": 24191898,
+    "block-hash": "Dzfu9qD4n7tDKtk9B6UfiQweLKZHYYmetCK6P2coPx6X",
+    "total-txs": 24245258,
+    "total-ops": 0
+  },
+  "hash": "FsvbXmq9QBrpRZoBbi379qwnuRhYZkg9ssVxeeM65ssX-R1nddzPKA5uh5a7ZTjS113aUth9t1Bv68hjjjxGCqgS",
+  "index": 0,
+  "source": "GB3JPMC7H27C5RLHK4T545NPVVV63QOKFGCAT2AUAXUQKFTRWXN3QXIQ",
+  "target": "GCPQQIX2LRX2J63C7AHWDXEMNGMZR2UI2PRN5TCSOVMEMF7BAUADMKH5",
+  "tx_hash": "R1nddzPKA5uh5a7ZTjS113aUth9t1Bv68hjjjxGCqgS",
+  "type": "collect-tx-fee"
+}

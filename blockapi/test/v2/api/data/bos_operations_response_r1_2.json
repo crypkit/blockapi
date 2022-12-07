@@ -1,0 +1,27 @@
+{
+  "_links": {
+    "self": {
+      "href": "/api/v1/transactions/R1nddzPKA5uh5a7ZTjS113aUth9t1Bv68hjjjxGCqgS/operations/1"
+    },
+    "transaction": {
+      "href": "/api/v1/transactions/R1nddzPKA5uh5a7ZTjS113aUth9t1Bv68hjjjxGCqgS"
+    }
+  },
+  "block_height": 24191899,
+  "body": {
+    "target": "GCPQQIX2LRX2J63C7AHWDXEMNGMZR2UI2PRN5TCSOVMEMF7BAUADMKH5",
+    "amount": "500000000",
+    "initial_balance": "5000000000000000",
+    "ratio": "0.00000010000000000",
+    "block-height": 24191898,
+    "block-hash": "Dzfu9qD4n7tDKtk9B6UfiQweLKZHYYmetCK6P2coPx6X",
+    "total-txs": 24245258,
+    "total-ops": 0
+  },
+  "hash": "Vppk4cKYFoDbNwnchXah29HF6q1mBaJBmsi9TZTX2ap-R1nddzPKA5uh5a7ZTjS113aUth9t1Bv68hjjjxGCqgS",
+  "index": 1,
+  "source": "GB3JPMC7H27C5RLHK4T545NPVVV63QOKFGCAT2AUAXUQKFTRWXN3QXIQ",
+  "target": "GCPQQIX2LRX2J63C7AHWDXEMNGMZR2UI2PRN5TCSOVMEMF7BAUADMKH5",
+  "tx_hash": "R1nddzPKA5uh5a7ZTjS113aUth9t1Bv68hjjjxGCqgS",
+  "type": "inflation"
+}
