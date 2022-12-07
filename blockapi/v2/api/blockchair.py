@@ -197,6 +197,7 @@ class BlockchairDogecoinApi(BlockchairApi):
     blockchain = Blockchain.DOGECHAIN
     name = 'dogecoin'
 
+
 class BlockchairLitecoinApi(BlockchairApi):
     coin = COIN_LTC
     blockchain = Blockchain.LITECOIN
