@@ -21,7 +21,6 @@ def test_fetch_balances(requests_mock, btc_balance_response):
     assert balances[0].balance == Decimal('0.00064363')
 
 
-
 def test_fetch_transactions(
     requests_mock, btc_balance_response, btc_transactions_response
 ):
