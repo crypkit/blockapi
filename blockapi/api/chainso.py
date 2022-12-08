@@ -22,7 +22,7 @@ class ChainSoAPI(BlockchainAPI):
     supported_requests = {
         'get_balance': '/get_address_balance/{symbol}/{address}',
         'get_txs': '/address/{symbol}/{address}',
-        'get_unspent': '/get_tx_unspent/{symbol}/{address}'
+        'get_unspent': '/get_tx_unspent/{symbol}/{address}',
     }
 
     def __init__(self, address, api_key=None):
@@ -49,7 +49,7 @@ class ChainSoAPI(BlockchainAPI):
             txs = txs[offset:limit]
 
         return [self.parse_tx(t) for t in txs]
-    
+
     def get_unspent(self):
         # https://chain.so/api/#get-unspent-tx
         response = self._request('get_unspent')
