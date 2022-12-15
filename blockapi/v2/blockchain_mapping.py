@@ -1,5 +1,5 @@
 import logging
-from typing import Optional
+from typing import Optional, Union
 
 from blockapi.v2.models import Blockchain
 
@@ -32,11 +32,12 @@ DEBANK_BLOCKCHAINS_MAP = {
 
 COINGECKO_BLOCKCHAINS_MAP = {
     'defi-kingdom-blockchain': Blockchain.DEFI_KINGDOMS,
+    'defi-kingdoms-blockchain': Blockchain.DEFI_KINGDOMS,
     'harmony-shard-0': Blockchain.HARMONY,
     'kucoin-community-chain': Blockchain.KUCOIN,
     'polygon-pos': Blockchain.POLYGON,
     'oec': Blockchain.OKT,
-    'ShibChain': Blockchain.SHIBA_CHAIN,
+    'shibchain': Blockchain.SHIBA_CHAIN,
     'shiden network': Blockchain.SHIDEN_NETWORK,
     'smartbch': Blockchain.SMART_BITCOIN_CASH,
     'thorchain': Blockchain.THOR,
@@ -146,12 +147,12 @@ WORMHOLE_BLOCKCHAINS_MAP = {
 
 
 def _get_chain_mapping(
-    chain: Optional[str], source: str, mapping: dict[str, Blockchain]
+    chain: Optional[Union[str, int]], source: str, mapping: dict[str, Blockchain]
 ) -> Optional[Blockchain]:
     if not chain:
         return None
 
-    chain_lower = chain.lower()
+    chain_lower = chain.lower() if hasattr(chain, 'lower') else str(chain)
 
     blockchain = mapping.get(chain_lower)
     if blockchain:
@@ -172,7 +173,9 @@ def get_blockchain_from_coingecko_chain(chain: Optional[str]) -> Optional[Blockc
     return _get_chain_mapping(chain, 'CoinGecko', COINGECKO_BLOCKCHAINS_MAP)
 
 
-def get_blockchain_from_chain_id(chain: Optional[str]) -> Optional[Blockchain]:
+def get_blockchain_from_chain_id(
+    chain: Optional[Union[str, int]]
+) -> Optional[Blockchain]:
     return _get_chain_mapping(chain, 'Chain ID', CHAIN_ID_BLOCKCHAINS_MAP)
 
 
