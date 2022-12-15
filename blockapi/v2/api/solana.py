@@ -113,18 +113,14 @@ class SolanaApi(CustomizableBlockchainApi, IBalance):
 
         address = info['mint']
 
-        if address in self.tokens_map:
-            token = self._get_token_data(address)
-        else:
-            token = Coin.from_api(
-                blockchain=Blockchain.SOLANA,
-                decimals=info['tokenAmount']['decimals'],
-                address=address,
-            )
+        # TODO unknown token is for 99% NFT, add loading NFT metadata using metaplex
+        #  token account
+        if address not in self.tokens_map:
+            return
 
         return BalanceItem.from_api(
             balance_raw=info['tokenAmount']['amount'],
-            coin=token,
+            coin=self._get_token_data(address),
             raw=raw,
         )
 
