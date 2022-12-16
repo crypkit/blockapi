@@ -1,0 +1,46 @@
+{
+  "code": 0,
+  "message": "Success",
+  "generated_at": 1671178226,
+  "data": {
+    "account": {
+      "account_display": {
+        "address": "1NjjK81oA9is7eWhFJ7n7kQhaPT3pnxLFH5MkwDfduAiWE9"
+      },
+      "address": "1NjjK81oA9is7eWhFJ7n7kQhaPT3pnxLFH5MkwDfduAiWE9",
+      "balance": "4649.9139999889",
+      "balance_lock": "4639.18386259",
+      "bonded": "0",
+      "count_extrinsic": 6,
+      "democracy_lock": "0",
+      "derive_token": {},
+      "election_lock": "0",
+      "is_council_member": null,
+      "is_erc20": null,
+      "is_evm_contract": null,
+      "is_registrar": null,
+      "is_techcomm_member": null,
+      "lock": "4639.18386259",
+      "multisig": {},
+      "nonce": 6,
+      "proxy": {},
+      "registrar_info": null,
+      "reserved": "0",
+      "role": "",
+      "staking_info": null,
+      "stash": "",
+      "unbonding": "0",
+      "vesting": {
+        "pallet_schedules": [
+          {
+            "locked": "217000000000000",
+            "per_block": "20643075",
+            "starting_block": 2149900
+          }
+        ],
+        "total_locked": "46391838625900",
+        "type": "pallet_vesting"
+      }
+    }
+  }
+}
