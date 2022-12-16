@@ -51,9 +51,13 @@ class SubscanApi(BlockchainApi, IBalance, ABC):
         if b_total == 0:
             return []
 
+        b_total_locked = decimals_to_raw(data['balance_lock'], self.coin.decimals)
+
+        b_available = b_total - b_total_locked
+
         b_staked = Decimal(0)
         if data['staking_info']:
-            b_staked = decimals_to_raw(data['balance_lock'], self.coin.decimals)
+            b_staked = b_total_locked
 
         # ignore data['unbonding'] - it's still staked
 
@@ -68,7 +72,6 @@ class SubscanApi(BlockchainApi, IBalance, ABC):
         # b_democracy = safe_opt_decimal(data['democracy_lock'])
         # b_election = safe_opt_decimal(data['election_lock'])
 
-        b_available = b_total - b_staked - b_reserved - b_vesting
         b_locked = b_reserved
 
         if b_available:
