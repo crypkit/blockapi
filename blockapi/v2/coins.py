@@ -47,7 +47,7 @@ COIN_MATIC = Coin(
     blockchain=Blockchain.POLYGON,
     address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
-        coingecko_id='polygon',
+        coingecko_id='matic-network',
         website='https://polygon.technology/',
     ),
 )
@@ -71,7 +71,7 @@ COIN_AVAX = Coin(
     blockchain=Blockchain.AVALANCHE,
     address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
-        coingecko_id='avalanche',
+        coingecko_id='avalanche-2',
         website='https://www.avax.network/',
     ),
 )
