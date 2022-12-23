@@ -60,6 +60,17 @@ class ChainSoAPI(BlockchainAPI):
 
         return response
 
+    def send_tx(self, tx_hex):
+        # https://chain.so/api/#send-transaction
+
+        request_url = self.build_request_url("send_tx", symbol=self.symbol)
+        response = requests.post(request_url, json={"tx_hex": tx_hex})
+        response = response.json()
+
+        if response['status'] == 'fail':
+            return None
+        return response['data']
+
     @staticmethod
     def parse_tx(tx):
         return tx
@@ -71,17 +82,6 @@ class ChainSoAPI(BlockchainAPI):
             address=self.address,
             # with_cloudflare=True
         )
-        if response['status'] == 'fail':
-            return None
-        return response['data']
-
-    def send_tx(self, tx_hex):
-        # https://chain.so/api/#send-transaction
-
-        request_url = self.build_request_url("send_tx", symbol=self.symbol)
-        response = requests.post(request_url, json={"tx_hex": tx_hex})
-        response = response.json()
-
         if response['status'] == 'fail':
             return None
         return response['data']
