@@ -65,7 +65,9 @@ class ChainSoAPI(BlockchainAPI):
         # https://chain.so/api/#send-transaction
 
         request_url = self.build_request_url("send_tx", symbol=self.symbol)
-        response = requests.post(request_url, json={"network": self.symbol, "txid": txid})
+        response = requests.post(
+            request_url, json={"network": self.symbol, "txid": txid}
+        )
         response = response.json()
 
         if response['status'] == 'fail':
