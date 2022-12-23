@@ -1,3 +1,5 @@
+import requests
+
 from blockapi.services import BlockchainAPI
 
 
@@ -23,6 +25,7 @@ class ChainSoAPI(BlockchainAPI):
         'get_balance': '/get_address_balance/{symbol}/{address}',
         'get_txs': '/address/{symbol}/{address}',
         'get_unspent': '/get_tx_unspent/{symbol}/{address}',
+        'send_tx': '/send_tx/{symbol}',
     }
 
     def __init__(self, address, api_key=None):
@@ -57,6 +60,17 @@ class ChainSoAPI(BlockchainAPI):
             return None
 
         return response
+
+    def send_tx(self, txid):
+        # https://chain.so/api/#send-transaction
+
+        request_url = self.build_request_url("send_tx", symbol=self.symbol)
+        response = requests.post(request_url, json={"network": self.symbol, "txid": txid})
+        response = response.json()
+
+        if response['status'] == 'fail':
+            return None
+        return response['data']
 
     @staticmethod
     def parse_tx(tx):
