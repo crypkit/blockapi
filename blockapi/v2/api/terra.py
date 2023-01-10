@@ -192,6 +192,10 @@ class TerraMantleApi(BlockchainApi):
 
         balances = []
         for contract, result_raw in raw_balances['data'].items():
+            if not result_raw:
+                # should be error in response, TODO add log
+                continue
+
             data_raw = json.loads(result_raw['Result'])
             balance_raw = data_raw['balance']
             if int(balance_raw) == 0:
