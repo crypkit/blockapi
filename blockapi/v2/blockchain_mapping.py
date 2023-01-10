@@ -20,6 +20,7 @@ DEBANK_BLOCKCHAINS_MAP = {
     'kcc': Blockchain.KUCOIN,
     'klay': Blockchain.KLAY_TOKEN,
     'matic': Blockchain.POLYGON,
+    'metis': Blockchain.METIS_ANDROMEDA,
     'movr': Blockchain.MOONRIVER,
     'mobm': Blockchain.MOONBEAM,
     'op': Blockchain.OPTIMISM,
