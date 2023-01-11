@@ -192,6 +192,12 @@ class DebankBalanceParser:
         symbol = self.get_symbol(balance_item)
         coin = self.get_coin(balance_item, symbol)
 
+        if not coin.blockchain:
+            logger.error(
+                f'DeBank: Skipping balance - could not parse blockchain "{balance_item.chain}". Amount={amount} (raw={raw_amount})'
+            )
+            return None
+
         if asset_type == AssetType.INVESTMENT and amount < 0:
             asset_type = AssetType.DEBT
             amount = -amount

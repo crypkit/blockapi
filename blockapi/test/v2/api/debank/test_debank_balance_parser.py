@@ -92,5 +92,18 @@ def test_map_eth_to_native_coin(balance_parser):
     )
 
     coin = balance_parser.get_coin(balance, "ETH")
-
     assert coin.info.coingecko_id == "ethereum"
+
+
+def test_skip_balance_with_unknown_chain(balance_parser):
+    balance = DebankModelBalanceItem(
+        id="123",
+        chain="does-not-exist",
+        name="Unknown",
+        symbol="SYM",
+        decimals=18,
+        amount=Decimal(1),
+    )
+
+    item = balance_parser.parse_item(balance)
+    assert not item

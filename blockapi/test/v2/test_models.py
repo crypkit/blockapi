@@ -7,7 +7,7 @@ from blockapi.v2.models import BalanceItem, Blockchain, Protocol
 def test_create_protocol_from_api():
     protocol = Protocol.from_api(
         protocol_id="0xmons",
-        chain="eth",
+        chain=Blockchain.ETHEREUM,
         name="0xmons_name",
         user_deposit=1234.5,
         site_url="https://0xmons.xyz",
@@ -16,7 +16,7 @@ def test_create_protocol_from_api():
     )
 
     assert protocol.protocol_id == '0xmons'
-    assert protocol.chain == 'eth'
+    assert protocol.chain == Blockchain.ETHEREUM
     assert protocol.name == '0xmons_name'
     assert protocol.site_url == 'https://0xmons.xyz'
     assert (
@@ -33,7 +33,9 @@ def test_balance_has_protocol():
 
 
 def test_balance_protocol_can_be_set():
-    protocol = Protocol.from_api(protocol_id="x", chain="eth", name="X", user_deposit=4)
+    protocol = Protocol.from_api(
+        protocol_id="x", chain=Blockchain.ETHEREUM, name="X", user_deposit=4
+    )
     balance = BalanceItem.from_api(
         balance_raw="3", coin=COIN_ETH, raw={}, protocol=protocol
     )
