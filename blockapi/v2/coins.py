@@ -15,7 +15,6 @@ COIN_SOL = Coin(
     name='Solana',
     decimals=9,
     blockchain=Blockchain.SOLANA,
-    address='So11111111111111111111111111111111111111112',
     info=CoinInfo(
         logo_url='https://raw.githubusercontent.com/solana-labs/token-list/main/assets/'
         'mainnet/So11111111111111111111111111111111111111112/logo.png',
