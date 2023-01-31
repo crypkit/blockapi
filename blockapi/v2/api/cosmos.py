@@ -53,7 +53,7 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
         return balances
 
     def _yield_available_balance(self, address: str) -> Iterable[BalanceItem]:
-        response = self.get('get_balances', address=address)
+        response = self._get('get_balances', address=address)
 
         for b in response['balances']:
             if b['denom'] == self.coin.address:
@@ -83,13 +83,13 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
         )
 
     def _get_staked_balance(self, address: str) -> Optional[BalanceItem]:
-        staked_response = self.get('get_staked_balance', address=address)
+        staked_response = self._get('get_staked_balance', address=address)
         staked_balance = sum(
             to_decimal(d['balance']['amount'])
             for d in staked_response['delegation_responses']
         )
 
-        unbonding_response = self.get('get_unbonding_balance', address=address)
+        unbonding_response = self._get('get_unbonding_balance', address=address)
         unbonding_balance = sum(
             to_decimal(unbonding_entry['balance'])
             for unbonding in unbonding_response['unbonding_responses']
@@ -112,7 +112,7 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
         )
 
     def _get_reward_balance(self, address: str) -> Optional[BalanceItem]:
-        response = self.get('get_rewards', address=address)
+        response = self._get('get_rewards', address=address)
         if not response.get('rewards'):
             return
 
@@ -124,8 +124,17 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
         )
 
     def _get_commission(self, validator_address: str) -> Decimal:
-        response = self.get('get_commission', validator_address=validator_address)
+        response = self._get('get_commission', validator_address=validator_address)
         return to_decimal(response['commission']['commission'][0]['amount'])
+
+    def _get(self, request_method: str, **req_args) -> dict:
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) '
+            'AppleWebKit/537.36 (KHTML, like Gecko) '
+            'Chrome/50.0.2661.102 Safari/537.36',
+            'Referer': 'https://www.mintscan.io/',
+        }
+        return self.get(request_method, headers, **req_args)
 
 
 class CosmosApi(CosmosApiBase):
