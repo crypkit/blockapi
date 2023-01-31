@@ -138,7 +138,8 @@ class SolanaApi(CustomizableBlockchainApi, IBalance):
             info=CoinInfo.from_api(
                 tags=raw_token.get('tags'),
                 logo_url=raw_token.get('logoURI'),
-                coingecko_id=extensions.get('coingeckoId'),
+                # TODO sometimes coingeckoId is not mapped correctly
+                # coingecko_id=extensions.get('coingeckoId'),
                 website=extensions.get('website'),
             ),
         )
