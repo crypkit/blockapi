@@ -2,11 +2,13 @@ import logging
 from abc import ABC
 from decimal import Decimal
 from functools import lru_cache
-from typing import Dict, Iterable, List, Optional, Tuple
+from typing import Dict, Iterable, List, Tuple
 
 import requests
 from bs4 import BeautifulSoup
 from eth_typing import ChecksumAddress
+from marko import Markdown
+from marko.block import Heading, HTMLBlock
 from typing_extensions import TypedDict
 from web3 import Web3
 
@@ -107,21 +109,26 @@ def snx_optimism_contract_address(
     Ethereum address on Optimism L2.
     """
     try:
-        page = requests.get('https://docs.synthetix.io/addresses/')
-        soup = BeautifulSoup(page.text, 'lxml')
+        response = requests.get(
+            'https://raw.githubusercontent.com/Synthetixio/synthetix-docs/master/content/addresses.md'
+        )
+        md = Markdown().parse(response.text)
 
-        # find table with Mainnet Optimism contracts
-        # https://docs.synthetix.io/addresses/#mainnet-optimism-l2
-        header = soup.body.find('h2', {'id': 'mainnet-optimism-l2'})
-        table = header.find_next(name='table')
+        # find table with Optimism contracts
+        html_tab_raw = None
+        return_table = False
+        for child in md.children:
+            if return_table and type(child) is HTMLBlock:
+                html_tab_raw = child.children
+                break
+            elif (
+                type(child) is Heading
+                and child.children[0].children == 'MAINNET Optimism (L2)'
+            ):
+                return_table = True
 
-        # find row where (any) cell's text equals contract_name
+        table = BeautifulSoup(html_tab_raw, 'lxml')
         row = table.find('td', text=contract_name).parent
-
-        # our contract address is in 6th cell, raw row's content looks
-        # like this:
-        # `\n, name, \n, url to contract's source, \n, CONTRACT_ADDRESS, \n`
-        # + remove all possible whitespaces and format address to checksum
         return Web3.toChecksumAddress(row.contents[5].text.strip())
 
     except Exception:
