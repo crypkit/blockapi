@@ -5,7 +5,6 @@ from blockapi.v2.models import Blockchain
 
 
 class AvalancheCovalentApi(CovalentApiBase):
-
     CHAIN_ID = 43114
 
     api_options = ApiOptions(

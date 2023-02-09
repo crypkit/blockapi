@@ -5,7 +5,6 @@ from blockapi.v2.models import Blockchain
 
 
 class MoonBeamCovalentApi(CovalentApiBase):
-
     CHAIN_ID = 1285
 
     api_options = ApiOptions(

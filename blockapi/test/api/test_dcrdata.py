@@ -74,6 +74,5 @@ class TestDcrdataAPI:
 
 
 class TestResponse:
-
     text = None
     status_code = 200

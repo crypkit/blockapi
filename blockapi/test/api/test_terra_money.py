@@ -7,7 +7,6 @@ from blockapi.test_data import test_addresses
 
 
 class TestTerraMoneyApi:
-
     ADDRESS = test_addresses["LUNA"][0]
 
     def test_init(self):

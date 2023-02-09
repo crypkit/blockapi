@@ -5,7 +5,6 @@ from blockapi.v2.models import Blockchain
 
 
 class PalmCovalentApi(CovalentApiBase):
-
     CHAIN_ID = 11297108109
 
     api_options = ApiOptions(

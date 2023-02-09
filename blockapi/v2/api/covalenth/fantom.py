@@ -5,7 +5,6 @@ from blockapi.v2.models import Blockchain
 
 
 class FantomCovalentApi(CovalentApiBase):
-
     CHAIN_ID = 250
 
     api_options = ApiOptions(

@@ -5,7 +5,6 @@ from blockapi.v2.models import Blockchain
 
 
 class AxieCovalentApi(CovalentApiBase):
-
     CHAIN_ID = 2020
 
     api_options = ApiOptions(

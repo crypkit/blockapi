@@ -240,8 +240,8 @@ class CosmosAPI(BlockchainAPI):
         ]
 
         parsed_msgs = []
-        for msg in tx['tx']['value']['msg']:
 
+        for msg in tx['tx']['value']['msg']:
             msg_type = self._convert_msg_kind(msg['type'])
             parsed_msg = self._get_msg_data(msg_type, msg['value'])
 

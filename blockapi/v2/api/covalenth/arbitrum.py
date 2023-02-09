@@ -5,7 +5,6 @@ from blockapi.v2.models import Blockchain
 
 
 class ArbitrumCovalentApi(CovalentApiBase):
-
     CHAIN_ID = 42161
 
     api_options = ApiOptions(
