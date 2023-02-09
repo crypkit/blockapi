@@ -31,6 +31,6 @@ setuptools.setup(
         'pytest-vcr',
         'requests_mock>=1.9.3',
         'pydantic>=1.10.2',
-        'marko==1.3.0'
+        'marko==1.3.0',
     ],
 )
