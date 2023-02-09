@@ -7,6 +7,7 @@ from pydantic import BaseModel, validator
 
 from blockapi.utils.num import decimals_to_raw
 from blockapi.v2.api.debank_maps import (
+    ALL_COINS,
     DEBANK_ASSET_TYPES,
     NATIVE_COIN_MAP,
     REWARD_ASSET_TYPE_MAP,
@@ -192,6 +193,12 @@ class DebankBalanceParser:
         symbol = self.get_symbol(balance_item)
         coin = self.get_coin(balance_item, symbol)
 
+        if not coin:
+            logger.error(
+                f'DeBank: Skipping balance - could not parse coin "{balance_item.id} {balance_item.chain} {balance_item.symbol}". Amount={amount}'
+            )
+            return None
+
         if not coin.blockchain:
             logger.error(
                 f'DeBank: Skipping balance - could not parse blockchain "{balance_item.chain}". Amount={amount} (raw={raw_amount})'
@@ -225,21 +232,24 @@ class DebankBalanceParser:
         blockchain = get_blockchain_from_debank_chain(balance_item.chain)
         coin = NATIVE_COIN_MAP.get(address)
 
-        if coin is not None and coin.blockchain == blockchain:
+        if coin is not None and coin.blockchain == blockchain and coin.symbol == symbol:
             return coin
 
-        coin = Coin.from_api(
-            symbol=symbol,
-            name=balance_item.name,
-            decimals=balance_item.decimals,
-            blockchain=blockchain,
-            address=make_checksum_address(address),
-            standards=[],
-            protocol_id=balance_item.protocol_id,
-            info=CoinInfo(logo_url=balance_item.logo_url),
-        )
+        valid_address = make_checksum_address(address)
 
-        return coin
+        if valid_address:
+            return Coin.from_api(
+                symbol=symbol,
+                name=balance_item.name,
+                decimals=balance_item.decimals,
+                blockchain=blockchain,
+                address=valid_address,
+                standards=[],
+                protocol_id=balance_item.protocol_id,
+                info=CoinInfo(logo_url=balance_item.logo_url),
+            )
+
+        return ALL_COINS.get(symbol.lower())
 
     @staticmethod
     def get_symbol(raw_balance: DebankModelBalanceItem) -> str:
