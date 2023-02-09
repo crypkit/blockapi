@@ -75,8 +75,8 @@ def test_synthetix_optimism_api():
 
     assert balances == [
         BalanceItem(
-            balance=Decimal('99738.633668060675890591'),
-            balance_raw=Decimal('99738633668060675890591'),
+            balance=Decimal('376576.311381339269627458'),
+            balance_raw=Decimal('376576311381339269627458'),
             raw={},
             coin=Coin(
                 symbol='sUSD',
@@ -91,8 +91,8 @@ def test_synthetix_optimism_api():
             asset_type=AssetType.DEBT,
         ),
         BalanceItem(
-            balance=Decimal('146586.533956304251544616'),
-            balance_raw=Decimal('146586533956304251544616'),
+            balance=Decimal('528051.112125559541484602'),
+            balance_raw=Decimal('528051112125559541484602'),
             raw={},
             coin=Coin(
                 symbol='SNX',
@@ -107,8 +107,8 @@ def test_synthetix_optimism_api():
             asset_type=AssetType.STAKED,
         ),
         BalanceItem(
-            balance=Decimal('146382.890898962327843658'),
-            balance_raw=Decimal('146382890898962327843658'),
+            balance=Decimal('188153.171065910534455462'),
+            balance_raw=Decimal('188153171065910534455462'),
             raw={},
             coin=Coin(
                 symbol='SNX',
