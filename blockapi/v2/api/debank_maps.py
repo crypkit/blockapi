@@ -26,7 +26,7 @@ from blockapi.v2.coins import (
     COIN_WAN,
     COIN_XDAI,
 )
-from blockapi.v2.models import AssetType, Blockchain
+from blockapi.v2.models import AssetType, Blockchain, Coin
 
 DEBANK_ASSET_TYPES = {
     'vested': AssetType.VESTING,
@@ -68,4 +68,11 @@ NATIVE_COIN_MAP = {
     'xdai': COIN_XDAI,
     'tlos': COIN_TLOS,
     'wan': COIN_WAN,
+}
+
+
+ALL_COINS = {
+    var.symbol.lower(): var
+    for var_name, var in globals().items()
+    if isinstance(var, Coin) and var_name.startswith("COIN_")
 }
