@@ -5,7 +5,6 @@ from blockapi.test_data import test_addresses
 
 
 class TestBinanceAPI:
-
     ADDRESS = test_addresses["BNB"][0]
 
     def test_init(self):

@@ -5,7 +5,6 @@ from blockapi.test_data import test_addresses
 
 
 class TestTzscanAPI:
-
     ADDRESS = test_addresses["XTZ"][0]
     REWARD_ADDRESS = test_addresses["XTZ"][1]
 

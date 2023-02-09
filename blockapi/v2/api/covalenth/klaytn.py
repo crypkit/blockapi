@@ -5,7 +5,6 @@ from blockapi.v2.models import Blockchain
 
 
 class KlaytnCovalentApi(CovalentApiBase):
-
     CHAIN_ID = 8217
 
     api_options = ApiOptions(

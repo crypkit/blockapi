@@ -5,7 +5,6 @@ from blockapi.v2.models import Blockchain
 
 
 class AstarCovalentApi(CovalentApiBase):
-
     CHAIN_ID = 336
 
     api_options = ApiOptions(

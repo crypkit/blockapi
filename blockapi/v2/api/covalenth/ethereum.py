@@ -5,7 +5,6 @@ from blockapi.v2.models import Blockchain
 
 
 class EthCovalentApi(CovalentApiBase):
-
     CHAIN_ID = 1
 
     api_options = ApiOptions(

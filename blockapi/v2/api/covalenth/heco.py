@@ -5,7 +5,6 @@ from blockapi.v2.models import Blockchain
 
 
 class HECOCovalentApi(CovalentApiBase):
-
     CHAIN_ID = 128
 
     api_options = ApiOptions(

@@ -37,7 +37,6 @@ class TestBlockApiProviders:
 
         # Create test sample
         for currency in self.currencies:
-
             if not test_addresses.get(currency):
                 continue
 
@@ -59,7 +58,6 @@ class TestBlockApiProviders:
             classes = get_api_classes_for_coin(symbol=currency['currency'])
 
             for class_ in classes:
-
                 # try to load api_key
                 api_key = get_test_api_key(class_.__name__)
                 try:
@@ -137,7 +135,6 @@ class TestBlockApiProviders:
         valid_data = []
         not_valid_data = []
         for d in _data:
-
             if d['currency'] not in self.currencies:
                 not_valid_data.append({'message': 'Symbol not valid', 'data': d})
                 continue

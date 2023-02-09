@@ -5,7 +5,6 @@ from blockapi.v2.models import Blockchain
 
 
 class BscCovalentApi(CovalentApiBase):
-
     CHAIN_ID = 56
 
     api_options = ApiOptions(

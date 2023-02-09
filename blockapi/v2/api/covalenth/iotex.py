@@ -5,7 +5,6 @@ from blockapi.v2.models import Blockchain
 
 
 class IoTEXCovalentApi(CovalentApiBase):
-
     CHAIN_ID = 4689
 
     api_options = ApiOptions(

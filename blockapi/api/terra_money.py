@@ -111,7 +111,6 @@ class TerraMoneyApi(BlockchainAPI):
         }
 
     def parse_tx_amount(self, tx_value):
-
         if 'amount' not in tx_value:
             return None
 

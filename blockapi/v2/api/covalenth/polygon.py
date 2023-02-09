@@ -5,7 +5,6 @@ from blockapi.v2.models import Blockchain
 
 
 class PolygonCovalentApi(CovalentApiBase):
-
     CHAIN_ID = 137
 
     api_options = ApiOptions(

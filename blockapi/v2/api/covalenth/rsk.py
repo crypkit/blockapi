@@ -5,7 +5,6 @@ from blockapi.v2.models import Blockchain
 
 
 class RskCovalentApi(CovalentApiBase):
-
     CHAIN_ID = 30
 
     api_options = ApiOptions(
