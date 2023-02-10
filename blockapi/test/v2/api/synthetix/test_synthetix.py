@@ -54,8 +54,11 @@ def test_invalid_contract_raises(requests_mock):
 
 
 def test_invalid_contract_optimism_raises(requests_mock):
-    text = read_file('synthetix/data/contract-optimism.html')
-    requests_mock.get('https://docs.synthetix.io/addresses/', text=text)
+    text = read_file('synthetix/data/contracts.md')
+    requests_mock.get(
+        'https://raw.githubusercontent.com/Synthetixio/synthetix-docs/master/content/addresses.md',
+        text=text,
+    )
 
     with pytest.raises(ValueError, match='Contract abc not found'):
         snx_contract_address('abc', 'optimism')
