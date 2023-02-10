@@ -227,7 +227,9 @@ class DebankBalanceParser:
 
         return balance
 
-    def get_coin(self, balance_item: DebankModelBalanceItem, symbol: str) -> Coin:
+    def get_coin(
+        self, balance_item: DebankModelBalanceItem, symbol: str
+    ) -> Optional[Coin]:
         address = balance_item.id
         blockchain = get_blockchain_from_debank_chain(balance_item.chain)
         coin = NATIVE_COIN_MAP.get(address)
@@ -249,7 +251,20 @@ class DebankBalanceParser:
                 info=CoinInfo(logo_url=balance_item.logo_url),
             )
 
-        return ALL_COINS.get(symbol.lower())
+        base_coin = ALL_COINS.get(symbol.lower())
+        if base_coin:
+            return Coin.from_api(
+                symbol=base_coin.symbol,
+                name=base_coin.name,
+                decimals=balance_item.decimals,
+                blockchain=blockchain,
+                address=base_coin.address,
+                standards=base_coin.standards,
+                protocol_id=balance_item.protocol_id,
+                info=base_coin.info,
+            )
+
+        return None
 
     @staticmethod
     def get_symbol(raw_balance: DebankModelBalanceItem) -> str:
