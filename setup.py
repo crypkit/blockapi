@@ -28,7 +28,7 @@ setuptools.setup(
         'bs4>=0.0.1',
         'lxml>=4.4.1',
         'pytest',
-        'pytest-vcr==1.0.2',
+        'pytest-vcr',
         'requests_mock>=1.9.3',
         'pydantic>=1.10.2',
         'marko==1.3.0',
