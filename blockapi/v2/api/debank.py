@@ -251,7 +251,7 @@ class DebankBalanceParser:
                 info=CoinInfo(logo_url=balance_item.logo_url),
             )
 
-        base_coin = coin
+        base_coin = ALL_COINS.get(symbol.lower())
         if base_coin:
             return Coin.from_api(
                 symbol=base_coin.symbol,
@@ -261,7 +261,7 @@ class DebankBalanceParser:
                 address=base_coin.address,
                 standards=base_coin.standards,
                 protocol_id=balance_item.protocol_id,
-                info=base_ALL_COINS.get(symbol.lower()).info,
+                info=base_coin.info,
             )
 
         return None
