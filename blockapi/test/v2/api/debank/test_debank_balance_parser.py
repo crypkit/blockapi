@@ -112,6 +112,21 @@ def test_map_optimism_eth_to_native_coin(balance_parser):
     assert coin.protocol_id == 'optimism'
 
 
+def test_map_canto_coin(balance_parser):
+    balance = DebankModelBalanceItem(
+        id="canto",
+        chain="canto",
+        name="CANTO",
+        symbol="CANTO",
+        decimals=18,
+        amount=Decimal(1),
+    )
+
+    coin = balance_parser.get_coin(balance, "CANTO")
+    assert coin.info.coingecko_id == "canto"
+    assert coin.blockchain == Blockchain.CANTO
+
+
 def test_skip_balance_with_unknown_chain(balance_parser):
     balance = DebankModelBalanceItem(
         id="123",
