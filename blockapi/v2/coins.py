@@ -400,3 +400,13 @@ COIN_SNX = Coin(
     blockchain=Blockchain.ETHEREUM,
     info=CoinInfo(coingecko_id='havven'),
 )
+
+
+COIN_CANTO = Coin(
+    symbol='CANTO',
+    name='Canto',
+    decimals=18,
+    blockchain=Blockchain.CANTO,
+    address='0x826551890dc65655a0aceca109ab11abdbd7a07b',
+    info=CoinInfo(coingecko_id='canto'),
+)
