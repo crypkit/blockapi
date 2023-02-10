@@ -195,6 +195,7 @@ class AssetType(str, Enum):
     LIQUIDITY_POOL = 'liquidity_pool'
     LOCKED = 'locked'
     REWARDS = 'rewards'
+    LIQUIDATION_REWARDS = 'liquidation_rewards'
     STAKED = 'staked'
     UNREALIZED_AVAILABLE = 'unrealized_available'
     VESTING = 'vesting'

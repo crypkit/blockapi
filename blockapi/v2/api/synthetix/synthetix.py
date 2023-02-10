@@ -2,7 +2,7 @@ import logging
 from abc import ABC
 from decimal import Decimal
 from functools import lru_cache
-from typing import Dict, Iterable, List, Tuple
+from typing import Dict, Iterable, List
 
 import requests
 from bs4 import BeautifulSoup
@@ -17,8 +17,8 @@ from blockapi.v2.api.synthetix.synthetix_abi import (
     erc20_abi,
     exchangerates_abi,
     feepool_abi,
+    liquidator_rewards_abi,
     rewards_escrow_v2_abi,
-    staking_rewards_abi,
     synthetix_abi,
     system_settings_abi,
 )
@@ -39,20 +39,9 @@ class CollateralizationStats(TypedDict):
     collateralization_ratio_perc: Decimal
 
 
-class StakingToken(TypedDict):
-    symbol: str
-    staked: Decimal
-    rewards: Decimal
-
-
 class WeeklyReward(TypedDict):
     exchange: Decimal
     staking: Decimal
-
-
-class Rewards(TypedDict):
-    prev_week: WeeklyReward
-    this_week: WeeklyReward
 
 
 class Staking(CollateralizationStats):
@@ -61,8 +50,8 @@ class Staking(CollateralizationStats):
     staked: Decimal
     vesting: Decimal
     collateral: Decimal
-    rewards: Rewards
-    staking_tokens: List[StakingToken]
+    rewards: WeeklyReward
+    liquidation_reward: Decimal
 
 
 class Synth(TypedDict):
@@ -135,23 +124,6 @@ def snx_optimism_contract_address(
         raise ValueError(f'Contract {contract_name} not found.')
 
 
-def get_staking_tokens(network: str) -> List[Tuple[str, str]]:
-    """
-    Get supported staking tokens for network.
-    TODO add testnet networks.
-    """
-    # noinspection SpellCheckingInspection
-    return (
-        [
-            ('iBTC', 'StakingRewardsiBTC'),
-            ('iETH', 'StakingRewardsiETH'),
-            ('sTSLA', 'StakingRewardssTSLABalancer'),
-        ]
-        if network == 'mainnet'
-        else []
-    )
-
-
 class SynthetixApi(BlockchainApi, IBalance, ABC):
     decimals: Decimal = Decimal('18')
     coin = COIN_SNX
@@ -176,7 +148,10 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
 
         if staking['transferable']:
             yield self._create_balance(
-                'SNX', AssetType.AVAILABLE, staking['transferable']
+                'SNX',
+                AssetType.AVAILABLE,
+                staking['transferable'],
+                is_wallet=True,
             )
 
         if staking['debt']:
@@ -188,26 +163,31 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         if staking['vesting']:
             yield self._create_balance('SNX', AssetType.VESTING, staking['vesting'])
 
-        rewards = Decimal("0")
-        for token in staking.get('staking_tokens'):
-            if token['staked']:
-                yield self._create_balance(
-                    token['symbol'], AssetType.STAKED, token['staked']
-                )
+        if staking['rewards']['exchange']:
+            yield self._create_balance(
+                'sUSD', AssetType.REWARDS, staking['rewards']['exchange']
+            )
 
-            if token["rewards"]:
-                rewards += token["rewards"]
+        if staking['rewards']['staking']:
+            yield self._create_balance(
+                'SNX', AssetType.REWARDS, staking['rewards']['staking']
+            )
 
-        if rewards:
-            yield self._create_balance('SNX', AssetType.CLAIMABLE, rewards)
+        if staking['liquidation_reward']:
+            yield self._create_balance(
+                'SNX', AssetType.LIQUIDATION_REWARDS, staking['liquidation_reward']
+            )
 
     def _create_balance(
-        self, symbol: str, asset_type: AssetType, balance_raw: Decimal
+        self,
+        symbol: str,
+        asset_type: AssetType,
+        balance_raw: Decimal,
+        is_wallet: bool = False,
     ) -> BalanceItem:
         """
         Create balance item.
         """
-
         coin = self._get_coin(symbol)
 
         return BalanceItem(
@@ -215,6 +195,7 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
             balance=balance_raw * pow(10, -self.decimals),
             coin=coin,
             asset_type=asset_type,
+            is_wallet=is_wallet,
             raw={},
         )
 
@@ -236,9 +217,8 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         """
         Fetch Synthetix staking info.
         """
-        staking_tokens = get_staking_tokens(self.network)
-
         ratio = self.get_collateralization_ratio(address)
+
         return {
             **ratio,
             'transferable': self.get_snx_transferable_amount(address),
@@ -247,9 +227,7 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
             'vesting': self.get_total_escrowed_amount(address),
             'collateral': self.get_collateral(address),
             'rewards': self.get_fees_and_rewards(address),
-            'staking_tokens': list(
-                self.yield_token_staking_data(address, staking_tokens)
-            ),
+            'liquidation_reward': self.get_liquidation_reward(address),
         }
 
     def get_snx_transferable_amount(self, address: str) -> Decimal:
@@ -322,47 +300,29 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
 
         return collateral * min(Decimal("1"), collateralization_ratio / i_ratio)
 
-    def get_fees_and_rewards(self, address: str) -> Rewards:
+    def get_fees_and_rewards(self, address: str) -> WeeklyReward:
         """
-        Returns the available Synth exchange rewards (fees, in sUSD) and
-        SNX staking rewards (in SNX) as 3 tuples, current one (not yet
-        claimable), one week ago, two weeks ago
-        These values (except current ones) are zeroed as soon as
-        the rewards are claimed!
-        The current one is zeroed at the beginning of next fee period.
+        Returns the available Synth exchange rewards (fees, in sUSD)
+        and SNX staking rewards (in SNX) as tuple.
         """
         fee_pool_contract = self.w3.eth.contract(
             snx_contract_address('FeePool', self.network), abi=feepool_abi
         )
-        fees = easy_call(fee_pool_contract, 'feesByPeriod', address)
+        fees = easy_call(fee_pool_contract, 'feesAvailable', address)
 
-        return {
-            "prev_week": {
-                "exchange": to_decimal(fees[1][0]),
-                "staking": to_decimal(fees[1][1]),
-            },
-            "this_week": {
-                "exchange": to_decimal(fees[0][0]),
-                "staking": to_decimal(fees[0][1]),
-            },
-        }
+        return {"exchange": to_decimal(fees[0]), "staking": to_decimal(fees[1])}
 
-    def yield_token_staking_data(
-        self, address: str, synths: List[Tuple[str, str]]
-    ) -> Iterable[StakingToken]:
-        for symbol, contract_name in synths:
-            staking_contract = self.w3.eth.contract(
-                snx_contract_address(contract_name, self.network),
-                abi=staking_rewards_abi,
-            )
+    def get_liquidation_reward(self, address: str) -> Decimal:
+        """
+        Returns liquidation reward.
+        """
+        liq_rewards_contract = self.w3.eth.contract(
+            snx_contract_address('LiquidatorRewards', self.network),
+            abi=liquidator_rewards_abi,
+        )
+        fee = easy_call(liq_rewards_contract, 'earned', address)
 
-            staked = easy_call(staking_contract, 'balanceOf', address)
-            rewards = easy_call(staking_contract, 'earned', address)
-            yield {
-                'symbol': symbol,
-                'staked': to_decimal(staked),
-                'rewards': to_decimal(rewards),
-            }
+        return to_decimal(fee)
 
     @lru_cache()
     def _get_synth_contract(self, symbol: str) -> str:
