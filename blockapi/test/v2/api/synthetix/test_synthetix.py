@@ -33,7 +33,6 @@ def test_snx_contract_address_mainnet(requests_mock):
     )
 
 
-@pytest.mark.skip("For some reason VCR cassette doesn't work properly")
 def test_snx_contract_address_optimism(requests_mock):
     text = read_file('synthetix/data/contracts.md')
     requests_mock.get(
@@ -75,6 +74,7 @@ def test_create_with_custom_optimism_api():
     assert api.w3.provider.endpoint_uri == 'http://localhost:1234/'
 
 
+@pytest.mark.skip("For some reason VCR cassette doesn't work properly")
 @pytest.mark.vcr()
 def test_synthetix_optimism_api():
     api = SynthetixOptimismApi(api_url='https://mainnet.optimism.io/')
