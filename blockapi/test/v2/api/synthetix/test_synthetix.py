@@ -70,7 +70,7 @@ def test_create_with_custom_optimism_api():
 
 @pytest.mark.vcr()
 def test_synthetix_optimism_api():
-    api = SynthetixOptimismApi(api_url='https://mainnet.optimism.io')
+    api = SynthetixOptimismApi(api_url='https://mainnet.optimism.io/')
     balances = api.get_balance(test_address)
 
     assert balances == [
