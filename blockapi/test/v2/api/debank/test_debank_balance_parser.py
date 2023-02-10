@@ -103,10 +103,13 @@ def test_map_optimism_eth_to_native_coin(balance_parser):
         symbol="ETH",
         decimals=18,
         amount=Decimal(1),
+        protocol_id='optimism',
     )
 
     coin = balance_parser.get_coin(balance, "ETH")
     assert coin.info.coingecko_id == "ethereum"
+    assert coin.blockchain == Blockchain.OPTIMISM
+    assert coin.protocol_id == 'optimism'
 
 
 def test_skip_balance_with_unknown_chain(balance_parser):
