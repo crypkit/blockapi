@@ -34,12 +34,15 @@ def test_snx_contract_address_mainnet(requests_mock):
 
 
 def test_snx_contract_address_optimism(requests_mock):
-    text = read_file('synthetix/data/contract-optimism.html')
-    requests_mock.get('https://docs.synthetix.io/addresses/', text=text)
+    text = read_file('synthetix/data/contracts.md')
+    requests_mock.get(
+        'https://raw.githubusercontent.com/Synthetixio/synthetix-docs/master/content/addresses.md',
+        text=text,
+    )
 
     assert (
         snx_contract_address(contract_name, 'optimism')
-        == '0xFE8E48Bf36ccC3254081eC8C65965D1c8b2E744D'
+        == '0x49B35BE7D96888C02F342552aB218d859599aCeb'
     )
 
 
