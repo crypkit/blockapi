@@ -428,7 +428,7 @@ class DebankPortfolioParser:
     def _parse_asset_type(type_: str) -> Optional[AssetType]:
         # list of valid types: https://docs.open.debank.com/en/reference/api-models/portfolioitemobject
         if type_ is None:
-            return AssetType.AVAILABLE
+            return AssetType.LOCKED
 
         try:
             lower = type_.lower()
@@ -439,7 +439,7 @@ class DebankPortfolioParser:
             return AssetType(lower)
         except ValueError as ve:
             logger.error(ve)
-            return AssetType.AVAILABLE
+            return AssetType.LOCKED
 
     @staticmethod
     def _get_borrow_asset_type(asset_type):

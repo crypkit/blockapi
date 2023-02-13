@@ -30,12 +30,13 @@ from blockapi.v2.coins import (
 from blockapi.v2.models import AssetType, Blockchain, Coin
 
 DEBANK_ASSET_TYPES = {
+    'deposit': AssetType.DEPOSITED,
     'vested': AssetType.VESTING,
     'liquidity pool': AssetType.LIQUIDITY_POOL,
 }
 
 REWARD_ASSET_TYPE_MAP = {
-    AssetType.LENDING: AssetType.LENDING_REWARD,
+    AssetType.LENDING: AssetType.LENDING_REWARDS,
     AssetType.STAKED: AssetType.REWARDS,
     AssetType.FARMING: AssetType.REWARDS,
     AssetType.YIELD: AssetType.REWARDS,

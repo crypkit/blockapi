@@ -84,7 +84,7 @@ def test_parse_asset_type_liquidity_pool(portfolio_parser):
 def test_parse_unknown_asset_type_logs(portfolio_parser, caplog):
     expected_log = ["'dummy' is not a valid AssetType"]
     with caplog.at_level(level=logging.DEBUG):
-        assert portfolio_parser._parse_asset_type('dummy') == AssetType.AVAILABLE
+        assert portfolio_parser._parse_asset_type('dummy') == AssetType.LOCKED
         assert expected_log == caplog.messages
 
 
