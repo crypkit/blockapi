@@ -191,7 +191,7 @@ class AssetType(str, Enum):
     INVESTMENT = 'investment'
     LENDING = 'lending'
     LENDING_BORROW = 'lending_borrow'
-    LENDING_REWARD = 'lending_reward'
+    LENDING_REWARDS = 'lending_reward'
     LIQUIDITY_POOL = 'liquidity_pool'
     LOCKED = 'locked'
     REWARDS = 'rewards'
