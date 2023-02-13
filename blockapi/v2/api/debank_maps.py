@@ -36,7 +36,7 @@ DEBANK_ASSET_TYPES = {
 }
 
 REWARD_ASSET_TYPE_MAP = {
-    AssetType.LENDING: AssetType.LENDING_REWARD,
+    AssetType.LENDING: AssetType.LENDING_REWARDS,
     AssetType.STAKED: AssetType.REWARDS,
     AssetType.FARMING: AssetType.REWARDS,
     AssetType.YIELD: AssetType.REWARDS,
