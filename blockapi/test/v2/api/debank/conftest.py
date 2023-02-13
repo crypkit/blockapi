@@ -133,6 +133,7 @@ def portfolio_response():
                 "pool_id": "0xdc13687554205e5b89ac783db14bb5bba4a1edac",
                 "detail_types": ["lending"],
                 "detail": {
+                    "description": "Pool Name",
                     "supply_token_list": [
                         {
                             "id": "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7",

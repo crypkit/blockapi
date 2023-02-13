@@ -372,10 +372,10 @@ class DebankPortfolioParser:
             pool = Pool.from_api(
                 pool_id=pool_id,
                 protocol=pool_protocol,
+                name=detail.description,
                 locked_until=locked_until,
                 health_rate=health_rate,
                 items=items,
-                token_set=detail.description,
                 project_id=item.pool.project_id if item.pool else None,
                 adapter_id=item.pool.adapter_id if item.pool else None,
             )

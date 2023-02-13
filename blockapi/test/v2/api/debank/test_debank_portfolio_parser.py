@@ -45,6 +45,11 @@ def test_parse_supply_token_list(portfolio_parser, portfolio_response):
     assert len(filtered) == 1
 
 
+def test_portfolio_parses_name(portfolio_parser, portfolio_response):
+    pool = portfolio_parser.parse([portfolio_response])[0]
+    assert pool.name == 'Pool Name'
+
+
 def test_parse_borrow_token_list(portfolio_parser, portfolio_response):
     items = portfolio_parser.parse([portfolio_response])[0].items
     filtered = [item for item in items if item.asset_type == AssetType.LENDING_BORROW]
