@@ -199,6 +199,7 @@ class AssetType(str, Enum):
     STAKED = 'staked'
     UNREALIZED_AVAILABLE = 'unrealized_available'
     VESTING = 'vesting'
+    PRICED_VESTING = 'priced_vesting'
     YIELD = 'yield'
 
     # DEPRECATED
