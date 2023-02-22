@@ -293,6 +293,15 @@ COIN_AURORA = Coin(
     info=CoinInfo(coingecko_id='aurora-near'),
 )
 
+COIN_AURORA_AETH = Coin(
+    symbol='AETH',
+    name='Wrapped Ethereum',
+    decimals=18,
+    blockchain=Blockchain.AURORA,
+    address='0xc9bdeed33cd01541e1eed10f90519d2c06fe3feb',
+    info=CoinInfo(coingecko_id='weth'),
+)
+
 COIN_GLMR = Coin(
     symbol='GLMR',
     name='Moonbeam',

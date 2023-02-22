@@ -127,6 +127,21 @@ def test_map_canto_coin(balance_parser):
     assert coin.blockchain == Blockchain.CANTO
 
 
+def test_map_aurora_aeth_coin(balance_parser):
+    balance = DebankModelBalanceItem(
+        id="aurora",
+        chain="aurora",
+        name="AETH",
+        symbol="AETH",
+        decimals=18,
+        amount=Decimal(1),
+    )
+
+    coin = balance_parser.get_coin(balance, "AETH")
+    assert coin.info.coingecko_id == "weth"
+    assert coin.blockchain == Blockchain.AURORA
+
+
 def test_skip_balance_with_unknown_chain(balance_parser):
     balance = DebankModelBalanceItem(
         id="123",
