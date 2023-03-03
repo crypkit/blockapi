@@ -41,6 +41,8 @@ REWARD_ASSET_TYPE_MAP = {
     AssetType.STAKED: AssetType.REWARDS,
     AssetType.FARMING: AssetType.REWARDS,
     AssetType.YIELD: AssetType.REWARDS,
+    AssetType.LIQUIDITY_POOL: AssetType.REWARDS,
+    AssetType.LOCKED: AssetType.REWARDS,
 }
 
 
