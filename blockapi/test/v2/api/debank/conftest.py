@@ -92,6 +92,11 @@ def complex_portfolio_response() -> List:
 
 
 @pytest.fixture
+def position_index_portfolio_response() -> List:
+    return read_json_file("debank/data/position_index_portfolio_response.json")
+
+
+@pytest.fixture
 def aave_portfolio_response() -> List:
     return read_json_file("debank/data/aave_portfolio_response.json")
 

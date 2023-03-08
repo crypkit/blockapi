@@ -492,6 +492,7 @@ class Pool:
     health_rate: Optional[Decimal] = attr.ib(default=None)
     project_id: Optional[str] = attr.ib(default=None)
     adapter_id: Optional[str] = attr.ib(default=None)
+    position_index: Optional[str] = attr.ib(default=None)
 
     @classmethod
     def from_api(
@@ -505,6 +506,7 @@ class Pool:
         items: List[BalanceItem],
         project_id: Optional[str] = None,
         adapter_id: Optional[str] = None,
+        position_index: Optional[str] = None,
     ) -> 'Pool':
         return cls(
             pool_id=pool_id,
@@ -515,6 +517,7 @@ class Pool:
             health_rate=to_decimal(health_rate) if health_rate is not None else None,
             project_id=project_id,
             adapter_id=adapter_id,
+            position_index=position_index,
         )
 
     def append_items(self, items: List[BalanceItem]) -> None:
