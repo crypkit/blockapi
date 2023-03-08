@@ -65,6 +65,7 @@ class DebankModelPortfolioItem(BaseModel):
     detail: DebankModelPoolItemDetail
     pool_id: Optional[str]
     pool: Optional[DebankModelPoolItem]
+    position_index: Optional[str]
 
     @validator('pool')
     def require_pool_or_pool_id(cls, v, values, **kwargs):
@@ -316,7 +317,7 @@ class DebankPortfolioParser:
         for item in raw_portfolio_items:
             pool = self._parse_portfolio_item(item, root_protocol, pools)
             if pool.pool_id:
-                pools[pool.pool_id] = pool
+                pools[(pool.pool_id, pool.position_index)] = pool
 
             items.append(pool)
 
@@ -326,13 +327,14 @@ class DebankPortfolioParser:
         self,
         item: DebankModelPortfolioItem,
         pool_protocol: Protocol,
-        pools: Dict[str, Pool],
+        pools: Dict[tuple[str, str], Pool],
     ) -> Pool:
         pool_id = self._get_pool_id(item)
         detail = item.detail
 
         health_rate = detail.health_rate
         locked_until = detail.unlock_at
+        position_index = item.position_index
 
         asset_type = self._parse_asset_type(item.name)
         borrow_type = self._get_borrow_asset_type(asset_type)
@@ -365,7 +367,7 @@ class DebankPortfolioParser:
         )
         self._update_items(items, detail.token_list, asset_type, pool_id=pool_id)
 
-        pool = pools.get(pool_id)
+        pool = pools.get((pool_id, position_index))
 
         if pool is None:
             pool = Pool.from_api(
@@ -377,6 +379,7 @@ class DebankPortfolioParser:
                 items=items,
                 project_id=item.pool.project_id if item.pool else None,
                 adapter_id=item.pool.adapter_id if item.pool else None,
+                position_index=position_index,
             )
         else:
             pool.append_items(items)

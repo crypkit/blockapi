@@ -1,0 +1,424 @@
+[
+      {
+        "id": "uniswap3",
+        "chain": "eth",
+        "name": "Uniswap V3",
+        "site_url": "https://app.uniswap.org",
+        "logo_url": "https://static.debank.com/image/project/logo_url/uniswap3/87a541b3b83b041c8d12119e5a0d19f0.png",
+        "has_supported_portfolio": true,
+        "tvl": 2150460772.1220126,
+        "portfolio_item_list": [
+            {
+                "stats": {
+                    "asset_usd_value": 241964.9590029455,
+                    "debt_usd_value": 0,
+                    "net_usd_value": 241964.9590029455
+                },
+                "asset_dict": {
+                    "0xb23d80f5fefcddaa212212f028021b41ded428cf": 34378.23401147591,
+                    "eth": 84.89212147483319
+                },
+                "asset_token_list": [
+                    {
+                        "id": "0xb23d80f5fefcddaa212212f028021b41ded428cf",
+                        "chain": "eth",
+                        "name": "Prime",
+                        "symbol": "PRIME",
+                        "display_symbol": null,
+                        "optimized_symbol": "PRIME",
+                        "decimals": 18,
+                        "logo_url": "https://static.debank.com/image/eth_token/logo_url/0xb23d80f5fefcddaa212212f028021b41ded428cf/5101be7df1192227d3471f95d394fbbf.png",
+                        "protocol_id": "",
+                        "price": 3.189134667412142,
+                        "is_verified": true,
+                        "is_core": true,
+                        "is_wallet": true,
+                        "time_at": 1658083280.0,
+                        "amount": 34378.23401147591
+                    },
+                    {
+                        "id": "eth",
+                        "chain": "eth",
+                        "name": "ETH",
+                        "symbol": "ETH",
+                        "display_symbol": null,
+                        "optimized_symbol": "ETH",
+                        "decimals": 18,
+                        "logo_url": "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+                        "protocol_id": "",
+                        "price": 1558.78,
+                        "is_verified": true,
+                        "is_core": true,
+                        "is_wallet": true,
+                        "time_at": 1483200000.0,
+                        "amount": 84.89212147483319
+                    }
+                ],
+                "update_at": 1678270580.0,
+                "name": "Liquidity Pool",
+                "detail_types": [
+                    "common"
+                ],
+                "detail": {
+                    "supply_token_list": [
+                        {
+                            "id": "0xb23d80f5fefcddaa212212f028021b41ded428cf",
+                            "chain": "eth",
+                            "name": "Prime",
+                            "symbol": "PRIME",
+                            "display_symbol": null,
+                            "optimized_symbol": "PRIME",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/eth_token/logo_url/0xb23d80f5fefcddaa212212f028021b41ded428cf/5101be7df1192227d3471f95d394fbbf.png",
+                            "protocol_id": "",
+                            "price": 3.189134667412142,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1658083280.0,
+                            "amount": 33899.28318766017
+                        },
+                        {
+                            "id": "eth",
+                            "chain": "eth",
+                            "name": "ETH",
+                            "symbol": "ETH",
+                            "display_symbol": null,
+                            "optimized_symbol": "ETH",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+                            "protocol_id": "",
+                            "price": 1558.78,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1483200000.0,
+                            "amount": 84.0514962592102
+                        }
+                    ],
+                    "reward_token_list": [
+                        {
+                            "id": "0xb23d80f5fefcddaa212212f028021b41ded428cf",
+                            "chain": "eth",
+                            "name": "Prime",
+                            "symbol": "PRIME",
+                            "display_symbol": null,
+                            "optimized_symbol": "PRIME",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/eth_token/logo_url/0xb23d80f5fefcddaa212212f028021b41ded428cf/5101be7df1192227d3471f95d394fbbf.png",
+                            "protocol_id": "",
+                            "price": 3.189134667412142,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1658083280.0,
+                            "amount": 478.9508238157417
+                        },
+                        {
+                            "id": "eth",
+                            "chain": "eth",
+                            "name": "ETH",
+                            "symbol": "ETH",
+                            "display_symbol": null,
+                            "optimized_symbol": "ETH",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+                            "protocol_id": "",
+                            "price": 1558.78,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1483200000.0,
+                            "amount": 0.8406252156229893
+                        }
+                    ]
+                },
+                "proxy_detail": {},
+                "position_index": "455893",
+                "pool": {
+                    "id": "0xcd423f3ab39a11ff1d9208b7d37df56e902c932b",
+                    "chain": "eth",
+                    "project_id": "uniswap3",
+                    "adapter_id": "uniswap3_liquidity",
+                    "controller": "0xcd423f3ab39a11ff1d9208b7d37df56e902c932b",
+                    "index": null,
+                    "time_at": 1677683171
+                }
+            },
+            {
+                "stats": {
+                    "asset_usd_value": 150908.3670165683,
+                    "debt_usd_value": 0,
+                    "net_usd_value": 150908.3670165683
+                },
+                "asset_dict": {
+                    "0xb23d80f5fefcddaa212212f028021b41ded428cf": 18619.280749718684,
+                    "eth": 58.71833953178827
+                },
+                "asset_token_list": [
+                    {
+                        "id": "0xb23d80f5fefcddaa212212f028021b41ded428cf",
+                        "chain": "eth",
+                        "name": "Prime",
+                        "symbol": "PRIME",
+                        "display_symbol": null,
+                        "optimized_symbol": "PRIME",
+                        "decimals": 18,
+                        "logo_url": "https://static.debank.com/image/eth_token/logo_url/0xb23d80f5fefcddaa212212f028021b41ded428cf/5101be7df1192227d3471f95d394fbbf.png",
+                        "protocol_id": "",
+                        "price": 3.189134667412142,
+                        "is_verified": true,
+                        "is_core": true,
+                        "is_wallet": true,
+                        "time_at": 1658083280.0,
+                        "amount": 18619.280749718684
+                    },
+                    {
+                        "id": "eth",
+                        "chain": "eth",
+                        "name": "ETH",
+                        "symbol": "ETH",
+                        "display_symbol": null,
+                        "optimized_symbol": "ETH",
+                        "decimals": 18,
+                        "logo_url": "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+                        "protocol_id": "",
+                        "price": 1558.78,
+                        "is_verified": true,
+                        "is_core": true,
+                        "is_wallet": true,
+                        "time_at": 1483200000.0,
+                        "amount": 58.71833953178827
+                    }
+                ],
+                "update_at": 1678270580.0,
+                "name": "Liquidity Pool",
+                "detail_types": [
+                    "common"
+                ],
+                "detail": {
+                    "supply_token_list": [
+                        {
+                            "id": "0xb23d80f5fefcddaa212212f028021b41ded428cf",
+                            "chain": "eth",
+                            "name": "Prime",
+                            "symbol": "PRIME",
+                            "display_symbol": null,
+                            "optimized_symbol": "PRIME",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/eth_token/logo_url/0xb23d80f5fefcddaa212212f028021b41ded428cf/5101be7df1192227d3471f95d394fbbf.png",
+                            "protocol_id": "",
+                            "price": 3.189134667412142,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1658083280.0,
+                            "amount": 17878.647139579167
+                        },
+                        {
+                            "id": "eth",
+                            "chain": "eth",
+                            "name": "ETH",
+                            "symbol": "ETH",
+                            "display_symbol": null,
+                            "optimized_symbol": "ETH",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+                            "protocol_id": "",
+                            "price": 1558.78,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1483200000.0,
+                            "amount": 57.41842468194831
+                        }
+                    ],
+                    "reward_token_list": [
+                        {
+                            "id": "0xb23d80f5fefcddaa212212f028021b41ded428cf",
+                            "chain": "eth",
+                            "name": "Prime",
+                            "symbol": "PRIME",
+                            "display_symbol": null,
+                            "optimized_symbol": "PRIME",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/eth_token/logo_url/0xb23d80f5fefcddaa212212f028021b41ded428cf/5101be7df1192227d3471f95d394fbbf.png",
+                            "protocol_id": "",
+                            "price": 3.189134667412142,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1658083280.0,
+                            "amount": 740.6336101395157
+                        },
+                        {
+                            "id": "eth",
+                            "chain": "eth",
+                            "name": "ETH",
+                            "symbol": "ETH",
+                            "display_symbol": null,
+                            "optimized_symbol": "ETH",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+                            "protocol_id": "",
+                            "price": 1558.78,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1483200000.0,
+                            "amount": 1.2999148498399564
+                        }
+                    ]
+                },
+                "proxy_detail": {},
+                "position_index": "456648",
+                "pool": {
+                    "id": "0xcd423f3ab39a11ff1d9208b7d37df56e902c932b",
+                    "chain": "eth",
+                    "project_id": "uniswap3",
+                    "adapter_id": "uniswap3_liquidity",
+                    "controller": "0xcd423f3ab39a11ff1d9208b7d37df56e902c932b",
+                    "index": null,
+                    "time_at": 1677683171
+                }
+            },
+            {
+                "stats": {
+                    "asset_usd_value": 38560.21622466297,
+                    "debt_usd_value": 0,
+                    "net_usd_value": 38560.21622466297
+                },
+                "asset_dict": {
+                    "0xb23d80f5fefcddaa212212f028021b41ded428cf": 10297.086632209697,
+                    "eth": 3.670447576012573
+                },
+                "asset_token_list": [
+                    {
+                        "id": "0xb23d80f5fefcddaa212212f028021b41ded428cf",
+                        "chain": "eth",
+                        "name": "Prime",
+                        "symbol": "PRIME",
+                        "display_symbol": null,
+                        "optimized_symbol": "PRIME",
+                        "decimals": 18,
+                        "logo_url": "https://static.debank.com/image/eth_token/logo_url/0xb23d80f5fefcddaa212212f028021b41ded428cf/5101be7df1192227d3471f95d394fbbf.png",
+                        "protocol_id": "",
+                        "price": 3.189134667412142,
+                        "is_verified": true,
+                        "is_core": true,
+                        "is_wallet": true,
+                        "time_at": 1658083280.0,
+                        "amount": 10297.086632209697
+                    },
+                    {
+                        "id": "eth",
+                        "chain": "eth",
+                        "name": "ETH",
+                        "symbol": "ETH",
+                        "display_symbol": null,
+                        "optimized_symbol": "ETH",
+                        "decimals": 18,
+                        "logo_url": "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+                        "protocol_id": "",
+                        "price": 1558.78,
+                        "is_verified": true,
+                        "is_core": true,
+                        "is_wallet": true,
+                        "time_at": 1483200000.0,
+                        "amount": 3.670447576012573
+                    }
+                ],
+                "update_at": 1678270580.0,
+                "name": "Liquidity Pool",
+                "detail_types": [
+                    "common"
+                ],
+                "detail": {
+                    "supply_token_list": [
+                        {
+                            "id": "0xb23d80f5fefcddaa212212f028021b41ded428cf",
+                            "chain": "eth",
+                            "name": "Prime",
+                            "symbol": "PRIME",
+                            "display_symbol": null,
+                            "optimized_symbol": "PRIME",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/eth_token/logo_url/0xb23d80f5fefcddaa212212f028021b41ded428cf/5101be7df1192227d3471f95d394fbbf.png",
+                            "protocol_id": "",
+                            "price": 3.189134667412142,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1658083280.0,
+                            "amount": 10060.86324884681
+                        },
+                        {
+                            "id": "eth",
+                            "chain": "eth",
+                            "name": "ETH",
+                            "symbol": "ETH",
+                            "display_symbol": null,
+                            "optimized_symbol": "ETH",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+                            "protocol_id": "",
+                            "price": 1558.78,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1483200000.0,
+                            "amount": 3.2752422848104037
+                        }
+                    ],
+                    "reward_token_list": [
+                        {
+                            "id": "0xb23d80f5fefcddaa212212f028021b41ded428cf",
+                            "chain": "eth",
+                            "name": "Prime",
+                            "symbol": "PRIME",
+                            "display_symbol": null,
+                            "optimized_symbol": "PRIME",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/eth_token/logo_url/0xb23d80f5fefcddaa212212f028021b41ded428cf/5101be7df1192227d3471f95d394fbbf.png",
+                            "protocol_id": "",
+                            "price": 3.189134667412142,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1658083280.0,
+                            "amount": 236.22338336288718
+                        },
+                        {
+                            "id": "eth",
+                            "chain": "eth",
+                            "name": "ETH",
+                            "symbol": "ETH",
+                            "display_symbol": null,
+                            "optimized_symbol": "ETH",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+                            "protocol_id": "",
+                            "price": 1558.78,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1483200000.0,
+                            "amount": 0.39520529120216924
+                        }
+                    ]
+                },
+                "proxy_detail": {},
+                "position_index": "458051",
+                "pool": {
+                    "id": "0xcd423f3ab39a11ff1d9208b7d37df56e902c932b",
+                    "chain": "eth",
+                    "project_id": "uniswap3",
+                    "adapter_id": "uniswap3_liquidity",
+                    "controller": "0xcd423f3ab39a11ff1d9208b7d37df56e902c932b",
+                    "index": null,
+                    "time_at": 1677683171
+                }
+            }
+        ]
+    }
+]

@@ -65,6 +65,14 @@ def test_parse_portfolio(portfolio_parser, complex_portfolio_response):
     assert len(parsed_items) == 33
 
 
+def test_parse_position_index_portfolio(
+    portfolio_parser, position_index_portfolio_response
+):
+    parsed_items = portfolio_parser.parse(position_index_portfolio_response)
+    assert len(parsed_items) == 3
+    assert parsed_items[0].position_index == "455893"
+
+
 def test_parse_asset_type(portfolio_parser):
     assert portfolio_parser._parse_asset_type('Lending') == AssetType.LENDING
 
