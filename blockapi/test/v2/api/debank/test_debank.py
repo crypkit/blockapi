@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from blockapi.v2.api.debank import DebankApi, make_checksum_address
 
 
@@ -213,3 +215,12 @@ def test_protocol_cache_is_shared_by_instances():
 def test_make_checksum_address():
     non_valid_addr = make_checksum_address("eth")
     assert non_valid_addr is None
+
+
+def test_get_usage(debank_api, debank_usage_response_raw, requests_mock):
+    requests_mock.get(
+        'https://pro-openapi.debank.com/v1/account/units',
+        text=debank_usage_response_raw,
+    )
+    usage = debank_api.get_usage()
+    assert usage.balance == Decimal('351014')

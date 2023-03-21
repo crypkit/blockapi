@@ -1,10 +1,13 @@
 import logging
 from datetime import datetime, timedelta
+from decimal import Decimal
 from typing import Dict, List, Optional, Union
 
+import attr
 from eth_utils import to_checksum_address
 from pydantic import BaseModel, validator
 
+from blockapi.utils.datetime import parse_dt
 from blockapi.utils.num import decimals_to_raw
 from blockapi.v2.api.debank_maps import (
     ALL_COINS,
@@ -78,6 +81,35 @@ class DebankModelPortfolioItem(BaseModel):
         return v
 
 
+@attr.s(auto_attribs=True, slots=True, frozen=True)
+class DebankUsageStats:
+    usage: Decimal
+    remains: Decimal
+    date: datetime
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        usage: Union[str, float, int],
+        remains: Union[str, float, int],
+        date: str,
+    ) -> 'DebankUsageStats':
+        return cls(usage=Decimal(usage), remains=Decimal(remains), date=parse_dt(date))
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
+class DebankUsage:
+    balance: Decimal
+    stats: list[DebankUsageStats]
+
+    @classmethod
+    def from_api(
+        cls, *, balance: Union[str, float, int], stats: List[DebankUsageStats]
+    ) -> 'DebankUsage':
+        return cls(balance=Decimal(balance), stats=stats)
+
+
 class DebankModelProtocol(BaseModel):
     id: str
     chain: str
@@ -118,6 +150,22 @@ class DebankProtocolParser:
             site_url=item.site_url,
             logo_url=item.logo_url,
             has_supported_portfolio=item.has_supported_portfolio,
+        )
+
+
+class DebankUsageParser:
+    def parse(self, response: dict) -> DebankUsage:
+        return DebankUsage.from_api(
+            balance=response.get('balance'),
+            stats=[self._parse_stats(u) for u in response.get('stats', [])],
+        )
+
+    @staticmethod
+    def _parse_stats(response) -> DebankUsageStats:
+        return DebankUsageStats.from_api(
+            usage=response.get('usage'),
+            remains=response.get('remains'),
+            date=response.get('date'),
         )
 
 
@@ -475,6 +523,7 @@ class DebankApi(CustomizableBlockchainApi, IBalance, IPortfolio):
         'get_balance': '/v1/user/all_token_list?id={address}&is_all={is_all}',
         'get_portfolio': '/v1/user/all_complex_protocol_list?id={address}',
         'get_protocols': '/v1/protocol/all_list',
+        'usage': '/v1/account/units',
     }
 
     default_protocol_cache = DebankProtocolCache()
@@ -496,6 +545,7 @@ class DebankApi(CustomizableBlockchainApi, IBalance, IPortfolio):
         self._portfolio_parser = DebankPortfolioParser(
             self._protocol_parser, self._balance_parser
         )
+        self._usage_parser = DebankUsageParser()
 
     def get_balance(self, address: str) -> List[BalanceItem]:
         self._maybe_update_protocols()
@@ -521,6 +571,13 @@ class DebankApi(CustomizableBlockchainApi, IBalance, IPortfolio):
             return []
 
         return self._portfolio_parser.parse(response)
+
+    def get_usage(self) -> Optional[DebankUsage]:
+        response = self.get('usage', headers=self._headers)
+        if self._has_error(response):
+            return None
+
+        return self._usage_parser.parse(response)
 
     def _maybe_update_protocols(self):
         if self._protocol_cache.needs_update():

@@ -2,13 +2,14 @@ from typing import List
 
 import pytest
 
-from blockapi.test.v2.api.conftest import read_json_file
+from blockapi.test.v2.api.conftest import read_file, read_json_file
 from blockapi.v2.api.debank import (
     DebankApi,
     DebankBalanceParser,
     DebankPortfolioParser,
     DebankProtocolCache,
     DebankProtocolParser,
+    DebankUsageParser,
 )
 from blockapi.v2.coins import COIN_ETH
 from blockapi.v2.models import BalanceItem, Blockchain, Pool, Protocol
@@ -27,6 +28,11 @@ def balance_parser(protocol_cache):
 @pytest.fixture
 def protocol_parser():
     return DebankProtocolParser()
+
+
+@pytest.fixture
+def usage_parser():
+    return DebankUsageParser()
 
 
 @pytest.fixture
@@ -114,6 +120,16 @@ def tokenset_portfolio_response() -> List:
 @pytest.fixture
 def mist_response() -> List:
     return read_json_file("debank/data/mist_response.json")
+
+
+@pytest.fixture
+def debank_usage_response() -> dict:
+    return read_json_file('debank/data/usage_response.json')
+
+
+@pytest.fixture
+def debank_usage_response_raw() -> str:
+    return read_file('debank/data/usage_response.json')
 
 
 @pytest.fixture
