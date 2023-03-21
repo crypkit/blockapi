@@ -24,7 +24,7 @@ setuptools.setup(
         'coinaddrng==1.0.30',
         'cfscrape>=2.0.8',
         'ethereum_input_decoder>=0.2.2',
-        'web3>=5.2.2',
+        'web3>=5.2.2,<6.0.0',
         'bs4>=0.0.1',
         'lxml>=4.4.1',
         'pytest',
