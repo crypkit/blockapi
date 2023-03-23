@@ -115,9 +115,9 @@ class PerpProtocol:
     reward_contract = '0xc2a9e84D77f4B534F049b593C282c5c91F24808A'
     vesting_contract = '0x49a4B8431Fc24BE4b22Fb07D1683E2c52bC56088'
 
-    def __init__(self, address, provider="infura"):
+    def __init__(self, address: str, api_url: str):
         self.address = address
-        self.w3 = get_eth_client('mainnet', provider)
+        self.w3 = get_eth_client(api_url=api_url)
 
     def yield_balances(self) -> Iterable[BalanceItem]:
         """
@@ -225,7 +225,7 @@ class PerpetualApi(BlockchainApi, IBalance):
 
     def __init__(self, api_url: str) -> None:
         super().__init__()
-        self.w3 = get_eth_client(api_url)
+        self.api_url = api_url
 
     def get_balance(self, address: str) -> List[BalanceItem]:
-        return PerpProtocol(address).fetch_balances()
+        return PerpProtocol(address, api_url=self.api_url).fetch_balances()
