@@ -1,4 +1,5 @@
 from decimal import Decimal
+from unittest.mock import patch
 
 import pytest
 
@@ -130,3 +131,36 @@ def test_synthetix_optimism_api():
             asset_type=AssetType.VESTING,
         ),
     ]
+
+
+@pytest.fixture()
+def mocked_get_synth_contract():
+    with patch(
+        'blockapi.v2.api.synthetix.synthetix.SynthetixApi._get_synth_contract'
+    ) as patched:
+        patched.return_value = '0x0000000000000000000000000000000000000000'
+        yield patched
+
+
+def test_yield_balances_from_staking(mocked_get_synth_contract):
+    api = SynthetixMainnetApi(api_url='http://localhost:1234/')
+    staking = {
+        'transferable': Decimal(10),
+        'debt': Decimal(10),
+        'staked': Decimal(10),
+        'vesting': Decimal(8),
+        'collateral': Decimal(100),
+        'rewards': {
+            'exchange': Decimal(2),
+            'staking': Decimal(3),
+        },
+        'liquidation_reward': Decimal(3),
+    }
+
+    balances = list(api.yield_balances_from_staking(staking))
+
+    assert balances[2].asset_type == AssetType.STAKED
+    assert balances[2].balance_raw == Decimal(89)
+
+    assert balances[3].asset_type == AssetType.PRICED_VESTING
+    assert balances[3].balance_raw == Decimal(8)

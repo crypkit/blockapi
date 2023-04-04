@@ -145,7 +145,9 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         logger.info("Called Synthetix.yield_balances for address: %s", address)
 
         staking = self.fetch_staking(address)
+        return self.yield_balances_from_staking(staking=staking)
 
+    def yield_balances_from_staking(self, staking: Staking) -> Iterable[BalanceItem]:
         if staking['transferable']:
             yield self._create_balance(
                 'SNX',
@@ -157,11 +159,19 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
         if staking['debt']:
             yield self._create_balance('sUSD', AssetType.DEBT, staking['debt'])
 
-        if staking['staked']:
-            yield self._create_balance('SNX', AssetType.STAKED, staking['staked'])
+        if staking['collateral']:
+            stake_balance = (
+                staking['collateral']
+                - staking['vesting']
+                - staking['liquidation_reward']
+            )
+
+            yield self._create_balance('SNX', AssetType.STAKED, stake_balance)
 
         if staking['vesting']:
-            yield self._create_balance('SNX', AssetType.VESTING, staking['vesting'])
+            yield self._create_balance(
+                'SNX', AssetType.PRICED_VESTING, staking['vesting']
+            )
 
         if staking['rewards']['exchange']:
             yield self._create_balance(
