@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 
 from requests import HTTPError, Response, Session
 
-from .models import ApiOptions, BalanceItem, Coin, Pool
+from .models import ApiOptions, BalanceItem, Coin, Pool, TransactionItem
 
 
 class BlockchainApi(ABC):
@@ -102,6 +102,18 @@ class CustomizableBlockchainApi(BlockchainApi, ABC):
 
 class IBalance(ABC):
     def get_balance(self, address: str) -> List[BalanceItem]:
+        raise NotImplementedError
+
+
+class ITransactions(ABC):
+    def get_transactions(
+        self,
+        address: str,
+        *,
+        offset: int = 0,
+        limit: int = 10,
+        unconfirmed: bool = False,
+    ) -> List[TransactionItem]:
         raise NotImplementedError
 
 
