@@ -121,7 +121,7 @@ class Blockchain(str, Enum):
     NEO = 'neo'
     NULS = 'nuls'
     NXT = 'nxt'
-    OASIS = 'oasis'
+    OASIS_CHAIN = 'oasis-chain'
     OASYS = 'oasys'
     OKEX_CHAIN = 'okex-chain'
     OKT = 'okt'
