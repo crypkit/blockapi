@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Iterable, List
 
-from blockapi.v2.base import BlockchainApi, IBalance
+from blockapi.v2.base import BlockchainApi, IBalance, ITransactions
 from blockapi.v2.coins import COIN_BTC, COIN_DOGE, COIN_LTC
 from blockapi.v2.models import (
     ApiOptions,
@@ -16,7 +16,7 @@ from blockapi.v2.models import (
 )
 
 
-class BlockchairApi(BlockchainApi, IBalance, ABC):
+class BlockchairApi(BlockchainApi, IBalance, ITransactions, ABC):
     BASE_URL = 'https://api.blockchair.com'
 
     @property
@@ -51,7 +51,12 @@ class BlockchairApi(BlockchainApi, IBalance, ABC):
         return list(self._parse_balances(dashboard))
 
     def get_transactions(
-        self, address: str, *, offset: int = 0, limit: int = 10
+        self,
+        address: str,
+        *,
+        offset: int = 0,
+        limit: int = 10,
+        unconfirmed: bool = False
     ) -> List[TransactionItem]:
         dashboard = self._get_dashboard(address, offset, limit)
         hashes = dashboard.get('transactions')
