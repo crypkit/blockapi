@@ -1,8 +1,5 @@
 from abc import ABC
-from datetime import datetime
 from typing import List
-
-import pytz
 
 from blockapi.v2.base import BlockchainApi, IBalance, ITransactions
 from blockapi.v2.coins import COIN_BTC
@@ -65,9 +62,9 @@ class TrezorApi(BlockchainApi, IBalance, ITransactions, ABC):
         txdata = self.get('get_tx', tx_hash=tx['txid'])
 
         if address in txdata['vin'][0]['addresses']:
-            direction = 'outgoing'
+            direction = OperationDirection.OUTGOING
         else:
-            direction = 'incoming'
+            direction = OperationDirection.INCOMING
 
         return TransactionItem.from_api(
             fee_raw=txdata.get('fees'),
@@ -85,10 +82,7 @@ class TrezorApi(BlockchainApi, IBalance, ITransactions, ABC):
                     to_address=txdata['vout'][0]['addresses'],
                     hash=tx.get('txid'),
                     type=OperationType.TRANSACTION,
-                    # TODO: is direction correct?
-                    direction=OperationDirection.OUTGOING
-                    if address in txdata['vin'][0]['addresses']
-                    else OperationDirection.INCOMING,
+                    direction=direction,
                     confirmed=txdata['confirmations'],
                     raw={},
                 )
@@ -97,7 +91,7 @@ class TrezorApi(BlockchainApi, IBalance, ITransactions, ABC):
         )
 
 
-class Btc1TrezorApi(TrezorApi):
+class TrezorBitcoin1Api(TrezorApi):
     coin = COIN_BTC
     api_options = ApiOptions(
         blockchain=Blockchain.BITCOIN,
@@ -106,7 +100,7 @@ class Btc1TrezorApi(TrezorApi):
     )
 
 
-class Btc2TrezorApi(TrezorApi):
+class TrezorBitcoin2Api(TrezorApi):
     coin = COIN_BTC
     api_options = ApiOptions(
         blockchain=Blockchain.BITCOIN,
@@ -115,7 +109,7 @@ class Btc2TrezorApi(TrezorApi):
     )
 
 
-class Ltc1TrezorApi(TrezorApi):
+class TrezorLitecoinApi(TrezorApi):
     coin = COIN_BTC
     api_options = ApiOptions(
         blockchain=Blockchain.LITECOIN,
