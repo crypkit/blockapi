@@ -123,6 +123,11 @@ def mist_response() -> List:
 
 
 @pytest.fixture
+def unknown_chain_response() -> dict:
+    return read_json_file('debank/data/unknown_chain_response.json')
+
+
+@pytest.fixture
 def debank_usage_response() -> dict:
     return read_json_file('debank/data/usage_response.json')
 

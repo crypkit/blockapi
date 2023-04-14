@@ -139,7 +139,7 @@ class DebankProtocolParser:
     def parse_item(item: DebankModelProtocol) -> Optional[Protocol]:
         blockchain = get_blockchain_from_debank_chain(item.chain)
         if not blockchain:
-            logger.warning(f'No blockchain found for protocol {item.id}')
+            logger.warning(f'No blockchain found for protocol {item.id}. Skipping.')
             return None
 
         return Protocol.from_api(
@@ -349,6 +349,9 @@ class DebankPortfolioParser:
 
     def parse_items(self, raw_portfolio: DebankModelPortfolio) -> List[Pool]:
         root_protocol = self._protocol_parser.parse_item(raw_portfolio)
+        if not root_protocol:
+            return []
+
         pools = self._parse_portfolio_item_list(
             raw_portfolio.portfolio_item_list or [], root_protocol
         )
