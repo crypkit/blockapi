@@ -140,3 +140,8 @@ def test_require_pool_or_pool_id():
         DebankModelPortfolioItem(
             name='portfolio', detail=detail, pool=None, pool_id=None
         )
+
+
+def test_portfolio_with_unknown_chain(portfolio_parser, unknown_chain_response):
+    parsed = portfolio_parser.parse(unknown_chain_response)
+    assert parsed == []

@@ -1,0 +1,51 @@
+[
+    {
+        "id": "avax_traderjoexyz_lending",
+        "chain": "this-chain-will-never-exist",
+        "name": "Trader Joe Lending",
+        "site_url": "https://www.traderjoexyz.com",
+        "logo_url": "https://static.debank.com/image/project/logo_url/avax_traderjoexyz_lending/eab9fd6fb47852d3b7766515bfefe366.png",
+        "has_supported_portfolio": true,
+        "tvl": 162476998.75607753,
+        "portfolio_item_list": [
+            {
+                "stats": {
+                    "asset_usd_value": 547045.4515305705,
+                    "debt_usd_value": 0,
+                    "net_usd_value": 547045.4515305705
+                },
+                "update_at": 1650963061.376993,
+                "name": "Lending",
+                "pool_id": "0xdc13687554205e5b89ac783db14bb5bba4a1edac",
+                "detail_types": [
+                    "lending"
+                ],
+                "detail": {
+                    "supply_token_list": [
+                        {
+                            "id": "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7",
+                            "chain": "avax",
+                            "name": "Wrapped AVAX",
+                            "symbol": "WAVAX",
+                            "display_symbol": "WAVAX",
+                            "optimized_symbol": "WAVAX",
+                            "decimals": 18,
+                            "logo_url": "https://static.debank.com/image/avax_token/logo_url/0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7/753d82f0137617110f8dec56309b4065.png",
+                            "protocol_id": "avax_gmx",
+                            "price": 72.17,
+                            "is_verified": true,
+                            "is_core": true,
+                            "is_wallet": true,
+                            "time_at": 1607728259,
+                            "amount": 7579.956374263135,
+                            "is_collateral": false
+                        }
+                    ],
+                    "borrow_token_list": [],
+                    "health_rate": null
+                },
+                "proxy_detail": {}
+            }
+        ]
+    }
+]
