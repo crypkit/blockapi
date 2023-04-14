@@ -37,6 +37,7 @@ def test_map_none():
         ('hoo', Blockchain.HOO_SMART_CHAIN),
         ('function-x', Blockchain.FUNCTION_X),
         ('oasys', Blockchain.OASYS),
+        ('oasis', Blockchain.OASIS_CHAIN),
         ('wemix-network', Blockchain.WEMIX_NETWORK),
     ],
 )

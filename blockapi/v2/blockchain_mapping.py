@@ -51,6 +51,7 @@ COINGECKO_BLOCKCHAINS_MAP = {
     'hoo': Blockchain.HOO_SMART_CHAIN,
     'kucoin-community-chain': Blockchain.KUCOIN,
     'polygon-pos': Blockchain.POLYGON,
+    'oasis': Blockchain.OASIS_CHAIN,
     'oec': Blockchain.OKT,
     'onus': Blockchain.ONUS_CHAIN,
     'shibchain': Blockchain.SHIBA_CHAIN,
