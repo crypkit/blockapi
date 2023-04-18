@@ -1,6 +1,6 @@
 # blockapi
 
-Library to interact with numerous cryptocurrency data APIs to get the basic info about account balance, transactions, staking informations, etc.
+Library to interact with numerous cryptocurrency data APIs to get the basic info about account balance, transactions, staking information, etc.
 List of supported coins:
 
 | coin  | API name | supported operations
@@ -133,14 +133,14 @@ TBD
 
 ## Authors
 
-* **Devmons s.r.o. - *Initial work* - [crypkit](https://github.com/crypkit)
+* **Devmons s.r.o.** - *Initial work* - [crypkit](https://github.com/crypkit)
 
 See also the list of [contributors](https://github.com/crypkit/blockapi/contributors) who participated in this project.
 
 ## Credits
 
-* **Chris Priest - *moneywagon library we took many ideas from* - [moneywagon](https://github.com/priestc/moneywagon)
-* **Joe Black - *Address validation library* - [coinaddr](https://github.com/joeblackwaslike/coinaddr)
+* **Chris Priest** - *moneywagon library we took many ideas from* - [moneywagon](https://github.com/priestc/moneywagon)
+* **Joe Black** - *Address validation library* - [coinaddr](https://github.com/joeblackwaslike/coinaddr)
 
 ## License
 
