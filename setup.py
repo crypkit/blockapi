@@ -32,5 +32,6 @@ setuptools.setup(
         'requests_mock>=1.9.3',
         'pydantic>=1.10.2',
         'marko==1.3.0',
+        'fake_useragent>=1.1.3',
     ],
 )

@@ -1,6 +1,7 @@
 from abc import ABC
 from typing import List
 
+from blockapi.utils.user_agent import get_random_user_agent
 from blockapi.v2.base import BlockchainApi, IBalance, ITransactions
 from blockapi.v2.coins import COIN_BTC
 from blockapi.v2.models import (
@@ -32,7 +33,9 @@ class TrezorApi(BlockchainApi, IBalance, ITransactions, ABC):
 
     def get_balance(self, address: str) -> list[BalanceItem]:
         request = 'get_balance_xpub' if len(address) == 111 else 'get_balance'
-        response = self.get(request, address=address)
+        response = self.get(
+            request, address=address, headers={'User-Agent': get_random_user_agent()}
+        )
 
         if not response:
             return []
