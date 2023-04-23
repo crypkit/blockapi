@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import pytest
 
-from blockapi.v2.api.solana import SolanaApi
+from blockapi.v2.api.solana import SolanaApi, SolscanAPI
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin, CoinInfo
 
 
@@ -336,3 +336,38 @@ def test_use_base_url():
     api = SolanaApi()
     assert api.API_BASE_URL
     assert api.api_options.base_url == api.API_BASE_URL
+
+
+def test_solscan_get_staked_balance(requests_mock):
+    test_addr = '5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu'
+    requests_mock.get(
+        f'https://api.solscan.io/account/stake?address={test_addr}',
+        json=solscan_staked_response,
+    )
+
+    staked_balance = SolscanAPI().get_staked_balance(test_addr)
+    assert staked_balance.asset_type == AssetType.STAKED
+    assert staked_balance.balance == Decimal('55663.568093516')
+
+
+solscan_staked_response = {
+    "success": True,
+    "data": {
+        "5Z9j4ewQsHovszAc5F1jiANLsX3412a5Bzkxx8Gwmjs": {
+            "voter": "26pV97Ce83ZQ6Kz9XT4td8tdoUFPTng8Fb8gPyc53dJx",
+            "amount": "22033088837332",
+            "type": "delegated",
+            "stakeAccount": "5Z9j4ewQsHovszAc5F1jiANLsX3412a5Bzkxx8Gwmjs",
+            "staker": "5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu",
+            "role": ["staker", "withdrawer"],
+        },
+        "AcfWTCgwhcTqKiiAbATi9jvbnAsJLA1s6YqSptsY7BWW": {
+            "voter": "J2nUHEAgZFRyuJbFjdqPrAa9gyWDuc7hErtDQHPhsYRp",
+            "amount": "33630479256184",
+            "type": "delegated",
+            "stakeAccount": "AcfWTCgwhcTqKiiAbATi9jvbnAsJLA1s6YqSptsY7BWW",
+            "staker": "5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu",
+            "role": ["staker"],
+        },
+    },
+}
