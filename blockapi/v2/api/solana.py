@@ -4,15 +4,17 @@ from typing import Dict, Iterable, Optional
 from cytoolz import reduceby
 from requests import Response
 
+from blockapi.utils.user_agent import get_random_user_agent
 from blockapi.v2.base import (
     ApiException,
     ApiOptions,
+    BlockchainApi,
     CustomizableBlockchainApi,
     IBalance,
     InvalidAddressException,
 )
 from blockapi.v2.coins import COIN_SOL
-from blockapi.v2.models import BalanceItem, Blockchain, Coin, CoinInfo
+from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin, CoinInfo
 
 
 class SolanaApi(CustomizableBlockchainApi, IBalance):
@@ -61,6 +63,9 @@ class SolanaApi(CustomizableBlockchainApi, IBalance):
         if token_balances:
             merged_token_balances = self.merge_balances_with_same_coin(token_balances)
             balances.extend(merged_token_balances)
+
+        if stake_balance := SolscanAPI().get_staked_balance(address):
+            balances.append(stake_balance)
 
         return balances
 
@@ -159,3 +164,38 @@ class SolanaApi(CustomizableBlockchainApi, IBalance):
             raise InvalidAddressException(f'Invalid address format.')
         else:
             raise ApiException(json_response['error']['message'])
+
+
+class SolscanAPI(BlockchainApi):
+    API_BASE_URL = 'https://api.solscan.io/'
+
+    coin = COIN_SOL
+    api_options = ApiOptions(
+        blockchain=Blockchain.SOLANA,
+        base_url=API_BASE_URL,
+        start_offset=0,
+        max_items_per_page=1000,
+        page_offset_step=1,
+    )
+
+    supported_requests = {'get_stake_balances': 'account/stake?address={address}'}
+
+    def get_staked_balance(self, address: str) -> Optional[BalanceItem]:
+        response = self.get(
+            'get_stake_balances',
+            headers={'User-Agent': get_random_user_agent()},
+            address=address,
+        )
+        if not response['data']:
+            return
+
+        # return only delegated or all types?
+        balance_raw = sum(int(i['amount']) for i in response['data'].values())
+
+        return BalanceItem.from_api(
+            balance_raw=balance_raw,
+            coin=self.coin,
+            asset_type=AssetType.STAKED,
+            last_updated=None,
+            raw=response['data'],
+        )

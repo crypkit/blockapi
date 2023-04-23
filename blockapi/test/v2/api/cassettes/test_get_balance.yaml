@@ -20732,4 +20732,49 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.7.10) Gecko/20050730 Firefox/1.0.6
+        (Debian package 1.0.6-2)
+    method: GET
+    uri: https://api.solscan.io/account/stake?address=FEeSRuEDk8ENZbpzXjn4uHPz3LQijbeKRzhqVr5zPSJ9
+  response:
+    body:
+      string: '{"success":true,"data":{}}'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7bc486730f4fb348-PRG
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '26'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 23 Apr 2023 07:52:07 GMT
+      ETag:
+      - W/"1a-pIPrt4esgEyEkX/w62Rnrj9XXdg"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=jal8iGe89sLQiRcqvedgRYCPUABRJu1VyII7QxwGxCNGRQ6UEdq8wAYhniscvsr6vvQZQfW3YdOs5AlAv4CxJJp%2FDld3v%2FhTXSv1ljwn%2FBRStO7CE3mI%2FQstG%2Bxn9Hmm"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
 version: 1
