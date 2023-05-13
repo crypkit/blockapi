@@ -115,6 +115,15 @@ def test_get_protocol(debank_api, requests_mock):
     assert req.last_request.headers.get('AccessKey') == 'dummy-key'
 
 
+def test_get_chain(debank_api, requests_mock):
+    req = requests_mock.get(
+        'https://pro-openapi.debank.com/v1/chain/list',
+        text='[]',
+    )
+    debank_api.get_chains()
+    assert req.last_request.headers.get('AccessKey') == 'dummy-key'
+
+
 def test_repr_doesnt_fail(debank_api):
     assert repr(debank_api) == "DebankApi"
 
@@ -128,6 +137,17 @@ def test_debank_parse_protocols(
     )
     parsed_items = debank_api.get_protocols()
     assert parsed_items == yflink_cache_data
+
+
+def test_debank_parse_chains(
+    debank_api, debank_chain_eth_response_raw, debank_chain_eth, requests_mock
+):
+    requests_mock.get(
+        "https://pro-openapi.debank.com/v1/chain/list",
+        json=debank_chain_eth_response_raw,
+    )
+    parsed_items = debank_api.get_chains()
+    assert parsed_items[0] == debank_chain_eth
 
 
 def test_get_balance_fetches_protocols(
