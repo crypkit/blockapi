@@ -6,6 +6,7 @@ from blockapi.test.v2.api.conftest import read_file, read_json_file
 from blockapi.v2.api.debank import (
     DebankApi,
     DebankBalanceParser,
+    DebankChain,
     DebankPortfolioParser,
     DebankProtocolCache,
     DebankProtocolParser,
@@ -578,3 +579,30 @@ def protocol_trader_joe():
 @pytest.fixture
 def yflink_cache_data(protocol_yflink):
     return {'yflink': protocol_yflink}
+
+
+@pytest.fixture
+def debank_chain_eth_response_raw():
+    return [
+        {
+            "id": "eth",
+            "community_id": 1,
+            "name": "Ethereum",
+            "native_token_id": "eth",
+            "logo_url": "https://static.debank.com/image/chain/logo_url/eth/"
+            "42ba589cd077e7bdd97db6480b0ff61d.png",
+            "wrapped_token_id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+            "is_support_pre_exec": True,
+        }
+    ]
+
+
+@pytest.fixture
+def debank_chain_eth():
+    return DebankChain(
+        chain=Blockchain.ETHEREUM,
+        community_id=1,
+        name='Ethereum',
+        logo_url="https://static.debank.com/image/chain/logo_url/eth/"
+        "42ba589cd077e7bdd97db6480b0ff61d.png",
+    )

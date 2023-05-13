@@ -124,6 +124,23 @@ class DebankModelPortfolio(DebankModelProtocol):
     portfolio_item_list: List[DebankModelPortfolioItem]
 
 
+class DebankModelChain(BaseModel):
+    id: str
+    community_id: int
+    name: str
+    native_token_id: str
+    logo_url: str
+    wrapped_token_id: str
+    is_support_pre_exec: bool
+
+
+class DebankChain(BaseModel):
+    chain: Blockchain
+    community_id: int
+    name: str
+    logo_url: str
+
+
 class DebankProtocolParser:
     def parse(self, response: List) -> Dict[str, Protocol]:
         protocols = {}
@@ -150,6 +167,31 @@ class DebankProtocolParser:
             site_url=item.site_url,
             logo_url=item.logo_url,
             has_supported_portfolio=item.has_supported_portfolio,
+        )
+
+
+class DebankChainParser:
+    def parse(self, response: List) -> list[DebankChain]:
+        chains = []
+        for item in response:
+            model = DebankModelChain.parse_obj(item)
+            if chain := self.parse_item(model):
+                chains.append(chain)
+
+        return chains
+
+    @staticmethod
+    def parse_item(item: DebankModelChain) -> Optional[DebankChain]:
+        blockchain = get_blockchain_from_debank_chain(item.id)
+        if not blockchain:
+            logger.warning(f'No blockchain found for debank chain {item.id}. Skipping.')
+            return None
+
+        return DebankChain(
+            chain=blockchain,
+            community_id=item.community_id,
+            name=item.name,
+            logo_url=item.logo_url,
         )
 
 
@@ -524,6 +566,7 @@ class DebankApi(CustomizableBlockchainApi, IBalance, IPortfolio):
 
     supported_requests = {
         'get_balance': '/v1/user/all_token_list?id={address}&is_all={is_all}',
+        'get_chains': '/v1/chain/list',
         'get_portfolio': '/v1/user/all_complex_protocol_list?id={address}',
         'get_protocols': '/v1/protocol/all_list',
         'usage': '/v1/account/units',
@@ -545,6 +588,7 @@ class DebankApi(CustomizableBlockchainApi, IBalance, IPortfolio):
         self._protocol_cache = protocol_cache or self.default_protocol_cache
         self._balance_parser = DebankBalanceParser(self._protocol_cache)
         self._protocol_parser = DebankProtocolParser()
+        self._chain_parser = DebankChainParser()
         self._portfolio_parser = DebankPortfolioParser(
             self._protocol_parser, self._balance_parser
         )
@@ -566,6 +610,13 @@ class DebankApi(CustomizableBlockchainApi, IBalance, IPortfolio):
             return {}
 
         return self._protocol_parser.parse(response)
+
+    def get_chains(self) -> list[DebankChain]:
+        response = self.get('get_chains', headers=self._headers)
+        if self._has_error(response):
+            return []
+
+        return self._chain_parser.parse(response)
 
     def get_portfolio(self, address: str) -> List[Pool]:
         self._maybe_update_protocols()
