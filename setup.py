@@ -33,5 +33,6 @@ setuptools.setup(
         'pydantic>=1.10.2',
         'marko==1.3.0',
         'fake_useragent>=1.1.3',
+        'requests==2.28.0',
     ],
 )
