@@ -18,7 +18,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     packages=PACKAGES,
     install_requires=[
-        'requests>=2.22.0',
+        'requests==2.28.0',
         'pytz>=2019.2',
         'python-dateutil>=2.8.0',
         'coinaddrng==1.0.30',
@@ -33,6 +33,5 @@ setuptools.setup(
         'pydantic>=1.10.2',
         'marko==1.3.0',
         'fake_useragent>=1.1.3',
-        'requests==2.28.0',
     ],
 )
