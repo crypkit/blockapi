@@ -18,7 +18,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     packages=PACKAGES,
     install_requires=[
-        'requests==2.28.0',
+        'requests==2.28.1',
         'pytz>=2019.2',
         'python-dateutil>=2.8.0',
         'coinaddrng==1.0.30',
