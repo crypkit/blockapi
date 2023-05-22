@@ -64,8 +64,8 @@ class SolanaApi(CustomizableBlockchainApi, IBalance):
             merged_token_balances = self.merge_balances_with_same_coin(token_balances)
             balances.extend(merged_token_balances)
 
-        if stake_balance := SolscanAPI().get_staked_balance(address):
-            balances.append(stake_balance)
+        # if stake_balance := SolscanAPI().get_staked_balance(address):
+        #     balances.append(stake_balance)
 
         return balances
 
