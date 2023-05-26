@@ -3,10 +3,8 @@ from decimal import Decimal
 import pytest
 
 from blockapi.test.v2.api.conftest import read_file
+from blockapi.test.v2.test_data import ltc_test_address
 from blockapi.v2.api.blockchair import BlockchairLitecoinApi
-
-# noinspection SpellCheckingInspection
-ltc_test_address = 'M8T1B2Z97gVdvmfkQcAtYbEepune1tzGua'
 
 
 def test_fetch_balances(requests_mock, ltc_balance_response):

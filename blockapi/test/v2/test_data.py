@@ -54,6 +54,14 @@ from blockapi.v2.coins import (
 COVALENT_API_KEY = os.getenv("COVALENT_API_KEY")
 DEBANK_API_KEY = os.getenv("DEBANK_API_KEY")
 
+# noinspection SpellCheckingInspection
+btc_test_address = '35hK24tcLEWcgNA4JxpvbkNkoAcDGqQPsP'
+# noinspection SpellCheckingInspection
+xpub_test_address = 'xpub6CUGRUonZSQ4TWtTMmzXdrXDtypWKiKrhko4egpiMZbpiaQL2jkwSB1icqYh2cfDfVxdx4df189oLKnC5fSwqPfgyP3hooxujYzAu3fDVmz'
+# noinspection SpellCheckingInspection
+ltc_test_address = 'M8T1B2Z97gVdvmfkQcAtYbEepune1tzGua'
+
+
 API_CLASSES = [
     EthplorerApi,
     SolanaApi,
