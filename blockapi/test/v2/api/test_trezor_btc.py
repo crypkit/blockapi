@@ -3,11 +3,8 @@ from decimal import Decimal
 import pytest
 
 from blockapi.test.v2.api.conftest import read_file
+from blockapi.test.v2.test_data import btc_test_address, xpub_test_address
 from blockapi.v2.api.trezor import TrezorBitcoin1Api, TrezorBitcoin2Api
-
-# noinspection SpellCheckingInspection
-btc_test_address = '35hK24tcLEWcgNA4JxpvbkNkoAcDGqQPsP'
-xpub_test_address = 'xpub6CUGRUonZSQ4TWtTMmzXdrXDtypWKiKrhko4egpiMZbpiaQL2jkwSB1icqYh2cfDfVxdx4df189oLKnC5fSwqPfgyP3hooxujYzAu3fDVmz'
 
 
 def test_fetch_balances_1(requests_mock, trezor_btc_1_balance_response):
