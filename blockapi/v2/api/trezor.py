@@ -3,7 +3,7 @@ from typing import List
 
 from blockapi.utils.user_agent import get_random_user_agent
 from blockapi.v2.base import BlockchainApi, IBalance, ITransactions
-from blockapi.v2.coins import COIN_BTC
+from blockapi.v2.coins import COIN_BTC, COIN_LTC
 from blockapi.v2.models import (
     ApiOptions,
     AssetType,
@@ -113,7 +113,7 @@ class TrezorBitcoin2Api(TrezorApi):
 
 
 class TrezorLitecoinApi(TrezorApi):
-    coin = COIN_BTC
+    coin = COIN_LTC
     api_options = ApiOptions(
         blockchain=Blockchain.LITECOIN,
         base_url='https://ltc1.trezor.io',
