@@ -47,6 +47,7 @@ class CustomizableBlockchainApi(ABC):
         self,
         request_method: str,
         headers=None,
+        params=None,
         **req_args,
     ) -> Dict:
         """
@@ -186,6 +187,16 @@ class ITransactions(ABC):
 
 class IPortfolio(ABC):
     def get_portfolio(self, address: str) -> List[Pool]:
+        raise NotImplementedError
+
+
+class INftProvider(ABC):
+    def fetch_nft(self, address: str) -> dict:
+        raise NotImplementedError
+
+
+class INftParser(ABC):
+    def parse_nft(self, data: dict) -> dict:
         raise NotImplementedError
 
 

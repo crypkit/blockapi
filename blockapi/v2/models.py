@@ -514,6 +514,33 @@ class BalanceItem:
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
+class NftBalanceItem(BalanceItem):
+    description: Optional[str] = None
+    name: Optional[str] = None
+
+    @classmethod
+    def nft_from_api(
+        cls,
+        *,
+        balance_raw: Union[int, float, str],
+        coin: Coin,
+        name: str,
+        description: str,
+        asset_type: AssetType = AssetType.AVAILABLE,
+        raw: dict = None,
+    ) -> 'NftBalanceItem':
+        return cls(
+            balance_raw=to_decimal(balance_raw),
+            balance=raw_to_decimals(balance_raw, coin.decimals),
+            coin=coin,
+            asset_type=asset_type,
+            raw=raw,
+            name=name,
+            description=description,
+        )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
 class OperationItem:
     amount: Decimal
     amount_raw: Decimal
