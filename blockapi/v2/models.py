@@ -215,6 +215,7 @@ class AssetType(str, Enum):
     VESTING = 'vesting'
     PRICED_VESTING = 'priced_vesting'
     YIELD = 'yield'
+    PENDING_TRANSACTION = 'pending_transaction'
 
     # DEPRECATED
     ASSET = 'asset'
