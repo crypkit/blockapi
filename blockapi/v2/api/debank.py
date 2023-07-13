@@ -36,25 +36,25 @@ class DebankModelBalanceItem(BaseModel):
     chain: str
     name: str
     symbol: str
-    display_symbol: Optional[str]
-    optimized_symbol: Optional[str]
+    display_symbol: Optional[str] = None
+    optimized_symbol: Optional[str] = None
     decimals: int
-    logo_url: Optional[str]
-    protocol_id: Optional[str]
-    time_at: Optional[float]
+    logo_url: Optional[str] = None
+    protocol_id: Optional[str] = None
+    time_at: Optional[float] = None
     amount: float
-    raw_amount: Optional[float]
-    raw_value: Optional[dict]
+    raw_amount: Optional[float] = None
+    raw_value: Optional[dict] = None
 
 
 class DebankModelPoolItemDetail(BaseModel):
-    description: Optional[str]
-    health_rate: Optional[float]
-    unlock_at: Optional[float]
-    token_list: Optional[List[Dict]]
-    supply_token_list: Optional[List[Dict]]
-    borrow_token_list: Optional[List[Dict]]
-    reward_token_list: Optional[List[Dict]]
+    description: Optional[str] = None
+    health_rate: Optional[float] = None
+    unlock_at: Optional[float] = None
+    token_list: Optional[list[dict]] = None
+    supply_token_list: Optional[list[dict]] = None
+    borrow_token_list: Optional[list[dict]] = None
+    reward_token_list: Optional[list[dict]] = None
 
 
 class DebankModelPoolItem(BaseModel):
@@ -66,9 +66,9 @@ class DebankModelPoolItem(BaseModel):
 class DebankModelPortfolioItem(BaseModel):
     name: str
     detail: DebankModelPoolItemDetail
-    pool_id: Optional[str]
-    pool: Optional[DebankModelPoolItem]
-    position_index: Optional[str]
+    pool_id: Optional[str] = None
+    pool: Optional[DebankModelPoolItem] = None
+    position_index: Optional[str] = None
 
     @validator('pool')
     def require_pool_or_pool_id(cls, v, values, **kwargs):
@@ -121,7 +121,7 @@ class DebankModelProtocol(BaseModel):
 
 
 class DebankModelPortfolio(DebankModelProtocol):
-    portfolio_item_list: List[DebankModelPortfolioItem]
+    portfolio_item_list: list[DebankModelPortfolioItem]
 
 
 class DebankModelChain(BaseModel):
