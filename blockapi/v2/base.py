@@ -82,10 +82,10 @@ class CustomizableBlockchainApi(ABC):
             time=time,
         )
 
-    def _get_response(self, request_method, headers, req_args):
+    def _get_response(self, request_method, headers, params, req_args):
         url = self._build_request_url(request_method, **req_args)
-        response = self._session.get(url, headers=headers)
-        return response
+        response = self._session.get(url, headers=headers, params=params)
+        return self._check_and_get_from_response(response)
 
     def _build_request_url(self, request_method: str, **req_args):
         path_url = self.supported_requests.get(request_method)

@@ -73,7 +73,7 @@ class InfuraNftApi(BlockchainApi, INftProvider, INftParser):
         try:
             while True:
                 response = self._fetch_single_page(address, cursor)
-                items.append(InfuraNftAssetsResponse(**response))
+                items.append(InfuraNftAssetsResponse.parse_obj(response))
                 cursor = response.get('cursor')
                 if not cursor:
                     break
