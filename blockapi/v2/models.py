@@ -363,8 +363,6 @@ class BalanceItem:
     last_updated: Optional[datetime] = attr.ib(default=None)
     protocol: Optional[Protocol] = attr.ib(default=None)
     is_wallet: bool = True
-    token_set: Optional[List[str]] = attr.ib(default=None)
-    token_role: Optional[TokenRole] = attr.ib(default=None)
     pool_id: Optional[str] = attr.ib(default=None)
 
     @classmethod
@@ -378,8 +376,6 @@ class BalanceItem:
         last_updated: Optional[Union[int, str]] = None,
         protocol: Optional[Protocol] = None,
         is_wallet: bool = True,
-        token_set: Optional[List[str]] = None,
-        token_role: Optional[TokenRole] = None,
         pool_id: Optional[str] = None,
     ) -> 'BalanceItem':
         return cls(
@@ -391,8 +387,6 @@ class BalanceItem:
             last_updated=(parse_dt(last_updated) if last_updated is not None else None),
             protocol=protocol,
             is_wallet=is_wallet,
-            token_set=token_set,
-            token_role=token_role,
             pool_id=pool_id,
         )
 
@@ -508,6 +502,7 @@ class Pool:
     project_id: Optional[str] = attr.ib(default=None)
     adapter_id: Optional[str] = attr.ib(default=None)
     position_index: Optional[str] = attr.ib(default=None)
+    tokens: Optional[list[str]] = attr.ib(default=None)
 
     @classmethod
     def from_api(
@@ -522,6 +517,7 @@ class Pool:
         project_id: Optional[str] = None,
         adapter_id: Optional[str] = None,
         position_index: Optional[str] = None,
+        tokens: Optional[list[str]] = None,
     ) -> 'Pool':
         return cls(
             pool_id=pool_id,
@@ -533,6 +529,7 @@ class Pool:
             project_id=project_id,
             adapter_id=adapter_id,
             position_index=position_index,
+            tokens=tokens,
         )
 
     def append_items(self, items: List[BalanceItem]) -> None:

@@ -39,7 +39,6 @@ def test_parse_supply_token_list(portfolio_parser, portfolio_response):
     items = portfolio_parser.parse([portfolio_response])[0].items
     filtered = [item for item in items if item.asset_type == AssetType.LENDING]
     for b in filtered:
-        assert b.token_role == TokenRole.SUPPLY
         assert b.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
 
     assert len(filtered) == 1
@@ -56,7 +55,6 @@ def test_parse_borrow_token_list(portfolio_parser, portfolio_response):
     assert len(filtered) == 3
 
     for b in filtered:
-        assert b.token_role == TokenRole.BORROW
         assert b.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
 
 
@@ -113,14 +111,8 @@ def test_parse_mutliple_items(portfolio_parser, aave_portfolio_response):
 
 def test_parse_esgmx_items(portfolio_parser, esgmx_portfolio_response):
     parsed = portfolio_parser.parse(esgmx_portfolio_response)
-    balances = []
-    for item in parsed:
-        balances.extend(item.items)
-
-    filtered = [b for b in balances if b.coin.symbol == 'esGMX']
-    assert len(filtered) == 4
-
-    assert parsed[2].items[1].token_set == ['GMX']
+    assert parsed[0].tokens == ['esGMX']
+    assert parsed[1].tokens == ['esGMX']
 
 
 def test_parse_tokenset(portfolio_parser, tokenset_portfolio_response):
@@ -131,6 +123,12 @@ def test_parse_tokenset(portfolio_parser, tokenset_portfolio_response):
     assert parsed[1].name == 'ETH2x-FLI'
     assert parsed[1].project_id == 'tokensets'
     assert parsed[1].adapter_id == 'tokensets_investment2'
+
+
+def test_parse_pool_names(portfolio_parser, tokenset_portfolio_response):
+    parsed = portfolio_parser.parse(tokenset_portfolio_response)
+    assert parsed[0].tokens == ['USDC', 'WBTC']
+    assert parsed[1].tokens == ['ETH', 'USDC']
 
 
 def test_require_pool_or_pool_id():

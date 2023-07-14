@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime, timedelta
 from decimal import Decimal
-from typing import Dict, List, Optional, Union
+from typing import Dict, Iterable, List, Optional, Union
 
 import attr
 from eth_utils import to_checksum_address
@@ -244,8 +244,6 @@ class DebankBalanceParser:
         response: List,
         asset_type: AssetType = AssetType.AVAILABLE,
         is_wallet: bool = True,
-        token_set: Optional[List[str]] = None,
-        token_role: Optional[TokenRole] = None,
         pool_id: Optional[str] = None,
     ) -> List[BalanceItem]:
         items = []
@@ -253,9 +251,7 @@ class DebankBalanceParser:
             balance_item = DebankModelBalanceItem(**item)
             balance_item.raw_value = item
 
-            balance = self.parse_item(
-                balance_item, asset_type, is_wallet, token_set, token_role, pool_id
-            )
+            balance = self.parse_item(balance_item, asset_type, is_wallet, pool_id)
             if balance is not None:
                 items.append(balance)
 
@@ -266,8 +262,6 @@ class DebankBalanceParser:
         balance_item: DebankModelBalanceItem,
         asset_type: AssetType = AssetType.AVAILABLE,
         is_wallet: bool = True,
-        token_set: Optional[List[str]] = None,
-        token_role: Optional[TokenRole] = None,
         pool_id: Optional[str] = None,
     ) -> Optional[BalanceItem]:
         raw_amount = balance_item.raw_amount or 0
@@ -311,8 +305,6 @@ class DebankBalanceParser:
             raw=balance_item.raw_value,
             protocol=self._protocols.get(balance_item.protocol_id),
             is_wallet=is_wallet,
-            token_set=token_set,
-            token_role=token_role,
             pool_id=pool_id,
         )
 
@@ -429,40 +421,16 @@ class DebankPortfolioParser:
         locked_until = detail.unlock_at
         position_index = item.position_index
 
-        asset_type = self._parse_asset_type(item.name)
-        borrow_type = self._get_borrow_asset_type(asset_type)
-        reward_type = self._get_reward_asset_type(asset_type)
-
-        items = []
-
-        tokens = self._update_items(
-            items,
-            detail.supply_token_list,
-            asset_type,
-            token_role=TokenRole.SUPPLY,
-            pool_id=pool_id,
-        )
-        self._update_items(
-            items,
-            detail.borrow_token_list,
-            borrow_type,
-            tokens,
-            token_role=TokenRole.BORROW,
-            pool_id=pool_id,
-        )
-        self._update_items(
-            items,
-            detail.reward_token_list,
-            reward_type,
-            tokens,
-            token_role=TokenRole.REWARD,
-            pool_id=pool_id,
-        )
-        self._update_items(items, detail.token_list, asset_type, pool_id=pool_id)
-
+        items = list(self._parse_balances(detail, item, pool_id))
         pool = pools.get((pool_id, position_index))
 
         if pool is None:
+            tokens = (
+                self._get_tokens(detail.supply_token_list)
+                if detail.supply_token_list
+                else []
+            )
+
             pool = Pool.from_api(
                 pool_id=pool_id,
                 protocol=pool_protocol,
@@ -473,47 +441,63 @@ class DebankPortfolioParser:
                 project_id=item.pool.project_id if item.pool else None,
                 adapter_id=item.pool.adapter_id if item.pool else None,
                 position_index=position_index,
+                tokens=tokens,
             )
         else:
             pool.append_items(items)
 
         return pool
 
-    def _update_items(
-        self,
-        items: List[BalanceItem],
-        raw_balances: list[dict],
-        asset_type: AssetType,
-        tokens: Optional[List[str]] = None,
-        token_role: Optional[TokenRole] = None,
-        pool_id: Optional[str] = None,
-    ):
-        if not raw_balances:
-            return
+    def _parse_balances(self, detail, item, pool_id) -> Iterable[BalanceItem]:
+        asset_type = self._parse_asset_type(item.name)
+        borrow_type = self._get_borrow_asset_type(asset_type)
+        reward_type = self._get_reward_asset_type(asset_type)
 
-        if tokens is None:
-            tokens = sorted(
-                list(
-                    set(
-                        [
-                            self._balance_parser.get_symbol(DebankModelBalanceItem(**b))
-                            for b in raw_balances
-                        ]
-                    )
-                )
-            )
-
-        balances = self._balance_parser.parse(
-            raw_balances,
+        yield from self._parse_token_list(
+            detail.supply_token_list,
             asset_type,
-            False,
-            token_set=tokens if len(raw_balances) > 1 else None,
-            token_role=token_role,
             pool_id=pool_id,
         )
 
-        items.extend(balances)
-        return tokens
+        yield from self._parse_token_list(
+            detail.borrow_token_list,
+            borrow_type,
+            pool_id=pool_id,
+        )
+
+        yield from self._parse_token_list(
+            detail.reward_token_list,
+            reward_type,
+            pool_id=pool_id,
+        )
+
+        yield from self._parse_token_list(
+            detail.token_list, asset_type, pool_id=pool_id
+        )
+
+    def _get_tokens(self, raw_balances: list[dict]):
+        symbols = [
+            self._balance_parser.get_symbol(DebankModelBalanceItem(**b))
+            for b in raw_balances
+        ]
+
+        return sorted(symbols)
+
+    def _parse_token_list(
+        self,
+        raw_balances: list[dict],
+        asset_type: AssetType,
+        pool_id: Optional[str] = None,
+    ) -> Iterable[BalanceItem]:
+        if not raw_balances:
+            return
+
+        yield from self._balance_parser.parse(
+            raw_balances,
+            asset_type,
+            False,
+            pool_id=pool_id,
+        )
 
     @staticmethod
     def _get_pool_id(item: DebankModelPortfolioItem) -> str:
