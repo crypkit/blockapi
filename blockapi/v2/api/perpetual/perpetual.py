@@ -12,7 +12,7 @@ from web3 import Web3
 from blockapi.utils.num import safe_opt_decimal
 from blockapi.v2.api.perpetual.perp_abi import rewards_abi
 from blockapi.v2.api.web3_utils import easy_call, get_eth_client
-from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance
+from blockapi.v2.base import ApiOptions, CustomizableBlockchainApi, IBalance
 from blockapi.v2.coins import COIN_PERP
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin
 
@@ -217,15 +217,14 @@ class PerpProtocol:
         )
 
 
-class PerpetualApi(BlockchainApi, IBalance):
+class PerpetualApi(CustomizableBlockchainApi, IBalance):
     coin = COIN_PERP
     api_options = ApiOptions(
         blockchain=Blockchain.ETHEREUM, base_url=None, rate_limit=0.2
     )
 
-    def __init__(self, api_url: str) -> None:
-        super().__init__()
-        self.api_url = api_url
+    def __init__(self, base_url: str) -> None:
+        super().__init__(base_url=base_url)
 
     def get_balance(self, address: str) -> List[BalanceItem]:
-        return PerpProtocol(address, api_url=self.api_url).fetch_balances()
+        return PerpProtocol(address, api_url=self.api_options.base_url).fetch_balances()

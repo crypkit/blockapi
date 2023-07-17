@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime, timedelta
 from decimal import Decimal
+from functools import lru_cache
 from typing import Dict, Iterable, List, Optional, Union
 
 import attr
@@ -15,7 +16,12 @@ from blockapi.v2.api.debank_maps import (
     NATIVE_COIN_MAP,
     REWARD_ASSET_TYPE_MAP,
 )
-from blockapi.v2.base import ApiOptions, CustomizableBlockchainApi, IBalance, IPortfolio
+from blockapi.v2.base import (
+    ApiOptions,
+    BalanceMixin,
+    CustomizableBlockchainApi,
+    IPortfolio,
+)
 from blockapi.v2.blockchain_mapping import get_blockchain_from_debank_chain
 from blockapi.v2.models import (
     AssetType,
@@ -23,6 +29,9 @@ from blockapi.v2.models import (
     Blockchain,
     Coin,
     CoinInfo,
+    DebankFetchResult,
+    FetchResult,
+    ParseResult,
     Pool,
     PoolInfo,
     Protocol,
@@ -76,7 +85,7 @@ class DebankModelPortfolioItem(BaseModel):
         if v is not None:
             return v
 
-        if not 'pool_id' in values or values['pool_id'] is None:
+        if 'pool_id' not in values or values['pool_id'] is None:
             raise ValueError('either pool or pool_id must have a value')
 
         return v
@@ -541,17 +550,16 @@ class DebankPortfolioParser:
         return REWARD_ASSET_TYPE_MAP.get(asset_type, asset_type)
 
 
-class DebankApi(CustomizableBlockchainApi, IBalance, IPortfolio):
+class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
     """
     DeBank OpenApi: https://open.debank.com/
     """
 
-    API_BASE_URL = 'https://pro-openapi.debank.com'
     API_BASE_RATE_LIMIT = 0.05  # 20 req / s
 
     api_options = ApiOptions(
         blockchain=Blockchain.ETHEREUM,
-        base_url=API_BASE_URL,
+        base_url='https://pro-openapi.debank.com',
         rate_limit=API_BASE_RATE_LIMIT,
     )
 
@@ -574,7 +582,7 @@ class DebankApi(CustomizableBlockchainApi, IBalance, IPortfolio):
         protocol_cache: Optional[DebankProtocolCache] = None,
         base_url: Optional[str] = None,
     ):
-        super().__init__(base_url)
+        super().__init__(base_url=base_url)
 
         self._is_all = bool(is_all)
         self._headers = {'AccessKey': api_key}
@@ -587,15 +595,26 @@ class DebankApi(CustomizableBlockchainApi, IBalance, IPortfolio):
         )
         self._usage_parser = DebankUsageParser()
 
-    def get_balance(self, address: str) -> List[BalanceItem]:
-        self._maybe_update_protocols()
-        response = self.get(
-            'get_balance', headers=self._headers, address=address, is_all=self._is_all
+    def fetch_balances(self, address: str) -> DebankFetchResult:
+        status, balances, errors = self.get_data(
+            'get_balance',
+            headers=self._headers,
+            address=address,
+            is_all=self._is_all,
         )
-        if self._has_error(response):
-            return []
 
-        return self._balance_parser.parse(response)
+        return DebankFetchResult(
+            status_code=status, raw_balances=balances, raw_protocols=None, errors=errors
+        )
+
+    def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
+        if errors := self._get_error(fetch_result.raw_balances):
+            return ParseResult(errors=errors, balances=[])
+
+        self._maybe_update_protocols()
+        return ParseResult(
+            balances=self._balance_parser.parse(fetch_result.raw_balances)
+        )
 
     def get_protocols(self) -> Dict[str, Protocol]:
         response = self.get('get_protocols', headers=self._headers)
@@ -646,6 +665,16 @@ class DebankApi(CustomizableBlockchainApi, IBalance, IPortfolio):
                 logger.error(err_id)
 
         return message is not None or error is not None
+
+    @staticmethod
+    def _get_error(data: Union[list, dict]) -> Optional[dict]:
+        if not isinstance(data, dict):
+            return None
+
+        error = data.get('errors')
+        message = data.get('message')
+
+        return dict(error=error, message=message)
 
     def __repr__(self):
         return f"{self.__class__.__name__}"

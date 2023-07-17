@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import pytest
 
-from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
+from blockapi.v2.api import OptimismEtherscanApi
 
 ETH_BALANCE = '248936789990053052'
 

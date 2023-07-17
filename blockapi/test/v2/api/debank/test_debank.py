@@ -72,18 +72,23 @@ def test_error_response_logs_error(
     debank_api, protocol_cache, error_response_raw, requests_mock, caplog
 ):
     protocol_cache.update({})
-    expected_log = [
-        'DebankApi Error: Input payload validation failed',
-        'User Address Unknown format 0xca8fa8f0b631ecdb18cda619c4fc9d197c8affc, attempted'
-        ' to normalize to 0xca8fa8f0b631ecdb18cda619c4fc9d197c8affc',
-    ]
 
     requests_mock.get(
         "https://pro-openapi.debank.com/v1/user/all_token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&is_all=true",
         text=error_response_raw,
     )
-    _ = debank_api.get_balance("0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca")
-    assert expected_log == caplog.messages
+    fetched = debank_api.fetch_balances("0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca")
+    parsed = debank_api.parse_balances(fetched)
+    expected_error = {
+        'error': {
+            'id': 'User Address Unknown format '
+            '0xca8fa8f0b631ecdb18cda619c4fc9d197c8affc, attempted to '
+            'normalize to 0xca8fa8f0b631ecdb18cda619c4fc9d197c8affc'
+        },
+        'message': 'Input payload validation failed',
+    }
+
+    assert parsed.errors == expected_error
 
 
 def test_get_balance_has_api_key_header(debank_api, protocol_cache, requests_mock):

@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from pytest import mark
 
-from blockapi.api.subscan import SubscanPolkaAPI, SubscanWestendAPI
+from blockapi.api.subscan import SubscanWestendAPI
 from blockapi.test_data import test_addresses
 
 

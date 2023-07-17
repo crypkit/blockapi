@@ -2,24 +2,26 @@ from abc import ABC
 from typing import List
 
 from blockapi.utils.user_agent import get_random_user_agent
-from blockapi.v2.base import BlockchainApi, IBalance, ITransactions
+from blockapi.v2.base import BalanceMixin, BlockchainApi, ITransactions
 from blockapi.v2.coins import COIN_BTC, COIN_LTC
 from blockapi.v2.models import (
     ApiOptions,
     AssetType,
     BalanceItem,
     Blockchain,
+    FetchResult,
     OperationDirection,
     OperationItem,
     OperationType,
+    ParseResult,
     TransactionItem,
     TransactionStatus,
 )
 
 
-class TrezorApi(BlockchainApi, IBalance, ITransactions, ABC):
+class TrezorApi(BlockchainApi, ITransactions, BalanceMixin, ABC):
     """
-    coins: bitcoin, litecoin
+    Coins: Bitcoin, Litecoin
     API docs: https://github.com/trezor/blockbook/blob/master/docs/api.md
     Explorer:
     """
@@ -31,23 +33,30 @@ class TrezorApi(BlockchainApi, IBalance, ITransactions, ABC):
         'get_tx': '/api/v2/tx/{tx_hash}',
     }
 
-    def get_balance(self, address: str) -> list[BalanceItem]:
+    def fetch_balances(self, address: str) -> FetchResult:
         request = 'get_balance_xpub' if len(address) == 111 else 'get_balance'
-        response = self.get(
-            request, address=address, headers={'User-Agent': get_random_user_agent()}
+        status, data, errors = self.get_data(
+            request,
+            address=address,
+            headers={'User-Agent': get_random_user_agent()},
         )
 
-        if not response:
-            return []
+        return FetchResult(status, data, errors)
 
-        return [
+    def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
+        if not fetch_result.raw_balances:
+            return ParseResult()
+
+        balances = [
             BalanceItem.from_api(
-                balance_raw=response.get('balance'),
+                balance_raw=fetch_result.raw_balances.get('balance'),
                 coin=self.coin,
                 asset_type=AssetType.AVAILABLE,
-                raw=response,
+                raw=fetch_result.raw_balances,
             )
         ]
+
+        return ParseResult(balances)
 
     def get_transactions(
         self,

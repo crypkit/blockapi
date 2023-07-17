@@ -3,7 +3,7 @@ import os
 
 import pytest
 
-from blockapi.v2.api.blockchair import BlockchairBitcoinApi
+from blockapi.v2.api.blockchair import BlockchairApi, BlockchairBitcoinApi
 from blockapi.v2.api.cosmos import CosmosApi, CosmosApiBase
 from blockapi.v2.api.covalenth.arbitrum import ArbitrumCovalentApi
 from blockapi.v2.api.covalenth.astar import AstarCovalentApi
@@ -27,9 +27,10 @@ from blockapi.v2.api.solana import SolanaApi
 from blockapi.v2.api.subscan import KusamaSubscanApi, PolkadotSubscanApi, SubscanApi
 from blockapi.v2.api.synthetix import SynthetixApi
 from blockapi.v2.api.terra import TerraApi
+from blockapi.v2.api.trezor import TrezorApi
 
 # TODO create method for auto loading all classes
-from blockapi.v2.base import IBalance
+from blockapi.v2.base import BalanceMixin, IBalance
 from blockapi.v2.coins import (
     COIN_ATOM,
     COIN_AVAX,
@@ -156,7 +157,7 @@ def yield_api_instances():
     for api_cls in yield_covalent_api_classes():
         yield _pytest_param(api_cls(api_key=COVALENT_API_KEY))
 
-    for api_cls in yield_api_ibalance_classes():
+    for api_cls in yield_api_balance_classes():
         yield _pytest_param(api_cls())
 
 
@@ -168,19 +169,21 @@ def yield_covalent_api_classes():
     return CovalentApiBase.__subclasses__()
 
 
-def yield_api_ibalance_classes():
+def yield_api_balance_classes():
     return [
         x
-        for x in IBalance.__subclasses__()
+        for x in BalanceMixin.__subclasses__()
         if not issubclass(
             x,
             (
+                BlockchairApi,
                 CosmosApiBase,
                 CovalentApiBase,
                 DebankApi,
                 PerpetualApi,
                 SynthetixApi,
                 SubscanApi,
+                TrezorApi,
             ),
         )
         and not inspect.isabstract(x)

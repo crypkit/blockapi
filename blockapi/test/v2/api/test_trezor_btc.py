@@ -4,7 +4,9 @@ import pytest
 
 from blockapi.test.v2.api.conftest import read_file
 from blockapi.test.v2.test_data import btc_test_address, xpub_test_address
-from blockapi.v2.api.trezor import TrezorBitcoin1Api, TrezorBitcoin2Api
+from blockapi.v2.api import TrezorBitcoin1Api, TrezorBitcoin2Api
+from blockapi.v2.base import ApiException
+from blockapi.v2.models import FetchResult
 
 
 def test_fetch_balances_1(requests_mock, trezor_btc_1_balance_response):
@@ -17,6 +19,48 @@ def test_fetch_balances_1(requests_mock, trezor_btc_1_balance_response):
     balances = api.get_balance(btc_test_address)
     assert len(balances) == 1
     assert balances[0].balance == Decimal('0.00064363')
+
+
+def test_fetch_only(requests_mock, trezor_btc_1_balance_response):
+    requests_mock.get(
+        f'https://btc1.trezor.io/api/v2/address/{btc_test_address}',
+        text=trezor_btc_1_balance_response,
+    )
+
+    api = TrezorBitcoin1Api()
+    result = api.fetch_balances(btc_test_address)
+    assert result.raw_balances['balance'] == '64363'
+
+
+def test_fetch_error(requests_mock):
+    requests_mock.get(
+        f'https://btc1.trezor.io/api/v2/address/{btc_test_address}',
+        status_code=503,
+        reason='Error description',
+    )
+
+    api = TrezorBitcoin1Api()
+    result = api.fetch_balances(btc_test_address)
+    assert result.errors == ['Error description']
+
+
+def test_get_balance_should_rise(requests_mock):
+    requests_mock.get(
+        f'https://btc1.trezor.io/api/v2/address/{btc_test_address}',
+        status_code=503,
+        reason='Error description',
+    )
+
+    api = TrezorBitcoin1Api()
+    with pytest.raises(ApiException, match='Error description'):
+        result = api.get_balance(btc_test_address)
+
+
+def test_parse_only():
+    api = TrezorBitcoin1Api()
+    fetch_result = FetchResult(raw_balances=dict(balance='64363'))
+    result = api.parse_balances(fetch_result)
+    assert result.balances[0].balance == Decimal('0.00064363')
 
 
 def test_fetch_balances_2(requests_mock, trezor_btc_2_balance_response):

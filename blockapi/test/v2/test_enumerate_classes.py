@@ -3,7 +3,7 @@ import re
 from blockapi.api import SolanaApi
 from blockapi.test.v2.test_data import (
     get_debank_addresses,
-    yield_api_ibalance_classes,
+    yield_api_balance_classes,
     yield_covalent_api_classes,
 )
 from blockapi.v2.api.covalenth.arbitrum import ArbitrumCovalentApi
@@ -27,7 +27,7 @@ from blockapi.v2.api.synthetix import SynthetixApi
 
 
 def test_enumerate_subclasses():
-    classes = [x.__name__ for x in yield_api_ibalance_classes()]
+    classes = [x.__name__ for x in yield_api_balance_classes()]
 
     assert classes
     assert SolanaApi.__name__ in classes

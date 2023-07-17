@@ -4,7 +4,7 @@ import pytest
 
 from blockapi.test.v2.api.conftest import read_file
 from blockapi.test.v2.test_data import btc_test_address
-from blockapi.v2.api.blockchair import BlockchairBitcoinApi
+from blockapi.v2.api import BlockchairBitcoinApi
 
 
 def test_fetch_balances(requests_mock, btc_balance_response):

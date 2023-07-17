@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
@@ -242,7 +243,7 @@ class TransactionStatus(str, Enum):
 @attr.s(auto_attribs=True, slots=True)
 class ApiOptions:
     blockchain: Blockchain
-    base_url: str
+    base_url: Optional[str]
     rate_limit: float = 0.0
     testnet: bool = False
 
@@ -546,3 +547,41 @@ class Pool:
 
     def append_items(self, items: List[BalanceItem]) -> None:
         self.items.extend(items)
+
+
+@attr.s(auto_attribs=True, slots=True)
+class FetchResult:
+    status_code: Optional[int] = None
+    raw_balances: Optional[Union[dict, list]] = None
+    errors: Optional[list[Union[str, dict]]] = None
+
+    def json(self):
+        return json.dumps(self.__dict__)
+
+
+@attr.s(auto_attribs=True, slots=True)
+class DebankFetchResult(FetchResult):
+    raw_protocols: Optional[Union[dict, list]] = None
+
+
+@attr.s(auto_attribs=True, slots=True)
+class SolanaFetchResult(FetchResult):
+    raw_token_balances: Optional[Union[dict, list]] = None
+
+
+@attr.s(auto_attribs=True, slots=True)
+class BlockchairFetchResult(FetchResult):
+    address_type: Optional[str] = None
+
+
+@attr.s(auto_attribs=True, slots=True)
+class TerraFetchResult(FetchResult):
+    raw_staking_balances: Optional[Union[dict, list]] = None
+    raw_cw20_balances: Optional[Union[dict, list]] = None
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
+class ParseResult:
+    balances: Optional[list[BalanceItem]] = None
+    warnings: Optional[list[str]] = None
+    errors: Optional[list[str]] = None

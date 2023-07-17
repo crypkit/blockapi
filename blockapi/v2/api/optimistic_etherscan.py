@@ -2,12 +2,13 @@ from typing import Dict, List
 
 from requests import Response
 
-from blockapi.v2.base import ApiException, ApiOptions, BlockchainApi, IBalance
+from blockapi.utils.user_agent import get_random_user_agent
+from blockapi.v2.base import ApiException, ApiOptions, BalanceMixin, BlockchainApi
 from blockapi.v2.coins import COIN_ETH
-from blockapi.v2.models import BalanceItem, Blockchain
+from blockapi.v2.models import BalanceItem, Blockchain, FetchResult, ParseResult
 
 
-class OptimismEtherscanApi(BlockchainApi, IBalance):
+class OptimismEtherscanApi(BlockchainApi, BalanceMixin):
     """
     Optimism
     Explorer: https://optimistic.etherscan.io
@@ -34,24 +35,20 @@ class OptimismEtherscanApi(BlockchainApi, IBalance):
             raw=response,
         )
 
-    def get_balance(self, address: str) -> List[BalanceItem]:
-        # TODO: currently returns only ETH balance (not all ERC20 tokens)
-        response = self.get(
+    def fetch_balances(self, address: str) -> FetchResult:
+        return self.get_data(
             'get_balance',
             address=address,
             api_key=self.api_key,
-            # API requires User-Agent.
-            headers={
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, '
-                'like Gecko) Chrome/50.0.2661.102 Safari/537.36'
-            },
+            headers={'User-Agent': get_random_user_agent()},
+            data_type=FetchResult,
+            data_field='raw_balances',
         )
 
-        return [self._parse_eth_balance(response)]
-
-    def _opt_raise_on_other_error(self, response: Response) -> None:
-        json_response = response.json()
-        if json_response["message"] == "OK":
-            return
-
-        raise ApiException(json_response['result'])
+    def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
+        data = fetch_result.raw_balances
+        message = data.get('message')
+        return ParseResult(
+            balances=[self._parse_eth_balance(data)],
+            errors=message if message != 'OK' else None,
+        )
