@@ -404,9 +404,9 @@ class DebankPortfolioParser:
         pools = {}
         for item in raw_portfolio_items:
             pool = self._parse_portfolio_item(item, root_protocol, pools)
-            if pool.pool_id:
-                pi = pool.pool_info.position_index if pool.pool_info else None
-                pools[(pool.pool_id, pi)] = pool
+            pool_info = pool.pool_info
+            if pool_info.pool_id:
+                pools[(pool_info.pool_id, pool_info.position_index)] = pool
 
             items.append(pool)
 
@@ -444,12 +444,11 @@ class DebankPortfolioParser:
             )
 
             pool = Pool.from_api(
-                pool_id=pool_id,
+                pool_info=pool_info,
                 protocol=pool_protocol,
                 locked_until=locked_until,
                 health_rate=health_rate,
                 items=[],
-                pool_info=pool_info,
             )
 
         items = list(self._parse_balances(detail, item, pool.pool_info))

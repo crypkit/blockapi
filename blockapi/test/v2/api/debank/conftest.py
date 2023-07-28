@@ -63,7 +63,6 @@ def balance_item():
 @pytest.fixture
 def pool_item(protocol_yflink, balance_item):
     return Pool.from_api(
-        pool_id="123",
         protocol=protocol_yflink,
         items=[balance_item],
         locked_until=1658361600,

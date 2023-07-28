@@ -21,7 +21,6 @@ def test_parse_response(portfolio_parser, portfolio_response):
 def test_portfolio_parsing(portfolio_parser, portfolio_response, protocol_trader_joe):
     item = portfolio_parser.parse([portfolio_response])[0]
     assert item.protocol == protocol_trader_joe
-    assert item.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
     assert item.pool_info.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
     assert item.health_rate == Decimal('0.86')
     assert item.locked_until == datetime(2022, 7, 21, 0, 0)
