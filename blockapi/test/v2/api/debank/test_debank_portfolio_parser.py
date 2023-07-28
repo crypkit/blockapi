@@ -21,7 +21,7 @@ def test_parse_response(portfolio_parser, portfolio_response):
 def test_portfolio_parsing(portfolio_parser, portfolio_response, protocol_trader_joe):
     item = portfolio_parser.parse([portfolio_response])[0]
     assert item.protocol == protocol_trader_joe
-    assert item.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
+    assert item.pool_info.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
     assert item.health_rate == Decimal('0.86')
     assert item.locked_until == datetime(2022, 7, 21, 0, 0)
 
@@ -39,14 +39,14 @@ def test_parse_supply_token_list(portfolio_parser, portfolio_response):
     items = portfolio_parser.parse([portfolio_response])[0].items
     filtered = [item for item in items if item.asset_type == AssetType.LENDING]
     for b in filtered:
-        assert b.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
+        assert b.pool_info.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
 
     assert len(filtered) == 1
 
 
 def test_portfolio_parses_name(portfolio_parser, portfolio_response):
     pool = portfolio_parser.parse([portfolio_response])[0]
-    assert pool.name == 'Pool Name'
+    assert pool.pool_info.name == 'Pool Name'
 
 
 def test_parse_borrow_token_list(portfolio_parser, portfolio_response):
@@ -55,7 +55,7 @@ def test_parse_borrow_token_list(portfolio_parser, portfolio_response):
     assert len(filtered) == 3
 
     for b in filtered:
-        assert b.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
+        assert b.pool_info.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
 
 
 def test_parse_portfolio(portfolio_parser, complex_portfolio_response):
@@ -68,7 +68,7 @@ def test_parse_position_index_portfolio(
 ):
     parsed_items = portfolio_parser.parse(position_index_portfolio_response)
     assert len(parsed_items) == 3
-    assert parsed_items[0].position_index == "455893"
+    assert parsed_items[0].pool_info.position_index == "455893"
 
 
 def test_parse_asset_type(portfolio_parser):
@@ -111,24 +111,24 @@ def test_parse_mutliple_items(portfolio_parser, aave_portfolio_response):
 
 def test_parse_esgmx_items(portfolio_parser, esgmx_portfolio_response):
     parsed = portfolio_parser.parse(esgmx_portfolio_response)
-    assert parsed[0].tokens == ['esGMX']
-    assert parsed[1].tokens == ['esGMX']
+    assert parsed[0].pool_info.tokens == ['esGMX']
+    assert parsed[1].pool_info.tokens == ['esGMX']
 
 
 def test_parse_tokenset(portfolio_parser, tokenset_portfolio_response):
     parsed = portfolio_parser.parse(tokenset_portfolio_response)
-    assert parsed[0].name == 'BTC2x-FLI'
-    assert parsed[0].project_id == 'tokensets'
-    assert parsed[0].adapter_id == 'tokensets_investment2'
-    assert parsed[1].name == 'ETH2x-FLI'
-    assert parsed[1].project_id == 'tokensets'
-    assert parsed[1].adapter_id == 'tokensets_investment2'
+    assert parsed[0].pool_info.name == 'BTC2x-FLI'
+    assert parsed[0].pool_info.project_id == 'tokensets'
+    assert parsed[0].pool_info.adapter_id == 'tokensets_investment2'
+    assert parsed[1].pool_info.name == 'ETH2x-FLI'
+    assert parsed[1].pool_info.project_id == 'tokensets'
+    assert parsed[1].pool_info.adapter_id == 'tokensets_investment2'
 
 
 def test_parse_pool_names(portfolio_parser, tokenset_portfolio_response):
     parsed = portfolio_parser.parse(tokenset_portfolio_response)
-    assert parsed[0].tokens == ['USDC', 'WBTC']
-    assert parsed[1].tokens == ['ETH', 'USDC']
+    assert parsed[0].pool_info.tokens == ['USDC', 'WBTC']
+    assert parsed[1].pool_info.tokens == ['ETH', 'USDC']
 
 
 def test_require_pool_or_pool_id():

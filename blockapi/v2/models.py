@@ -354,6 +354,36 @@ class Protocol:
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
+class PoolInfo:
+    pool_id: str
+    name: str
+    project_id: str
+    adapter_id: Optional[str] = attr.ib(default=None)
+    position_index: Optional[str] = attr.ib(default=None)
+    tokens: Optional[list[str]] = attr.ib(default=None)
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        pool_id: str,
+        name: str,
+        project_id: str,
+        adapter_id: Optional[str] = None,
+        position_index: Optional[str] = None,
+        tokens: Optional[list[str]] = None,
+    ) -> 'PoolInfo':
+        return cls(
+            pool_id=pool_id,
+            name=name,
+            project_id=project_id,
+            adapter_id=adapter_id,
+            position_index=position_index,
+            tokens=tokens,
+        )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
 class BalanceItem:
     balance: Decimal
     balance_raw: Decimal
@@ -363,7 +393,7 @@ class BalanceItem:
     last_updated: Optional[datetime] = attr.ib(default=None)
     protocol: Optional[Protocol] = attr.ib(default=None)
     is_wallet: bool = True
-    pool_id: Optional[str] = attr.ib(default=None)
+    pool_info: Optional[PoolInfo] = attr.ib(default=None)
 
     @classmethod
     def from_api(
@@ -376,7 +406,7 @@ class BalanceItem:
         last_updated: Optional[Union[int, str]] = None,
         protocol: Optional[Protocol] = None,
         is_wallet: bool = True,
-        pool_id: Optional[str] = None,
+        pool_info: Optional[PoolInfo] = None,
     ) -> 'BalanceItem':
         return cls(
             balance_raw=to_decimal(balance_raw),
@@ -387,7 +417,7 @@ class BalanceItem:
             last_updated=(parse_dt(last_updated) if last_updated is not None else None),
             protocol=protocol,
             is_wallet=is_wallet,
-            pool_id=pool_id,
+            pool_info=pool_info,
         )
 
     def __add__(self, other: 'BalanceItem') -> 'BalanceItem':
@@ -493,43 +523,28 @@ class TransactionItem:
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class Pool:
-    pool_id: str
+    pool_info: PoolInfo
     protocol: Protocol
-    name: str
     items: List[BalanceItem]
     locked_until: Optional[datetime] = attr.ib(default=None)
     health_rate: Optional[Decimal] = attr.ib(default=None)
-    project_id: Optional[str] = attr.ib(default=None)
-    adapter_id: Optional[str] = attr.ib(default=None)
-    position_index: Optional[str] = attr.ib(default=None)
-    tokens: Optional[list[str]] = attr.ib(default=None)
 
     @classmethod
     def from_api(
         cls,
         *,
-        pool_id: str,
+        pool_info: PoolInfo,
         protocol: Protocol,
-        name: Optional[str],
         locked_until: Optional[Union[int, str, float]] = None,
         health_rate: Optional[Union[float, str]] = None,
         items: List[BalanceItem],
-        project_id: Optional[str] = None,
-        adapter_id: Optional[str] = None,
-        position_index: Optional[str] = None,
-        tokens: Optional[list[str]] = None,
     ) -> 'Pool':
         return cls(
-            pool_id=pool_id,
+            pool_info=pool_info,
             protocol=protocol,
             items=items,
-            name=name or protocol.name,
             locked_until=(parse_dt(locked_until) if locked_until is not None else None),
             health_rate=to_decimal(health_rate) if health_rate is not None else None,
-            project_id=project_id,
-            adapter_id=adapter_id,
-            position_index=position_index,
-            tokens=tokens,
         )
 
     def append_items(self, items: List[BalanceItem]) -> None:
