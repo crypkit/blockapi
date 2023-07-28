@@ -5,7 +5,7 @@ from decimal import Decimal
 import pytest
 
 from blockapi.v2.api.debank import DebankModelPoolItemDetail, DebankModelPortfolioItem
-from blockapi.v2.models import AssetType, TokenRole
+from blockapi.v2.models import AssetType
 
 
 def test_empty_response(portfolio_parser, empty_response):
