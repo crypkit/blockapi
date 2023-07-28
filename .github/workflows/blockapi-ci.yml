@@ -71,7 +71,7 @@ jobs:
           if [ ! -z "$VER" ]; then
             semantic-release version --changelog --no-commit --no-push --no-vcs-release
             git commit -m "${VER}" -a 
-            git tag -d "v${VER}"
+            git tag -d "v${VER}" || true
             git tag "v${VER}"
           fi
           echo "version=$VER" >> $GITHUB_OUTPUT
