@@ -6,3 +6,6 @@ skip-string-normalization = true
 profile = "black"
 line_length = 88
 filter_files = true
+
+[tool.semantic_release]
+version_variables = ["setup.py:__version__"]
