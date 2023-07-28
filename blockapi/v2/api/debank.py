@@ -26,7 +26,6 @@ from blockapi.v2.models import (
     Pool,
     PoolInfo,
     Protocol,
-    TokenRole,
 )
 
 logger = logging.getLogger(__name__)
@@ -245,14 +244,14 @@ class DebankBalanceParser:
         response: Union[list, dict],
         asset_type: AssetType = AssetType.AVAILABLE,
         is_wallet: bool = True,
-        pool_id: Optional[str] = None,
+        pool_info: Optional[PoolInfo] = None,
     ) -> List[BalanceItem]:
         items = []
         for item in response:
             balance_item = DebankModelBalanceItem(**item)
             balance_item.raw_value = item
 
-            balance = self.parse_item(balance_item, asset_type, is_wallet, pool_id)
+            balance = self.parse_item(balance_item, asset_type, is_wallet, pool_info)
             if balance is not None:
                 items.append(balance)
 
@@ -464,23 +463,23 @@ class DebankPortfolioParser:
         yield from self._parse_token_list(
             detail.supply_token_list,
             asset_type,
-            pool_id=pool_id,
+            pool_info=pool_id,
         )
 
         yield from self._parse_token_list(
             detail.borrow_token_list,
             borrow_type,
-            pool_id=pool_id,
+            pool_info=pool_id,
         )
 
         yield from self._parse_token_list(
             detail.reward_token_list,
             reward_type,
-            pool_id=pool_id,
+            pool_info=pool_id,
         )
 
         yield from self._parse_token_list(
-            detail.token_list, asset_type, pool_id=pool_id
+            detail.token_list, asset_type, pool_info=pool_id
         )
 
     def _get_tokens(self, raw_balances: list[dict]):
@@ -495,7 +494,7 @@ class DebankPortfolioParser:
         self,
         raw_balances: list[dict],
         asset_type: AssetType,
-        pool_id: Optional[str] = None,
+        pool_info: Optional[PoolInfo] = None,
     ) -> Iterable[BalanceItem]:
         if not raw_balances:
             return
@@ -504,7 +503,7 @@ class DebankPortfolioParser:
             raw_balances,
             asset_type,
             False,
-            pool_id=pool_id,
+            pool_info=pool_info,
         )
 
     @staticmethod
