@@ -455,7 +455,7 @@ class DebankPortfolioParser:
 
         return pool
 
-    def _parse_balances(self, detail, item, pool_id) -> Iterable[BalanceItem]:
+    def _parse_balances(self, detail, item, pool_info) -> Iterable[BalanceItem]:
         asset_type = self._parse_asset_type(item.name)
         borrow_type = self._get_borrow_asset_type(asset_type)
         reward_type = self._get_reward_asset_type(asset_type)
@@ -463,23 +463,23 @@ class DebankPortfolioParser:
         yield from self._parse_token_list(
             detail.supply_token_list,
             asset_type,
-            pool_info=pool_id,
+            pool_info=pool_info,
         )
 
         yield from self._parse_token_list(
             detail.borrow_token_list,
             borrow_type,
-            pool_info=pool_id,
+            pool_info=pool_info,
         )
 
         yield from self._parse_token_list(
             detail.reward_token_list,
             reward_type,
-            pool_info=pool_id,
+            pool_info=pool_info,
         )
 
         yield from self._parse_token_list(
-            detail.token_list, asset_type, pool_info=pool_id
+            detail.token_list, asset_type, pool_info=pool_info
         )
 
     def _get_tokens(self, raw_balances: list[dict]):
