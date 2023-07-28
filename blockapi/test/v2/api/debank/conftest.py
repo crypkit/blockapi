@@ -13,7 +13,7 @@ from blockapi.v2.api.debank import (
     DebankUsageParser,
 )
 from blockapi.v2.coins import COIN_ETH
-from blockapi.v2.models import BalanceItem, Blockchain, Pool, Protocol
+from blockapi.v2.models import BalanceItem, Blockchain, Pool, PoolInfo, Protocol
 
 
 @pytest.fixture
@@ -64,11 +64,11 @@ def balance_item():
 def pool_item(protocol_yflink, balance_item):
     return Pool.from_api(
         pool_id="123",
-        name='yflink',
         protocol=protocol_yflink,
         items=[balance_item],
         locked_until=1658361600,
         health_rate='0.99',
+        pool_info=PoolInfo.from_api(pool_id='123', name='yflink', project_id='yflink'),
     )
 
 

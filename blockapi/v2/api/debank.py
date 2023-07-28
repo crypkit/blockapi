@@ -24,6 +24,7 @@ from blockapi.v2.models import (
     Coin,
     CoinInfo,
     Pool,
+    PoolInfo,
     Protocol,
     TokenRole,
 )
@@ -241,7 +242,7 @@ class DebankBalanceParser:
 
     def parse(
         self,
-        response: List,
+        response: Union[list, dict],
         asset_type: AssetType = AssetType.AVAILABLE,
         is_wallet: bool = True,
         pool_id: Optional[str] = None,
@@ -262,7 +263,7 @@ class DebankBalanceParser:
         balance_item: DebankModelBalanceItem,
         asset_type: AssetType = AssetType.AVAILABLE,
         is_wallet: bool = True,
-        pool_id: Optional[str] = None,
+        pool_info: Optional[PoolInfo] = None,
     ) -> Optional[BalanceItem]:
         raw_amount = balance_item.raw_amount or 0
         amount = balance_item.amount or 0
@@ -297,15 +298,17 @@ class DebankBalanceParser:
         if raw_amount == 0 and amount != 0:
             raw_amount = decimals_to_raw(amount, coin.decimals)
 
+        protocol = self._protocols.get(balance_item.protocol_id)
+
         balance = BalanceItem.from_api(
             balance_raw=raw_amount,
             coin=coin,
             asset_type=asset_type,
             last_updated=balance_item.time_at,
             raw=balance_item.raw_value,
-            protocol=self._protocols.get(balance_item.protocol_id),
+            protocol=protocol,
             is_wallet=is_wallet,
-            pool_id=pool_id,
+            pool_info=pool_info,
         )
 
         return balance
@@ -372,7 +375,7 @@ class DebankPortfolioParser:
         self._protocol_parser = protocol_parser
         self._balance_parser = balance_parser
 
-    def parse(self, response: List) -> List[Pool]:
+    def parse(self, response: Union[list, dict]) -> list[Pool]:
         items = []
         for item in response:
             portfolio = DebankModelPortfolio(**item)
@@ -402,7 +405,8 @@ class DebankPortfolioParser:
         for item in raw_portfolio_items:
             pool = self._parse_portfolio_item(item, root_protocol, pools)
             if pool.pool_id:
-                pools[(pool.pool_id, pool.position_index)] = pool
+                pi = pool.pool_info.position_index if pool.pool_info else None
+                pools[(pool.pool_id, pi)] = pool
 
             items.append(pool)
 
@@ -421,7 +425,6 @@ class DebankPortfolioParser:
         locked_until = detail.unlock_at
         position_index = item.position_index
 
-        items = list(self._parse_balances(detail, item, pool_id))
         pool = pools.get((pool_id, position_index))
 
         if pool is None:
@@ -431,20 +434,26 @@ class DebankPortfolioParser:
                 else []
             )
 
-            pool = Pool.from_api(
+            pool_info = PoolInfo.from_api(
                 pool_id=pool_id,
-                protocol=pool_protocol,
                 name=detail.description,
-                locked_until=locked_until,
-                health_rate=health_rate,
-                items=items,
                 project_id=item.pool.project_id if item.pool else None,
                 adapter_id=item.pool.adapter_id if item.pool else None,
                 position_index=position_index,
                 tokens=tokens,
             )
-        else:
-            pool.append_items(items)
+
+            pool = Pool.from_api(
+                pool_id=pool_id,
+                protocol=pool_protocol,
+                locked_until=locked_until,
+                health_rate=health_rate,
+                items=[],
+                pool_info=pool_info,
+            )
+
+        items = list(self._parse_balances(detail, item, pool.pool_info))
+        pool.append_items(items)
 
         return pool
 
