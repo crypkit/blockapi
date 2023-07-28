@@ -67,7 +67,7 @@ jobs:
       - name: Update version
         id: update_version
         run: |
-          VER=$(semantic-release print-version)
+          VER=$(semantic-release --noop version --print)
           if [ ! -z "$VER" ]; then
             semantic-release version
             semantic-release changelog
