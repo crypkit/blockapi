@@ -221,13 +221,6 @@ class AssetType(str, Enum):
     ASSET = 'asset'
 
 
-class TokenRole(str, Enum):
-    SUPPLY = 'supply'
-    REWARD = 'reward'
-    BORROW = 'borrow'
-    LIQUIDITY_POOL = 'liquidity_pool'
-
-
 class OperationType(str, Enum):
     UNKNOWN = 'unknown'
     INFLATION = 'inflation'
