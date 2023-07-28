@@ -2,6 +2,19 @@
 
 
 
+## v0.24.1 (2023-07-28)
+
+### Chore
+
+* chore(ci): Fix semantic release configuration (#134) ([`e82d901`](https://github.com/crypkit/blockapi/commit/e82d90171d57585a059faabe3dfdeb869889e50c))
+
+### Fix
+
+* fix(release): Don&#39;t fail if no tag is present (#136) ([`3b55c19`](https://github.com/crypkit/blockapi/commit/3b55c192da14942ca8955a67a4e7e0bd16292168))
+
+* fix(debank): Remove unused TokenRole (#135) ([`fbf9d17`](https://github.com/crypkit/blockapi/commit/fbf9d170f920fdf9e86bceccebf77c54793b9675))
+
+
 ## v0.24.0 (2023-07-28)
 
 ### Chore
