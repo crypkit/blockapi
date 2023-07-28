@@ -69,9 +69,8 @@ jobs:
         run: |
           VER=$(semantic-release --noop version --print)
           if [ ! -z "$VER" ]; then
-            semantic-release version
-            semantic-release changelog
-            git commit -m "Update to v${VER}" -a 
+            semantic-release version --changelog --no-commit --no-push --no-vcs-release
+            git commit -m "${VER}" -a 
             git tag -d "v${VER}"
             git tag "v${VER}"
           fi
