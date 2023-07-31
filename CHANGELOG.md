@@ -2,6 +2,13 @@
 
 
 
+## v0.24.2 (2023-07-31)
+
+### Fix
+
+* fix(debank): Pool fields availability (#137) ([`89498f9`](https://github.com/crypkit/blockapi/commit/89498f93469c204e0a3ad623003ffb2cfa461290))
+
+
 ## v0.24.1 (2023-07-28)
 
 ### Chore
@@ -13,6 +20,10 @@
 * fix(release): Don&#39;t fail if no tag is present (#136) ([`3b55c19`](https://github.com/crypkit/blockapi/commit/3b55c192da14942ca8955a67a4e7e0bd16292168))
 
 * fix(debank): Remove unused TokenRole (#135) ([`fbf9d17`](https://github.com/crypkit/blockapi/commit/fbf9d170f920fdf9e86bceccebf77c54793b9675))
+
+### Unknown
+
+* 0.24.1 ([`f9f66ed`](https://github.com/crypkit/blockapi/commit/f9f66eddf3a4f132579cecc5d3bd3f407d978e77))
 
 
 ## v0.24.0 (2023-07-28)
