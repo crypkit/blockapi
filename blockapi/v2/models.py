@@ -207,6 +207,7 @@ class AssetType(str, Enum):
     LENDING_BORROW = 'lending_borrow'
     LENDING_REWARDS = 'lending_reward'
     LIQUIDITY_POOL = 'liquidity_pool'
+    LIQUIDITY_POOL_PRINCIPAL = 'liquidity_pool_principal'
     LOCKED = 'locked'
     REWARDS = 'rewards'
     LIQUIDATION_REWARDS = 'liquidation_rewards'
@@ -349,9 +350,10 @@ class Protocol:
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class PoolInfo:
     pool_id: str
-    name: str
     project_id: str
+    name: Optional[str] = attr.ib(default=None)
     adapter_id: Optional[str] = attr.ib(default=None)
+    controller: Optional[str] = attr.ib(default=None)
     position_index: Optional[str] = attr.ib(default=None)
     tokens: Optional[list[str]] = attr.ib(default=None)
 
@@ -360,17 +362,19 @@ class PoolInfo:
         cls,
         *,
         pool_id: str,
-        name: str,
         project_id: str,
+        name: Optional[str] = None,
         adapter_id: Optional[str] = None,
+        controller: Optional[str] = None,
         position_index: Optional[str] = None,
         tokens: Optional[list[str]] = None,
     ) -> 'PoolInfo':
         return cls(
             pool_id=pool_id,
-            name=name,
             project_id=project_id,
+            name=name,
             adapter_id=adapter_id,
+            controller=controller,
             position_index=position_index,
             tokens=tokens,
         )

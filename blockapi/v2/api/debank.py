@@ -60,7 +60,8 @@ class DebankModelPoolItemDetail(BaseModel):
 class DebankModelPoolItem(BaseModel):
     id: str
     project_id: str
-    adapter_id: str
+    adapter_id: Optional[str]
+    controller: Optional[str]
 
 
 class DebankModelPortfolioItem(BaseModel):
@@ -435,9 +436,10 @@ class DebankPortfolioParser:
 
             pool_info = PoolInfo.from_api(
                 pool_id=pool_id,
-                name=detail.description,
-                project_id=item.pool.project_id if item.pool else None,
+                project_id=item.pool.project_id if item.pool else pool_id,
+                name=detail.description if detail.description else None,
                 adapter_id=item.pool.adapter_id if item.pool else None,
+                controller=item.pool.controller if item.pool else None,
                 position_index=position_index,
                 tokens=tokens,
             )
