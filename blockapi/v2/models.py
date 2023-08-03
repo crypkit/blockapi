@@ -397,7 +397,7 @@ class BalanceItem:
     def from_api(
         cls,
         *,
-        balance_raw: Union[int, float, str],
+        balance_raw: Union[int, float, str, Decimal],
         coin: Coin,
         asset_type: AssetType = AssetType.AVAILABLE,
         raw: Dict,

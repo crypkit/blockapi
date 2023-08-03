@@ -23,7 +23,6 @@ from blockapi.v2.api.trezor import (
 # - update __init__.py here
 # - update import in tests
 
-# perpetual
 # synthetix
 # covalenth
 # debank
