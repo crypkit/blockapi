@@ -595,6 +595,25 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
             is_all=self._is_all,
         )
 
+    def fetch_portfolio(self, address: str) -> FetchResult:
+        return self.get_data(
+            'get_portfolio',
+            headers=self._headers,
+            address=address,
+        )
+
+    def fetch_protocols(self) -> FetchResult:
+        return self.get_data(
+            'get_protocols',
+            headers=self._headers,
+        )
+
+    def fetch_chains(self) -> FetchResult:
+        return self.get_data(
+            'get_chains',
+            headers=self._headers,
+        )
+
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
         if errors := self._get_error(fetch_result.data):
             return ParseResult(errors=errors, balances=[])

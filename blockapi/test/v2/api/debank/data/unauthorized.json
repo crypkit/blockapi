@@ -1,0 +1,23 @@
+{
+  "status_code": 401,
+  "headers": {
+    "Content-Type": "application/json",
+    "Content-Length": "116",
+    "Connection": "keep-alive",
+    "Date": "Thu, 03 Aug 2023 17:36:38 GMT",
+    "server": "istio-envoy",
+    "access-control-allow-origin": "*",
+    "access-control-allow-headers": "X-Requested-With,Content-Type,account,X-Client,X-Version,source,AccessKey",
+    "access-control-allow-methods": "GET,POST,PATCH,PUT,DELETE,OPTIONS",
+    "access-control-max-age": "1800",
+    "x-envoy-upstream-service-time": "7",
+    "X-Cache": "Error from cloudfront",
+    "Via": "1.1 d33f640b9793fb0553cc6dbe55988068.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Pop": "PRG50-C1",
+    "X-Amz-Cf-Id": "cRK_Zkzd8zbz9ybArFXHQnDJmm7enxtOh0XBUhA-NBw_OkroSFw5MA=="
+  },
+  "errors": [
+    "Unauthorized"
+  ],
+  "time": "2023-08-03 17:36:38+00:00"
+}

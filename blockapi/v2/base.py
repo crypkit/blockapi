@@ -67,7 +67,7 @@ class CustomizableBlockchainApi(ABC):
         if response.status_code == 200:
             return FetchResult(
                 status_code=response.status_code,
-                headers=response.headers.__dict__,
+                headers=self._get_headers_dict(response.headers),
                 data=response.json(),
                 extra=extra,
                 time=time,
@@ -75,7 +75,7 @@ class CustomizableBlockchainApi(ABC):
 
         return FetchResult(
             status_code=response.status_code,
-            headers=response.headers.__dict__,
+            headers=self._get_headers_dict(response.headers),
             errors=[self._get_reason(response)],
             extra=extra,
             time=time,
@@ -152,6 +152,10 @@ class CustomizableBlockchainApi(ABC):
             return datetime.utcnow() - timedelta(seconds=int(age_str))
 
         return None
+
+    @staticmethod
+    def _get_headers_dict(headers: CaseInsensitiveDict[str]):
+        return {k: v for k, v in headers.items()}
 
 
 class BlockchainApi(CustomizableBlockchainApi, ABC):

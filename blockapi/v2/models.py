@@ -555,11 +555,12 @@ class FetchResult:
     headers: Optional[dict] = None
     data: Optional[Union[dict, list]] = None
     errors: Optional[list[Union[str, dict]]] = None
-    extra: Optional[dict] = (None,)
+    extra: Optional[dict] = None
     time: Optional[datetime] = None
 
     def json(self):
-        return json.dumps(self.__dict__)
+        d = attr.asdict(self)
+        return json.dumps({k: v for k, v in d.items() if v}, default=str)
 
 
 @attr.s(auto_attribs=True, slots=True)

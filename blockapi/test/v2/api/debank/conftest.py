@@ -1,3 +1,4 @@
+import os
 from typing import List
 
 import pytest
@@ -14,6 +15,12 @@ from blockapi.v2.api.debank import (
 )
 from blockapi.v2.coins import COIN_ETH
 from blockapi.v2.models import BalanceItem, Blockchain, Pool, PoolInfo, Protocol
+
+
+@pytest.fixture()
+def real_debank_api():
+    key = os.environ.get('DEBANK_API_KEY')
+    return DebankApi(api_key=key, is_all=False)
 
 
 @pytest.fixture
