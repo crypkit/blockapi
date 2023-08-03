@@ -14,7 +14,7 @@ from blockapi.v2.api.perpetual.perp_abi import rewards_abi
 from blockapi.v2.api.web3_utils import easy_call, get_eth_client
 from blockapi.v2.base import ApiOptions, CustomizableBlockchainApi, IBalance
 from blockapi.v2.coins import COIN_PERP
-from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin
+from blockapi.v2.models import AssetType, BalanceItem, Blockchain
 
 logger = getLogger(__name__)
 
