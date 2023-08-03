@@ -3,7 +3,7 @@ from decimal import Decimal
 import pytest
 
 from blockapi.test.v2.api.conftest import read_file
-from blockapi.v2.api.blockchair import BlockchairDogecoinApi
+from blockapi.v2.api import BlockchairDogecoinApi
 
 # noinspection SpellCheckingInspection
 doge_test_address = 'DH5yaieqoZN36fDVciNyRueRGvGLR3mr7L'

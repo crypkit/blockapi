@@ -1,6 +1,7 @@
 from decimal import Decimal
 
-from blockapi.v2.api.debank import DebankApi, make_checksum_address
+from blockapi.utils.address import make_checksum_address
+from blockapi.v2.api import DebankApi
 
 
 def test_build_balance_request_url(debank_api):

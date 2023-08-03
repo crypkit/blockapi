@@ -6,6 +6,7 @@ from blockapi.test.v2.test_data import (
     yield_api_balance_classes,
     yield_covalent_api_classes,
 )
+from blockapi.v2.api import DebankApi, EthplorerApi, PerpetualApi
 from blockapi.v2.api.covalenth.arbitrum import ArbitrumCovalentApi
 from blockapi.v2.api.covalenth.astar import AstarCovalentApi
 from blockapi.v2.api.covalenth.avalanche import AvalancheCovalentApi
@@ -20,9 +21,6 @@ from blockapi.v2.api.covalenth.moonbeam import MoonBeamCovalentApi
 from blockapi.v2.api.covalenth.palm import PalmCovalentApi
 from blockapi.v2.api.covalenth.polygon import PolygonCovalentApi
 from blockapi.v2.api.covalenth.rsk import RskCovalentApi
-from blockapi.v2.api.debank import DebankApi
-from blockapi.v2.api.ethplorer import EthplorerApi
-from blockapi.v2.api.perpetual import PerpetualApi
 from blockapi.v2.api.synthetix import SynthetixApi
 
 

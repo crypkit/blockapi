@@ -3,7 +3,20 @@ import os
 
 import pytest
 
-from blockapi.v2.api.blockchair import BlockchairApi, BlockchairBitcoinApi
+from blockapi.v2.api import (
+    BlockchairApi,
+    BlockchairBitcoinApi,
+    DebankApi,
+    EthplorerApi,
+    KusamaSubscanApi,
+    OptimismEtherscanApi,
+    PerpetualApi,
+    PolkadotSubscanApi,
+    SolanaApi,
+    SubscanApi,
+    TerraApi,
+    TrezorApi,
+)
 from blockapi.v2.api.cosmos import CosmosApi, CosmosApiBase
 from blockapi.v2.api.covalenth.arbitrum import ArbitrumCovalentApi
 from blockapi.v2.api.covalenth.astar import AstarCovalentApi
@@ -19,15 +32,7 @@ from blockapi.v2.api.covalenth.moonbeam import MoonBeamCovalentApi
 from blockapi.v2.api.covalenth.palm import PalmCovalentApi
 from blockapi.v2.api.covalenth.polygon import PolygonCovalentApi
 from blockapi.v2.api.covalenth.rsk import RskCovalentApi
-from blockapi.v2.api.debank import DebankApi
-from blockapi.v2.api.ethplorer import EthplorerApi
-from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
-from blockapi.v2.api.perpetual import PerpetualApi
-from blockapi.v2.api.solana import SolanaApi
-from blockapi.v2.api.subscan import KusamaSubscanApi, PolkadotSubscanApi, SubscanApi
 from blockapi.v2.api.synthetix import SynthetixApi
-from blockapi.v2.api.terra import TerraApi
-from blockapi.v2.api.trezor import TrezorApi
 
 # TODO create method for auto loading all classes
 from blockapi.v2.base import BalanceMixin, IBalance

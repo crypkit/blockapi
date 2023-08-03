@@ -3,7 +3,7 @@ import os
 import pytest
 from _decimal import Decimal
 
-from blockapi.v2.api.perpetual import PerpetualApi, perp_contract_address
+from blockapi.v2.api import PerpetualApi, perp_contract_address
 from blockapi.v2.base import ApiException
 from blockapi.v2.models import FetchResult
 

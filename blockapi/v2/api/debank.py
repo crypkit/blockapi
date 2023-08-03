@@ -1,13 +1,12 @@
 import logging
 from datetime import datetime, timedelta
 from decimal import Decimal
-from functools import lru_cache
 from typing import Dict, Iterable, List, Optional, Union
 
 import attr
-from eth_utils import to_checksum_address
 from pydantic import BaseModel, validator
 
+from blockapi.utils.address import make_checksum_address
 from blockapi.utils.datetime import parse_dt
 from blockapi.utils.num import decimals_to_raw
 from blockapi.v2.api.debank_maps import (
@@ -343,6 +342,8 @@ class DebankBalanceParser:
                 protocol_id=balance_item.protocol_id,
                 info=CoinInfo(logo_url=balance_item.logo_url),
             )
+        else:
+            logger.warning(f'Cannot parse address "{address}"')
 
         base_coin = ALL_COINS.get(symbol.lower())
         if base_coin:
@@ -366,14 +367,6 @@ class DebankBalanceParser:
             or raw_balance.optimized_symbol
             or raw_balance.symbol
         )
-
-
-def make_checksum_address(address: str) -> Optional[str]:
-    try:
-        return to_checksum_address(address)
-    except ValueError as e:
-        logger.warning(f'Cannot parse address "{address}", error: {e}')
-        return None
 
 
 class DebankPortfolioParser:

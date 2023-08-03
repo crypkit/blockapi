@@ -8,8 +8,7 @@ from blockapi.test.v2.test_data import (
     yield_all_api_classes,
     yield_api_instances,
 )
-from blockapi.v2.api.debank import DebankApi
-from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
+from blockapi.v2.api import DebankApi, OptimismEtherscanApi
 from blockapi.v2.base import ApiException
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain
 
