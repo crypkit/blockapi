@@ -41,7 +41,7 @@ def test_fetch():
     key = os.environ.get('INFURA_API_KEY')
     api = PerpetualApi(f'https://mainnet.infura.io/v3/{key}')
     raw = api.fetch_balances(test_address)
-    assert raw.raw_balances
+    assert raw.data
 
 
 @pytest.mark.integration
@@ -66,11 +66,11 @@ def test_fetch_error_raises_from_get_balances():
 def test_parse(perp_api):
     raw = FetchResult(
         status_code=200,
-        raw_balances={
-            'staking_claimable': '1.10',
-            'vesting_claimable': '2.02',
-            'vesting_locked': '3.30',
-        },
+        data=dict(
+            staking_claimable='1.10',
+            vesting_claimable='2.02',
+            vesting_locked='3.30',
+        ),
     )
 
     parsed = perp_api.parse_balances(raw)

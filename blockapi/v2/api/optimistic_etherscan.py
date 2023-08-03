@@ -36,17 +36,17 @@ class OptimismEtherscanApi(BlockchainApi, BalanceMixin):
         )
 
     def fetch_balances(self, address: str) -> FetchResult:
-        return self.get_data(
+        d = self.get_data(
             'get_balance',
             address=address,
             api_key=self.api_key,
             headers={'User-Agent': get_random_user_agent()},
-            data_type=FetchResult,
-            data_field='raw_balances',
         )
 
+        return FetchResult(d[0], d[1], d[2], d[3])
+
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
-        data = fetch_result.raw_balances
+        data = fetch_result.data
         message = data.get('message')
         return ParseResult(
             balances=[self._parse_eth_balance(data)],

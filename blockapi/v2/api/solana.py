@@ -22,7 +22,6 @@ from blockapi.v2.models import (
     CoinInfo,
     FetchResult,
     ParseResult,
-    SolanaFetchResult,
 )
 
 
@@ -59,8 +58,8 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
         return self._tokens_map
 
-    def fetch_balances(self, address: str) -> SolanaFetchResult:
-        raw_balances = self._request(method='getBalance', params=[address])
+    def fetch_balances(self, address: str) -> FetchResult:
+        data = self._request(method='getBalance', params=[address])
         raw_token_balances = self._request(
             method='getTokenAccountsByOwner',
             params=[
@@ -70,19 +69,16 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             ],
         )
 
-        return SolanaFetchResult(
-            raw_balances=raw_balances, raw_token_balances=raw_token_balances
-        )
+        return FetchResult(data=data, extra=dict(raw_token_balances=raw_token_balances))
 
-    def parse_balances(self, fetch_result: SolanaFetchResult) -> ParseResult:
+    def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
+        raw_token_balances = fetch_result.extra['raw_token_balances']
         balances = []
-        sol_balance = self._get_sol_balance(fetch_result.raw_balances)
+        sol_balance = self._get_sol_balance(fetch_result.data)
         if sol_balance is not None:
             balances.append(sol_balance)
 
-        token_balances = list(
-            self._yield_token_balances(fetch_result.raw_token_balances)
-        )
+        token_balances = list(self._yield_token_balances(raw_token_balances))
         if token_balances:
             merged_token_balances = self.merge_balances_with_same_coin(token_balances)
             balances.extend(merged_token_balances)

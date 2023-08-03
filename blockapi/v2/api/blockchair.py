@@ -8,7 +8,6 @@ from blockapi.v2.models import (
     AssetType,
     BalanceItem,
     Blockchain,
-    BlockchairFetchResult,
     FetchResult,
     OperationDirection,
     OperationItem,
@@ -30,11 +29,12 @@ class BlockchairApi(BlockchainApi, BalanceMixin, ITransactions, ABC):
         'get_txs': 'dashboards/transactions/{hash_or_hashes}',
     }
 
-    def fetch_balances(self, address: str) -> BlockchairFetchResult:
+    def fetch_balances(self, address: str) -> FetchResult:
         address_type = self._get_address_type(address)
 
-        status, data, errors = self.get_data(
+        return self.get_data(
             'get_dashboard',
+            extra=dict(address_type=address_type),
             address=address,
             symbol=self.coin.symbol,
             address_type=address_type,
@@ -42,16 +42,9 @@ class BlockchairApi(BlockchainApi, BalanceMixin, ITransactions, ABC):
             limit=self._limit,
         )
 
-        return BlockchairFetchResult(
-            status_code=status,
-            raw_balances=data,
-            errors=errors,
-            address_type=address_type,
-        )
-
-    def parse_balances(self, fetch_result: BlockchairFetchResult) -> ParseResult:
+    def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
         dashboard = self._parse_dashboard(
-            fetch_result.raw_balances, fetch_result.address_type
+            fetch_result.data, fetch_result.extra['address_type']
         )
         return ParseResult(balances=list(self._parse_balances(dashboard)))
 

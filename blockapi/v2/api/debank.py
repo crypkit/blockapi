@@ -29,7 +29,6 @@ from blockapi.v2.models import (
     Blockchain,
     Coin,
     CoinInfo,
-    DebankFetchResult,
     FetchResult,
     ParseResult,
     Pool,
@@ -595,26 +594,20 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
         )
         self._usage_parser = DebankUsageParser()
 
-    def fetch_balances(self, address: str) -> DebankFetchResult:
-        status, balances, errors = self.get_data(
+    def fetch_balances(self, address: str) -> FetchResult:
+        return self.get_data(
             'get_balance',
             headers=self._headers,
             address=address,
             is_all=self._is_all,
         )
 
-        return DebankFetchResult(
-            status_code=status, raw_balances=balances, raw_protocols=None, errors=errors
-        )
-
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
-        if errors := self._get_error(fetch_result.raw_balances):
+        if errors := self._get_error(fetch_result.data):
             return ParseResult(errors=errors, balances=[])
 
         self._maybe_update_protocols()
-        return ParseResult(
-            balances=self._balance_parser.parse(fetch_result.raw_balances)
-        )
+        return ParseResult(balances=self._balance_parser.parse(fetch_result.data))
 
     def get_protocols(self) -> Dict[str, Protocol]:
         response = self.get('get_protocols', headers=self._headers)

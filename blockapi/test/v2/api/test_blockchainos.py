@@ -36,11 +36,11 @@ def test_fetch_only(requests_mock, api, bos_balance_response):
     )
 
     result = api.fetch_balances(test_address)
-    assert result.raw_balances.get('balance') == '10123569937570000'
+    assert result.data.get('balance') == '10123569937570000'
 
 
 def test_parse(api):
-    fetch_result = FetchResult(raw_balances=dict(balance='10123569937570000'))
+    fetch_result = FetchResult(data=dict(balance='10123569937570000'))
 
     balances = api.parse_balances(fetch_result).balances
     assert len(balances) == 1

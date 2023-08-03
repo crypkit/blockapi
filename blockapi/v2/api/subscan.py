@@ -40,10 +40,10 @@ class SubscanApi(BlockchainApi, BalanceMixin, ABC):
     def fetch_balances(self, address: str) -> FetchResult:
         body = json.dumps({'key': address})
         response = self._post('get_balance', body=body)
-        return FetchResult(raw_balances=response)
+        return FetchResult(data=response)
 
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
-        balances = list(self._yield_native_balances(fetch_result.raw_balances))
+        balances = list(self._yield_native_balances(fetch_result.data))
 
         # add staking rewards (and slashes) too? it's a lot of requests
         # per single address

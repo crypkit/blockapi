@@ -29,7 +29,7 @@ def test_fetch_only(requests_mock, trezor_btc_1_balance_response):
 
     api = TrezorBitcoin1Api()
     result = api.fetch_balances(btc_test_address)
-    assert result.raw_balances['balance'] == '64363'
+    assert result.data['balance'] == '64363'
 
 
 def test_fetch_error(requests_mock):
@@ -58,7 +58,7 @@ def test_get_balance_should_rise(requests_mock):
 
 def test_parse_only():
     api = TrezorBitcoin1Api()
-    fetch_result = FetchResult(raw_balances=dict(balance='64363'))
+    fetch_result = FetchResult(data=dict(balance='64363'))
     result = api.parse_balances(fetch_result)
     assert result.balances[0].balance == Decimal('0.00064363')
 

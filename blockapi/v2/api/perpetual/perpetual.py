@@ -223,7 +223,7 @@ class PerpetualApi(CustomizableBlockchainApi, BalanceMixin):
     def fetch_balances(self, address: str) -> FetchResult:
         try:
             data = PerpProtocol(address, api_url=self.base_url).fetch()
-            return FetchResult(status_code=200, raw_balances=data)
+            return FetchResult(status_code=200, data=data)
         except HTTPError as e:
             return FetchResult(status_code=e.response.status_code, errors=[str(e)])
 
@@ -231,9 +231,9 @@ class PerpetualApi(CustomizableBlockchainApi, BalanceMixin):
         return ParseResult(balances=list(self.yield_balances(fetch_result)))
 
     def yield_balances(self, fetch_result: FetchResult) -> Iterable[BalanceItem]:
-        v_locked = Decimal(fetch_result.raw_balances.get('vesting_locked', 0))
-        s_claimable = Decimal(fetch_result.raw_balances.get('staking_claimable', 0))
-        v_claimable = Decimal(fetch_result.raw_balances.get('vesting_claimable', 0))
+        v_locked = Decimal(fetch_result.data.get('vesting_locked', 0))
+        s_claimable = Decimal(fetch_result.data.get('staking_claimable', 0))
+        v_claimable = Decimal(fetch_result.data.get('vesting_claimable', 0))
         claimable = s_claimable + v_claimable
 
         if claimable > Decimal(0):

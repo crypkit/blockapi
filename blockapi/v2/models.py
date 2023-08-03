@@ -552,26 +552,14 @@ class Pool:
 @attr.s(auto_attribs=True, slots=True)
 class FetchResult:
     status_code: Optional[int] = None
-    raw_balances: Optional[Union[dict, list]] = None
+    headers: Optional[dict] = None
+    data: Optional[Union[dict, list]] = None
     errors: Optional[list[Union[str, dict]]] = None
+    extra: Optional[dict] = (None,)
+    time: Optional[datetime] = None
 
     def json(self):
         return json.dumps(self.__dict__)
-
-
-@attr.s(auto_attribs=True, slots=True)
-class DebankFetchResult(FetchResult):
-    raw_protocols: Optional[Union[dict, list]] = None
-
-
-@attr.s(auto_attribs=True, slots=True)
-class SolanaFetchResult(FetchResult):
-    raw_token_balances: Optional[Union[dict, list]] = None
-
-
-@attr.s(auto_attribs=True, slots=True)
-class BlockchairFetchResult(FetchResult):
-    address_type: Optional[str] = None
 
 
 @attr.s(auto_attribs=True, slots=True)

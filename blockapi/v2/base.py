@@ -1,9 +1,12 @@
 from abc import ABC
+from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple, Type, Union
 from urllib.parse import urljoin
 
 from requests import HTTPError, Response, Session
+from requests.structures import CaseInsensitiveDict
 
+from blockapi.utils.datetime import parse_dt
 from blockapi.v2.models import (
     ApiOptions,
     BalanceItem,
@@ -53,13 +56,30 @@ class CustomizableBlockchainApi(ABC):
         return self._check_and_get_from_response(response)
 
     def get_data(
-        self, request_method: str, headers=None, **req_args
-    ) -> Tuple[int, Optional[Union[dict, list]], Optional[list]]:
+        self,
+        request_method: str,
+        headers: Optional[dict[str, any]] = None,
+        extra: Optional[dict] = None,
+        **req_args,
+    ) -> FetchResult:
         response = self._get_response(request_method, headers, req_args)
+        time = self._get_response_time(response.headers)
         if response.status_code == 200:
-            return response.status_code, response.json(), None
+            return FetchResult(
+                status_code=response.status_code,
+                headers=response.headers.__dict__,
+                data=response.json(),
+                extra=extra,
+                time=time,
+            )
 
-        return response.status_code, None, [self._get_reason(response)]
+        return FetchResult(
+            status_code=response.status_code,
+            headers=response.headers.__dict__,
+            errors=[self._get_reason(response)],
+            extra=extra,
+            time=time,
+        )
 
     def _get_response(self, request_method, headers, req_args):
         url = self._build_request_url(request_method, **req_args)
@@ -122,6 +142,16 @@ class CustomizableBlockchainApi(ABC):
             return self.__class__.__name__
 
         return f'{self.__class__.__name__}(coin={self.coin.name})'
+
+    @staticmethod
+    def _get_response_time(headers) -> Optional[datetime]:
+        if date_str := headers.get('date'):
+            return parse_dt(date_str)
+
+        if age_str := headers.get('age'):
+            return datetime.utcnow() - timedelta(seconds=int(age_str))
+
+        return None
 
 
 class BlockchainApi(CustomizableBlockchainApi, ABC):

@@ -35,24 +35,22 @@ class TrezorApi(BlockchainApi, ITransactions, BalanceMixin, ABC):
 
     def fetch_balances(self, address: str) -> FetchResult:
         request = 'get_balance_xpub' if len(address) == 111 else 'get_balance'
-        status, data, errors = self.get_data(
+        return self.get_data(
             request,
             address=address,
             headers={'User-Agent': get_random_user_agent()},
         )
 
-        return FetchResult(status, data, errors)
-
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
-        if not fetch_result.raw_balances:
+        if not fetch_result.data:
             return ParseResult()
 
         balances = [
             BalanceItem.from_api(
-                balance_raw=fetch_result.raw_balances.get('balance'),
+                balance_raw=fetch_result.data.get('balance'),
                 coin=self.coin,
                 asset_type=AssetType.AVAILABLE,
-                raw=fetch_result.raw_balances,
+                raw=fetch_result.data,
             )
         ]
 

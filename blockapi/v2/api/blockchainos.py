@@ -32,17 +32,13 @@ class BlockchainosApi(BlockchainApi, BalanceMixin):
     }
 
     def fetch_balances(self, address: str) -> FetchResult:
-        status, data, errors = self.get_data(
+        return self.get_data(
             'get_balance',
             address=address,
         )
 
-        return FetchResult(status, data, errors)
-
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
-        return ParseResult(
-            balances=list(self._parse_balances(fetch_result.raw_balances))
-        )
+        return ParseResult(balances=list(self._parse_balances(fetch_result.data)))
 
     def get_transactions(
         self, address: str, *, limit: int = 10
@@ -60,12 +56,12 @@ class BlockchainosApi(BlockchainApi, BalanceMixin):
 
         return ops
 
-    def _parse_balances(self, raw_balances: dict) -> Iterable[BalanceItem]:
+    def _parse_balances(self, data: dict) -> Iterable[BalanceItem]:
         yield BalanceItem.from_api(
-            balance_raw=raw_balances.get('balance'),
+            balance_raw=data.get('balance'),
             coin=self.coin,
             asset_type=AssetType.AVAILABLE,
-            raw=raw_balances,
+            raw=data,
         )
 
     def _parse_transactions(

@@ -43,14 +43,14 @@ class TerraApi(BalanceMixin):
 
         return TerraFetchResult(
             status_code=status,
-            raw_balances=balances,
+            data=balances,
             raw_staking_balances=staking_balances,
             raw_cw20_balances=cw20_balances,
             errors=list(concatv(balance_errors, staking_errors)),
         )
 
     def parse_balances(self, fetch_result: TerraFetchResult) -> ParseResult:
-        native_balances = self.fcd.parse_native_balances(fetch_result.raw_balances)
+        native_balances = self.fcd.parse_native_balances(fetch_result.data)
         staking_balances = self.fcd.parse_staking_balances(
             fetch_result.raw_staking_balances
         )
