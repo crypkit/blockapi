@@ -18,21 +18,3 @@ from blockapi.v2.api.trezor import (
     TrezorBitcoin2Api,
     TrezorLitecoinApi,
 )
-
-# tasks:
-# - replace IBalance with BalanceMixin
-# - create test method for fetch
-# - create test method for parse
-# - remove get_balances
-# - implement fetch
-# - implement parse
-# - update __init__.py here
-# - update import in tests
-
-# synthetix
-# covalenth
-# debank
-#   add fetched protocols to balance response
-#   parse fetched protocols there
-
-# cosmos
