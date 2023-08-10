@@ -50,7 +50,7 @@ class SubscanApi(BlockchainApi, BalanceMixin, ABC):
         # if staking_reward := self._get_staking_reward(address):
         #     balances.append(staking_reward)
 
-        return ParseResult(balances=balances)
+        return ParseResult(data=balances)
 
     def _yield_native_balances(self, response: dict) -> Iterable[BalanceItem]:
         data = response['data']['account']

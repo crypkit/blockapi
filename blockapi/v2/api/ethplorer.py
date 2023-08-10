@@ -53,7 +53,7 @@ class EthplorerApi(BlockchainApi, BalanceMixin):
 
         balances.extend(list(self._parse_token_balances(response)))
 
-        return ParseResult(balances=balances)
+        return ParseResult(data=balances)
 
     def _parse_eth_balance(self, response: Dict) -> Optional[BalanceItem]:
         _eth_raw = response['ETH']

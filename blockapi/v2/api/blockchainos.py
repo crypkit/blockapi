@@ -38,7 +38,7 @@ class BlockchainosApi(BlockchainApi, BalanceMixin):
         )
 
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
-        return ParseResult(balances=list(self._parse_balances(fetch_result.data)))
+        return ParseResult(data=list(self._parse_balances(fetch_result.data)))
 
     def get_transactions(
         self, address: str, *, limit: int = 10

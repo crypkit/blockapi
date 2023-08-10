@@ -595,7 +595,7 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
             is_all=self._is_all,
         )
 
-    def fetch_portfolio(self, address: str) -> FetchResult:
+    def fetch_pools(self, address: str) -> FetchResult:
         return self.get_data(
             'get_portfolio',
             headers=self._headers,
@@ -616,10 +616,17 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
 
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
         if errors := self._get_error(fetch_result.data):
-            return ParseResult(errors=errors, balances=[])
+            return ParseResult(errors=errors)
 
         self._maybe_update_protocols()
-        return ParseResult(balances=self._balance_parser.parse(fetch_result.data))
+        return ParseResult(data=self._balance_parser.parse(fetch_result.data))
+
+    def parse_pools(self, fetch_result: FetchResult) -> ParseResult:
+        if errors := self._get_error(fetch_result.data):
+            return ParseResult(errors=errors)
+
+        self._maybe_update_protocols()
+        return ParseResult(data=self._portfolio_parser.parse(fetch_result.data))
 
     def get_protocols(self) -> Dict[str, Protocol]:
         response = self.get('get_protocols', headers=self._headers)

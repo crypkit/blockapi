@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, TypeVar, Union
 
 import attr
 
@@ -563,14 +563,8 @@ class FetchResult:
         return json.dumps({k: v for k, v in d.items() if v}, default=str)
 
 
-@attr.s(auto_attribs=True, slots=True)
-class TerraFetchResult(FetchResult):
-    raw_staking_balances: Optional[Union[dict, list]] = None
-    raw_cw20_balances: Optional[Union[dict, list]] = None
-
-
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class ParseResult:
-    balances: Optional[list[BalanceItem]] = None
+    data: Optional[list[Union[BalanceItem, Pool]]] = None
     warnings: Optional[list[str]] = None
     errors: Optional[list[str]] = None

@@ -19,8 +19,8 @@ from blockapi.v2.models import (
     Blockchain,
     Coin,
     CoinInfo,
+    FetchResult,
     ParseResult,
-    TerraFetchResult,
 )
 
 
@@ -36,27 +36,33 @@ class TerraApi(BalanceMixin):
         self.mantle = TerraMantleApi()
         self.fcd = TerraFcdApi()
 
-    def fetch_balances(self, address: str) -> TerraFetchResult:
+    def fetch_balances(self, address: str) -> FetchResult:
         status, balances, balance_errors = self.fcd.fetch_native_balances(address)
         _, staking_balances, staking_errors = self.fcd.fetch_staking_balances(address)
         cw20_balances = self.mantle.fetch_cw20_balances(address)
 
-        return TerraFetchResult(
+        return FetchResult(
             status_code=status,
-            data=balances,
-            raw_staking_balances=staking_balances,
-            raw_cw20_balances=cw20_balances,
+            data=dict(
+                balances=balances,
+                raw_staking_balances=staking_balances,
+                raw_cw20_balances=cw20_balances,
+            ),
             errors=list(concatv(balance_errors, staking_errors)),
         )
 
-    def parse_balances(self, fetch_result: TerraFetchResult) -> ParseResult:
-        native_balances = self.fcd.parse_native_balances(fetch_result.data)
-        staking_balances = self.fcd.parse_staking_balances(
-            fetch_result.raw_staking_balances
+    def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
+        native_balances = self.fcd.parse_native_balances(
+            fetch_result.data.get('balances')
         )
-        cw20_balances = self.mantle.parse_cw20_balances(fetch_result.raw_cw20_balances)
+        staking_balances = self.fcd.parse_staking_balances(
+            fetch_result.data.get('raw_staking_balances')
+        )
+        cw20_balances = self.mantle.parse_cw20_balances(
+            fetch_result.data.get('raw_cw20_balances')
+        )
         return ParseResult(
-            list(concatv(native_balances, staking_balances, cw20_balances))
+            data=list(concatv(native_balances, staking_balances, cw20_balances))
         )
 
 
@@ -105,9 +111,7 @@ class TerraFcdApi(BlockchainApi):
         _, response, _ = self.fetch_native_balances(address)
         return self.parse_native_balances(response)
 
-    def fetch_staking_balances(
-        self, address: str
-    ) -> Tuple[int, Optional[dict], list[str]]:
+    def fetch_staking_balances(self, address: str) -> FetchResult:
         return self.get_data('get_staking_data', address=address)
 
     def get_staking_balances(self, address: str) -> List[BalanceItem]:
