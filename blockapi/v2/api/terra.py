@@ -1,6 +1,6 @@
 import json
 from functools import lru_cache
-from typing import Dict, List, Optional, Sequence
+from typing import Dict, List, Optional, Sequence, Tuple
 
 from cytoolz import concatv
 from requests import Response
@@ -8,15 +8,23 @@ from requests import Response
 from blockapi.v2.base import (
     ApiException,
     ApiOptions,
+    BalanceMixin,
     BlockchainApi,
-    IBalance,
     InvalidAddressException,
 )
 from blockapi.v2.coins import COIN_TERRA
-from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin, CoinInfo
+from blockapi.v2.models import (
+    AssetType,
+    BalanceItem,
+    Blockchain,
+    Coin,
+    CoinInfo,
+    ParseResult,
+    TerraFetchResult,
+)
 
 
-class TerraApi(IBalance):
+class TerraApi(BalanceMixin):
     """
     Terra Money, implemented by multiple api providers.
     Explorer: https://finder.terra.money
@@ -28,11 +36,28 @@ class TerraApi(IBalance):
         self.mantle = TerraMantleApi()
         self.fcd = TerraFcdApi()
 
-    def get_balance(self, address: str) -> List[BalanceItem]:
-        native_balances = self.fcd.get_native_balances(address)
-        staking_balances = self.fcd.get_staking_balances(address)
-        cw20_balances = self.mantle.get_cw20_balances(address)
-        return list(concatv(native_balances, staking_balances, cw20_balances))
+    def fetch_balances(self, address: str) -> TerraFetchResult:
+        status, balances, balance_errors = self.fcd.fetch_native_balances(address)
+        _, staking_balances, staking_errors = self.fcd.fetch_staking_balances(address)
+        cw20_balances = self.mantle.fetch_cw20_balances(address)
+
+        return TerraFetchResult(
+            status_code=status,
+            data=balances,
+            raw_staking_balances=staking_balances,
+            raw_cw20_balances=cw20_balances,
+            errors=list(concatv(balance_errors, staking_errors)),
+        )
+
+    def parse_balances(self, fetch_result: TerraFetchResult) -> ParseResult:
+        native_balances = self.fcd.parse_native_balances(fetch_result.data)
+        staking_balances = self.fcd.parse_staking_balances(
+            fetch_result.raw_staking_balances
+        )
+        cw20_balances = self.mantle.parse_cw20_balances(fetch_result.raw_cw20_balances)
+        return ParseResult(
+            list(concatv(native_balances, staking_balances, cw20_balances))
+        )
 
 
 class TerraFcdApi(BlockchainApi):
@@ -53,9 +78,12 @@ class TerraFcdApi(BlockchainApi):
         'get_staking_data': '/v1/staking/{address}',
     }
 
-    def get_native_balances(self, address: str) -> List[BalanceItem]:
-        response = self.get('get_native_balances', address=address)
+    def fetch_native_balances(
+        self, address: str
+    ) -> Tuple[int, Optional[dict], list[str]]:
+        return self.get_data('get_native_balances', address=address)
 
+    def parse_native_balances(self, response: dict) -> List[BalanceItem]:
         balances = []
         for b in response['balance']:
             if int(b['available']) == 0:
@@ -73,9 +101,20 @@ class TerraFcdApi(BlockchainApi):
 
         return balances
 
-    def get_staking_balances(self, address: str) -> List[BalanceItem]:
-        response = self.get('get_staking_data', address=address)
+    def get_native_balances(self, address: str) -> List[BalanceItem]:
+        _, response, _ = self.fetch_native_balances(address)
+        return self.parse_native_balances(response)
 
+    def fetch_staking_balances(
+        self, address: str
+    ) -> Tuple[int, Optional[dict], list[str]]:
+        return self.get_data('get_staking_data', address=address)
+
+    def get_staking_balances(self, address: str) -> List[BalanceItem]:
+        _, response, _ = self.fetch_staking_balances(address)
+        return self.parse_staking_balances(response)
+
+    def parse_staking_balances(self, response: dict) -> List[BalanceItem]:
         total_staked = 0
         balances = []
 
@@ -187,9 +226,14 @@ class TerraMantleApi(BlockchainApi):
 
         return self._tokens_map
 
+    def fetch_cw20_balances(self, address) -> dict:
+        return self._get_raw_balances(address)
+
     def get_cw20_balances(self, address: str):
         raw_balances = self._get_raw_balances(address)
+        return self.parse_cw20_balances(raw_balances)
 
+    def parse_cw20_balances(self, raw_balances):
         balances = []
         for contract, result_raw in raw_balances['data'].items():
             if not result_raw:

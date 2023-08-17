@@ -1,15 +1,27 @@
 from abc import ABC
-from typing import Dict, List, Optional
+from datetime import datetime, timedelta
+from typing import Dict, List, Optional, Tuple, Type, Union
 from urllib.parse import urljoin
 
 from requests import HTTPError, Response, Session
+from requests.structures import CaseInsensitiveDict
 
-from .models import ApiOptions, BalanceItem, Coin, Pool, TransactionItem
+from blockapi.utils.datetime import parse_dt
+from blockapi.v2.models import (
+    ApiOptions,
+    BalanceItem,
+    Coin,
+    FetchResult,
+    ParseResult,
+    Pool,
+    TransactionItem,
+)
 
 
-class BlockchainApi(ABC):
+class CustomizableBlockchainApi(ABC):
     """
-    General class for handling blockchain API services.
+    Class for handling blockchain API services with customizable base URL,
+    e.g. proxy, testnet, RPC services, alternative sources
     """
 
     coin: Coin = NotImplemented
@@ -18,9 +30,15 @@ class BlockchainApi(ABC):
     # {request_method: request_url}
     supported_requests: Dict[str, str] = {}
 
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(self, base_url: Optional[str] = None, api_key: Optional[str] = None):
         self.api_key = api_key
         self._session = Session()
+        self.base_url = base_url or self.api_options.base_url
+
+        if not self.base_url:
+            raise NotImplementedError(
+                'api_options.base_url is not set and no base_url was provided'
+            )
 
     def __del__(self):
         self._session.close()
@@ -34,16 +52,46 @@ class BlockchainApi(ABC):
         """
         Call specific request method with params and return raw response.
         """
+        response = self._get_response(request_method, headers, req_args)
+        return self._check_and_get_from_response(response)
+
+    def get_data(
+        self,
+        request_method: str,
+        headers: Optional[dict[str, any]] = None,
+        extra: Optional[dict] = None,
+        **req_args,
+    ) -> FetchResult:
+        response = self._get_response(request_method, headers, req_args)
+        time = self._get_response_time(response.headers)
+        if response.status_code == 200:
+            return FetchResult(
+                status_code=response.status_code,
+                headers=response.headers.__dict__,
+                data=response.json(),
+                extra=extra,
+                time=time,
+            )
+
+        return FetchResult(
+            status_code=response.status_code,
+            headers=response.headers.__dict__,
+            errors=[self._get_reason(response)],
+            extra=extra,
+            time=time,
+        )
+
+    def _get_response(self, request_method, headers, req_args):
         url = self._build_request_url(request_method, **req_args)
         response = self._session.get(url, headers=headers)
-        return self._check_and_get_from_response(response)
+        return response
 
     def _build_request_url(self, request_method: str, **req_args):
         path_url = self.supported_requests.get(request_method)
         if path_url is not None:
             path_url = path_url.format(**req_args)
 
-        return urljoin(self.api_options.base_url, path_url)
+        return urljoin(self.base_url, path_url)
 
     def post(self, request_method=None, body=None, json=None, headers=None):
         """
@@ -65,6 +113,20 @@ class BlockchainApi(ABC):
         return response.json()
 
     @staticmethod
+    def _get_reason(response):
+        reason = response.reason
+        if not reason and response.status_code >= 400:
+            return f'Error {response.status_code}'
+
+        if not isinstance(reason, bytes):
+            return reason
+
+        try:
+            return reason.decode("utf-8")
+        except UnicodeDecodeError:
+            return reason.decode("iso-8859-1")
+
+    @staticmethod
     def _raise_from_response(response: Response) -> None:
         try:
             response.raise_for_status()
@@ -81,23 +143,24 @@ class BlockchainApi(ABC):
 
         return f'{self.__class__.__name__}(coin={self.coin.name})'
 
+    @staticmethod
+    def _get_response_time(headers) -> Optional[datetime]:
+        if date_str := headers.get('date'):
+            return parse_dt(date_str)
 
-class CustomizableBlockchainApi(BlockchainApi, ABC):
+        if age_str := headers.get('age'):
+            return datetime.utcnow() - timedelta(seconds=int(age_str))
+
+        return None
+
+
+class BlockchainApi(CustomizableBlockchainApi, ABC):
     """
-    Class for handling blockchain API services with customizable base URL,
-    e.g. proxy, testnet, RPC services, alternative sources
+    General class for handling blockchain API services.
     """
 
-    API_BASE_URL: str = None
-
-    def __init__(self, base_url: str = None, api_key: Optional[str] = None):
-        super().__init__(api_key)
-        self.api_options.base_url = base_url or self.API_BASE_URL
-
-        if not self.api_options.base_url:
-            raise NotImplementedError(
-                'API_BASE_URL is not defined and no base_url was provided'
-            )
+    def __init__(self, api_key: Optional[str] = None):
+        super().__init__(base_url=None, api_key=api_key)
 
 
 class IBalance(ABC):
@@ -128,3 +191,23 @@ class ApiException(Exception):
 
 class InvalidAddressException(ApiException):
     pass
+
+
+class IBlockchainFetcher(ABC):
+    def fetch_balances(self, address: str) -> FetchResult:
+        raise NotImplementedError
+
+
+class IBlockchainParser(ABC):
+    def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
+        raise NotImplementedError
+
+
+class BalanceMixin(IBalance, IBlockchainParser, IBlockchainFetcher):
+    def get_balance(self, address: str) -> list[BalanceItem]:
+        data = self.fetch_balances(address)
+        if data.errors:
+            raise ApiException(data.errors[0])
+
+        parsed = self.parse_balances(data)
+        return parsed.balances

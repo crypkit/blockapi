@@ -1,8 +1,9 @@
 import pytest
 
 from blockapi.test.v2.test_data import btc_test_address, ltc_test_address
-from blockapi.v2.api.blockchair import BlockchairBitcoinApi, BlockchairLitecoinApi
-from blockapi.v2.api.trezor import (
+from blockapi.v2.api import (
+    BlockchairBitcoinApi,
+    BlockchairLitecoinApi,
     TrezorBitcoin1Api,
     TrezorBitcoin2Api,
     TrezorLitecoinApi,

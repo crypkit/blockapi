@@ -1,13 +1,20 @@
-from typing import Dict, Iterable, List, Optional
+from typing import Dict, Iterable, Optional
 
 from eth_utils import to_checksum_address
 
-from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance
+from blockapi.v2.base import ApiOptions, BalanceMixin, BlockchainApi
 from blockapi.v2.coins import COIN_ETH
-from blockapi.v2.models import BalanceItem, Blockchain, Coin, CoinInfo
+from blockapi.v2.models import (
+    BalanceItem,
+    Blockchain,
+    Coin,
+    CoinInfo,
+    FetchResult,
+    ParseResult,
+)
 
 
-class EthplorerApi(BlockchainApi, IBalance):
+class EthplorerApi(BlockchainApi, BalanceMixin):
     """
     Ethereum
     API docs: https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API
@@ -26,18 +33,27 @@ class EthplorerApi(BlockchainApi, IBalance):
     def __init__(self, api_key: str = 'freekey'):
         super().__init__(api_key)
 
-    def get_balance(self, address: str) -> List[BalanceItem]:
-        response = self.get('get_info', address=address, api_key=self.api_key)
+    def fetch_balances(self, address: str) -> FetchResult:
+        status, headers, data, errors = self.get_data(
+            'get_info',
+            address=address,
+            api_key=self.api_key,
+        )
 
+        return FetchResult(
+            status_code=status, headers=headers, data=data, errors=errors
+        )
+
+    def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
+        response = fetch_result.data
         balances = []
-
         _eth = self._parse_eth_balance(response)
         if _eth is not None:
             balances.append(_eth)
 
         balances.extend(list(self._parse_token_balances(response)))
 
-        return balances
+        return ParseResult(balances=balances)
 
     def _parse_eth_balance(self, response: Dict) -> Optional[BalanceItem]:
         _eth_raw = response['ETH']

@@ -1,21 +1,23 @@
 from typing import Iterable, List, Optional
 
-from blockapi.v2.base import BlockchainApi, IBalance
+from blockapi.v2.base import BalanceMixin, BlockchainApi
 from blockapi.v2.coins import COIN_BOS
 from blockapi.v2.models import (
     ApiOptions,
     AssetType,
     BalanceItem,
     Blockchain,
+    FetchResult,
     OperationDirection,
     OperationItem,
     OperationType,
+    ParseResult,
     TransactionItem,
     TransactionStatus,
 )
 
 
-class BlockchainosApi(BlockchainApi, IBalance):
+class BlockchainosApi(BlockchainApi, BalanceMixin):
     coin = COIN_BOS
     api_options = ApiOptions(
         blockchain=Blockchain.BOS,
@@ -29,9 +31,14 @@ class BlockchainosApi(BlockchainApi, IBalance):
         'get_ops': '/api/v1/transactions/{hash}/operations/{index}',
     }
 
-    def get_balance(self, address: str) -> List[BalanceItem]:
-        raw_balances = self.get('get_balance', address=address)
-        return list(self._parse_balances(raw_balances))
+    def fetch_balances(self, address: str) -> FetchResult:
+        return self.get_data(
+            'get_balance',
+            address=address,
+        )
+
+    def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
+        return ParseResult(balances=list(self._parse_balances(fetch_result.data)))
 
     def get_transactions(
         self, address: str, *, limit: int = 10
@@ -49,12 +56,12 @@ class BlockchainosApi(BlockchainApi, IBalance):
 
         return ops
 
-    def _parse_balances(self, raw_balances: dict) -> Iterable[BalanceItem]:
+    def _parse_balances(self, data: dict) -> Iterable[BalanceItem]:
         yield BalanceItem.from_api(
-            balance_raw=raw_balances.get('balance'),
+            balance_raw=data.get('balance'),
             coin=self.coin,
             asset_type=AssetType.AVAILABLE,
-            raw=raw_balances,
+            raw=data,
         )
 
     def _parse_transactions(

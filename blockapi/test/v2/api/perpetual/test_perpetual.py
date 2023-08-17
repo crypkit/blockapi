@@ -1,8 +1,11 @@
 import os
 
 import pytest
+from _decimal import Decimal
 
-from blockapi.v2.api.perpetual import PerpetualApi, perp_contract_address
+from blockapi.v2.api import PerpetualApi, perp_contract_address
+from blockapi.v2.base import ApiException
+from blockapi.v2.models import FetchResult
 
 
 @pytest.fixture
@@ -34,10 +37,43 @@ def filter_infura_key(request):
 
 
 @pytest.mark.integration
-@pytest.mark.vcr(before_record_request=filter_infura_key)
-def test_perp_get_balances():
+def test_fetch():
     key = os.environ.get('INFURA_API_KEY')
-    perp_api = PerpetualApi(f'https://mainnet.infura.io/v3/{key}')
-    balances = perp_api.get_balance(test_address)
-    assert balances[0].balance
-    assert balances[1].balance
+    api = PerpetualApi(f'https://mainnet.infura.io/v3/{key}')
+    raw = api.fetch_balances(test_address)
+    assert raw.data
+
+
+@pytest.mark.integration
+def test_fetch_error():
+    api = PerpetualApi(f'https://mainnet.infura.io/v3/no-key')
+    raw = api.fetch_balances(test_address)
+    assert raw.status_code == 401
+    assert (
+        raw.errors[0]
+        == '401 Client Error: Unauthorized for url: https://mainnet.infura.io/v3/no-key'
+    )
+
+
+def test_fetch_error_raises_from_get_balances():
+    api = PerpetualApi(f'https://mainnet.infura.io/v3/no-key')
+    with pytest.raises(ApiException) as exc:
+        api.get_balance(test_address)
+
+    assert exc.match('401 Client Error: Unauthorized for url')
+
+
+def test_parse(perp_api):
+    raw = FetchResult(
+        status_code=200,
+        data=dict(
+            staking_claimable='1.10',
+            vesting_claimable='2.02',
+            vesting_locked='3.30',
+        ),
+    )
+
+    parsed = perp_api.parse_balances(raw)
+
+    assert parsed.balances[0].balance == Decimal('3.12')
+    assert parsed.balances[1].balance == Decimal('3.30')

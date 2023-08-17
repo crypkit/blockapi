@@ -8,27 +8,33 @@ from blockapi.utils.user_agent import get_random_user_agent
 from blockapi.v2.base import (
     ApiException,
     ApiOptions,
+    BalanceMixin,
     BlockchainApi,
     CustomizableBlockchainApi,
-    IBalance,
     InvalidAddressException,
 )
 from blockapi.v2.coins import COIN_SOL
-from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin, CoinInfo
+from blockapi.v2.models import (
+    AssetType,
+    BalanceItem,
+    Blockchain,
+    Coin,
+    CoinInfo,
+    FetchResult,
+    ParseResult,
+)
 
 
-class SolanaApi(CustomizableBlockchainApi, IBalance):
+class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     """
     Solana RPC
     API docs: https://docs.solana.com/apps/jsonrpc-api
     """
 
-    API_BASE_URL = 'https://api.mainnet-beta.solana.com/'
-
     coin = COIN_SOL
     api_options = ApiOptions(
         blockchain=Blockchain.SOLANA,
-        base_url=API_BASE_URL,
+        base_url='https://api.mainnet-beta.solana.com/',
         start_offset=0,
         max_items_per_page=1000,
         page_offset_step=1,
@@ -52,22 +58,35 @@ class SolanaApi(CustomizableBlockchainApi, IBalance):
 
         return self._tokens_map
 
-    def get_balance(self, address: str):
-        balances = []
+    def fetch_balances(self, address: str) -> FetchResult:
+        data = self._request(method='getBalance', params=[address])
+        raw_token_balances = self._request(
+            method='getTokenAccountsByOwner',
+            params=[
+                address,
+                {'programId': self.token_program_id},
+                {'encoding': 'jsonParsed'},
+            ],
+        )
 
-        sol_balance = self._get_sol_balance(address)
+        return FetchResult(data=data, extra=dict(raw_token_balances=raw_token_balances))
+
+    def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
+        raw_token_balances = fetch_result.extra['raw_token_balances']
+        balances = []
+        sol_balance = self._get_sol_balance(fetch_result.data)
         if sol_balance is not None:
             balances.append(sol_balance)
 
-        token_balances = list(self._yield_token_balances(address))
+        token_balances = list(self._yield_token_balances(raw_token_balances))
         if token_balances:
             merged_token_balances = self.merge_balances_with_same_coin(token_balances)
             balances.extend(merged_token_balances)
 
-        # if stake_balance := SolscanAPI().get_staked_balance(address):
+        # if stake_balance := SolscanApi().get_staked_balance(address):
         #     balances.append(stake_balance)
 
-        return balances
+        return ParseResult(balances=balances)
 
     @staticmethod
     def merge_balances_with_same_coin(
@@ -83,9 +102,8 @@ class SolanaApi(CustomizableBlockchainApi, IBalance):
 
     def _get_sol_balance(
         self,
-        address: str,
+        response: dict,
     ) -> Optional[BalanceItem]:
-        response = self._request(method='getBalance', params=[address])
         if int(response['result']['value']) == 0:
             return
 
@@ -96,16 +114,7 @@ class SolanaApi(CustomizableBlockchainApi, IBalance):
             raw=response,
         )
 
-    def _yield_token_balances(self, address: str) -> Iterable[BalanceItem]:
-        response = self._request(
-            method='getTokenAccountsByOwner',
-            params=[
-                address,
-                {'programId': self.token_program_id},
-                {'encoding': 'jsonParsed'},
-            ],
-        )
-
+    def _yield_token_balances(self, response: dict) -> Iterable[BalanceItem]:
         for raw_balance in response['result']['value']:
             balance = self._parse_token_balance(raw_balance)
             if balance is not None:
@@ -166,13 +175,11 @@ class SolanaApi(CustomizableBlockchainApi, IBalance):
             raise ApiException(json_response['error']['message'])
 
 
-class SolscanAPI(BlockchainApi):
-    API_BASE_URL = 'https://api.solscan.io/'
-
+class SolscanApi(BlockchainApi):
     coin = COIN_SOL
     api_options = ApiOptions(
         blockchain=Blockchain.SOLANA,
-        base_url=API_BASE_URL,
+        base_url='https://api.solscan.io/',
         start_offset=0,
         max_items_per_page=1000,
         page_offset_step=1,

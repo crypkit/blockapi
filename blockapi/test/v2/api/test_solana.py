@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import pytest
 
-from blockapi.v2.api.solana import SolanaApi, SolscanAPI
+from blockapi.v2.api import SolanaApi, SolscanApi
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin, CoinInfo
 
 
@@ -328,14 +328,14 @@ def test_get_balance(solana_api):
 
 
 def test_use_custom_url():
-    api = SolanaApi('https://proxy/solana/')
-    assert api.api_options.base_url == 'https://proxy/solana/'
+    api = SolanaApi(base_url='https://proxy/solana/')
+    assert api.base_url == 'https://proxy/solana/'
+    assert api.api_options.base_url == 'https://api.mainnet-beta.solana.com/'
 
 
 def test_use_base_url():
     api = SolanaApi()
-    assert api.API_BASE_URL
-    assert api.api_options.base_url == api.API_BASE_URL
+    assert api.base_url == 'https://api.mainnet-beta.solana.com/'
 
 
 def test_solscan_get_staked_balance(requests_mock):
@@ -345,7 +345,7 @@ def test_solscan_get_staked_balance(requests_mock):
         json=solscan_staked_response,
     )
 
-    staked_balance = SolscanAPI().get_staked_balance(test_addr)
+    staked_balance = SolscanApi().get_staked_balance(test_addr)
     assert staked_balance.asset_type == AssetType.STAKED
     assert staked_balance.balance == Decimal('55663.568093516')
 

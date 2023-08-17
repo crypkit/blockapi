@@ -3,7 +3,8 @@ from decimal import Decimal
 import pytest
 
 from blockapi.test.v2.api.conftest import read_file
-from blockapi.v2.api.blockchainos import BlockchainosApi
+from blockapi.v2.api import BlockchainosApi
+from blockapi.v2.models import FetchResult
 
 # noinspection SpellCheckingInspection
 test_address = 'GCPQQIX2LRX2J63C7AHWDXEMNGMZR2UI2PRN5TCSOVMEMF7BAUADMKH5'
@@ -23,7 +24,30 @@ def test_fetch_balances(requests_mock, api, bos_balance_response):
     balances = api.get_balance(test_address)
     assert len(balances) == 1
     assert balances[0].balance == Decimal('1012356993.757')
-    assert balances[0].balance == balances[0].balance_raw * Decimal('1e-7')
+    assert balances[0].balance == balances[0].balance_raw * Decimal(
+        f'1e-{balances[0].coin.decimals}'
+    )
+
+
+def test_fetch_only(requests_mock, api, bos_balance_response):
+    requests_mock.get(
+        f'https://mainnet.blockchainos.org/api/v1/accounts/{test_address}',
+        text=bos_balance_response,
+    )
+
+    result = api.fetch_balances(test_address)
+    assert result.data.get('balance') == '10123569937570000'
+
+
+def test_parse(api):
+    fetch_result = FetchResult(data=dict(balance='10123569937570000'))
+
+    balances = api.parse_balances(fetch_result).balances
+    assert len(balances) == 1
+    assert balances[0].balance == Decimal('1012356993.757')
+    assert balances[0].balance == balances[0].balance_raw * Decimal(
+        f'1e-{balances[0].coin.decimals}'
+    )
 
 
 def test_fetch_transactions(

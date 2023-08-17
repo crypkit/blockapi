@@ -3,7 +3,7 @@ from decimal import Decimal
 import pytest
 
 from blockapi.test.v2.api.conftest import read_file
-from blockapi.v2.api.subscan import PolkadotSubscanApi
+from blockapi.v2.api import PolkadotSubscanApi
 
 
 @pytest.mark.parametrize(

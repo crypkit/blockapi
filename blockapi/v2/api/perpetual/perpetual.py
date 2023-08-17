@@ -6,15 +6,27 @@ from typing import Callable, Dict, Iterable, List, Optional, Tuple
 
 import requests
 from eth_typing import ChecksumAddress
+from requests import HTTPError
 from typing_extensions import TypedDict
 from web3 import Web3
 
 from blockapi.utils.num import safe_opt_decimal
 from blockapi.v2.api.perpetual.perp_abi import rewards_abi
 from blockapi.v2.api.web3_utils import easy_call, get_eth_client
-from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance
+from blockapi.v2.base import (
+    ApiOptions,
+    BalanceMixin,
+    CustomizableBlockchainApi,
+    IBalance,
+)
 from blockapi.v2.coins import COIN_PERP
-from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin
+from blockapi.v2.models import (
+    AssetType,
+    BalanceItem,
+    Blockchain,
+    FetchResult,
+    ParseResult,
+)
 
 logger = getLogger(__name__)
 
@@ -119,31 +131,13 @@ class PerpProtocol:
         self.address = address
         self.w3 = get_eth_client(api_url=api_url)
 
-    def yield_balances(self) -> Iterable[BalanceItem]:
-        """
-        Fetch all balances for snx and synth tokens.
-        """
-        s_claimable = self._fetch_staking_claimable_rewards()
-        v_claimable, v_locked = self._fetch_staking_vesting_rewards()
-        claimable = s_claimable + v_claimable
-
-        if claimable > Decimal(0):
-            yield self._create_balance(AssetType.CLAIMABLE, claimable)
-
-        if v_locked:
-            yield self._create_balance(AssetType.VESTING, v_locked)
-
-    def fetch_balances(self) -> List[BalanceItem]:
-        return list(self.yield_balances())
-
-    @staticmethod
-    def _create_balance(asset_type: AssetType, amount: Decimal) -> BalanceItem:
-        return BalanceItem.from_api(
-            balance_raw=amount,
-            coin=COIN_PERP,
-            asset_type=asset_type,
-            protocol='perpetual',
-            raw={},
+    def fetch(self):
+        staking_claimable = self._fetch_staking_claimable_rewards()
+        vesting_claimable, vesting_locked = self._fetch_staking_vesting_rewards()
+        return dict(
+            staking_claimable=str(staking_claimable) if staking_claimable else None,
+            vesting_claimable=str(vesting_claimable) if vesting_claimable else None,
+            vesting_locked=str(vesting_locked) if vesting_locked else None,
         )
 
     def _fetch_staking_claimable_rewards(self) -> Decimal:
@@ -217,15 +211,42 @@ class PerpProtocol:
         )
 
 
-class PerpetualApi(BlockchainApi, IBalance):
+class PerpetualApi(CustomizableBlockchainApi, BalanceMixin):
     coin = COIN_PERP
     api_options = ApiOptions(
         blockchain=Blockchain.ETHEREUM, base_url=None, rate_limit=0.2
     )
 
-    def __init__(self, api_url: str) -> None:
-        super().__init__()
-        self.api_url = api_url
+    def __init__(self, base_url: str) -> None:
+        super().__init__(base_url=base_url)
 
-    def get_balance(self, address: str) -> List[BalanceItem]:
-        return PerpProtocol(address, api_url=self.api_url).fetch_balances()
+    def fetch_balances(self, address: str) -> FetchResult:
+        try:
+            data = PerpProtocol(address, api_url=self.base_url).fetch()
+            return FetchResult(status_code=200, data=data)
+        except HTTPError as e:
+            return FetchResult(status_code=e.response.status_code, errors=[str(e)])
+
+    def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
+        return ParseResult(balances=list(self.yield_balances(fetch_result)))
+
+    def yield_balances(self, fetch_result: FetchResult) -> Iterable[BalanceItem]:
+        v_locked = Decimal(fetch_result.data.get('vesting_locked', 0))
+        s_claimable = Decimal(fetch_result.data.get('staking_claimable', 0))
+        v_claimable = Decimal(fetch_result.data.get('vesting_claimable', 0))
+        claimable = s_claimable + v_claimable
+
+        if claimable > Decimal(0):
+            yield self._create_balance(AssetType.CLAIMABLE, claimable)
+
+        if v_locked:
+            yield self._create_balance(AssetType.VESTING, v_locked)
+
+    @staticmethod
+    def _create_balance(asset_type: AssetType, amount: Decimal) -> BalanceItem:
+        return BalanceItem.from_api(
+            balance_raw=amount,
+            coin=COIN_PERP,
+            asset_type=asset_type,
+            raw={},
+        )

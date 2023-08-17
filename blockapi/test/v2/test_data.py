@@ -3,7 +3,20 @@ import os
 
 import pytest
 
-from blockapi.v2.api.blockchair import BlockchairBitcoinApi
+from blockapi.v2.api import (
+    BlockchairApi,
+    BlockchairBitcoinApi,
+    DebankApi,
+    EthplorerApi,
+    KusamaSubscanApi,
+    OptimismEtherscanApi,
+    PerpetualApi,
+    PolkadotSubscanApi,
+    SolanaApi,
+    SubscanApi,
+    TerraApi,
+    TrezorApi,
+)
 from blockapi.v2.api.cosmos import CosmosApi, CosmosApiBase
 from blockapi.v2.api.covalenth.arbitrum import ArbitrumCovalentApi
 from blockapi.v2.api.covalenth.astar import AstarCovalentApi
@@ -19,17 +32,10 @@ from blockapi.v2.api.covalenth.moonbeam import MoonBeamCovalentApi
 from blockapi.v2.api.covalenth.palm import PalmCovalentApi
 from blockapi.v2.api.covalenth.polygon import PolygonCovalentApi
 from blockapi.v2.api.covalenth.rsk import RskCovalentApi
-from blockapi.v2.api.debank import DebankApi
-from blockapi.v2.api.ethplorer import EthplorerApi
-from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
-from blockapi.v2.api.perpetual import PerpetualApi
-from blockapi.v2.api.solana import SolanaApi
-from blockapi.v2.api.subscan import KusamaSubscanApi, PolkadotSubscanApi, SubscanApi
 from blockapi.v2.api.synthetix import SynthetixApi
-from blockapi.v2.api.terra import TerraApi
 
 # TODO create method for auto loading all classes
-from blockapi.v2.base import IBalance
+from blockapi.v2.base import BalanceMixin, IBalance
 from blockapi.v2.coins import (
     COIN_ATOM,
     COIN_AVAX,
@@ -156,7 +162,7 @@ def yield_api_instances():
     for api_cls in yield_covalent_api_classes():
         yield _pytest_param(api_cls(api_key=COVALENT_API_KEY))
 
-    for api_cls in yield_api_ibalance_classes():
+    for api_cls in yield_api_balance_classes():
         yield _pytest_param(api_cls())
 
 
@@ -168,19 +174,21 @@ def yield_covalent_api_classes():
     return CovalentApiBase.__subclasses__()
 
 
-def yield_api_ibalance_classes():
+def yield_api_balance_classes():
     return [
         x
-        for x in IBalance.__subclasses__()
+        for x in BalanceMixin.__subclasses__()
         if not issubclass(
             x,
             (
+                BlockchairApi,
                 CosmosApiBase,
                 CovalentApiBase,
                 DebankApi,
                 PerpetualApi,
                 SynthetixApi,
                 SubscanApi,
+                TrezorApi,
             ),
         )
         and not inspect.isabstract(x)

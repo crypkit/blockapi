@@ -1,12 +1,14 @@
+from abc import ABC
+
 import pytest
 
 from blockapi.v2.base import CustomizableBlockchainApi
-from blockapi.v2.models import ApiOptions, Blockchain
+from blockapi.v2.models import ApiOptions, Blockchain, FetchResult
 
 
 def test_not_implemented_base_url():
     with pytest.raises(NotImplementedError):
-        api = WrongApi()
+        _ = WrongApi()
 
 
 class WrongApi(CustomizableBlockchainApi):

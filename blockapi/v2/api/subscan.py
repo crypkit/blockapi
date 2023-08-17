@@ -9,15 +9,21 @@ from blockapi.utils.num import decimals_to_raw, safe_opt_decimal, to_decimal
 from blockapi.v2.base import (
     ApiException,
     ApiOptions,
+    BalanceMixin,
     BlockchainApi,
-    IBalance,
     InvalidAddressException,
 )
 from blockapi.v2.coins import COIN_DOT, COIN_KSM
-from blockapi.v2.models import AssetType, BalanceItem, Blockchain
+from blockapi.v2.models import (
+    AssetType,
+    BalanceItem,
+    Blockchain,
+    FetchResult,
+    ParseResult,
+)
 
 
-class SubscanApi(BlockchainApi, IBalance, ABC):
+class SubscanApi(BlockchainApi, BalanceMixin, ABC):
     """
     API docs: https://docs.api.subscan.io/
     Explorer: https://www.subscan.io
@@ -31,21 +37,22 @@ class SubscanApi(BlockchainApi, IBalance, ABC):
         'get_rewards': '/api/v2/scan/account/reward_slash',
     }
 
-    def get_balance(self, address: str) -> List[BalanceItem]:
-        balances = []
-        balances.extend(list(self._yield_native_balances(address)))
+    def fetch_balances(self, address: str) -> FetchResult:
+        body = json.dumps({'key': address})
+        response = self._post('get_balance', body=body)
+        return FetchResult(data=response)
+
+    def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
+        balances = list(self._yield_native_balances(fetch_result.data))
 
         # add staking rewards (and slashes) too? it's a lot of requests
         # per single address
         # if staking_reward := self._get_staking_reward(address):
         #     balances.append(staking_reward)
 
-        return balances
+        return ParseResult(balances=balances)
 
-    def _yield_native_balances(self, address: str) -> Iterable[BalanceItem]:
-        body = json.dumps({'key': address})
-        response = self._post('get_balance', body=body)
-
+    def _yield_native_balances(self, response: dict) -> Iterable[BalanceItem]:
         data = response['data']['account']
         b_total = decimals_to_raw(data['balance'], self.coin.decimals)
         if b_total == 0:

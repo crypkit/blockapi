@@ -27,9 +27,9 @@ from blockapi.v2.api.web3_utils import (
     ensure_checksum_address,
     get_eth_client,
 )
-from blockapi.v2.base import BlockchainApi, IBalance
+from blockapi.v2.base import CustomizableBlockchainApi, IBalance
 from blockapi.v2.coins import COIN_SNX
-from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin
+from blockapi.v2.models import ApiOptions, AssetType, BalanceItem, Blockchain, Coin
 
 logger = logging.getLogger(__name__)
 
@@ -124,14 +124,13 @@ def snx_optimism_contract_address(
         raise ValueError(f'Contract {contract_name} not found.')
 
 
-class SynthetixApi(BlockchainApi, IBalance, ABC):
+class SynthetixApi(CustomizableBlockchainApi, IBalance, ABC):
     decimals: Decimal = Decimal('18')
     coin = COIN_SNX
 
     def __init__(self, network: str, api_url: str):
-        super().__init__()
+        super().__init__(base_url=api_url)
         self.network = network
-        self.blockchain = self.get_blockchain(self.network)
         self.w3 = get_eth_client(api_url)
 
     def get_balance(self, address: str) -> List[BalanceItem]:
@@ -212,15 +211,11 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
     def _get_coin(self, symbol: str) -> Coin:
         return Coin(
             symbol=symbol,
-            blockchain=self.blockchain,
+            blockchain=self.api_options.blockchain,
             name=symbol,
             decimals=int(self.decimals),
             address=self._get_synth_contract(symbol),
         )
-
-    @staticmethod
-    def get_blockchain(network: str) -> Blockchain:
-        return Blockchain.OPTIMISM if network == 'optimism' else Blockchain.ETHEREUM
 
     # noinspection PyTypeChecker
     def fetch_staking(self, address: str) -> Staking:
@@ -405,6 +400,8 @@ class SynthetixApi(BlockchainApi, IBalance, ABC):
 
 
 class SynthetixMainnetApi(SynthetixApi):
+    api_options = ApiOptions(blockchain=Blockchain.ETHEREUM, base_url=None)
+
     def __init__(
         self,
         api_url: str,
@@ -413,6 +410,8 @@ class SynthetixMainnetApi(SynthetixApi):
 
 
 class SynthetixOptimismApi(SynthetixApi):
+    api_options = ApiOptions(blockchain=Blockchain.OPTIMISM, base_url=None)
+
     def __init__(
         self,
         api_url: str,
