@@ -2,11 +2,22 @@
 
 
 
+## v0.25.0 (2023-08-17)
+
+### Feature
+
+* feat: Improve V2 interface (#131) ([`133123d`](https://github.com/crypkit/blockapi/commit/133123d07f141483429ca2b8f26d1702be406907))
+
+
 ## v0.24.2 (2023-07-31)
 
 ### Fix
 
 * fix(debank): Pool fields availability (#137) ([`89498f9`](https://github.com/crypkit/blockapi/commit/89498f93469c204e0a3ad623003ffb2cfa461290))
+
+### Unknown
+
+* 0.24.2 ([`999314e`](https://github.com/crypkit/blockapi/commit/999314e0ac50d7c3ce2669fdfe46f68ebc8968fa))
 
 
 ## v0.24.1 (2023-07-28)
