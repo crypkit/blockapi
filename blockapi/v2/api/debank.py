@@ -378,10 +378,11 @@ class DebankPortfolioParser:
 
     def parse(self, response: Union[list, dict]) -> list[Pool]:
         items = []
-        for item in response:
-            portfolio = DebankModelPortfolio(**item)
-            parsed = self.parse_items(portfolio)
-            items.extend(parsed)
+        if response:
+            for item in response:
+                portfolio = DebankModelPortfolio(**item)
+                parsed = self.parse_items(portfolio)
+                items.extend(parsed)
 
         return items
 
