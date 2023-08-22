@@ -107,9 +107,11 @@ def test_map_optimism_eth_to_native_coin(balance_parser):
     )
 
     coin = balance_parser.get_coin(balance, "ETH")
-    assert coin.info.coingecko_id == "ethereum"
+    assert coin.symbol == 'ETH'
     assert coin.blockchain == Blockchain.OPTIMISM
+    assert not coin.info.coingecko_id
     assert coin.protocol_id == 'optimism'
+    assert coin.address == 'op'
 
 
 def test_map_canto_coin(balance_parser):

@@ -42,7 +42,7 @@ def test_fetch_only(requests_mock, api, bos_balance_response):
 def test_parse(api):
     fetch_result = FetchResult(data=dict(balance='10123569937570000'))
 
-    balances = api.parse_balances(fetch_result).balances
+    balances = api.parse_balances(fetch_result).data
     assert len(balances) == 1
     assert balances[0].balance == Decimal('1012356993.757')
     assert balances[0].balance == balances[0].balance_raw * Decimal(

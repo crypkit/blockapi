@@ -37,6 +37,8 @@ from blockapi.v2.models import (
 
 logger = logging.getLogger(__name__)
 
+MIST_SYMBOL = 'MIST'
+
 
 class DebankModelBalanceItem(BaseModel):
     id: str
@@ -329,43 +331,30 @@ class DebankBalanceParser:
         if coin is not None and coin.blockchain == blockchain and coin.symbol == symbol:
             return coin
 
-        valid_address = make_checksum_address(address)
+        check_address = make_checksum_address(address)
+        if check_address:
+            address = check_address
 
-        if valid_address:
-            return Coin.from_api(
-                symbol=symbol,
-                name=balance_item.name,
-                decimals=balance_item.decimals,
-                blockchain=blockchain,
-                address=valid_address,
-                standards=[],
-                protocol_id=balance_item.protocol_id,
-                info=CoinInfo(logo_url=balance_item.logo_url),
-            )
-        else:
-            logger.warning(f'Cannot parse address "{address}"')
-
-        base_coin = ALL_COINS.get(symbol.lower())
-        if base_coin:
-            return Coin.from_api(
-                symbol=base_coin.symbol,
-                name=base_coin.name,
-                decimals=balance_item.decimals,
-                blockchain=blockchain,
-                address=base_coin.address,
-                standards=base_coin.standards,
-                protocol_id=balance_item.protocol_id,
-                info=base_coin.info,
-            )
-
-        return None
+        return Coin.from_api(
+            symbol=symbol,
+            name=balance_item.name,
+            decimals=balance_item.decimals,
+            blockchain=blockchain,
+            address=address,
+            standards=[],
+            protocol_id=balance_item.protocol_id,
+            info=CoinInfo(logo_url=balance_item.logo_url),
+        )
 
     @staticmethod
     def get_symbol(raw_balance: DebankModelBalanceItem) -> str:
+        if raw_balance.optimized_symbol == MIST_SYMBOL:
+            return MIST_SYMBOL
+
         return (
-            raw_balance.display_symbol
+            raw_balance.symbol
             or raw_balance.optimized_symbol
-            or raw_balance.symbol
+            or raw_balance.display_symbol
         )
 
 

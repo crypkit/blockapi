@@ -214,4 +214,4 @@ class BalanceMixin(IBalance, IBlockchainParser, IBlockchainFetcher):
             raise ApiException(data.errors[0])
 
         parsed = self.parse_balances(data)
-        return parsed.data
+        return parsed.data or []
