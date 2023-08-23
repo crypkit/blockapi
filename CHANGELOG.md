@@ -2,11 +2,22 @@
 
 
 
+## v0.26.0 (2023-08-23)
+
+### Feature
+
+* feat: Refactor Debank fetching and parsing (#138) ([`fd7cb8c`](https://github.com/crypkit/blockapi/commit/fd7cb8ce82d11406bc1686d3de431dbf04675a5c))
+
+
 ## v0.25.0 (2023-08-17)
 
 ### Feature
 
 * feat: Improve V2 interface (#131) ([`133123d`](https://github.com/crypkit/blockapi/commit/133123d07f141483429ca2b8f26d1702be406907))
+
+### Unknown
+
+* 0.25.0 ([`cfe2c3a`](https://github.com/crypkit/blockapi/commit/cfe2c3a8b8484bbe1ddafed753ccf13a4a59114a))
 
 
 ## v0.24.2 (2023-07-31)
