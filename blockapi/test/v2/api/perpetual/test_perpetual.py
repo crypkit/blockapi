@@ -75,5 +75,5 @@ def test_parse(perp_api):
 
     parsed = perp_api.parse_balances(raw)
 
-    assert parsed.balances[0].balance == Decimal('3.12')
-    assert parsed.balances[1].balance == Decimal('3.30')
+    assert parsed.data[0].balance == Decimal('3.12')
+    assert parsed.data[1].balance == Decimal('3.30')

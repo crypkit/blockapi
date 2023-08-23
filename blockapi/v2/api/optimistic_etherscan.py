@@ -49,6 +49,6 @@ class OptimismEtherscanApi(BlockchainApi, BalanceMixin):
         data = fetch_result.data
         message = data.get('message')
         return ParseResult(
-            balances=[self._parse_eth_balance(data)],
+            data=[self._parse_eth_balance(data)],
             errors=message if message != 'OK' else None,
         )

@@ -54,7 +54,7 @@ class TrezorApi(BlockchainApi, ITransactions, BalanceMixin, ABC):
             )
         ]
 
-        return ParseResult(balances)
+        return ParseResult(data=balances)
 
     def get_transactions(
         self,

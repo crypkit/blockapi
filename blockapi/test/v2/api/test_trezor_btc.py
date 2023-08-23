@@ -60,7 +60,7 @@ def test_parse_only():
     api = TrezorBitcoin1Api()
     fetch_result = FetchResult(data=dict(balance='64363'))
     result = api.parse_balances(fetch_result)
-    assert result.balances[0].balance == Decimal('0.00064363')
+    assert result.data[0].balance == Decimal('0.00064363')
 
 
 def test_fetch_balances_2(requests_mock, trezor_btc_2_balance_response):

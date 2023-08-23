@@ -86,7 +86,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         # if stake_balance := SolscanApi().get_staked_balance(address):
         #     balances.append(stake_balance)
 
-        return ParseResult(balances=balances)
+        return ParseResult(data=balances)
 
     @staticmethod
     def merge_balances_with_same_coin(

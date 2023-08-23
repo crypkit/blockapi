@@ -228,7 +228,7 @@ class PerpetualApi(CustomizableBlockchainApi, BalanceMixin):
             return FetchResult(status_code=e.response.status_code, errors=[str(e)])
 
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
-        return ParseResult(balances=list(self.yield_balances(fetch_result)))
+        return ParseResult(data=list(self.yield_balances(fetch_result)))
 
     def yield_balances(self, fetch_result: FetchResult) -> Iterable[BalanceItem]:
         v_locked = Decimal(fetch_result.data.get('vesting_locked', 0))

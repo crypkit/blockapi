@@ -46,7 +46,7 @@ class BlockchairApi(BlockchainApi, BalanceMixin, ITransactions, ABC):
         dashboard = self._parse_dashboard(
             fetch_result.data, fetch_result.extra['address_type']
         )
-        return ParseResult(balances=list(self._parse_balances(dashboard)))
+        return ParseResult(data=list(self._parse_balances(dashboard)))
 
     def get_transactions(
         self,

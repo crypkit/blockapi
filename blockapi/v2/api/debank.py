@@ -37,6 +37,8 @@ from blockapi.v2.models import (
 
 logger = logging.getLogger(__name__)
 
+MIST_SYMBOL = 'MIST'
+
 
 class DebankModelBalanceItem(BaseModel):
     id: str
@@ -329,43 +331,30 @@ class DebankBalanceParser:
         if coin is not None and coin.blockchain == blockchain and coin.symbol == symbol:
             return coin
 
-        valid_address = make_checksum_address(address)
+        check_address = make_checksum_address(address)
+        if check_address:
+            address = check_address
 
-        if valid_address:
-            return Coin.from_api(
-                symbol=symbol,
-                name=balance_item.name,
-                decimals=balance_item.decimals,
-                blockchain=blockchain,
-                address=valid_address,
-                standards=[],
-                protocol_id=balance_item.protocol_id,
-                info=CoinInfo(logo_url=balance_item.logo_url),
-            )
-        else:
-            logger.warning(f'Cannot parse address "{address}"')
-
-        base_coin = ALL_COINS.get(symbol.lower())
-        if base_coin:
-            return Coin.from_api(
-                symbol=base_coin.symbol,
-                name=base_coin.name,
-                decimals=balance_item.decimals,
-                blockchain=blockchain,
-                address=base_coin.address,
-                standards=base_coin.standards,
-                protocol_id=balance_item.protocol_id,
-                info=base_coin.info,
-            )
-
-        return None
+        return Coin.from_api(
+            symbol=symbol,
+            name=balance_item.name,
+            decimals=balance_item.decimals,
+            blockchain=blockchain,
+            address=address,
+            standards=[],
+            protocol_id=balance_item.protocol_id,
+            info=CoinInfo(logo_url=balance_item.logo_url),
+        )
 
     @staticmethod
     def get_symbol(raw_balance: DebankModelBalanceItem) -> str:
+        if raw_balance.optimized_symbol == MIST_SYMBOL:
+            return MIST_SYMBOL
+
         return (
-            raw_balance.display_symbol
+            raw_balance.symbol
             or raw_balance.optimized_symbol
-            or raw_balance.symbol
+            or raw_balance.display_symbol
         )
 
 
@@ -378,10 +367,11 @@ class DebankPortfolioParser:
 
     def parse(self, response: Union[list, dict]) -> list[Pool]:
         items = []
-        for item in response:
-            portfolio = DebankModelPortfolio(**item)
-            parsed = self.parse_items(portfolio)
-            items.extend(parsed)
+        if response:
+            for item in response:
+                portfolio = DebankModelPortfolio(**item)
+                parsed = self.parse_items(portfolio)
+                items.extend(parsed)
 
         return items
 
@@ -595,12 +585,38 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
             is_all=self._is_all,
         )
 
+    def fetch_pools(self, address: str) -> FetchResult:
+        return self.get_data(
+            'get_portfolio',
+            headers=self._headers,
+            address=address,
+        )
+
+    def fetch_protocols(self) -> FetchResult:
+        return self.get_data(
+            'get_protocols',
+            headers=self._headers,
+        )
+
+    def fetch_chains(self) -> FetchResult:
+        return self.get_data(
+            'get_chains',
+            headers=self._headers,
+        )
+
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
         if errors := self._get_error(fetch_result.data):
-            return ParseResult(errors=errors, balances=[])
+            return ParseResult(errors=errors)
 
         self._maybe_update_protocols()
-        return ParseResult(balances=self._balance_parser.parse(fetch_result.data))
+        return ParseResult(data=self._balance_parser.parse(fetch_result.data))
+
+    def parse_pools(self, fetch_result: FetchResult) -> ParseResult:
+        if errors := self._get_error(fetch_result.data):
+            return ParseResult(errors=errors)
+
+        self._maybe_update_protocols()
+        return ParseResult(data=self._portfolio_parser.parse(fetch_result.data))
 
     def get_protocols(self) -> Dict[str, Protocol]:
         response = self.get('get_protocols', headers=self._headers)
