@@ -30,12 +30,8 @@ setuptools.setup(
         'pydantic>=1.10.2',
         'marko==1.3.0',
         'fake_useragent>=1.1.3',
+        'pytest',
+        'pytest-vcr',
+        'requests_mock>=1.9.3',
     ],
-    extras_require={
-        'dev': [
-            'pytest',
-            'pytest-vcr',
-            'requests_mock>=1.9.3',
-        ]
-    },
 )
