@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Union
 
 from dateutil.parser import parse as parse_date
@@ -10,9 +10,7 @@ def parse_dt(dt: Union[str, int, float]) -> datetime:
     """
     if isinstance(dt, str):
         return parse_date(dt)
-    elif isinstance(dt, int):
-        return datetime.fromtimestamp(dt)
-    elif isinstance(dt, float):
-        return datetime.fromtimestamp(dt)
+    elif isinstance(dt, int) or isinstance(dt, float):
+        return datetime.fromtimestamp(dt, tz=timezone.utc)
     else:
         raise TypeError(f'Type {type(dt)} is not supported.')

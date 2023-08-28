@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 
 import pytest
@@ -23,12 +23,12 @@ def test_portfolio_parsing(portfolio_parser, portfolio_response, protocol_trader
     assert item.protocol == protocol_trader_joe
     assert item.pool_info.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
     assert item.health_rate == Decimal('0.86')
-    assert item.locked_until == datetime(2022, 7, 21, 0, 0)
+    assert item.locked_until == datetime(2022, 7, 21, 0, 0, tzinfo=timezone.utc)
 
 
 def test_portfolio_stores_raw_item(portfolio_parser, portfolio_response):
     item = portfolio_parser.parse([portfolio_response])[0].items[0]
-    assert item.last_updated == datetime(2020, 12, 11, 23, 10, 59)
+    assert item.last_updated == datetime(2020, 12, 11, 23, 10, 59, tzinfo=timezone.utc)
     assert item.balance == Decimal('7579.956374263135')
     assert item.raw is not None
     assert item.asset_type == AssetType.LENDING

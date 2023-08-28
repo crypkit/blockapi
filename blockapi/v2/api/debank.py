@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime, timedelta
 from decimal import Decimal
+from functools import lru_cache
 from typing import Dict, Iterable, List, Optional, Union
 
 import attr
@@ -10,7 +11,7 @@ from blockapi.utils.address import make_checksum_address
 from blockapi.utils.datetime import parse_dt
 from blockapi.utils.num import decimals_to_raw
 from blockapi.v2.api.debank_maps import (
-    ALL_COINS,
+    COINGECKO_MAP,
     DEBANK_ASSET_TYPES,
     NATIVE_COIN_MAP,
     REWARD_ASSET_TYPE_MAP,
@@ -27,6 +28,7 @@ from blockapi.v2.models import (
     BalanceItem,
     Blockchain,
     Coin,
+    CoingeckoId,
     CoinInfo,
     FetchResult,
     ParseResult,
@@ -245,6 +247,15 @@ class DebankProtocolCache:
         return protocol
 
 
+@lru_cache
+def get_coingecko_id(contract, symbol) -> Optional[CoingeckoId]:
+    for it in COINGECKO_MAP:
+        if it.symbol == symbol and contract in it.contracts:
+            return it.coingecko_id
+
+    return None
+
+
 class DebankBalanceParser:
     def __init__(self, protocol_cache: DebankProtocolCache):
         self._protocols = protocol_cache
@@ -285,8 +296,7 @@ class DebankBalanceParser:
 
             return None
 
-        symbol = self.get_symbol(balance_item)
-        coin = self.get_coin(balance_item, symbol)
+        coin = self.get_coin(balance_item)
 
         if not coin:
             logger.error(
@@ -322,28 +332,30 @@ class DebankBalanceParser:
 
         return balance
 
-    @staticmethod
-    def get_coin(balance_item: DebankModelBalanceItem, symbol: str) -> Optional[Coin]:
-        address = balance_item.id
+    def get_coin(self, balance_item: DebankModelBalanceItem) -> Coin:
+        contract = balance_item.id
         blockchain = get_blockchain_from_debank_chain(balance_item.chain)
-        coin = NATIVE_COIN_MAP.get((address, symbol.upper()))
+        symbol = self.get_symbol(balance_item)
 
-        if coin is not None and coin.blockchain == blockchain and coin.symbol == symbol:
+        coingecko_id = get_coingecko_id(contract, symbol)
+
+        coin = NATIVE_COIN_MAP.get((blockchain, coingecko_id))
+        if coin and coin.protocol_id == balance_item.protocol_id:
             return coin
 
-        check_address = make_checksum_address(address)
+        check_address = make_checksum_address(contract)
         if check_address:
-            address = check_address
+            contract = check_address
 
         return Coin.from_api(
             symbol=symbol,
             name=balance_item.name,
             decimals=balance_item.decimals,
             blockchain=blockchain,
-            address=address,
+            address=contract,
             standards=[],
             protocol_id=balance_item.protocol_id,
-            info=CoinInfo(logo_url=balance_item.logo_url),
+            info=CoinInfo(logo_url=balance_item.logo_url, coingecko_id=coingecko_id),
         )
 
     @staticmethod
@@ -356,6 +368,13 @@ class DebankBalanceParser:
             or raw_balance.optimized_symbol
             or raw_balance.display_symbol
         )
+
+    @staticmethod
+    def _get_native_coin(
+        blockchain: Blockchain, address: str, symbol: str
+    ) -> Optional[Coin]:
+        if coin is not None and coin.blockchain == blockchain:
+            return coin
 
 
 class DebankPortfolioParser:

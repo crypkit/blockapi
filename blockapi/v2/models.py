@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import Dict, List, Optional, TypeVar, Union
+from typing import Dict, List, Optional, Union
 
 import attr
 
@@ -25,6 +25,7 @@ class Blockchain(str, Enum):
     AURORA = 'aurora'
     AVALANCHE = 'avalanche'
     AXIE = 'axie'
+    BASE = 'base'
     BINANCECOIN = 'binancecoin'
     BINANCE_SMART_CHAIN = 'binance-smart-chain'
     BITCICHAIN = 'bitcichain'
@@ -107,7 +108,11 @@ class Blockchain(str, Enum):
     KOMODO = 'komodo'
     KUCOIN = 'kucoin'
     KUSAMA = 'kusama'
+    LINEA = 'linea'
     LITECOIN = 'litecoin'
+    LOOT = 'loot'
+    LUKSO = 'lukso'
+    MANTLE = 'mantle'
     METAVERSE_ETP = 'metaverse-etp'
     METER = 'meter'
     METIS_ANDROMEDA = 'metis-andromeda'
@@ -115,7 +120,6 @@ class Blockchain(str, Enum):
     MILKOMEDA_CARDANO = 'milkomeda-cardano'
     MIXIN_NETWORK = 'mixin-network'
     MOONBEAM = 'moonbeam'
-    MOONBEAM_MOONRIVER = 'moonbeam-moonriver'
     MOONRIVER = 'moonriver'
     NEAR_PROTOCOL = 'near-protocol'
     NEM = 'nem'
@@ -123,6 +127,7 @@ class Blockchain(str, Enum):
     NULS = 'nuls'
     NXT = 'nxt'
     OASIS_CHAIN = 'oasis-chain'
+    OASIS_EMERALD = 'oasis-emerald'
     OASYS = 'oasys'
     OKEX_CHAIN = 'okex-chain'
     OKT = 'okt'
@@ -131,6 +136,7 @@ class Blockchain(str, Enum):
     ONUS_CHAIN = 'onus-chain'
     OPENLEDGER = 'openledger'
     OPTIMISM = 'optimism'
+    OPTIMISTIC_BNB = 'optimistic-bnb'
     OPTIMISTIC_ETHEREUM = 'optimistic-ethereum'
     OSMOSIS = 'osmosis'
     PALM = 'palm'
@@ -141,6 +147,7 @@ class Blockchain(str, Enum):
     POLYGON = 'polygon'
     POLYGON_ZK_EVM = 'polygon-zkevm'
     PROOF_OF_MEMES = 'proof-of-memes'
+    PULSE = 'pulse'
     QTUM = 'qtum'
     REGEN = 'regen'
     REI_NETWORK = 'rei-network'
@@ -168,6 +175,7 @@ class Blockchain(str, Enum):
     SYSCOIN = 'syscoin'
     TBWG_CHAIN = 'tbwg-chain'
     TELOS = 'telos'
+    TENET = 'tenet'
     TERRA = 'terra'
     TERRA_2 = 'terra-2'
     TEZOS = 'tezos'
@@ -193,6 +201,7 @@ class Blockchain(str, Enum):
     YOCOIN = 'yocoin'
     ZILLIQA = 'zilliqa'
     ZKSYNC_ERA = 'zksync-era'
+    ZORA = 'zora'
 
 
 class AssetType(str, Enum):
@@ -240,6 +249,51 @@ class TransactionStatus(str, Enum):
     PENDING = 'pending'
 
 
+class CoingeckoId(str, Enum):
+    ASTAR = 'astar'
+    AURORA = 'aurora-near'
+    AVALANCHE = 'avalanche-2'
+    BINANCE = 'binancecoin'
+    BITCOIN = 'bitcoin'
+    BIT_TORRENT = 'bittorrent'
+    BOBA = 'boba-network'
+    CANTO = 'canto'
+    CELO = 'celo'
+    COSMOS = 'cosmos'
+    CRONOS = 'crypto-com-chain'
+    DOGECOIN = 'dogecoin'
+    ETHEREUM = 'ethereum'
+    EVMOS = 'evmos'
+    FANTOM = 'fantom'
+    FUSE = 'fuse-network-token'
+    HARMONY = 'harmony'
+    HUOBI = 'huobi-token'
+    IOTEX = 'iotex'
+    KLAY = 'klaytn'
+    KUCOIN = 'kucoin-shares'
+    KUSAMA = 'kusama'
+    LITECOIN = 'litecoin'
+    LUNA = 'terra-luna'
+    MATIC = 'matic-network'
+    METIS = 'metis-token'
+    MOONBEAM = 'moonbeam'
+    MOONBEAM_MOONRIVER = 'moonriver'
+    OKT = 'oec-token'
+    OPTIMISM = 'optimism'
+    PERPETUAL = 'perpetual-protocol'
+    POLKADOT = 'polkadot'
+    RONIN = 'ronin'
+    RSK = 'rootstock'
+    SHIDEN = 'shiden'
+    SOLANA = 'solana'
+    SONGBIRD = 'songbird'
+    SYNTHETIX = 'havven'
+    TELOS = 'telos'
+    WANCHAIN = 'wanchain'
+    WETH = 'weth'
+    XDAI = 'xdai'
+
+
 @attr.s(auto_attribs=True, slots=True)
 class ApiOptions:
     blockchain: Blockchain
@@ -257,7 +311,7 @@ class CoinInfo:
     tags: List[str] = attr.ib(default=None)
     total_supply: Optional[Decimal] = attr.ib(default=None)
     logo_url: Optional[str] = attr.ib(default=None)
-    coingecko_id: Optional[str] = attr.ib(default=None)
+    coingecko_id: Optional[CoingeckoId] = attr.ib(default=None)
     website: Optional[str] = attr.ib(default=None)
 
     @classmethod
@@ -313,6 +367,13 @@ class Coin:
             protocol_id=protocol_id,
             info=info,
         )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
+class CoingeckoMapping:
+    symbol: str
+    coingecko_id: CoingeckoId
+    contracts: set[str]
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
