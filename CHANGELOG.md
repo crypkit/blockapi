@@ -2,11 +2,24 @@
 
 
 
+## v0.26.1 (2023-08-30)
+
+### Fix
+
+* fix: Add blockchains and mapping (#139)
+
+Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https://github.com/crypkit/blockapi/commit/bf20508a80ebca1b748f5eacb3c1b04b712759e1))
+
+
 ## v0.26.0 (2023-08-23)
 
 ### Feature
 
 * feat: Refactor Debank fetching and parsing (#138) ([`fd7cb8c`](https://github.com/crypkit/blockapi/commit/fd7cb8ce82d11406bc1686d3de431dbf04675a5c))
+
+### Unknown
+
+* 0.26.0 ([`9259aff`](https://github.com/crypkit/blockapi/commit/9259aff2684b156e0f14122d5946a93de35c3d97))
 
 
 ## v0.25.0 (2023-08-17)
