@@ -35,7 +35,7 @@ NATIVE_COIN_MAP: dict[tuple[Blockchain, CoingeckoId], Coin] = {
     if coin.info and coin.info.coingecko_id
 }
 
-COINGECKO_MAP: list[CoingeckoMapping] = [
+COINGECKO_IDS_BY_CONTRACTS: list[CoingeckoMapping] = [
     CoingeckoMapping(
         symbol='ETH',
         coingecko_id=CoingeckoId.ETHEREUM,

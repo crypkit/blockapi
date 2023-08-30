@@ -11,7 +11,7 @@ from blockapi.utils.address import make_checksum_address
 from blockapi.utils.datetime import parse_dt
 from blockapi.utils.num import decimals_to_raw
 from blockapi.v2.api.debank_maps import (
-    COINGECKO_MAP,
+    COINGECKO_IDS_BY_CONTRACTS,
     DEBANK_ASSET_TYPES,
     NATIVE_COIN_MAP,
     REWARD_ASSET_TYPE_MAP,
@@ -249,7 +249,14 @@ class DebankProtocolCache:
 
 @lru_cache
 def get_coingecko_id(contract, symbol) -> Optional[CoingeckoId]:
-    return next((it.coingecko_id for it in COINGECKO_MAP if it.symbol == symbol and contract in it.contracts), None)
+    return next(
+        (
+            it.coingecko_id
+            for it in COINGECKO_IDS_BY_CONTRACTS
+            if it.symbol == symbol and contract in it.contracts
+        ),
+        None,
+    )
 
 
 class DebankBalanceParser:
