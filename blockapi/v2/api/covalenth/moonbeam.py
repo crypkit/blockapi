@@ -8,7 +8,7 @@ class MoonBeamCovalentApi(CovalentApiBase):
     CHAIN_ID = 1285
 
     api_options = ApiOptions(
-        blockchain=Blockchain.MOONBEAM_MOONRIVER,
+        blockchain=Blockchain.MOONRIVER,
         base_url=CovalentApiBase.API_BASE_URL,
         rate_limit=CovalentApiBase.API_BASE_RATE_LIMIT,
     )

@@ -1,4 +1,4 @@
-from .models import Blockchain, Coin, CoinInfo
+from .models import Blockchain, Coin, CoingeckoId, CoinInfo
 
 COIN_ETH = Coin(
     symbol='ETH',
@@ -6,7 +6,7 @@ COIN_ETH = Coin(
     decimals=18,
     blockchain=Blockchain.ETHEREUM,
     address='0x0000000000000000000000000000000000000000',
-    info=CoinInfo(coingecko_id='ethereum'),
+    info=CoinInfo(coingecko_id=CoingeckoId.ETHEREUM),
 )
 
 
@@ -18,7 +18,7 @@ COIN_SOL = Coin(
     info=CoinInfo(
         logo_url='https://raw.githubusercontent.com/solana-labs/token-list/main/assets/'
         'mainnet/So11111111111111111111111111111111111111112/logo.png',
-        coingecko_id='solana',
+        coingecko_id=CoingeckoId.SOLANA,
         website='https://solana.com/',
     ),
 )
@@ -33,7 +33,7 @@ COIN_TERRA = Coin(
     standards=['terra-native'],
     info=CoinInfo(
         logo_url='https://assets.terra.money/icon/60/Luna.png',
-        coingecko_id='terra-luna',
+        coingecko_id=CoingeckoId.LUNA,
         website='https://www.terra.money/',
     ),
 )
@@ -46,7 +46,7 @@ COIN_MATIC = Coin(
     blockchain=Blockchain.POLYGON,
     address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
-        coingecko_id='matic-network',
+        coingecko_id=CoingeckoId.MATIC,
         website='https://polygon.technology/',
     ),
 )
@@ -58,7 +58,7 @@ COIN_SDN = Coin(
     blockchain=Blockchain.ASTAR,
     address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
-        coingecko_id='shiden-network',
+        coingecko_id=CoingeckoId.SHIDEN,
         website='https://shiden.astar.network/',
     ),
 )
@@ -70,7 +70,7 @@ COIN_AVAX = Coin(
     blockchain=Blockchain.AVALANCHE,
     address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
-        coingecko_id='avalanche-2',
+        coingecko_id=CoingeckoId.AVALANCHE,
         website='https://www.avax.network/',
     ),
 )
@@ -79,10 +79,22 @@ COIN_RON = Coin(
     symbol='RON',
     name='Ronin',
     decimals=18,
+    blockchain=Blockchain.RONIN,
+    address='0x0000000000000000000000000000000000000000',
+    info=CoinInfo(
+        coingecko_id=CoingeckoId.RONIN,
+        website='https://bridge.roninchain.com',
+    ),
+)
+
+COIN_AXIE_RON = Coin(
+    symbol='RON',
+    name='Ronin',
+    decimals=18,
     blockchain=Blockchain.AXIE,
     address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
-        coingecko_id='ronin',
+        coingecko_id=CoingeckoId.RONIN,
         website='https://bridge.roninchain.com',
     ),
 )
@@ -94,7 +106,7 @@ COIN_BNB = Coin(
     blockchain=Blockchain.BINANCE_SMART_CHAIN,
     address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
-        coingecko_id='binancecoin',
+        coingecko_id=CoingeckoId.BINANCE,
         website='https://www.binance.com',
     ),
 )
@@ -106,7 +118,7 @@ COIN_FTM = Coin(
     blockchain=Blockchain.FANTOM,
     address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
-        coingecko_id='fantom',
+        coingecko_id=CoingeckoId.FANTOM,
         website='https://fantom.foundation',
     ),
 )
@@ -118,7 +130,7 @@ COIN_HT = Coin(
     blockchain=Blockchain.HECO,
     address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
-        coingecko_id='huobi-token',
+        coingecko_id=CoingeckoId.HUOBI,
         website='https://www.huobi.com',
     ),
 )
@@ -130,7 +142,7 @@ COIN_IOTX = Coin(
     blockchain=Blockchain.IOTEX,
     address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
-        coingecko_id='iotex',
+        coingecko_id=CoingeckoId.IOTEX,
         website='https://iotex.io/',
     ),
 )
@@ -142,7 +154,7 @@ COIN_KLAY = Coin(
     blockchain=Blockchain.KLAY_TOKEN,
     address='0x0000000000000000000000000000000000000000',
     info=CoinInfo(
-        coingecko_id='klaytn',
+        coingecko_id=CoingeckoId.KLAY,
         website='https://www.klaytn.com/',
     ),
 )
@@ -151,10 +163,10 @@ COIN_MOVR = Coin(
     symbol='MOVR',
     name='Moonriver',
     decimals=18,
-    blockchain=Blockchain.MOONBEAM_MOONRIVER,
+    blockchain=Blockchain.MOONRIVER,
     address='0x98878b06940ae243284ca214f92bb71a2b032b8a',
     info=CoinInfo(
-        coingecko_id='moonriver',
+        coingecko_id=CoingeckoId.MOONBEAM_MOONRIVER,
         website='https://moonbeam.network/networks/moonriver/',
     ),
 )
@@ -174,18 +186,18 @@ COIN_PERP = Coin(
     blockchain=Blockchain.ETHEREUM,
     address='0xbC396689893D065F41bc2C6EcbeE5e0085233447',
     info=CoinInfo(
-        coingecko_id='perpetual-protocol',
+        coingecko_id=CoingeckoId.PERPETUAL,
         website='https://perpetual.io/',
     ),
 )
-
 
 COIN_RSK = Coin(
     symbol='RBTC',
     name='Rootstock RSK',
     decimals=18,  # TODO verify this.
-    blockchain=Blockchain.ROOTSTOCK,
+    blockchain=Blockchain.RSK,
     address='0x0000000000000000000000000000000000000000',
+    info=CoinInfo(coingecko_id=CoingeckoId.RSK),
 )
 
 COIN_DOT = Coin(
@@ -193,7 +205,7 @@ COIN_DOT = Coin(
     name='Polkadot',
     decimals=10,
     blockchain=Blockchain.POLKADOT,
-    info=CoinInfo(coingecko_id='polkadot', tags=['native']),
+    info=CoinInfo(coingecko_id=CoingeckoId.POLKADOT, tags=['native']),
 )
 
 COIN_KSM = Coin(
@@ -201,7 +213,7 @@ COIN_KSM = Coin(
     name='Kusama',
     decimals=12,
     blockchain=Blockchain.KUSAMA,
-    info=CoinInfo(coingecko_id='kusama', tags=['native']),
+    info=CoinInfo(coingecko_id=CoingeckoId.KUSAMA, tags=['native']),
 )
 
 COIN_ATOM = Coin(
@@ -211,7 +223,7 @@ COIN_ATOM = Coin(
     blockchain=Blockchain.COSMOS,
     address='uatom',
     standards=['staking'],
-    info=CoinInfo(coingecko_id='cosmos'),
+    info=CoinInfo(coingecko_id=CoingeckoId.COSMOS),
 )
 
 COIN_XDAI = Coin(
@@ -219,7 +231,7 @@ COIN_XDAI = Coin(
     name='xDai',
     decimals=18,
     blockchain=Blockchain.XDAI,
-    info=CoinInfo(coingecko_id='xdai'),
+    info=CoinInfo(coingecko_id=CoingeckoId.XDAI),
 )
 
 COIN_OKT = Coin(
@@ -227,7 +239,7 @@ COIN_OKT = Coin(
     name='OKC',
     decimals=18,
     blockchain=Blockchain.OKT,
-    info=CoinInfo(coingecko_id='oec-token'),
+    info=CoinInfo(coingecko_id=CoingeckoId.OKT),
 )
 
 COIN_OP = Coin(
@@ -236,7 +248,7 @@ COIN_OP = Coin(
     decimals=18,
     blockchain=Blockchain.OPTIMISM,
     address='0x4200000000000000000000000000000000000042',
-    info=CoinInfo(coingecko_id='optimism'),
+    info=CoinInfo(coingecko_id=CoingeckoId.OPTIMISM),
 )
 
 COIN_CELO = Coin(
@@ -245,7 +257,7 @@ COIN_CELO = Coin(
     decimals=18,
     blockchain=Blockchain.CELO,
     address='0x0000000000000000000000000000000000000000',
-    info=CoinInfo(coingecko_id='celo'),
+    info=CoinInfo(coingecko_id=CoingeckoId.CELO),
 )
 
 COIN_CRO = Coin(
@@ -254,7 +266,7 @@ COIN_CRO = Coin(
     decimals=18,
     blockchain=Blockchain.CRONOS,
     address='0x0000000000000000000000000000000000000000',
-    info=CoinInfo(coingecko_id='crypto-com-chain'),
+    info=CoinInfo(coingecko_id=CoingeckoId.CRONOS),
 )
 
 COIN_BOBA = Coin(
@@ -263,7 +275,7 @@ COIN_BOBA = Coin(
     decimals=18,
     blockchain=Blockchain.BOBA,
     address='0x0000000000000000000000000000000000000000',
-    info=CoinInfo(coingecko_id='boba-network'),
+    info=CoinInfo(coingecko_id=CoingeckoId.BOBA),
 )
 
 COIN_METIS = Coin(
@@ -272,7 +284,7 @@ COIN_METIS = Coin(
     decimals=18,
     blockchain=Blockchain.METIS_ANDROMEDA,
     address='0x0000000000000000000000000000000000000000',
-    info=CoinInfo(coingecko_id='metis-token'),
+    info=CoinInfo(coingecko_id=CoingeckoId.METIS),
 )
 
 COIN_BTT = Coin(
@@ -281,7 +293,7 @@ COIN_BTT = Coin(
     decimals=18,
     blockchain=Blockchain.BIT_TORRENT,
     address='TAFjULxiVgT4qWk6UZwjqwZXTSaGaqnVp4',
-    info=CoinInfo(coingecko_id='bittorrent'),
+    info=CoinInfo(coingecko_id=CoingeckoId.BIT_TORRENT),
 )
 
 COIN_AURORA = Coin(
@@ -290,7 +302,7 @@ COIN_AURORA = Coin(
     decimals=18,
     blockchain=Blockchain.AURORA,
     address='0xaaaaaa20d9e0e2461697782ef11675f668207961',
-    info=CoinInfo(coingecko_id='aurora-near'),
+    info=CoinInfo(coingecko_id=CoingeckoId.AURORA),
 )
 
 COIN_AURORA_AETH = Coin(
@@ -299,7 +311,7 @@ COIN_AURORA_AETH = Coin(
     decimals=18,
     blockchain=Blockchain.AURORA,
     address='0xc9bdeed33cd01541e1eed10f90519d2c06fe3feb',
-    info=CoinInfo(coingecko_id='weth'),
+    info=CoinInfo(coingecko_id=CoingeckoId.WETH),  # inconsistent: AETH <-> WETH
 )
 
 COIN_GLMR = Coin(
@@ -307,7 +319,7 @@ COIN_GLMR = Coin(
     name='Moonbeam',
     decimals=18,
     blockchain=Blockchain.MOONBEAM,
-    info=CoinInfo(coingecko_id='moonbeam'),
+    info=CoinInfo(coingecko_id=CoingeckoId.MOONBEAM),
 )
 
 COIN_FUSE = Coin(
@@ -316,7 +328,7 @@ COIN_FUSE = Coin(
     decimals=18,
     blockchain=Blockchain.FUSE,
     address='0x0000000000000000000000000000000000000000',
-    info=CoinInfo(coingecko_id='fuse-network-token'),
+    info=CoinInfo(coingecko_id=CoingeckoId.FUSE),
 )
 
 COIN_ONE = Coin(
@@ -324,7 +336,7 @@ COIN_ONE = Coin(
     name='Harmony',
     decimals=18,
     blockchain=Blockchain.HARMONY,
-    info=CoinInfo(coingecko_id='harmony'),
+    info=CoinInfo(coingecko_id=CoingeckoId.HARMONY),
 )
 
 COIN_ASTR = Coin(
@@ -332,7 +344,7 @@ COIN_ASTR = Coin(
     name='Astar',
     decimals=18,
     blockchain=Blockchain.ASTAR,
-    info=CoinInfo(coingecko_id='astar'),
+    info=CoinInfo(coingecko_id=CoingeckoId.ASTAR),
 )
 
 COIN_WAN = Coin(
@@ -340,7 +352,7 @@ COIN_WAN = Coin(
     name='Wanchain',
     decimals=18,
     blockchain=Blockchain.WANCHAIN,
-    info=CoinInfo(coingecko_id='wanchain'),
+    info=CoinInfo(coingecko_id=CoingeckoId.WANCHAIN),
 )
 
 COIN_KCS = Coin(
@@ -348,7 +360,7 @@ COIN_KCS = Coin(
     name='KuCoin',
     decimals=18,
     blockchain=Blockchain.KUCOIN,
-    info=CoinInfo(coingecko_id='kucoin-shares'),
+    info=CoinInfo(coingecko_id=CoingeckoId.KUCOIN),
 )
 
 COIN_SGB = Coin(
@@ -356,7 +368,7 @@ COIN_SGB = Coin(
     name='Songbird',
     decimals=18,
     blockchain=Blockchain.SONGBIRD,
-    info=CoinInfo(coingecko_id='songbird'),
+    info=CoinInfo(coingecko_id=CoingeckoId.SONGBIRD),
 )
 
 COIN_EVMOS = Coin(
@@ -364,7 +376,7 @@ COIN_EVMOS = Coin(
     name='EvmOS',
     decimals=18,
     blockchain=Blockchain.COSMOS,
-    info=CoinInfo(coingecko_id='evmos'),
+    info=CoinInfo(coingecko_id=CoingeckoId.EVMOS),
 )
 
 COIN_TLOS = Coin(
@@ -372,6 +384,7 @@ COIN_TLOS = Coin(
     name='Telos',
     decimals=18,
     blockchain=Blockchain.TELOS,
+    info=CoinInfo(coingecko_id=CoingeckoId.TELOS),
 )
 
 COIN_BOS = Coin(symbol='BOS', name="BosCoin", decimals=7, blockchain=Blockchain.BOS)
@@ -381,7 +394,7 @@ COIN_BTC = Coin(
     name='Bitcoin',
     decimals=8,
     blockchain=Blockchain.BITCOIN,
-    info=CoinInfo(coingecko_id='bitcoin'),
+    info=CoinInfo(coingecko_id=CoingeckoId.BITCOIN),
 )
 
 COIN_LTC = Coin(
@@ -389,7 +402,7 @@ COIN_LTC = Coin(
     name='Litecoin',
     decimals=8,
     blockchain=Blockchain.LITECOIN,
-    info=CoinInfo(coingecko_id='litecoin'),
+    info=CoinInfo(coingecko_id=CoingeckoId.LITECOIN),
 )
 
 
@@ -398,7 +411,7 @@ COIN_DOGE = Coin(
     name='Dogecoin',
     decimals=8,
     blockchain=Blockchain.DOGECHAIN,
-    info=CoinInfo(coingecko_id='dogecoin'),
+    info=CoinInfo(coingecko_id=CoingeckoId.DOGECOIN),
 )
 
 COIN_SNX = Coin(
@@ -407,7 +420,7 @@ COIN_SNX = Coin(
     decimals=18,
     address='0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
     blockchain=Blockchain.ETHEREUM,
-    info=CoinInfo(coingecko_id='havven'),
+    info=CoinInfo(coingecko_id=CoingeckoId.SYNTHETIX),
 )
 
 
@@ -417,5 +430,5 @@ COIN_CANTO = Coin(
     decimals=18,
     blockchain=Blockchain.CANTO,
     address='0x826551890dc65655a0aceca109ab11abdbd7a07b',
-    info=CoinInfo(coingecko_id='canto'),
+    info=CoinInfo(coingecko_id=CoingeckoId.CANTO),
 )

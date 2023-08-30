@@ -1,34 +1,12 @@
-from blockapi.v2.coins import (
-    COIN_ASTR,
-    COIN_AURORA,
-    COIN_AURORA_AETH,
-    COIN_AVAX,
-    COIN_BNB,
-    COIN_BOBA,
-    COIN_BTT,
-    COIN_CANTO,
-    COIN_CELO,
-    COIN_CRO,
-    COIN_ETH,
-    COIN_FTM,
-    COIN_FUSE,
-    COIN_GLMR,
-    COIN_IOTX,
-    COIN_KCS,
-    COIN_KLAY,
-    COIN_MATIC,
-    COIN_METIS,
-    COIN_MOVR,
-    COIN_OKT,
-    COIN_ONE,
-    COIN_OP,
-    COIN_RSK,
-    COIN_SGB,
-    COIN_TLOS,
-    COIN_WAN,
-    COIN_XDAI,
+# noinspection PyUnresolvedReferences
+from blockapi.v2.coins import *
+from blockapi.v2.models import (
+    AssetType,
+    Blockchain,
+    Coin,
+    CoingeckoId,
+    CoingeckoMapping,
 )
-from blockapi.v2.models import AssetType, Blockchain, Coin
 
 DEBANK_ASSET_TYPES = {
     'deposit': AssetType.DEPOSITED,
@@ -45,41 +23,94 @@ REWARD_ASSET_TYPE_MAP = {
     AssetType.LOCKED: AssetType.REWARDS,
 }
 
-
-NATIVE_COIN_MAP = {
-    ('astar', COIN_ASTR.symbol): COIN_ASTR,
-    ('avax', COIN_AVAX.symbol): COIN_AVAX,
-    ('aurora', COIN_AURORA.symbol): COIN_AURORA,
-    ('aurora', COIN_AURORA_AETH.symbol): COIN_AURORA_AETH,
-    ('bsc', COIN_BNB.symbol): COIN_BNB,
-    ('boba', COIN_BOBA.symbol): COIN_BOBA,
-    ('btt', COIN_BTT.symbol): COIN_BTT,
-    ('canto', COIN_CANTO.symbol): COIN_CANTO,
-    ('celo', COIN_CELO.symbol): COIN_CELO,
-    ('cro', COIN_CRO.symbol): COIN_CRO,
-    ('eth', COIN_ETH.symbol): COIN_ETH,
-    ('ftm', COIN_FTM.symbol): COIN_FTM,
-    ('fuse', COIN_FUSE.symbol): COIN_FUSE,
-    ('hmy', COIN_ONE.symbol): COIN_ONE,
-    ('iotex', COIN_IOTX.symbol): COIN_IOTX,
-    ('kcc', COIN_KCS.symbol): COIN_KCS,
-    ('klay', COIN_KLAY.symbol): COIN_KLAY,
-    ('matic', COIN_MATIC.symbol): COIN_MATIC,
-    ('metis', COIN_METIS.symbol): COIN_METIS,
-    ('mobm', COIN_GLMR.symbol): COIN_GLMR,
-    ('movr', COIN_MOVR.symbol): COIN_MOVR,
-    ('okt', COIN_OKT.symbol): COIN_OKT,
-    ('op', COIN_OP.symbol): COIN_OP,
-    ('rsk', COIN_RSK.symbol): COIN_RSK,
-    ('sgb', COIN_SGB.symbol): COIN_SGB,
-    ('xdai', COIN_XDAI.symbol): COIN_XDAI,
-    ('tlos', COIN_TLOS.symbol): COIN_TLOS,
-    ('wan', COIN_WAN.symbol): COIN_WAN,
-}
-
-
-ALL_COINS = {
-    var.symbol.lower(): var
+ALL_COINS = [
+    var
     for var_name, var in globals().items()
     if isinstance(var, Coin) and var_name.startswith("COIN_")
+]
+
+NATIVE_COIN_MAP: dict[tuple[Blockchain, CoingeckoId], Coin] = {
+    (coin.blockchain, coin.info.coingecko_id): coin
+    for coin in ALL_COINS
+    if coin.info and coin.info.coingecko_id
 }
+
+COINGECKO_IDS_BY_CONTRACTS: list[CoingeckoMapping] = [
+    CoingeckoMapping(
+        symbol='ETH',
+        coingecko_id=CoingeckoId.ETHEREUM,
+        contracts={
+            'arb',
+            'aurora',
+            'base',
+            'boba',
+            'era',
+            'etc',
+            'eth',
+            'linea',
+            'nova',
+            'op',
+            'pze',
+            'zora',
+        },
+    ),
+    CoingeckoMapping(
+        symbol='AURORA', coingecko_id=CoingeckoId.AURORA, contracts={'aurora'}
+    ),
+    CoingeckoMapping(
+        symbol='AETH', coingecko_id=CoingeckoId.WETH, contracts={'aurora'}
+    ),
+    CoingeckoMapping(
+        symbol='ASTR', coingecko_id=CoingeckoId.ASTAR, contracts={'astar'}
+    ),
+    CoingeckoMapping(
+        symbol='AVAX', coingecko_id=CoingeckoId.AVALANCHE, contracts={'avax'}
+    ),
+    CoingeckoMapping(
+        symbol='BNB', coingecko_id=CoingeckoId.BINANCE, contracts={'bsc', 'opbnb'}
+    ),
+    CoingeckoMapping(symbol='BOBA', coingecko_id=CoingeckoId.BOBA, contracts={'boba'}),
+    CoingeckoMapping(
+        symbol='BTT', coingecko_id=CoingeckoId.BIT_TORRENT, contracts={'btt'}
+    ),
+    CoingeckoMapping(
+        symbol='CANTO', coingecko_id=CoingeckoId.CANTO, contracts={'canto'}
+    ),
+    CoingeckoMapping(symbol='CELO', coingecko_id=CoingeckoId.CELO, contracts={'celo'}),
+    CoingeckoMapping(symbol='CRO', coingecko_id=CoingeckoId.CRONOS, contracts={'cro'}),
+    CoingeckoMapping(symbol='FTM', coingecko_id=CoingeckoId.FANTOM, contracts={'ftm'}),
+    CoingeckoMapping(symbol='FUSE', coingecko_id=CoingeckoId.FUSE, contracts={'fuse'}),
+    CoingeckoMapping(symbol='ONE', coingecko_id=CoingeckoId.HARMONY, contracts={'hmy'}),
+    CoingeckoMapping(
+        symbol='IOTX', coingecko_id=CoingeckoId.IOTEX, contracts={'iotex'}
+    ),
+    CoingeckoMapping(symbol='KCS', coingecko_id=CoingeckoId.KUCOIN, contracts={'kcc'}),
+    CoingeckoMapping(symbol='KLAY', coingecko_id=CoingeckoId.KLAY, contracts={'klay'}),
+    CoingeckoMapping(
+        symbol='MATIC', coingecko_id=CoingeckoId.MATIC, contracts={'matic'}
+    ),
+    CoingeckoMapping(
+        symbol='METIS', coingecko_id=CoingeckoId.METIS, contracts={'metis'}
+    ),
+    CoingeckoMapping(
+        symbol='GLMR', coingecko_id=CoingeckoId.MOONBEAM, contracts={'mobm'}
+    ),
+    CoingeckoMapping(
+        symbol='MOVR', coingecko_id=CoingeckoId.MOONBEAM_MOONRIVER, contracts={'movr'}
+    ),
+    CoingeckoMapping(symbol='OKT', coingecko_id=CoingeckoId.OKT, contracts={'okt'}),
+    CoingeckoMapping(symbol='OP', coingecko_id=CoingeckoId.OPTIMISM, contracts={'op'}),
+    CoingeckoMapping(
+        symbol='PERP', coingecko_id=CoingeckoId.PERPETUAL, contracts={'eth'}
+    ),
+    CoingeckoMapping(symbol='RON', coingecko_id=CoingeckoId.RONIN, contracts={'ron'}),
+    CoingeckoMapping(symbol='RBTC', coingecko_id=CoingeckoId.RSK, contracts={'rsk'}),
+    CoingeckoMapping(
+        symbol='SGB', coingecko_id=CoingeckoId.SONGBIRD, contracts={'sgb'}
+    ),
+    CoingeckoMapping(symbol='XDAI', coingecko_id=CoingeckoId.XDAI, contracts={'xdai'}),
+    CoingeckoMapping(symbol='TLOS', coingecko_id=CoingeckoId.TELOS, contracts={'tlos'}),
+    CoingeckoMapping(
+        symbol='WAN', coingecko_id=CoingeckoId.WANCHAIN, contracts={'wan'}
+    ),
+]
