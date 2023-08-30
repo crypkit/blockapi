@@ -249,11 +249,7 @@ class DebankProtocolCache:
 
 @lru_cache
 def get_coingecko_id(contract, symbol) -> Optional[CoingeckoId]:
-    for it in COINGECKO_MAP:
-        if it.symbol == symbol and contract in it.contracts:
-            return it.coingecko_id
-
-    return None
+    return next((it.coingecko_id for it in COINGECKO_MAP if it.symbol == symbol and contract in it.contracts), None)
 
 
 class DebankBalanceParser:
