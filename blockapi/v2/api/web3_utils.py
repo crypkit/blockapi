@@ -4,7 +4,6 @@ import os
 from typing import List, Optional, Tuple, Union
 
 from web3 import Web3
-from web3 import contract as web3_contract_module
 from web3.contract import Contract
 from web3.types import BlockIdentifier
 
@@ -14,46 +13,6 @@ LATEST_BLOCK: BlockIdentifier = "latest"
 logger = logging.getLogger(__name__)
 
 env_variables = os.environ
-
-
-def rate_limit_web3(func):
-    """
-    Rate limiting decorator for WEB3.
-    Rate-limit can differ using multiple providers.
-    """
-
-    @functools.wraps(func)
-    def inner(web3: Web3, *args, **kwargs):
-        # TODO move rate-limits somewhere
-        if 'api.anyblock' in web3.provider.endpoint_uri:
-            # set rate limit for:
-            #   - 0.12s (500 reqs/min) in case of prod env
-            #   - 30s (2 reqs/min) otherwise (dev/test/staging env)
-            rl = 0.12 if current_env in (Env.DEV, Env.PROD) else 30
-            apply_rate_limit(rl, 'anyblock')
-
-        return func(web3, *args, **kwargs)
-
-    return inner
-
-
-def patch_w3():
-    """
-    Monkeypatch RPC call using web3.
-    We patch `call_contract_function`, because it's nearest point before
-    RPC endpoint is called.
-    """
-    global _web3_patched
-    if _web3_patched:
-        return
-
-    web3_contract_module.call_contract_function = rate_limit_web3(
-        web3_contract_module.call_contract_function
-    )
-    _web3_patched = True
-
-
-patch_w3()
 
 
 def easy_call(
