@@ -34,14 +34,10 @@ class EthplorerApi(BlockchainApi, BalanceMixin):
         super().__init__(api_key)
 
     def fetch_balances(self, address: str) -> FetchResult:
-        status, headers, data, errors = self.get_data(
+        return self.get_data(
             'get_info',
             address=address,
             api_key=self.api_key,
-        )
-
-        return FetchResult(
-            status_code=status, headers=headers, data=data, errors=errors
         )
 
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
