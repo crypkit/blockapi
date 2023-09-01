@@ -2,6 +2,31 @@
 
 
 
+## v0.26.2 (2023-09-01)
+
+### Chore
+
+* chore(deps): bump requests from 2.28.1 to 2.31.0 (#124)
+
+Bumps [requests](https://github.com/psf/requests) from 2.28.1 to 2.31.0.
+- [Release notes](https://github.com/psf/requests/releases)
+- [Changelog](https://github.com/psf/requests/blob/main/HISTORY.md)
+- [Commits](https://github.com/psf/requests/compare/v2.28.1...v2.31.0)
+
+---
+updated-dependencies:
+- dependency-name: requests
+  dependency-type: direct:production
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt;
+Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.github.com&gt; ([`1e74df9`](https://github.com/crypkit/blockapi/commit/1e74df9f7d00c24cec8dcc4da5f5a89363a13d4f))
+
+### Fix
+
+* fix: Add tests for fetchers (#140) ([`fb205f5`](https://github.com/crypkit/blockapi/commit/fb205f588bcc4e564b9db056686fd8a229602fa8))
+
+
 ## v0.26.1 (2023-08-30)
 
 ### Fix
@@ -9,6 +34,10 @@
 * fix: Add blockchains and mapping (#139)
 
 Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https://github.com/crypkit/blockapi/commit/bf20508a80ebca1b748f5eacb3c1b04b712759e1))
+
+### Unknown
+
+* 0.26.1 ([`fc504a8`](https://github.com/crypkit/blockapi/commit/fc504a8e4e2d77254a143bc1262a0108acaa2c71))
 
 
 ## v0.26.0 (2023-08-23)
