@@ -2,6 +2,13 @@
 
 
 
+## v0.26.3 (2023-09-01)
+
+### Fix
+
+* fix: Remove unusable web3 limiter method (#141) ([`610e592`](https://github.com/crypkit/blockapi/commit/610e5928ba8bc02c971467b379b1b8eb58e983e1))
+
+
 ## v0.26.2 (2023-09-01)
 
 ### Chore
@@ -25,6 +32,10 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 ### Fix
 
 * fix: Add tests for fetchers (#140) ([`fb205f5`](https://github.com/crypkit/blockapi/commit/fb205f588bcc4e564b9db056686fd8a229602fa8))
+
+### Unknown
+
+* 0.26.2 ([`c9f7486`](https://github.com/crypkit/blockapi/commit/c9f748606d7902cb968ab93541e5ad36b13a5aa2))
 
 
 ## v0.26.1 (2023-08-30)
