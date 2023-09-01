@@ -1,0 +1,835 @@
+{
+  "address": "0x539c92186f7c6cc4cbf443f26ef84c595babbca1",
+  "ETH": {
+    "price": {
+      "rate": 1644.2905729104284,
+      "diff": -3.54,
+      "diff7d": -0.4,
+      "ts": 1693551660,
+      "marketCapUsd": 197669260173.9959,
+      "availableSupply": 120215528.46594335,
+      "volume24h": 6776575998.453537,
+      "volDiff1": 23.559541879355336,
+      "volDiff7": 3.380433074812217,
+      "volDiff30": -8.799616967950982,
+      "diff30d": -11.420069996679388
+    },
+    "balance": 250000.000036,
+    "rawBalance": "250000000036000000000000"
+  },
+  "tokens": [
+    {
+      "tokenInfo": {
+        "address": "0x22a39c2dd54b71ac884657bb3e37308abe2d02e1",
+        "name": "USD",
+        "decimals": "18",
+        "symbol": "USD",
+        "totalSupply": "109741238856659811229091812466202393846000764280353943393245107669454606528884",
+        "owner": "0x0e88d68ddd2ae0465acc9552260569bcf4c33685",
+        "lastUpdated": 1682400365,
+        "issuancesCount": 0,
+        "price": false,
+        "holdersCount": 3019,
+        "ethTransfersCount": 0
+      },
+      "balance": 1.157920892373162e+59,
+      "rawBalance": "115792089237316195423570985008687907853269984665640564039457"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x11cbb069aa7f8fbf00c62206d1239e11dc62624e",
+        "name": "Contract and Artificial Intelligence coin",
+        "decimals": "18",
+        "symbol": "CTTA",
+        "totalSupply": "21000000000000000000000000",
+        "owner": "",
+        "lastUpdated": 1653130700,
+        "issuancesCount": 0,
+        "holdersCount": 1521,
+        "ethTransfersCount": 0,
+        "price": false
+      },
+      "balance": 8.8888e+18,
+      "rawBalance": "8888800000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x6523cb39f720c8686fba19abeaac2a99150b5350",
+        "decimals": "18",
+        "name": "Medical data link",
+        "owner": "0xbc8e1aca830a37646cedeb14c7158f3f1529c909",
+        "symbol": "MENT",
+        "totalSupply": "80000000000000000000000000",
+        "lastUpdated": 1635517079,
+        "issuancesCount": 0,
+        "holdersCount": 310,
+        "ethTransfersCount": 0,
+        "price": false
+      },
+      "balance": 1.2e+19,
+      "rawBalance": "12000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xef1344bdf80bef3ff4428d8becec3eea4a2cf574",
+        "name": "Era Swap Token",
+        "decimals": "18",
+        "symbol": "ES",
+        "totalSupply": "1475550941125151737978487032",
+        "owner": "",
+        "lastUpdated": 1663491039,
+        "issuancesCount": 30,
+        "holdersCount": 16965,
+        "description": "Era Swap Token (ES)\r\nis a decentralized utility token currently based on Ethereum blockchain (ERC20) used on multiple platforms for exchange of services (P2P), avail discounts, rewards and more utility.",
+        "website": "https://eraswaptoken.io/",
+        "image": "/images/es.png",
+        "ethTransfersCount": 0,
+        "price": {
+          "rate": 0.00507194776458381,
+          "diff": -2.68,
+          "diff7d": 6.92,
+          "ts": 1693551480,
+          "marketCapUsd": 10792645.268979799,
+          "availableSupply": 2127909389.0402899,
+          "volume24h": 263622.74050607,
+          "volDiff1": 5.890355288877288,
+          "volDiff7": 26.800408411064055,
+          "volDiff30": -0.9709817746662281,
+          "currency": "USD"
+        }
+      },
+      "balance": 2.5e+19,
+      "rawBalance": "25000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x2b591e99afe9f32eaa6214f7b7629768c40eeb39",
+        "name": "HEX",
+        "decimals": "8",
+        "symbol": "HEX",
+        "totalSupply": "59006084546586711339",
+        "owner": "",
+        "lastUpdated": 1693551531,
+        "issuancesCount": 1238283,
+        "price": {
+          "rate": 0.00386643608658148,
+          "diff": -0.05,
+          "diff7d": 8.52,
+          "ts": 1693551480,
+          "marketCapUsd": 670482835.9235407,
+          "availableSupply": 173411074413.06497,
+          "volume24h": 776457.4295119593,
+          "volDiff1": 34.85964247145401,
+          "volDiff7": 20.711845954220195,
+          "volDiff30": -48.306180639870746,
+          "diff30d": -54.99894398942347,
+          "bid": 0.163126,
+          "currency": "USD"
+        },
+        "holdersCount": 329167,
+        "image": "/images/HEX2b591e99.png",
+        "website": "https://hex.com",
+        "ethTransfersCount": 121236
+      },
+      "balance": 100000000000,
+      "rawBalance": "100000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x28cb7e841ee97947a86b06fa4090c8451f64c0be",
+        "name": "YF Link",
+        "decimals": "18",
+        "symbol": "YFL",
+        "totalSupply": "57000000000000000000000",
+        "owner": "",
+        "lastUpdated": 1693481362,
+        "issuancesCount": 7,
+        "price": {
+          "rate": 5.49593787458196,
+          "diff": 0,
+          "diff7d": 0,
+          "ts": 1692209940,
+          "marketCapUsd": 299706.1865153209,
+          "availableSupply": 54532.30974488,
+          "volume24h": 0,
+          "volDiff1": 23531.84278928674,
+          "volDiff7": -100,
+          "volDiff30": -78.55814031104134,
+          "diff30d": -20.60503077187971,
+          "bid": 59.95,
+          "currency": "USD"
+        },
+        "holdersCount": 4829,
+        "image": "/images/YFL28cb7e84.png",
+        "website": "https://yflink.io/",
+        "ethTransfersCount": 0,
+        "publicTags": [
+          "Yield Farming",
+          "Yearn",
+          "Governance",
+          "DeFi"
+        ]
+      },
+      "balance": 69000000000000,
+      "rawBalance": "69000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x51bb9c623226ce781f4a54fc8f4a530a47142b6b",
+        "decimals": "18",
+        "name": "Peet DeFi",
+        "owner": "0x4aaa4f920b9cd7a171e665846b0f35bea777d3b1",
+        "symbol": "PTE",
+        "totalSupply": "100000000000000000000000",
+        "lastUpdated": 1664193336,
+        "issuancesCount": 1,
+        "holdersCount": 648,
+        "website": "https://peetdecentralized.finance",
+        "image": "/images/PTE51bb9c62.png",
+        "ethTransfersCount": 0,
+        "price": false
+      },
+      "balance": 502175771525,
+      "rawBalance": "502175771525"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x9f7229af0c4b9740e207ea283b9094983f78ba04",
+        "decimals": "18",
+        "name": "Tadpole",
+        "owner": "",
+        "symbol": "TAD",
+        "totalSupply": "999050000000000000000000",
+        "lastUpdated": 1691803347,
+        "issuancesCount": 8,
+        "price": {
+          "rate": 4.198001098269578,
+          "diff": 0.01,
+          "diff7d": 0.07,
+          "ts": 1669730220,
+          "marketCapUsd": 4192638.0843238914,
+          "availableSupply": 998722.48391076,
+          "volume24h": 42.39534489203232,
+          "volDiff1": -99.89191423511014,
+          "volDiff7": -100,
+          "volDiff30": -100,
+          "bid": 3.89,
+          "currency": "USD"
+        },
+        "holdersCount": 914,
+        "website": "https://tadpole.finance",
+        "image": "/images/TAD9f7229af.jpg",
+        "ethTransfersCount": 0
+      },
+      "balance": 100000000000000,
+      "rawBalance": "100000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xdacd69347de42babfaecd09dc88958378780fb62",
+        "decimals": "0",
+        "name": "Atari",
+        "symbol": "ATRI",
+        "totalSupply": "7771000000",
+        "lastUpdated": 1693538198,
+        "owner": "",
+        "issuancesCount": 0,
+        "price": {
+          "rate": 0.0024337342382275734,
+          "diff": -13.28,
+          "diff7d": -7.87,
+          "ts": 1684730280,
+          "marketCapUsd": 3604584.7606057874,
+          "availableSupply": 1481092185,
+          "volume24h": 8505.53545957,
+          "volDiff1": 83846.9552760556,
+          "volDiff7": -50.62433253610914,
+          "volDiff30": -50.18269858836039,
+          "diff30d": -12.21090426265205,
+          "bid": 0.01042625,
+          "currency": "USD"
+        },
+        "holdersCount": 20698,
+        "website": "https://www.atarichain.com",
+        "image": "/images/ATRIdacd6934.png",
+        "ethTransfersCount": 0,
+        "publicTags": [
+          "NFT"
+        ]
+      },
+      "balance": 1,
+      "rawBalance": "1"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x81859801b01764d4f0fa5e64729f5a6c3b91435b",
+        "decimals": "18",
+        "name": "bearn.fi",
+        "owner": "0x8c8369e267e8594bbdd9f2da200cda5e2f8bae05",
+        "symbol": "BFIE",
+        "totalSupply": "6985077688261650913363",
+        "lastUpdated": 1693188665,
+        "issuancesCount": 1439,
+        "price": false,
+        "holdersCount": 286,
+        "ethTransfersCount": 0
+      },
+      "balance": 8888888899999999,
+      "rawBalance": "8888888899999999"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xcf77b1cd3a5d5a1620077c303d05f4900a3230fe",
+        "decimals": "18",
+        "name": "STAKETH",
+        "symbol": "SETH",
+        "totalSupply": "10000000000000000000000000",
+        "lastUpdated": 1676842249,
+        "issuancesCount": 0,
+        "holdersCount": 208,
+        "ethTransfersCount": 0,
+        "price": false
+      },
+      "balance": 1000000000000000,
+      "rawBalance": "1000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x22b48e1f20043d1db5f2a11cbf1d520a4f20b198",
+        "decimals": "18",
+        "name": "Okuru",
+        "owner": "0x0865731c5040d9b858c8083713f0983dc64444c2",
+        "symbol": "XOT",
+        "totalSupply": "150000000000000000000001",
+        "lastUpdated": 1687449784,
+        "issuancesCount": 2,
+        "price": {
+          "rate": 14.30509582383075,
+          "diff": -6.25,
+          "diff7d": 0.28,
+          "ts": 1693551180,
+          "marketCapUsd": 855670.2734789195,
+          "availableSupply": 0,
+          "volume24h": 30984.385982853557,
+          "volDiff1": -5.981306787808194,
+          "volDiff7": 15.117622914524233,
+          "volDiff30": -11.613685322804173,
+          "currency": "USD"
+        },
+        "holdersCount": 460,
+        "website": "https://okurutoken.org",
+        "image": "/images/XOT22b48e1f.png",
+        "ethTransfersCount": 0
+      },
+      "balance": 50000000000000,
+      "rawBalance": "50000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x7e4bda660237d0e5c42890b3e5f7dcf8853f5085",
+        "decimals": "18",
+        "name": "Minilop",
+        "symbol": "MINI",
+        "totalSupply": "300000000000000000000000000000",
+        "lastUpdated": 1627208234,
+        "issuancesCount": 1,
+        "holdersCount": 102,
+        "ethTransfersCount": 0,
+        "price": false
+      },
+      "balance": 1.963857e+24,
+      "rawBalance": "1963857000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xed04915c23f00a313a544955524eb7dbd823143d",
+        "name": "Alchemy",
+        "decimals": "8",
+        "symbol": "ACH",
+        "totalSupply": "1000000000000000000",
+        "owner": "",
+        "lastUpdated": 1693549379,
+        "issuancesCount": 0,
+        "price": {
+          "rate": 0.013314729583556017,
+          "diff": -4.5,
+          "diff7d": -0.48,
+          "ts": 1693551480,
+          "marketCapUsd": 89045738.62223057,
+          "availableSupply": 6687761705.067147,
+          "volume24h": 8981544.78747297,
+          "volDiff1": 19.13767431097415,
+          "volDiff7": -4.867669220952251,
+          "volDiff30": -15.470459429142608,
+          "diff30d": -25.21467122298695,
+          "bid": 0.02745209,
+          "currency": "USD"
+        },
+        "holdersCount": 25543,
+        "ethTransfersCount": 0
+      },
+      "balance": 500000000,
+      "rawBalance": "500000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x2ee543b8866f46cc3dc93224c6742a8911a59750",
+        "decimals": "18",
+        "name": "MetaVerse Dog",
+        "owner": "0x1f68c9990097f31d1968da614edfb6c17456be49",
+        "symbol": "MVDG",
+        "totalSupply": "100000000000000000000000000000",
+        "lastUpdated": 1693510478,
+        "issuancesCount": 1,
+        "price": false,
+        "holdersCount": 4094,
+        "website": "https://metaversedogcrypto.com",
+        "image": "/images/MVDG2ee543b8.png",
+        "ethTransfersCount": 0
+      },
+      "balance": 1.0e+22,
+      "rawBalance": "10000000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xba6b0dbb2ba8daa8f5d6817946393aef8d3a4487",
+        "decimals": "18",
+        "name": "Hillstone",
+        "owner": "0x59803c06151a10a879b1d9f49e5a5603cd3ea203",
+        "symbol": "HSF",
+        "totalSupply": "100000000000000000000000000",
+        "lastUpdated": 1692955934,
+        "issuancesCount": 1,
+        "price": {
+          "rate": 0.614297853392514,
+          "diff": -0.61,
+          "diff7d": -10.85,
+          "ts": 1693551480,
+          "marketCapUsd": 18435982.212451685,
+          "availableSupply": 30011471,
+          "volume24h": 130978.42556754005,
+          "volDiff1": 447.5982602060682,
+          "volDiff7": -67.01386441038568,
+          "volDiff30": -7.235572730977452,
+          "diff30d": -8.652842647981913,
+          "bid": 3.19,
+          "currency": "USD"
+        },
+        "holdersCount": 3544,
+        "website": "https://hillstone.finance",
+        "image": "/images/HSFba6b0dbb.png",
+        "ethTransfersCount": 0
+      },
+      "balance": 1.0e+18,
+      "rawBalance": "1000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x14d1b27d79e97e96622618f9d4fa9b1e1e9ef082",
+        "decimals": "0",
+        "name": "$ ethLR.com",
+        "owner": "0xdf120a3e36ba6bf32752e47d2d827c1ddd848bab",
+        "symbol": "$ ethLR.com @ $1290",
+        "totalSupply": "0",
+        "issuancesCount": 2,
+        "lastUpdated": 1664368281,
+        "holdersCount": 9507,
+        "ethTransfersCount": 0,
+        "price": false
+      },
+      "balance": 32,
+      "rawBalance": "32"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xa59e341e8047498700ed244814b01b34547fb21b",
+        "decimals": "18",
+        "name": "Medal of Honour",
+        "owner": "0xc6cf9aa3f3cc4b43fe99136599d3b011773de5b1",
+        "symbol": "MOH",
+        "totalSupply": "59018887103226050376000000",
+        "issuancesCount": 140,
+        "lastUpdated": 1693541504,
+        "price": {
+          "rate": 0.015604055634507757,
+          "diff": 0,
+          "diff7d": 0,
+          "ts": 1692465600,
+          "marketCapUsd": 0,
+          "availableSupply": 0,
+          "volume24h": 0,
+          "volDiff1": -100,
+          "volDiff7": -100,
+          "volDiff30": 271.96560475550706,
+          "currency": "USD"
+        },
+        "holdersCount": 5634,
+        "website": "https://versaillesheroes.com",
+        "image": "/images/MOHa59e341e.jpeg",
+        "ethTransfersCount": 0
+      },
+      "balance": 2.5e+19,
+      "rawBalance": "25000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x19d4beb2bc410b80084fcbd0ac024326f4d3a370",
+        "decimals": "18",
+        "name": "ViCA Token",
+        "symbol": "ViCA",
+        "totalSupply": "2000000000000000000000000000",
+        "lastUpdated": 1693185056,
+        "issuancesCount": 1,
+        "price": false,
+        "holdersCount": 3050,
+        "ethTransfersCount": 0
+      },
+      "balance": 1.0e+18,
+      "rawBalance": "1000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xfa52aed72100f36cfa6fe6679903ecab184a8ff3",
+        "decimals": "9",
+        "name": "Ai Archive",
+        "owner": "0x0000000000000000000000000000000000000000",
+        "symbol": "ARCHAI",
+        "totalSupply": "1000000000000000",
+        "issuancesCount": 1,
+        "lastUpdated": 1681663752,
+        "price": false,
+        "holdersCount": 350,
+        "ethTransfersCount": 1
+      },
+      "balance": 100000000,
+      "rawBalance": "100000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x232fb065d9d24c34708eedbf03724f2e95abe768",
+        "decimals": "18",
+        "name": "Sheesha Finance (ERC20)",
+        "owner": "0x994c790b4d2e916d4f58516bef4a32caa179b6c2",
+        "symbol": "SHEESHA",
+        "totalSupply": "99988314682316145386979",
+        "lastUpdated": 1693507721,
+        "issuancesCount": 824,
+        "price": {
+          "rate": 4.75647986492394,
+          "diff": -2.52,
+          "diff7d": 1.73,
+          "ts": 1693548180,
+          "marketCapUsd": 0,
+          "availableSupply": 0,
+          "volume24h": 291.07224235,
+          "volDiff1": -29.602521942639896,
+          "bid": 82.68,
+          "volDiff7": 1727.4703609884548,
+          "volDiff30": 939.738994725993,
+          "currency": "USD"
+        },
+        "holdersCount": 2536,
+        "website": "https://www.sheeshafinance.io",
+        "image": "/images/SHEESHA232fb065.png",
+        "ethTransfersCount": 307
+      },
+      "balance": 10000000000000000,
+      "rawBalance": "10000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x24da31e7bb182cb2cabfef1d88db19c2ae1f5572",
+        "decimals": "18",
+        "name": "Shikoku",
+        "symbol": "SHIK",
+        "totalSupply": "999966742242997299852385527621006",
+        "issuancesCount": 6,
+        "lastUpdated": 1693529355,
+        "price": {
+          "rate": 7.21922963148854e-10,
+          "diff": -3.69,
+          "diff7d": -1.53,
+          "ts": 1693551180,
+          "marketCapUsd": 322046.57616798853,
+          "availableSupply": 0,
+          "volume24h": 1771.6525662009274,
+          "volDiff1": -44.49870841145965,
+          "volDiff7": -75.62628635658533,
+          "volDiff30": -81.7442295619777,
+          "diff30d": -22.997006836387015,
+          "currency": "USD"
+        },
+        "holdersCount": 5600,
+        "website": "https://shikoku.io",
+        "image": "/images/SHIK24da31e7.png",
+        "ethTransfersCount": 0
+      },
+      "balance": 7.7777777e+25,
+      "rawBalance": "77777777000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xaa8b6f66d73f0e70ca38d05e73f196a3802aaf67",
+        "decimals": "18",
+        "name": "Berachain",
+        "price": false,
+        "symbol": "BERA",
+        "totalSupply": "420000000000000000000000000",
+        "issuancesCount": 1,
+        "lastUpdated": 1682014980,
+        "holdersCount": 54,
+        "ethTransfersCount": 0
+      },
+      "balance": 2.862622808372444e+24,
+      "rawBalance": "2862622808372443916106800"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x6ae1b9552c70290df0f8bd3e76328db59442e046",
+        "decimals": "18",
+        "name": "PSYOP",
+        "price": false,
+        "symbol": "PSYOP",
+        "totalSupply": "201601609771297180490563256088794146381158402928",
+        "issuancesCount": 1,
+        "lastUpdated": 1684530462,
+        "holdersCount": 796,
+        "ethTransfersCount": 0
+      },
+      "balance": 3.907549684073383e+30,
+      "rawBalance": "3907549684073383005761734256947"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xa00e87c7eee7d4698a232e609c994f81afcf763a",
+        "decimals": "18",
+        "name": "Pepepe",
+        "owner": "0xc8d71b9a4b53f6ea3a73bc6e5919e26395371e68",
+        "price": false,
+        "symbol": "PEPEPE",
+        "totalSupply": "420000000000000000000000000000",
+        "issuancesCount": 1,
+        "lastUpdated": 1684418548,
+        "holdersCount": 4,
+        "ethTransfersCount": 0
+      },
+      "balance": 1.0e+19,
+      "rawBalance": "10000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x3ead8f4fc0696baef42fa835d8b0d5c9195b5b39",
+        "decimals": "18",
+        "name": "PSYOP",
+        "price": false,
+        "symbol": "PSYOP",
+        "totalSupply": "555000000000000000000000000000",
+        "issuancesCount": 1,
+        "lastUpdated": 1684571949,
+        "holdersCount": 279,
+        "ethTransfersCount": 0
+      },
+      "balance": 6.595992173209356e+26,
+      "rawBalance": "659599217320935644577317070"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x0246d03b69d25616b805b683a1d8b7ff58ea65a9",
+        "decimals": "18",
+        "name": "XDME",
+        "symbol": "XDME",
+        "totalSupply": "1000000000000000000000000000000000",
+        "lastUpdated": 1692709972,
+        "issuancesCount": 1,
+        "price": false,
+        "holdersCount": 124,
+        "ethTransfersCount": 0
+      },
+      "balance": 1.0e+28,
+      "rawBalance": "10000000000000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x5b3c469c3e504e998f82f375a1999d3fe7c2f617",
+        "decimals": "18",
+        "name": "M4573RCH",
+        "price": false,
+        "symbol": "M4573RCH",
+        "totalSupply": "457345734573000000000000000000",
+        "issuancesCount": 1,
+        "lastUpdated": 1684600406,
+        "holdersCount": 72,
+        "ethTransfersCount": 0
+      },
+      "balance": 7.782715384954498e+26,
+      "rawBalance": "778271538495449727913705657"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xd445147129c1ec80e11afe9700a4713ca02026a7",
+        "decimals": "18",
+        "name": "DorkNerdGeek",
+        "owner": "0x5c5bcee6975df1bcf06343074f8723aab782ed5e",
+        "price": false,
+        "symbol": "DNG",
+        "totalSupply": "69420000000000000000000000000",
+        "issuancesCount": 1,
+        "lastUpdated": 1685670683,
+        "holdersCount": 204,
+        "ethTransfersCount": 0
+      },
+      "balance": 1.05e+20,
+      "rawBalance": "105000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xc5fb36dd2fb59d3b98deff88425a3f425ee469ed",
+        "decimals": "9",
+        "name": "Dejitaru Tsuka",
+        "owner": "0x0000000000000000000000000000000000000000",
+        "symbol": "TSUKA",
+        "totalSupply": "1000000000000000000",
+        "issuancesCount": 1,
+        "lastUpdated": 1693550998,
+        "price": {
+          "rate": 0.027023600895997757,
+          "diff": 8.89,
+          "diff7d": 77.44,
+          "ts": 1693551480,
+          "marketCapUsd": 27023600.895997755,
+          "availableSupply": 1000000000,
+          "volume24h": 3303324.57812357,
+          "volDiff1": 10.837923145885611,
+          "volDiff7": 282.5591903578058,
+          "volDiff30": 24.127198745382756,
+          "diff30d": -14.839863567868733,
+          "currency": "USD"
+        },
+        "holdersCount": 13067,
+        "website": "https://www.dejitarutsuka.io",
+        "image": "/images/TSUKAc5fb36dd.png",
+        "ethTransfersCount": 15
+      },
+      "balance": 1000000000,
+      "rawBalance": "1000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x152abf2cc6b3bbd8d51d2ee1678139b91c520482",
+        "decimals": "18",
+        "name": "FuckTheSEC",
+        "owner": "0x3e7230261402466733679c0d3c4027c956940988",
+        "price": false,
+        "symbol": "SEC",
+        "totalSupply": "10000000000000000000000000000000",
+        "issuancesCount": 1,
+        "lastUpdated": 1691536123,
+        "holdersCount": 204,
+        "ethTransfersCount": 0
+      },
+      "balance": 1.05e+20,
+      "rawBalance": "105000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x3440ab423ee3da4e74c439d3cfe601240b4bc5ea",
+        "decimals": "18",
+        "name": "Pepe",
+        "owner": "0x48d614f8a7cee21c3fec8db239280bcb71c1efda",
+        "price": false,
+        "symbol": "PEPE",
+        "totalSupply": "420690000000000000000000000000000",
+        "issuancesCount": 1,
+        "lastUpdated": 1689798327,
+        "holdersCount": 217,
+        "ethTransfersCount": 0
+      },
+      "balance": 1.05e+20,
+      "rawBalance": "105000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xfb243bc5e98286e8560f17c3f6b48203afe43139",
+        "decimals": "9",
+        "name": "Peepo",
+        "owner": "0x0000000000000000000000000000000000000000",
+        "price": false,
+        "symbol": "PEEPO",
+        "totalSupply": "1000000000000000000",
+        "issuancesCount": 1,
+        "lastUpdated": 1693540636,
+        "holdersCount": 500,
+        "ethTransfersCount": 0
+      },
+      "balance": 1000000000,
+      "rawBalance": "1000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0x0ee5d05ea883ac51ea35b7051433d4d3512b6740",
+        "decimals": "0",
+        "name": "aveth.site",
+        "price": false,
+        "symbol": "Rewards From https://aveth.site",
+        "totalSupply": "10000000000",
+        "issuancesCount": 0,
+        "lastUpdated": 1691048001,
+        "holdersCount": 8756,
+        "ethTransfersCount": 0
+      },
+      "balance": 2336,
+      "rawBalance": "2336"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xafbfe89f37f35c93001700eb6b6f5b99dda6a1d0",
+        "decimals": "18",
+        "name": "Barbie",
+        "owner": "0x7288d2b084f105f87abb1df358c241d2dd40f66d",
+        "price": false,
+        "symbol": "BARBIE",
+        "totalSupply": "69000000000000000000000000000",
+        "issuancesCount": 1,
+        "lastUpdated": 1692020551,
+        "holdersCount": 290,
+        "ethTransfersCount": 0
+      },
+      "balance": 1.0e+19,
+      "rawBalance": "10000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xb6ae3409853935b7bfeb83f283bbc95a77c732a9",
+        "decimals": "18",
+        "lastUpdated": 1693368342,
+        "name": "Neuralink",
+        "owner": "0x0000000000000000000000000000000000000000",
+        "price": false,
+        "symbol": "NLINK",
+        "totalSupply": "100000000000000000000000000000",
+        "issuancesCount": 1,
+        "holdersCount": 234,
+        "ethTransfersCount": 0
+      },
+      "balance": 1.0e+19,
+      "rawBalance": "10000000000000000000"
+    },
+    {
+      "tokenInfo": {
+        "address": "0xc6e7822e713b09cccf8a4655a83fc6b4f131a85b",
+        "decimals": "18",
+        "lastUpdated": 1693543350,
+        "name": "XElon",
+        "owner": "0x0000000000000000000000000000000000000000",
+        "price": false,
+        "symbol": "XELON",
+        "totalSupply": "100000000000000000000000000000",
+        "issuancesCount": 1,
+        "holdersCount": 288,
+        "ethTransfersCount": 0
+      },
+      "balance": 1.0e+19,
+      "rawBalance": "10000000000000000000"
+    }
+  ]
+}

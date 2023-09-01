@@ -84,9 +84,7 @@ class TerraFcdApi(BlockchainApi):
         'get_staking_data': '/v1/staking/{address}',
     }
 
-    def fetch_native_balances(
-        self, address: str
-    ) -> Tuple[int, Optional[dict], list[str]]:
+    def fetch_native_balances(self, address: str) -> FetchResult:
         return self.get_data('get_native_balances', address=address)
 
     def parse_native_balances(self, response: dict) -> List[BalanceItem]:
