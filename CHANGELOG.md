@@ -2,11 +2,22 @@
 
 
 
+## v0.27.0 (2023-09-11)
+
+### Feature
+
+* feat: Add new coingecko platforms mapping (#142) ([`f96424d`](https://github.com/crypkit/blockapi/commit/f96424deef055a7deb0a4a8b7a70fdc9ff8d30d5))
+
+
 ## v0.26.3 (2023-09-01)
 
 ### Fix
 
 * fix: Remove unusable web3 limiter method (#141) ([`610e592`](https://github.com/crypkit/blockapi/commit/610e5928ba8bc02c971467b379b1b8eb58e983e1))
+
+### Unknown
+
+* 0.26.3 ([`eaa9b81`](https://github.com/crypkit/blockapi/commit/eaa9b81b826471fa1c7748c42162e46ad55183d4))
 
 
 ## v0.26.2 (2023-09-01)
