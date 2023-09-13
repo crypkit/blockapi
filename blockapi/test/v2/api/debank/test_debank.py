@@ -80,14 +80,16 @@ def test_error_response_logs_error(
     )
     fetched = debank_api.fetch_balances("0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca")
     parsed = debank_api.parse_balances(fetched)
-    expected_error = {
-        'error': {
-            'id': 'User Address Unknown format '
-            '0xca8fa8f0b631ecdb18cda619c4fc9d197c8affc, attempted to '
-            'normalize to 0xca8fa8f0b631ecdb18cda619c4fc9d197c8affc'
-        },
-        'message': 'Input payload validation failed',
-    }
+    expected_error = [
+        {
+            'error': {
+                'id': 'User Address Unknown format '
+                '0xca8fa8f0b631ecdb18cda619c4fc9d197c8affc, attempted to '
+                'normalize to 0xca8fa8f0b631ecdb18cda619c4fc9d197c8affc'
+            },
+            'message': 'Input payload validation failed',
+        }
+    ]
 
     assert parsed.errors == expected_error
 
