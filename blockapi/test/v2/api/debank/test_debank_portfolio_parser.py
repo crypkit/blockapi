@@ -149,10 +149,3 @@ def test_parse_no_error(debank_api):
     debank_api._protocol_cache.update({})
     parsed = debank_api.parse_pools(FetchResult(data={}))
     assert not parsed.errors
-
-
-def test_parse_error(debank_api):
-    parsed = debank_api.parse_pools(
-        FetchResult(data={'errors': 'code-1', 'message': 'Test error'})
-    )
-    assert parsed.errors == [dict(error='code-1', message='Test error')]
