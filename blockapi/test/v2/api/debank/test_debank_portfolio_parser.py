@@ -5,7 +5,7 @@ from decimal import Decimal
 import pytest
 
 from blockapi.v2.api.debank import DebankModelPoolItemDetail, DebankModelPortfolioItem
-from blockapi.v2.models import AssetType
+from blockapi.v2.models import AssetType, FetchResult
 
 
 def test_empty_response(portfolio_parser, empty_response):
@@ -143,3 +143,16 @@ def test_require_pool_or_pool_id():
 def test_portfolio_with_unknown_chain(portfolio_parser, unknown_chain_response):
     parsed = portfolio_parser.parse(unknown_chain_response)
     assert parsed == []
+
+
+def test_parse_no_error(debank_api):
+    debank_api._protocol_cache.update({})
+    parsed = debank_api.parse_pools(FetchResult(data={}))
+    assert not parsed.errors
+
+
+def test_parse_error(debank_api):
+    parsed = debank_api.parse_pools(
+        FetchResult(data={'errors': 'code-1', 'message': 'Test error'})
+    )
+    assert parsed.errors == [dict(error='code-1', message='Test error')]

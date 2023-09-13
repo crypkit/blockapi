@@ -636,5 +636,5 @@ class FetchResult:
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class ParseResult:
     data: Optional[list[Union[BalanceItem, Pool]]] = None
-    warnings: Optional[list[str]] = None
-    errors: Optional[list[str]] = None
+    warnings: Optional[list[Union[str, dict]]] = None
+    errors: Optional[list[Union[str, dict]]] = None

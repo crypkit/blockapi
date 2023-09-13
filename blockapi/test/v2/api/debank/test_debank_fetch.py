@@ -15,9 +15,7 @@ def test_fetch_balances(real_debank_api):
 
 @pytest.mark.integration
 def test_fetch_portfolio(real_debank_api):
-    response = real_debank_api.fetch_portfolio(
-        '0x7a16ff8270133f063aab6c9977183d9e72835428'
-    )
+    response = real_debank_api.fetch_pools('0x7a16ff8270133f063aab6c9977183d9e72835428')
     _save('fetch-result-portfolio', response)
 
 
