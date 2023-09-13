@@ -2,11 +2,26 @@
 
 
 
+## v0.27.1 (2023-09-13)
+
+### Chore
+
+* chore: Run CI only once when merging branch (#143) ([`38b2db5`](https://github.com/crypkit/blockapi/commit/38b2db5ed532a25255b3a65b0768e3b37cf569c1))
+
+### Fix
+
+* fix: Don&#39;t detect errors on empty portfolio (#144) ([`157da4a`](https://github.com/crypkit/blockapi/commit/157da4a4ee4ce0d6166c75b7c95eb2f08ea210a5))
+
+
 ## v0.27.0 (2023-09-11)
 
 ### Feature
 
 * feat: Add new coingecko platforms mapping (#142) ([`f96424d`](https://github.com/crypkit/blockapi/commit/f96424deef055a7deb0a4a8b7a70fdc9ff8d30d5))
+
+### Unknown
+
+* 0.27.0 ([`aa0fa11`](https://github.com/crypkit/blockapi/commit/aa0fa116ad59104f9a7984bf8c105f4362563396))
 
 
 ## v0.26.3 (2023-09-01)
