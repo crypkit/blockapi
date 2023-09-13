@@ -627,15 +627,15 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
         )
 
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
-        if errors := self._get_error(fetch_result.data):
-            return ParseResult(errors=errors)
+        if error := self._get_error(fetch_result.data):
+            return ParseResult(errors=[error])
 
         self._maybe_update_protocols()
         return ParseResult(data=self._balance_parser.parse(fetch_result.data))
 
     def parse_pools(self, fetch_result: FetchResult) -> ParseResult:
-        if errors := self._get_error(fetch_result.data):
-            return ParseResult(errors=errors)
+        if error := self._get_error(fetch_result.data):
+            return ParseResult(errors=[error])
 
         self._maybe_update_protocols()
         return ParseResult(data=self._portfolio_parser.parse(fetch_result.data))
@@ -697,6 +697,9 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
 
         error = data.get('errors')
         message = data.get('message')
+
+        if not error and not message:
+            return None
 
         return dict(error=error, message=message)
 
