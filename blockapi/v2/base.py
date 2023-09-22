@@ -53,7 +53,7 @@ class CustomizableBlockchainApi(ABC):
         """
         Call specific request method with params and return raw response.
         """
-        response = self._get_response(request_method, headers, req_args)
+        response = self._get_response(request_method, headers, params, req_args)
         return self._check_and_get_from_response(response)
 
     def get_data(
@@ -84,8 +84,7 @@ class CustomizableBlockchainApi(ABC):
 
     def _get_response(self, request_method, headers, params, req_args):
         url = self._build_request_url(request_method, **req_args)
-        response = self._session.get(url, headers=headers, params=params)
-        return self._check_and_get_from_response(response)
+        return self._session.get(url, headers=headers, params=params)
 
     def _build_request_url(self, request_method: str, **req_args):
         path_url = self.supported_requests.get(request_method)

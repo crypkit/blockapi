@@ -9,6 +9,7 @@ from blockapi.v2.models import (
     Blockchain,
     Coin,
     CoinInfo,
+    FetchResult,
     NftBalanceItem,
 )
 
@@ -67,7 +68,7 @@ class InfuraNftApi(BlockchainApi, INftProvider, INftParser):
 
     supported_requests = {'fetch_nft': '{chain_id}/accounts/{address}/assets/nfts'}
 
-    def fetch_nft(self, address: str) -> dict:
+    def fetch_nft(self, address: str) -> FetchResult:
         items = []
         cursor = None
         try:
@@ -79,9 +80,9 @@ class InfuraNftApi(BlockchainApi, INftProvider, INftParser):
                     break
 
         except ApiException as e:
-            return dict(items=items, error=str(e))
+            return FetchResult(data=items, errors=[str(e)])
 
-        return dict(items=items)
+        return FetchResult(data=items)
 
     def parse_nft(self, data: dict) -> dict:
         balances = list(self._parse_items(data['items']))
