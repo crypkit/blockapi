@@ -11,6 +11,7 @@ from blockapi.v2.models import (
     CoinInfo,
     FetchResult,
     NftBalanceItem,
+    ParseResult,
 )
 
 
@@ -71,22 +72,22 @@ class InfuraNftApi(BlockchainApi, INftProvider, INftParser):
     def fetch_nft(self, address: str) -> FetchResult:
         items = []
         cursor = None
-        try:
-            while True:
+        while True:
+            try:
                 response = self._fetch_single_page(address, cursor)
                 items.append(InfuraNftAssetsResponse.parse_obj(response))
                 cursor = response.get('cursor')
                 if not cursor:
                     break
 
-        except ApiException as e:
-            return FetchResult(data=items, errors=[str(e)])
+            except ApiException as e:
+                return FetchResult(data=items, errors=[str(e)])
 
         return FetchResult(data=items)
 
-    def parse_nft(self, data: dict) -> dict:
+    def parse_nft(self, data: dict) -> ParseResult:
         balances = list(self._parse_items(data['items']))
-        return dict(balances=balances)
+        return ParseResult(data=balances)
 
     def _fetch_single_page(self, address, cursor):
         params = dict(cursor=cursor) if cursor else None
