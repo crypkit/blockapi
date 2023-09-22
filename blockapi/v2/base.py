@@ -63,7 +63,7 @@ class CustomizableBlockchainApi(ABC):
         extra: Optional[dict] = None,
         **req_args,
     ) -> FetchResult:
-        response = self._get_response(request_method, headers, req_args)
+        response = self._get_response(request_method, headers, None, req_args)
         time = self._get_response_time(response.headers)
         if response.status_code == 200:
             return FetchResult(

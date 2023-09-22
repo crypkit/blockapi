@@ -139,7 +139,7 @@ def test_parse_balances(
     items = infura_nft_api.parse_nft(
         dict(items=[infura_first_page_nft_data, infura_second_page_nft_data])
     )
-    balances = items['balances']
+    balances = items.data
     assert len(balances) == 2
     assert balances[0].balance == 4
     assert balances[0].name
