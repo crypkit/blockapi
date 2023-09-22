@@ -102,13 +102,15 @@ def _mock_response_data(requests_mock, data, cursor: Optional[str] = None):
 def test_fetch_empty_set(requests_mock, infura_nft_api, infura_empty_nft_data):
     _mock_response_data(requests_mock, infura_empty_nft_data)
     fetch_data = infura_nft_api.fetch_nft(TEST_ADDRESS)
-    assert fetch_data.data == [infura_empty_nft_data]
+    empty_response = InfuraNftAssetsResponse.parse_obj(infura_empty_nft_data)
+    assert fetch_data.data == [empty_response]
 
 
 def test_verify_asset_data(requests_mock, infura_nft_api, infura_second_page_nft_data):
     _mock_response_data(requests_mock, infura_second_page_nft_data)
     fetch_data = infura_nft_api.fetch_nft(TEST_ADDRESS)
-    assert fetch_data.data == [infura_second_page_nft_data]
+    second_response = InfuraNftAssetsResponse.parse_obj(infura_second_page_nft_data)
+    assert fetch_data.data == [second_response]
 
 
 def test_use_cursor_to_fetch_multiple_times(
@@ -120,8 +122,9 @@ def test_use_cursor_to_fetch_multiple_times(
     _mock_response_data(requests_mock, infura_first_page_nft_data)
     _mock_response_data(requests_mock, infura_second_page_nft_data, cursor=TEST_CURSOR)
     fetch_data = infura_nft_api.fetch_nft(TEST_ADDRESS)
-    items = fetch_data.data
-    assert items == [infura_first_page_nft_data, infura_second_page_nft_data]
+    first_response = InfuraNftAssetsResponse.parse_obj(infura_first_page_nft_data)
+    second_response = InfuraNftAssetsResponse.parse_obj(infura_second_page_nft_data)
+    assert fetch_data.data == [first_response, second_response]
 
 
 def test_request_contains_correct_headers(
