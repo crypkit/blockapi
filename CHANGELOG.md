@@ -2,6 +2,13 @@
 
 
 
+## v0.27.2 (2023-09-29)
+
+### Fix
+
+* fix: Build correct URL when using POST (#145) ([`4eea5b2`](https://github.com/crypkit/blockapi/commit/4eea5b230e87f980e3e73180dbd6db231c839bbf))
+
+
 ## v0.27.1 (2023-09-13)
 
 ### Chore
@@ -11,6 +18,10 @@
 ### Fix
 
 * fix: Don&#39;t detect errors on empty portfolio (#144) ([`157da4a`](https://github.com/crypkit/blockapi/commit/157da4a4ee4ce0d6166c75b7c95eb2f08ea210a5))
+
+### Unknown
+
+* 0.27.1 ([`327566a`](https://github.com/crypkit/blockapi/commit/327566a30dec97a276c7dc0bf20e2c7feb062600))
 
 
 ## v0.27.0 (2023-09-11)
