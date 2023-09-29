@@ -97,11 +97,7 @@ class CustomizableBlockchainApi(ABC):
         """
         Call request using json.
         """
-        url = (
-            self._build_request_url(request_method)
-            if request_method
-            else self.api_options.base_url
-        )
+        url = self._build_request_url(request_method)
         response = self._session.post(url, data=body, json=json, headers=headers)
         return self._check_and_get_from_response(response)
 
