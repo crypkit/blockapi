@@ -1,7 +1,10 @@
+import json
 from decimal import Decimal
 
 import pytest
+import requests_mock
 
+from blockapi.test.v2.api.conftest import read_file
 from blockapi.v2.api import SolanaApi, SolscanApi
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin, CoinInfo
 
@@ -291,6 +294,21 @@ def balances_with_mixed_coins():
     ]
 
 
+@pytest.fixture
+def solana_response():
+    return read_file('data/solana_response.json')
+
+
+@pytest.fixture
+def solana_tokenlist():
+    return read_file('data/solana_tokenlist.json')
+
+
+@pytest.fixture
+def solana_value_response():
+    return json.dumps(dict(result=dict(value=0)))
+
+
 def test_merge_balances_with_different_mixed_coins(
     solana_api, balances_with_mixed_coins
 ):
@@ -336,6 +354,26 @@ def test_use_custom_url():
 def test_use_base_url():
     api = SolanaApi()
     assert api.base_url == 'https://api.mainnet-beta.solana.com/'
+
+
+def test_use_base_url_in_post(solana_value_response, solana_response, solana_tokenlist):
+    test_addr = '5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu'
+
+    iterator = iter([solana_value_response, solana_response])
+
+    def get_text(*args, **kwargs):
+        assert args[0].url == 'https://proxy/solana/'
+        data = next(iterator)
+        return data
+
+    with requests_mock.Mocker() as m:
+        m.get(
+            'https://raw.githubusercontent.com/solana-labs/token-list/main/src/tokens/solana.tokenlist.json',
+            text=solana_tokenlist,
+        )
+        m.post(requests_mock.ANY, text=get_text),
+        api = SolanaApi(base_url='https://proxy/solana/')
+        api.get_balance(test_addr)
 
 
 def test_solscan_get_staked_balance(requests_mock):
