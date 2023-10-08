@@ -1,0 +1,18 @@
+{
+  "nfts": [
+        {
+            "identifier": "550885",
+            "collection": "uniswap-v3-positions",
+            "contract": "0xc36442b4a4522e871399cd717abdd847ab11fe88",
+            "token_standard": "erc721",
+            "name": "Uniswap - 1% - PRIME/WETH - 330.20<>780.29",
+            "description": "This NFT represents a liquidity position in a Uniswap V3 PRIME-WETH pool.",
+            "image_url": "https://openseauserdata.com/files/8b79194380e9a86f190713e19e78cef8.svg",
+            "metadata_url": "data:application/json;base64,eyJuYW1lIjoiVW5pc3dhcCAtIDElIC0gUFJJTUUvV0VUSCAtIDMzMC4yMDw+NzgwLjI5In0=",
+            "created_at": "",
+            "updated_at": "2023-08-15T13:56:39.759414",
+            "is_disabled": false,
+            "is_nsfw": false
+        }
+    ]
+}

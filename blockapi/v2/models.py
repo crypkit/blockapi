@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Literal, Optional, Union
 
 import attr
 
@@ -303,6 +303,20 @@ class CoingeckoId(str, Enum):
     XDAI = 'xdai'
 
 
+class NftOfferDirection(str, Enum):
+    OFFER = 'offer'
+    LISTING = 'listing'
+
+
+class OfferItemType(str, Enum):
+    NATIVE = ('native',)
+    ERC20 = ('erc-20',)
+    ERC721 = ('erc-721',)
+    ERC1155 = ('erc-1155',)
+    ERC721_WITH_CRITERIA = ('erc-721-limited',)
+    ERC1155_WITH_CRITERIA = 'erc-1155-limited'
+
+
 @attr.s(auto_attribs=True, slots=True)
 class ApiOptions:
     blockchain: Blockchain
@@ -514,6 +528,159 @@ class BalanceItem:
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
+class NftToken:
+    ident: str
+    collection: str
+    contract: str
+    standard: str
+    name: str
+    description: Optional[str]
+    image_url: str
+    metadata_url: Optional[str]
+    metadata: Optional[dict]
+    created_time: Optional[datetime]
+    updated_time: Optional[datetime]
+    is_disabled: bool
+    is_nsfw: bool
+    asset_type: AssetType
+    blockchain: Blockchain
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        ident: str,
+        collection: str,
+        contract: str,
+        standard: Literal['erc721', 'erc1155'],
+        name: str,
+        description: str,
+        image_url: str,
+        metadata_url: str,
+        created_time: Optional[Union[str, datetime]],
+        updated_time: Optional[Union[str, datetime]],
+        is_disabled: bool,
+        is_nsfw: bool,
+        blockchain: Blockchain,
+        asset_type: AssetType = AssetType.AVAILABLE,
+    ) -> 'NftToken':
+        return cls(
+            ident=ident,
+            collection=collection,
+            contract=contract,
+            standard=standard,
+            name=name,
+            description=description,
+            image_url=image_url,
+            metadata_url=metadata_url,
+            metadata=None,
+            created_time=parse_dt(created_time)
+            if created_time and created_time.strip()
+            else None,
+            updated_time=parse_dt(updated_time)
+            if updated_time and updated_time.strip()
+            else None,
+            is_disabled=is_disabled,
+            is_nsfw=is_nsfw,
+            blockchain=blockchain,
+            asset_type=asset_type,
+        )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
+class NftOffer:
+    direction: NftOfferDirection
+    collection: str
+    contract: str
+    offerer: str
+    start_time: datetime
+    end_time: datetime
+
+    offer_coin: Optional[Coin]
+    offer_contract: Optional[str]
+    offer_ident: Optional[str]
+    offer_amount: Decimal
+
+    pay_coin: Optional[Coin]
+    pay_contract: Optional[str]
+    pay_ident: Optional[str]
+    pay_amount: Decimal
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        direction: NftOfferDirection,
+        collection: str,
+        contract: str,
+        offerer: str,
+        start_time: str,
+        end_time: str,
+        offer_coin: Optional[Coin],
+        offer_contract: Optional[str],
+        offer_ident: Optional[str],
+        offer_amount: str,
+        pay_coin: Optional[Coin],
+        pay_contract: Optional[str],
+        pay_ident: Optional[str],
+        pay_amount: str,
+    ) -> 'NftOffer':
+        return NftOffer(
+            direction=direction,
+            collection=collection,
+            contract=contract,
+            offerer=offerer,
+            start_time=parse_dt(int(start_time)) if start_time else None,
+            end_time=parse_dt(int(end_time)) if end_time else None,
+            offer_coin=offer_coin,
+            offer_contract=offer_contract.lower() if offer_contract else None,
+            offer_ident=offer_ident,
+            offer_amount=raw_to_decimals(offer_amount, offer_coin.decimals)
+            if offer_coin
+            else to_decimal(offer_amount),
+            pay_coin=pay_coin,
+            pay_contract=pay_contract.lower() if pay_contract else None,
+            pay_ident=pay_ident,
+            pay_amount=raw_to_decimals(pay_amount, pay_coin.decimals)
+            if pay_coin
+            else to_decimal(pay_amount),
+        )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
+class NftCollectionStats:
+    coin: Coin
+    volume: Decimal
+    market_cap: Decimal
+    floor_price: Decimal
+    average_price: Decimal
+    sales_count: int
+    owners_count: int
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        coin: Coin,
+        volume: str,
+        market_cap: str,
+        floor_price: str,
+        average_price: str,
+        sales_count: str,
+        owners_count: str,
+    ):
+        return NftCollectionStats(
+            coin=coin,
+            volume=Decimal(volume),
+            market_cap=Decimal(market_cap),
+            floor_price=Decimal(floor_price),
+            average_price=Decimal(average_price),
+            sales_count=int(sales_count) if sales_count else 0,
+            owners_count=int(owners_count) if owners_count else 0,
+        )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
 class OperationItem:
     amount: Decimal
     amount_raw: Decimal
@@ -635,6 +802,9 @@ class FetchResult:
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class ParseResult:
-    data: Optional[list[Union[BalanceItem, Pool]]] = None
+    data: Optional[
+        list[Union[BalanceItem, Pool, NftToken, NftCollectionStats, NftOffer]]
+    ] = None
     warnings: Optional[list[Union[str, dict]]] = None
     errors: Optional[list[Union[str, dict]]] = None
+    time: Optional[datetime] = None
