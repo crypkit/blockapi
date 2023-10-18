@@ -158,7 +158,6 @@ def test_parse_listings(requests_mock, api, listings_response):
 
     assert data.direction == NftOfferDirection.LISTING
     assert data.collection == 'ever-fragments-of-civitas'
-    # assert data.contract == '0x8acb0bc7f6c77e4e2aef83ea928d5a6c2a0b7fcd'
     assert data.start_time == datetime.datetime(
         2023, 5, 22, 14, 44, 17, tzinfo=datetime.timezone.utc
     )
