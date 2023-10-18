@@ -538,7 +538,6 @@ class NftToken:
     image_url: str
     metadata_url: Optional[str]
     metadata: Optional[dict]
-    created_time: Optional[datetime]
     updated_time: Optional[datetime]
     is_disabled: bool
     is_nsfw: bool
@@ -557,7 +556,6 @@ class NftToken:
         description: str,
         image_url: str,
         metadata_url: str,
-        created_time: Optional[Union[str, datetime]],
         updated_time: Optional[Union[str, datetime]],
         is_disabled: bool,
         is_nsfw: bool,
@@ -574,9 +572,6 @@ class NftToken:
             image_url=image_url,
             metadata_url=metadata_url,
             metadata=None,
-            created_time=parse_dt(created_time)
-            if created_time and created_time.strip()
-            else None,
             updated_time=parse_dt(updated_time)
             if updated_time and updated_time.strip()
             else None,
@@ -648,35 +643,104 @@ class NftOffer:
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
-class NftCollectionStats:
-    coin: Coin
+class NftCollectionIntervalStats:
     volume: Decimal
-    market_cap: Decimal
-    floor_price: Decimal
-    average_price: Decimal
+    volume_diff: Decimal
+    volume_percent_change: Decimal
     sales_count: int
-    owners_count: int
+    sales_diff: int
+    average_price: Decimal
 
     @classmethod
     def from_api(
         cls,
         *,
-        coin: Coin,
         volume: str,
+        volume_diff: str,
+        volume_percent_change: str,
+        sales_count: str,
+        sales_diff: str,
+        average_price: str,
+    ) -> 'NftCollectionIntervalStats':
+        return cls(
+            volume=Decimal(volume),
+            volume_diff=Decimal(volume_diff),
+            volume_percent_change=Decimal(volume_percent_change),
+            sales_count=int(sales_count) if sales_count else 0,
+            sales_diff=int(Decimal(sales_diff)) if sales_diff else 0,
+            average_price=Decimal(average_price),
+        )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
+class NftCollectionTotalStats:
+    volume: Decimal
+    sales_count: int
+    owners_count: int
+    market_cap: Decimal
+    floor_price: Decimal
+    coin: Coin
+    average_price: Decimal
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        volume: str,
+        sales_count: str,
+        owners_count: str,
         market_cap: str,
         floor_price: str,
         average_price: str,
-        sales_count: str,
-        owners_count: str,
-    ):
-        return NftCollectionStats(
-            coin=coin,
+        coin: Coin,
+    ) -> 'NftCollectionTotalStats':
+        return cls(
             volume=Decimal(volume),
+            sales_count=int(sales_count) if sales_count else 0,
+            owners_count=int(owners_count) if owners_count else 0,
             market_cap=Decimal(market_cap),
             floor_price=Decimal(floor_price),
             average_price=Decimal(average_price),
-            sales_count=int(sales_count) if sales_count else 0,
-            owners_count=int(owners_count) if owners_count else 0,
+            coin=coin,
+        )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
+class NftCollection:
+    ident: str
+    name: str
+    image: Optional[str]
+    is_disabled: bool
+    is_nsfw: bool
+    total_stats: NftCollectionTotalStats
+    day_stats: NftCollectionIntervalStats
+    week_stats: NftCollectionIntervalStats
+    month_stats: NftCollectionIntervalStats
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        ident: str,
+        name: str,
+        image: Optional[str],
+        is_disabled: bool,
+        is_nsfw: bool,
+        total_stats: NftCollectionTotalStats,
+        day_stats: Optional[NftCollectionIntervalStats],
+        week_stats: Optional[NftCollectionIntervalStats],
+        month_stats: Optional[NftCollectionIntervalStats],
+    ) -> 'NftCollection':
+        return cls(
+            ident=ident,
+            name=name,
+            image=image,
+            is_disabled=is_disabled,
+            is_nsfw=is_nsfw,
+            total_stats=total_stats,
+            day_stats=day_stats,
+            week_stats=week_stats,
+            month_stats=month_stats,
         )
 
 
@@ -803,7 +867,7 @@ class FetchResult:
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class ParseResult:
     data: Optional[
-        list[Union[BalanceItem, Pool, NftToken, NftCollectionStats, NftOffer]]
+        list[Union[BalanceItem, Pool, NftToken, NftCollection, NftOffer]]
     ] = None
     warnings: Optional[list[Union[str, dict]]] = None
     errors: Optional[list[Union[str, dict]]] = None

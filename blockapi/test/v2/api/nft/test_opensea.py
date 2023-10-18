@@ -48,6 +48,11 @@ def collection_stats_response():
     return read_file('data/opensea/collection-stats.json')
 
 
+@pytest.fixture
+def collection_response():
+    return read_file('data/opensea/collection.json')
+
+
 def test_fetch_ntfs(
     requests_mock, api, nfts_response, nfts_next_response, fake_sleep_provider
 ):
@@ -98,7 +103,6 @@ def test_parse_nfts(requests_mock, api, nfts_response, nfts_next_response):
         == 'data:application/json;base64,eyJuYW1lIjoiVW5pc3dhcCAtIDElIC0gUFJJTUUvV0VUSCAtIDMzMC4yMDw+NzgwLjI5In0='
     )
     assert not data.metadata
-    assert not data.created_time
     assert data.updated_time == datetime.datetime(2023, 8, 15, 13, 56, 39, 759414)
     assert not data.is_disabled
     assert not data.is_nsfw
@@ -172,24 +176,44 @@ def test_parse_listings(requests_mock, api, listings_response):
     assert data.pay_amount == Decimal('0.0175')
 
 
-def test_parse_collection_stats(requests_mock, api, collection_stats_response):
+def test_parse_collection(
+    requests_mock, api, collection_response, collection_stats_response
+):
+    requests_mock.get(
+        f'https://api.opensea.io/api/v2/collections/ever-fragments-of-civitas',
+        text=collection_response,
+    )
+
     requests_mock.get(
         f'https://api.opensea.io/api/v2/collections/ever-fragments-of-civitas/stats',
         text=collection_stats_response,
     )
 
-    stats = api.fetch_collection_stats('ever-fragments-of-civitas')
-    parsed = api.parse_collection_stats(stats)
+    collection = api.fetch_collection('ever-fragments-of-civitas')
+    parsed = api.parse_collection(collection)
 
     assert not parsed.errors
     data = parsed.data[0]
-    assert data.volume == Decimal('18.813597880000103')
-    assert data.sales_count == 969
-    assert data.average_price == Decimal('0.0194154776883386')
-    assert data.owners_count == 866
-    assert data.market_cap == Decimal('105.85218269230776')
-    assert data.floor_price == Decimal('0.008')
-    assert data.coin == COIN_ETH
+    assert data.name == 'Ever Fragments of Civitas'
+    assert data.ident == 'ever-fragments-of-civitas'
+    assert (
+        data.image
+        == 'https://openseauserdata.com/files/f784cefee7f7da9fe4c75ec04279b8b0.png'
+    )
+    assert not data.is_disabled
+    assert not data.is_nsfw
+    assert data.total_stats
+    assert data.day_stats
+    assert not data.week_stats
+    assert not data.month_stats
+
+    assert data.total_stats.volume == Decimal('18.813597880000103')
+    assert data.total_stats.sales_count == 969
+    assert data.total_stats.average_price == Decimal('0.0194154776883386')
+    assert data.total_stats.owners_count == 866
+    assert data.total_stats.market_cap == Decimal('105.85218269230776')
+    assert data.total_stats.floor_price == Decimal('0.008')
+    assert data.total_stats.coin == COIN_ETH
 
 
 def test_create_with_unsupported_blockchain():

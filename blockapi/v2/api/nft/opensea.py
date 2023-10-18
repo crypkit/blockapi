@@ -2,6 +2,8 @@ import logging
 from enum import Enum
 from typing import Iterable, Optional
 
+from _decimal import Decimal
+
 from blockapi.v2.base import (
     ApiException,
     BlockchainApi,
@@ -18,7 +20,9 @@ from blockapi.v2.models import (
     Blockchain,
     Coin,
     FetchResult,
-    NftCollectionStats,
+    NftCollection,
+    NftCollectionIntervalStats,
+    NftCollectionTotalStats,
     NftOffer,
     NftOfferDirection,
     NftToken,
@@ -70,6 +74,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         'get_nfts': 'api/v2/chain/{chain}/account/{address}/nfts',
         'get_offers': 'api/v2/offers/collection/{collection}/all',
         'get_listings': 'api/v2/listings/collection/{collection}/all',
+        'get_collection': 'api/v2/collections/{collection}',
         'get_collection_stats': 'api/v2/collections/{collection}/stats',
     }
 
@@ -153,19 +158,35 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             )
         )
 
-    def fetch_collection_stats(self, collection: str) -> FetchResult:
-        return self.get_data(
+    def fetch_collection(self, collection: str) -> FetchResult:
+        stats = self.get_data(
             'get_collection_stats',
             headers=self._headers,
             collection=collection,
             chain=self._opensea_chain,
         )
 
-    def parse_collection_stats(self, fetch_result: FetchResult) -> ParseResult:
-        parsed, error = self._parse_collection(fetch_result.data.get('total'))
+        return self.get_data(
+            'get_collection',
+            headers=self._headers,
+            collection=collection,
+            chain=self._opensea_chain,
+            extra=dict(stats=stats.data, stats_errors=stats.errors),
+        )
+
+    def parse_collection(self, fetch_result: FetchResult) -> ParseResult:
+        parsed, error = self._parse_collection(
+            fetch_result.data, fetch_result.extra.get('stats')
+        )
+        errors = []
+        if error:
+            errors.append(error)
+
+        if stats_errors := fetch_result.extra['stats_errors']:
+            errors.append(stats_errors)
 
         return ParseResult(
-            data=[parsed] if parsed else None, errors=[error] if error else None
+            data=[parsed] if parsed else None, errors=errors if errors else None
         )
 
     def _yield_nfts(self, address: str) -> Iterable[FetchResult]:
@@ -225,7 +246,6 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
                     description=item.get('description'),
                     image_url=item.get('image_url'),
                     metadata_url=item.get('metadata_url'),
-                    created_time=item.get('created_at'),
                     updated_time=item.get('updated_at'),
                     is_disabled=item.get('is_disabled'),
                     is_nsfw=item.get('is_nsfw'),
@@ -233,11 +253,11 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
                     asset_type=AssetType.AVAILABLE,
                 )
 
-    @staticmethod
     def _parse_collection(
-        data: dict,
-    ) -> tuple[Optional[NftCollectionStats], Optional[str]]:
-        symbol = data.get('floor_price_symbol')
+        self, data: dict, stat_data: dict
+    ) -> tuple[Optional[NftCollection], Optional[str]]:
+        total = stat_data.get('total')
+        symbol = total.get('floor_price_symbol')
         coin = OPENSEA_COINS.get(symbol)
         if not coin:
             if not symbol:
@@ -245,17 +265,59 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
 
             return None, f'There is no mapping for opensea symbol {symbol}'
 
-        stats = NftCollectionStats.from_api(
+        total_stats = NftCollectionTotalStats.from_api(
+            volume=total.get('volume'),
+            sales_count=total.get('sales'),
+            owners_count=total.get('num_owners'),
+            market_cap=total.get('market_cap'),
+            floor_price=total.get('floor_price'),
+            average_price=total.get('average_price'),
             coin=coin,
-            volume=data.get('volume'),
-            market_cap=data.get('market_cap'),
-            floor_price=data.get('floor_price'),
-            average_price=data.get('average_price'),
-            sales_count=data.get('sales'),
-            owners_count=data.get('num_owners'),
         )
 
-        return stats, None
+        intervals = stat_data.get('intervals')
+        day_stats = self._parse_collection_stats(intervals, 'one_day')
+        week_stats = self._parse_collection_stats(intervals, 'one_week')
+        month_stats = self._parse_collection_stats(intervals, 'one_month')
+
+        collection = NftCollection.from_api(
+            ident=data.get('collection'),
+            name=data.get('name'),
+            image=data.get('image_url'),
+            is_disabled=data.get('is_disabled'),
+            is_nsfw=data.get('is_nsfw'),
+            total_stats=total_stats,
+            day_stats=day_stats,
+            week_stats=week_stats,
+            month_stats=month_stats,
+        )
+
+        return collection, None
+
+    @staticmethod
+    def _parse_collection_stats(
+        intervals, interval
+    ) -> Optional[NftCollectionIntervalStats]:
+        if not intervals:
+            return None
+
+        for it in intervals:
+            if it.get('interval') != interval:
+                continue
+
+            st = NftCollectionIntervalStats.from_api(
+                volume=it.get('volume'),
+                volume_diff=it.get('volume_diff'),
+                volume_percent_change=it.get('volume_change'),
+                sales_count=it.get('sales'),
+                sales_diff=it.get('sales_diff'),
+                average_price=it.get('average_price'),
+            )
+
+            if st.volume == 0 and st.sales_count == 0:
+                return
+
+            return st
 
     def _yield_offers(
         self, direction: NftOfferDirection, extra: dict, items: list
