@@ -1,0 +1,43 @@
+{
+    "collection": "ever-fragments-of-civitas",
+    "name": "Ever Fragments of Civitas",
+    "description": "The [Civitas](https://playcivitas.io/) **Chosen** [NFT collection](https://opensea.io/collection/the-chosen-of-civitas) generate monthly [Ever Fragments](https://docs.playcivitas.io/whitepaper/ever-fragments-and-crystals), that are a key component of the land generation process in Civitas, the world's first community-owned strategy MMO. They combine to form Ever Crystals, which are used to create unique and highly productive land tiles rendered procedurally through an algorithmic art generation pipeline.",
+    "image_url": "https://openseauserdata.com/files/f784cefee7f7da9fe4c75ec04279b8b0.png",
+    "banner_image_url": "https://openseauserdata.com/files/68cc3d74e23c515b5ecaf4785dab99ed.png",
+    "owner": "0x490d4d1452c953290925e96e6a68b247d94b6f99",
+    "safelist_status": "not_requested",
+    "category": "gaming",
+    "is_disabled": false,
+    "is_nsfw": false,
+    "trait_offers_enabled": false,
+    "opensea_url": "https://opensea.io/collection/ever-fragments-of-civitas",
+    "project_url": "https://playcivitas.io",
+    "wiki_url": "",
+    "discord_url": "",
+    "telegram_url": "https://t.me/civitasofficial",
+    "twitter_username": "",
+    "instagram_username": "",
+    "contracts": [
+        {
+            "address": "0x8acb0bc7f6c77e4e2aef83ea928d5a6c2a0b7fcd",
+            "chain": "ethereum"
+        }
+    ],
+    "editors": [
+        "0x490d4d1452c953290925e96e6a68b247d94b6f99",
+        "0x18d88467b7e1305ba4587db69a45fe8416247113",
+        "0xa5067aabb149076008fc798378ec0b77933f9cd5"
+    ],
+    "fees": [
+        {
+            "fee": 2.5,
+            "recipient": "0x0000a26b00c1f0df003000390027140000faa719",
+            "required": true
+        },
+        {
+            "fee": 10.0,
+            "recipient": "0x18d88467b7e1305ba4587db69a45fe8416247113",
+            "required": true
+        }
+    ]
+}

@@ -9,6 +9,15 @@ COIN_ETH = Coin(
     info=CoinInfo(coingecko_id=CoingeckoId.ETHEREUM),
 )
 
+COIN_WETH = Coin(
+    symbol='WETH',
+    name='Wrapped Ethereum',
+    decimals=18,
+    blockchain=Blockchain.ETHEREUM,
+    address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+    info=CoinInfo(coingecko_id=CoingeckoId.WETH),
+)
+
 
 COIN_SOL = Coin(
     symbol='SOL',

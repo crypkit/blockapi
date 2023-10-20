@@ -1,3 +1,4 @@
+import time
 from abc import ABC
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple, Type, Union
@@ -24,11 +25,15 @@ class CustomizableBlockchainApi(ABC):
     e.g. proxy, testnet, RPC services, alternative sources
     """
 
+    base_url: str
+
     coin: Coin = NotImplemented
     api_options: ApiOptions = NotImplemented
 
     # {request_method: request_url}
     supported_requests: Dict[str, str] = {}
+
+    json_parse_args = dict()
 
     def __init__(self, base_url: Optional[str] = None, api_key: Optional[str] = None):
         self.api_key = api_key
@@ -46,29 +51,31 @@ class CustomizableBlockchainApi(ABC):
     def get(
         self,
         request_method: str,
-        headers=None,
+        headers: Optional[dict[str, any]] = None,
+        params: Optional[dict[str, any]] = None,
         **req_args,
     ) -> Dict:
         """
         Call specific request method with params and return raw response.
         """
-        response = self._get_response(request_method, headers, req_args)
+        response = self._get_response(request_method, headers, params, req_args)
         return self._check_and_get_from_response(response)
 
     def get_data(
         self,
         request_method: str,
         headers: Optional[dict[str, any]] = None,
+        params: Optional[dict[str, any]] = None,
         extra: Optional[dict] = None,
         **req_args,
     ) -> FetchResult:
-        response = self._get_response(request_method, headers, req_args)
+        response = self._get_response(request_method, headers, params, req_args)
         time = self._get_response_time(response.headers)
         if response.status_code == 200:
             return FetchResult(
                 status_code=response.status_code,
                 headers=self._get_headers_dict(response.headers),
-                data=response.json(),
+                data=response.json(**self.json_parse_args),
                 extra=extra,
                 time=time,
             )
@@ -81,9 +88,9 @@ class CustomizableBlockchainApi(ABC):
             time=time,
         )
 
-    def _get_response(self, request_method, headers, req_args):
+    def _get_response(self, request_method, headers, params, req_args):
         url = self._build_request_url(request_method, **req_args)
-        response = self._session.get(url, headers=headers)
+        response = self._session.get(url, headers=headers, params=params)
         return response
 
     def _build_request_url(self, request_method: str, **req_args):
@@ -182,6 +189,44 @@ class ITransactions(ABC):
 
 class IPortfolio(ABC):
     def get_portfolio(self, address: str) -> List[Pool]:
+        raise NotImplementedError
+
+
+class ISleepProvider(ABC):
+    def sleep(self, url: str, seconds: float) -> None:
+        raise NotImplementedError
+
+
+class SleepProvider(ISleepProvider):
+    def sleep(self, url: str, seconds: float):
+        time.sleep(seconds)
+
+
+class INftProvider(ABC):
+    def fetch_nfts(self, address: str) -> FetchResult:
+        raise NotImplementedError
+
+    def fetch_collection_stats(self, collection: str) -> FetchResult:
+        raise NotImplementedError
+
+    def fetch_offers(self, collection: str) -> FetchResult:
+        raise NotImplementedError
+
+    def fetch_listings(self, collection: str) -> FetchResult:
+        raise NotImplementedError
+
+
+class INftParser(ABC):
+    def parse_nfts(self, data: FetchResult) -> ParseResult:
+        raise NotImplementedError
+
+    def parse_collections(self, data: FetchResult) -> ParseResult:
+        raise NotImplementedError
+
+    def parse_offers(self, data: FetchResult) -> ParseResult:
+        raise NotImplementedError
+
+    def parse_listings(self, data: FetchResult) -> ParseResult:
         raise NotImplementedError
 
 

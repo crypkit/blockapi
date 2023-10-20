@@ -1,0 +1,69 @@
+{
+    "offers": [
+        {
+            "order_hash": "0x0d801370f4d01e9e3319dcff7a1067d093d3895a617ca4c9a6d2505a9cf4ad8f",
+            "chain": "ethereum",
+            "criteria": {
+                "collection": {
+                    "slug": "ever-fragments-of-civitas"
+                },
+                "contract": {
+                    "address": "0x8acb0bc7f6c77e4e2aef83ea928d5a6c2a0b7fcd"
+                },
+                "trait": null,
+                "encoded_token_ids": null
+            },
+            "protocol_data": {
+                "parameters": {
+                    "offerer": "0xc30992a53b3e91385ace2575963aa392edb3b931",
+                    "offer": [
+                        {
+                            "itemType": 1,
+                            "token": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+                            "identifierOrCriteria": "0",
+                            "startAmount": "4000000000000000",
+                            "endAmount": "4000000000000000"
+                        }
+                    ],
+                    "consideration": [
+                        {
+                            "itemType": 4,
+                            "token": "0x8ACb0BC7F6c77E4E2aeF83EA928D5A6c2a0b7FCd",
+                            "identifierOrCriteria": "0",
+                            "startAmount": "8",
+                            "endAmount": "8",
+                            "recipient": "0xc30992a53b3e91385AcE2575963Aa392edb3B931"
+                        },
+                        {
+                            "itemType": 1,
+                            "token": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+                            "identifierOrCriteria": "0",
+                            "startAmount": "20000000000000",
+                            "endAmount": "20000000000000",
+                            "recipient": "0x0000a26b00c1F0DF003000390027140000fAa719"
+                        },
+                        {
+                            "itemType": 1,
+                            "token": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+                            "identifierOrCriteria": "0",
+                            "startAmount": "400000000000000",
+                            "endAmount": "400000000000000",
+                            "recipient": "0x18D88467b7e1305BA4587DB69a45fE8416247113"
+                        }
+                    ],
+                    "startTime": "1696470613",
+                    "endTime": "1696989013",
+                    "orderType": 3,
+                    "zone": "0x000000e7Ec00e7B300774b00001314B8610022b8",
+                    "zoneHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+                    "salt": "0x72db8c0b0000000000000000000000000000000000000000c07d8ab2cdf12360",
+                    "conduitKey": "0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000",
+                    "totalOriginalConsiderationItems": 3,
+                    "counter": 0
+                },
+                "signature": null
+            },
+            "protocol_address": "0x00000000000000adc04c56bf30ac9d3c0aaf14dc"
+        }
+    ]
+}
