@@ -2,11 +2,22 @@
 
 
 
+## v0.28.0 (2023-10-20)
+
+### Feature
+
+* feat: Fetch NFT from OpenSea (#146) ([`edc1ffa`](https://github.com/crypkit/blockapi/commit/edc1ffa6d2f9af42eac77c3f8236e64421817097))
+
+
 ## v0.27.2 (2023-09-29)
 
 ### Fix
 
 * fix: Build correct URL when using POST (#145) ([`4eea5b2`](https://github.com/crypkit/blockapi/commit/4eea5b230e87f980e3e73180dbd6db231c839bbf))
+
+### Unknown
+
+* 0.27.2 ([`739f5d6`](https://github.com/crypkit/blockapi/commit/739f5d673843120bee6765865193eaa8a63f970a))
 
 
 ## v0.27.1 (2023-09-13)
