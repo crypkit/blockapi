@@ -2,11 +2,22 @@
 
 
 
+## v0.29.0 (2023-10-25)
+
+### Feature
+
+* feat: Opensea - Parse collection contract (#147) ([`61a1646`](https://github.com/crypkit/blockapi/commit/61a1646b3d77d259610edfb7def3c78119a68b4c))
+
+
 ## v0.28.0 (2023-10-20)
 
 ### Feature
 
 * feat: Fetch NFT from OpenSea (#146) ([`edc1ffa`](https://github.com/crypkit/blockapi/commit/edc1ffa6d2f9af42eac77c3f8236e64421817097))
+
+### Unknown
+
+* 0.28.0 ([`8d9eee7`](https://github.com/crypkit/blockapi/commit/8d9eee7666ee91e9c5aca14f6f93e4a635ef142d))
 
 
 ## v0.27.2 (2023-09-29)
