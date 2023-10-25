@@ -108,6 +108,7 @@ def test_parse_nfts(requests_mock, api, nfts_response, nfts_next_response):
     assert not data.is_nsfw
     assert data.blockchain == Blockchain.ETHEREUM
     assert data.asset_type == AssetType.AVAILABLE
+    assert data.amount == 1
 
 
 def test_parse_offers(requests_mock, api, offers_response):
@@ -213,6 +214,8 @@ def test_parse_collection(
     assert data.total_stats.market_cap == Decimal('105.85218269230776')
     assert data.total_stats.floor_price == Decimal('0.008')
     assert data.total_stats.coin == COIN_ETH
+    assert data.blockchain == Blockchain.ETHEREUM
+    assert data.contract == '0x8acb0bc7f6c77e4e2aef83ea928d5a6c2a0b7fcd'
 
 
 def test_create_with_unsupported_blockchain():
