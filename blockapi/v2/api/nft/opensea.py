@@ -244,6 +244,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
                     standard=item.get('token_standard'),
                     name=item.get('name'),
                     description=item.get('description'),
+                    amount=item.get('amount'),
                     image_url=item.get('image_url'),
                     metadata_url=item.get('metadata_url'),
                     updated_time=item.get('updated_at'),
@@ -280,9 +281,19 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         week_stats = self._parse_collection_stats(intervals, 'one_week')
         month_stats = self._parse_collection_stats(intervals, 'one_month')
 
+        contract = None
+        if contracts := data.get('contracts'):
+            if contract_filtered := [
+                c.get('address')
+                for c in contracts
+                if c.get('chain') == self._opensea_chain
+            ]:
+                contract = contract_filtered[0].lower()
+
         collection = NftCollection.from_api(
             ident=data.get('collection'),
             name=data.get('name'),
+            contract=contract,
             image=data.get('image_url'),
             is_disabled=data.get('is_disabled'),
             is_nsfw=data.get('is_nsfw'),
@@ -290,6 +301,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             day_stats=day_stats,
             week_stats=week_stats,
             month_stats=month_stats,
+            blockchain=self._blockchain,
         )
 
         return collection, None

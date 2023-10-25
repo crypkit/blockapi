@@ -535,6 +535,7 @@ class NftToken:
     standard: str
     name: str
     description: Optional[str]
+    amount: Optional[int]
     image_url: str
     metadata_url: Optional[str]
     metadata: Optional[dict]
@@ -554,6 +555,7 @@ class NftToken:
         standard: Literal['erc721', 'erc1155'],
         name: str,
         description: str,
+        amount: int,
         image_url: str,
         metadata_url: str,
         updated_time: Optional[Union[str, datetime]],
@@ -569,6 +571,7 @@ class NftToken:
             standard=standard,
             name=name,
             description=description,
+            amount=int(amount) if amount else 1,
             image_url=image_url,
             metadata_url=metadata_url,
             metadata=None,
@@ -709,9 +712,11 @@ class NftCollectionTotalStats:
 class NftCollection:
     ident: str
     name: str
+    contract: str
     image: Optional[str]
     is_disabled: bool
     is_nsfw: bool
+    blockchain: Blockchain
     total_stats: NftCollectionTotalStats
     day_stats: NftCollectionIntervalStats
     week_stats: NftCollectionIntervalStats
@@ -723,9 +728,11 @@ class NftCollection:
         *,
         ident: str,
         name: str,
+        contract: str,
         image: Optional[str],
         is_disabled: bool,
         is_nsfw: bool,
+        blockchain: Blockchain,
         total_stats: NftCollectionTotalStats,
         day_stats: Optional[NftCollectionIntervalStats],
         week_stats: Optional[NftCollectionIntervalStats],
@@ -734,9 +741,11 @@ class NftCollection:
         return cls(
             ident=ident,
             name=name,
+            contract=contract,
             image=image,
             is_disabled=is_disabled,
             is_nsfw=is_nsfw,
+            blockchain=blockchain,
             total_stats=total_stats,
             day_stats=day_stats,
             week_stats=week_stats,
