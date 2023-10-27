@@ -2,11 +2,22 @@
 
 
 
+## v0.29.1 (2023-10-27)
+
+### Fix
+
+* fix: Enum values for NFT offer type (#148) ([`78df014`](https://github.com/crypkit/blockapi/commit/78df014503886554568fbbdf44d8aa8213b5f619))
+
+
 ## v0.29.0 (2023-10-25)
 
 ### Feature
 
 * feat: Opensea - Parse collection contract (#147) ([`61a1646`](https://github.com/crypkit/blockapi/commit/61a1646b3d77d259610edfb7def3c78119a68b4c))
+
+### Unknown
+
+* 0.29.0 ([`fb31f0d`](https://github.com/crypkit/blockapi/commit/fb31f0d99d6f5f61f2960bce3b109a238191eac7))
 
 
 ## v0.28.0 (2023-10-20)
