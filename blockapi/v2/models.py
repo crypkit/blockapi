@@ -309,11 +309,11 @@ class NftOfferDirection(str, Enum):
 
 
 class OfferItemType(str, Enum):
-    NATIVE = ('native',)
-    ERC20 = ('erc-20',)
-    ERC721 = ('erc-721',)
-    ERC1155 = ('erc-1155',)
-    ERC721_WITH_CRITERIA = ('erc-721-limited',)
+    NATIVE = 'native'
+    ERC20 = 'erc-20'
+    ERC721 = 'erc-721'
+    ERC1155 = 'erc-1155'
+    ERC721_WITH_CRITERIA = 'erc-721-limited'
     ERC1155_WITH_CRITERIA = 'erc-1155-limited'
 
 
