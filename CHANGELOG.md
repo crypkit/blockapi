@@ -2,11 +2,22 @@
 
 
 
+## v0.30.0 (2023-11-09)
+
+### Feature
+
+* feat: Fetch multiple pages of NFT offers, add key and blockchain (#149) ([`74b0528`](https://github.com/crypkit/blockapi/commit/74b0528623ce5b8b5be715aa0d53d5281f5238ae))
+
+
 ## v0.29.1 (2023-10-27)
 
 ### Fix
 
 * fix: Enum values for NFT offer type (#148) ([`78df014`](https://github.com/crypkit/blockapi/commit/78df014503886554568fbbdf44d8aa8213b5f619))
+
+### Unknown
+
+* 0.29.1 ([`6c25146`](https://github.com/crypkit/blockapi/commit/6c25146c665979f78519d0585fa3c2c2c1a5d5c2))
 
 
 ## v0.29.0 (2023-10-25)
