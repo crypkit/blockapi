@@ -1,3 +1,4 @@
+import pytest
 from pytest import mark
 
 from blockapi.api.tzstats import TzStatsAPI
@@ -12,6 +13,7 @@ class TestTzscanAPI:
         api = TzStatsAPI(address=self.ADDRESS)
         assert api
 
+    @pytest.mark.integration
     def test_get_balance(self):
         api = TzStatsAPI(address=self.ADDRESS)
         result = api.get_balance()
