@@ -372,7 +372,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             return st
 
     def _yield_parsed_offers(
-        self, direction: NftOfferDirection, results: dict, extra: dict
+        self, direction: NftOfferDirection, results: list, extra: dict
     ) -> Iterable[NftOffer]:
         collection = extra.get('collection')
         contract = extra.get('contract')
