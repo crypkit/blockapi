@@ -1,9 +1,6 @@
 import functools
 import logging
-from enum import Enum
 from typing import Callable, Iterable, Optional
-
-from _decimal import Decimal
 
 from blockapi.v2.base import (
     ApiException,
@@ -40,6 +37,11 @@ OFFER_ITEM_TYPES = {
     '3': OfferItemType.ERC1155,
     '4': OfferItemType.ERC721_WITH_CRITERIA,
     '5': OfferItemType.ERC1155_WITH_CRITERIA,
+}
+
+OFFER_DIRECTION_KEYS = {
+    NftOfferDirection.OFFER: 'offers',
+    NftOfferDirection.LISTING: 'listings',
 }
 
 
@@ -123,7 +125,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
 
         parsed = list(
             self._yield_parsed_offers(
-                NftOfferDirection.OFFER, 'offers', fetch_result.data, fetch_result.extra
+                NftOfferDirection.OFFER, fetch_result.data, fetch_result.extra
             )
         )
         return ParseResult(data=parsed, errors=fetch_result.errors)
@@ -139,7 +141,6 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         parsed = list(
             self._yield_parsed_offers(
                 NftOfferDirection.LISTING,
-                'listings',
                 fetch_result.data,
                 fetch_result.extra,
             )
@@ -183,6 +184,9 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         except Exception as e:
             logger.error(f'Error fetching OpenSea NFTs from {address}')
             logger.exception(e)
+            yield FetchResult(
+                errors=[f'Error fetching OpenSea NFTs from {address}: {e}']
+            )
 
     def _yield_offers(self, collection: str) -> Iterable[FetchResult]:
         try:
@@ -191,6 +195,10 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         except Exception as e:
             logger.error(f'Error fetching OpenSea collection {collection} offers')
             logger.exception(e)
+            yield FetchResult(
+                errors=[f'Error fetching OpenSea collection {collection} offers: {e}'],
+                extra=dict(collection=collection),
+            )
 
     def _yield_listings(self, collection: str) -> Iterable[FetchResult]:
         try:
@@ -199,6 +207,12 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         except Exception as e:
             logger.error(f'Error fetching OpenSea collection {collection} listings')
             logger.exception(e)
+            yield FetchResult(
+                errors=[
+                    f'Error fetching OpenSea collection {collection} listings: {e}'
+                ],
+                extra=dict(collection=collection),
+            )
 
     def _yield_fetch_data(
         self, fetch_method: Callable, key: str
@@ -216,10 +230,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
 
             cursor = next_cursor
             if cursor in cursors:
-                logger.warning(
-                    f'Detected duplicate cursor {cursor} while fetching NFTs for {address}'
-                )
-                break
+                raise ApiException(f'Detected duplicate cursor {cursor}')
 
             cursors.add(cursor)
 
@@ -361,11 +372,12 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             return st
 
     def _yield_parsed_offers(
-        self, direction: NftOfferDirection, key: str, results: dict, extra: dict
+        self, direction: NftOfferDirection, results: dict, extra: dict
     ) -> Iterable[NftOffer]:
         collection = extra.get('collection')
         contract = extra.get('contract')
 
+        key = OFFER_DIRECTION_KEYS[direction]
         for result_item in results:
             if items := result_item.get(key):
                 for item in items:
