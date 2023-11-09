@@ -587,9 +587,11 @@ class NftToken:
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class NftOffer:
+    offer_key: str
     direction: NftOfferDirection
     collection: str
     contract: str
+    blockchain: Blockchain
     offerer: str
     start_time: datetime
     end_time: datetime
@@ -608,9 +610,11 @@ class NftOffer:
     def from_api(
         cls,
         *,
+        offer_key: str,
         direction: NftOfferDirection,
         collection: str,
         contract: str,
+        blockchain: Blockchain,
         offerer: str,
         start_time: str,
         end_time: str,
@@ -623,10 +627,12 @@ class NftOffer:
         pay_ident: Optional[str],
         pay_amount: str,
     ) -> 'NftOffer':
-        return NftOffer(
+        return cls(
+            offer_key=offer_key,
             direction=direction,
             collection=collection,
             contract=contract,
+            blockchain=blockchain,
             offerer=offerer,
             start_time=parse_dt(int(start_time)) if start_time else None,
             end_time=parse_dt(int(end_time)) if end_time else None,

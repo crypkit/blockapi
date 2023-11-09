@@ -1,7 +1,7 @@
 {
     "offers": [
         {
-            "order_hash": "0x0d801370f4d01e9e3319dcff7a1067d093d3895a617ca4c9a6d2505a9cf4ad8f",
+            "order_hash": "0x1d801370f4d01e9e3319dcff7a1067d093d3895a617ca4c9a6d2505a9cf4ad8f",
             "chain": "ethereum",
             "criteria": {
                 "collection": {
@@ -65,6 +65,5 @@
             },
             "protocol_address": "0x00000000000000adc04c56bf30ac9d3c0aaf14dc"
         }
-    ],
-    "next": "LXBrPTE0MDMyMTEyOTU="
+    ]
 }

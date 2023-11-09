@@ -39,6 +39,11 @@ def offers_response():
 
 
 @pytest.fixture
+def offers_next_response():
+    return read_file('data/opensea/offers-next.json')
+
+
+@pytest.fixture
 def listings_response():
     return read_file('data/opensea/listings.json')
 
@@ -69,6 +74,46 @@ def test_fetch_ntfs(
     assert len(nfts.data) == 2
     assert len(fake_sleep_provider.calls)
     assert fake_sleep_provider.calls[0] == ('https://api.opensea.io/', 0.25)
+
+
+def test_fetch_ntfs_error_response(requests_mock, api, fake_sleep_provider):
+    requests_mock.get(
+        f'https://api.opensea.io/api/v2/chain/ethereum/account/{nfts_test_address}/nfts',
+        status_code=401,
+    )
+
+    nfts = api.fetch_nfts(nfts_test_address)
+    assert len(nfts.data) == 0
+    assert len(fake_sleep_provider.calls)
+    assert fake_sleep_provider.calls[0] == ('https://api.opensea.io/', 0.25)
+
+
+def test_fetch_offers(
+    requests_mock, api, offers_response, offers_next_response, fake_sleep_provider
+):
+    requests_mock.get(
+        f'https://api.opensea.io/api/v2/offers/collection/ever-fragments-of-civitas/all',
+        text=offers_response,
+    )
+    requests_mock.get(
+        f'https://api.opensea.io/api/v2/offers/collection/ever-fragments-of-civitas/all?next=LXBrPTE0MDMyMTEyOTU=',
+        text=offers_next_response,
+    )
+
+    offers = api.fetch_offers('ever-fragments-of-civitas')
+    assert len(offers.data) == 2
+    assert len(fake_sleep_provider.calls)
+    assert fake_sleep_provider.calls[0] == ('https://api.opensea.io/', 0.25)
+
+
+def test_fetch_offers_error_response(requests_mock, api, offers_response):
+    requests_mock.get(
+        f'https://api.opensea.io/api/v2/offers/collection/ever-fragments-of-civitas/all',
+        status_code=401,
+    )
+
+    offers = api.fetch_offers('ever-fragments-of-civitas')
+    assert len(offers.data) == 0
 
 
 def test_parse_nfts(requests_mock, api, nfts_response, nfts_next_response):
@@ -124,6 +169,11 @@ def test_parse_offers(requests_mock, api, offers_response):
     data = parsed.data[0]
 
     assert data.direction == NftOfferDirection.OFFER
+    assert (
+        data.offer_key
+        == '0x0d801370f4d01e9e3319dcff7a1067d093d3895a617ca4c9a6d2505a9cf4ad8f'
+    )
+    assert data.blockchain == Blockchain.ETHEREUM
     assert data.collection == 'ever-fragments-of-civitas'
     assert data.contract == '0x8acb0bc7f6c77e4e2aef83ea928d5a6c2a0b7fcd'
     assert data.start_time == datetime.datetime(
@@ -158,6 +208,11 @@ def test_parse_listings(requests_mock, api, listings_response):
     data = parsed.data[0]
 
     assert data.direction == NftOfferDirection.LISTING
+    assert (
+        data.offer_key
+        == '0x316f1cdcd4361385d10010abbab14a2a0e5d38cc777cf4ccb86cb046d6bb48df'
+    )
+    assert data.blockchain == Blockchain.ETHEREUM
     assert data.collection == 'ever-fragments-of-civitas'
     assert data.start_time == datetime.datetime(
         2023, 5, 22, 14, 44, 17, tzinfo=datetime.timezone.utc
