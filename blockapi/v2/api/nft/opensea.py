@@ -220,8 +220,11 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         cursors = set()
         cursor = None
 
+        count = 0
         while True:
             self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
+            count += 1
+            logger.debug(f'Fetching page {count} of {key}')
             fetched, next_cursor = fetch_method(key, cursor)
             yield fetched
 
@@ -321,7 +324,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         week_stats = self._parse_collection_stats(intervals, 'one_week')
         month_stats = self._parse_collection_stats(intervals, 'one_month')
 
-        contract = None
+        contract = data.get('collection')
         if contracts := data.get('contracts'):
             if contract_filtered := [
                 c.get('address')
