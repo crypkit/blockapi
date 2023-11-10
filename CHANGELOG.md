@@ -2,11 +2,22 @@
 
 
 
+## v0.30.1 (2023-11-10)
+
+### Fix
+
+* fix: Add Opensea coin mapping (#150) ([`821f026`](https://github.com/crypkit/blockapi/commit/821f02615d922e051b76c7a11c0de79349d186d4))
+
+
 ## v0.30.0 (2023-11-09)
 
 ### Feature
 
 * feat: Fetch multiple pages of NFT offers, add key and blockchain (#149) ([`74b0528`](https://github.com/crypkit/blockapi/commit/74b0528623ce5b8b5be715aa0d53d5281f5238ae))
+
+### Unknown
+
+* 0.30.0 ([`ecc9fdf`](https://github.com/crypkit/blockapi/commit/ecc9fdf3c8bdf25145b5dd8e71b79804fc1417d4))
 
 
 ## v0.29.1 (2023-10-27)
