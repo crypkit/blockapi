@@ -441,3 +441,21 @@ COIN_CANTO = Coin(
     address='0x826551890dc65655a0aceca109ab11abdbd7a07b',
     info=CoinInfo(coingecko_id=CoingeckoId.CANTO),
 )
+
+COIN_USDC = Coin(
+    symbol='USDC',
+    name='USDC',
+    decimals=18,
+    blockchain=Blockchain.ETHEREUM,
+    address='0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+    info=CoinInfo(coingecko_id=CoingeckoId.USDC),
+)
+
+COIN_PRIME = Coin(
+    symbol='PRIME',
+    name='Echelon Prime',
+    decimals=18,
+    blockchain=Blockchain.ETHEREUM,
+    address="0xb23d80f5fefcddaa212212f028021b41ded428cf",
+    info=CoinInfo(coingecko_id=CoingeckoId.PRIME),
+)
