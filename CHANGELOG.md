@@ -2,11 +2,22 @@
 
 
 
+## v0.30.3 (2023-11-14)
+
+### Fix
+
+* fix: Change solana token list source (#152) ([`6babc47`](https://github.com/crypkit/blockapi/commit/6babc470d821d7234b07c4a4b2731fe4b1e032ce))
+
+
 ## v0.30.2 (2023-11-14)
 
 ### Fix
 
 * fix: Return error when source closes connection (#151) ([`8e7c9ce`](https://github.com/crypkit/blockapi/commit/8e7c9ce5173db6bbea5f0e9981b3a6806c4cd72b))
+
+### Unknown
+
+* 0.30.2 ([`fea80a1`](https://github.com/crypkit/blockapi/commit/fea80a14a4f1839a0db073a89868cb7c44c683d6))
 
 
 ## v0.30.1 (2023-11-10)
