@@ -2,11 +2,22 @@
 
 
 
+## v0.30.2 (2023-11-14)
+
+### Fix
+
+* fix: Return error when source closes connection (#151) ([`8e7c9ce`](https://github.com/crypkit/blockapi/commit/8e7c9ce5173db6bbea5f0e9981b3a6806c4cd72b))
+
+
 ## v0.30.1 (2023-11-10)
 
 ### Fix
 
 * fix: Add Opensea coin mapping (#150) ([`821f026`](https://github.com/crypkit/blockapi/commit/821f02615d922e051b76c7a11c0de79349d186d4))
+
+### Unknown
+
+* 0.30.1 ([`48406fc`](https://github.com/crypkit/blockapi/commit/48406fc3ef20ac6a753b4ba9c17c90d91efcccb0))
 
 
 ## v0.30.0 (2023-11-09)
