@@ -1,0 +1,84 @@
+{
+  "content": [
+    {
+      "address": "J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn",
+      "chainId": 101,
+      "name": "Jito Staked SOL",
+      "symbol": "JITOSOL",
+      "verified": true,
+      "decimals": 9,
+      "holders": null,
+      "logoURI": "https://assets.coingecko.com/coins/images/28046/large/JitoSOL-200.png?1696527060",
+      "tags": [],
+      "extensions": {
+        "coingeckoId": "jito-staked-sol"
+      }
+    },
+    {
+      "address": "ELSnGFd5XnSdYFFSgYQp7n89FEbDqxN4npuRLW4PPPLv",
+      "chainId": 101,
+      "name": "HEX (Wormhole v1)",
+      "symbol": "wHEX_v1",
+      "verified": true,
+      "decimals": 8,
+      "holders": 263,
+      "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/ELSnGFd5XnSdYFFSgYQp7n89FEbDqxN4npuRLW4PPPLv/logo.png",
+      "tags": [
+        "wrapped",
+        "wormhole"
+      ]
+    },
+    {
+      "address": "6dhTynDkYsVM7cbF7TKfC9DWB636TcEM935fq7JzL2ES",
+      "chainId": 101,
+      "name": "BONK",
+      "symbol": "BONK",
+      "verified": true,
+      "decimals": 9,
+      "holders": 799,
+      "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/6dhTynDkYsVM7cbF7TKfC9DWB636TcEM935fq7JzL2ES/logo.png",
+      "tags": []
+    },
+    {
+      "address": "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf",
+      "chainId": 101,
+      "name": "BACH Token",
+      "symbol": "BACH",
+      "verified": true,
+      "decimals": 12,
+      "holders": 207,
+      "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/badd1dbe8c2d1e38c4f77b77f1d5fd5c60d3cccb/assets/mainnet/CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf/bach-token-logo-Est.2022.png",
+      "tags": [
+        "music-token",
+        "social-token",
+        "utility-token"
+      ]
+    },
+    {
+      "address": "CRSzWoeyfR8sJxB2d6LLEre92Uc59TCPX2gZidp4t3eE",
+      "chainId": 101,
+      "name": "Agave Zwolf",
+      "symbol": "AGVZ",
+      "verified": true,
+      "decimals": 9,
+      "holders": 473,
+      "logoURI": "https://raw.githubusercontent.com/GrupoZwolf/cryptozw/main/logo.png",
+      "tags": [
+        "utility-token"
+      ]
+    },
+    {
+      "address": "3LDAW7enNUZ4DjE1jCi1cDpXvXLrJ1rPiECPbcHpMgG2",
+      "chainId": 101,
+      "name": "FEED Token on Alien Chicken Farm",
+      "symbol": "FEED",
+      "verified": true,
+      "decimals": 2,
+      "holders": 1270,
+      "logoURI": "https://shop.alienchickenfarm.com/logos/feed-token.png",
+      "tags": [
+        "social-token"
+      ]
+    }
+  ]
+}
