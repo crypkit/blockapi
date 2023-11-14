@@ -24,6 +24,8 @@ from blockapi.v2.models import (
     ParseResult,
 )
 
+TOKEN_LIST_URL = 'https://token-list-api.solana.cloud/v1/list'
+
 
 class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     """
@@ -49,12 +51,9 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     @property
     def tokens_map(self) -> Dict[str, Dict]:
         if self._tokens_map is None:
-            response = self._session.get(
-                'https://raw.githubusercontent.com/solana-labs/token-list/'
-                'main/src/tokens/solana.tokenlist.json'
-            )
+            response = self._session.get(TOKEN_LIST_URL)
             token_list = response.json()
-            self._tokens_map = {t['address']: t for t in token_list['tokens']}
+            self._tokens_map = {t['address']: t for t in token_list['content']}
 
         return self._tokens_map
 
@@ -134,11 +133,11 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
         return BalanceItem.from_api(
             balance_raw=info['tokenAmount']['amount'],
-            coin=self._get_token_data(address),
+            coin=self.get_token_data(address),
             raw=raw,
         )
 
-    def _get_token_data(self, address: str) -> Coin:
+    def get_token_data(self, address: str) -> Coin:
         raw_token = self.tokens_map[address]
         extensions = raw_token.get('extensions', {})
 
@@ -146,7 +145,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             symbol=raw_token['symbol'],
             name=raw_token['name'],
             decimals=raw_token['decimals'],
-            blockchain=Blockchain.SOLANA,
+            blockchain=Blockchain.SOLANA if raw_token['chainId'] == 101 else None,
             address=address,
             standards=['SPL'],
             info=CoinInfo.from_api(
