@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 import pytest
+from urllib3.exceptions import ProtocolError
 
 from blockapi.test.v2.api.conftest import read_file
 from blockapi.test.v2.test_data import btc_test_address, xpub_test_address
@@ -32,7 +33,19 @@ def test_fetch_only(requests_mock, trezor_btc_1_balance_response):
     assert result.data['balance'] == '64363'
 
 
-def test_fetch_error(requests_mock):
+def test_fetch_raises_exception(requests_mock):
+    requests_mock.get(
+        f'https://btc1.trezor.io/api/v2/address/{btc_test_address}',
+        exc=ProtocolError('Source disconnected error'),
+    )
+
+    api = TrezorBitcoin1Api()
+    result = api.fetch_balances(btc_test_address)
+    assert result.errors == ['ProtocolError: Source disconnected error']
+    assert not result.data
+
+
+def test_fetch_error_response(requests_mock):
     requests_mock.get(
         f'https://btc1.trezor.io/api/v2/address/{btc_test_address}',
         status_code=503,
