@@ -69,24 +69,33 @@ class CustomizableBlockchainApi(ABC):
         extra: Optional[dict] = None,
         **req_args,
     ) -> FetchResult:
-        response = self._get_response(request_method, headers, params, req_args)
-        time = self._get_response_time(response.headers)
-        if response.status_code == 200:
+        try:
+            response = self._get_response(request_method, headers, params, req_args)
+            time = self._get_response_time(response.headers)
+            if response.status_code == 200:
+                return FetchResult(
+                    status_code=response.status_code,
+                    headers=self._get_headers_dict(response.headers),
+                    data=response.json(**self.json_parse_args),
+                    extra=extra,
+                    time=time,
+                )
+
             return FetchResult(
                 status_code=response.status_code,
                 headers=self._get_headers_dict(response.headers),
-                data=response.json(**self.json_parse_args),
+                errors=[self._get_reason(response)],
                 extra=extra,
                 time=time,
             )
-
-        return FetchResult(
-            status_code=response.status_code,
-            headers=self._get_headers_dict(response.headers),
-            errors=[self._get_reason(response)],
-            extra=extra,
-            time=time,
-        )
+        except Exception as ex:
+            return FetchResult(
+                status_code=0,
+                headers=dict(),
+                errors=[f'{type(ex).__name__}: {str(ex)}'],
+                extra=extra,
+                time=datetime.utcnow(),
+            )
 
     def _get_response(self, request_method, headers, params, req_args):
         url = self._build_request_url(request_method, **req_args)
