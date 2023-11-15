@@ -1,0 +1,40 @@
+{
+  "data": {
+    "address": "some-address",
+    "updated_at": "2023-11-15T06:47:36.432161937Z",
+    "next_update_at": "2023-11-15T06:52:36.432162534Z",
+    "quote_currency": "USD",
+    "chain_id": 20090103,
+    "chain_name": "btc-mainnet",
+    "items": [
+      {
+        "contract_decimals": 8,
+        "contract_name": "Bitcoin",
+        "contract_ticker_symbol": "BTC",
+        "contract_address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "supports_erc": null,
+        "logo_url": "https://www.covalenthq.com/static/images/icons/display-icons/bitcoin-logo.svg",
+        "contract_display_name": "Bitcoin",
+        "logo_urls": null,
+        "last_transferred_at": "2020-06-02T11:51:18Z",
+        "native_token": true,
+        "type": "cryptocurrency",
+        "is_spam": false,
+        "balance": "10907000000",
+        "balance_24h": "10907000000",
+        "quote_rate": 35600.17,
+        "quote_rate_24h": 35539.26,
+        "quote": 3882910.8,
+        "pretty_quote": "$3,882,910.75",
+        "quote_24h": 3876267.2,
+        "pretty_quote_24h": "$3,876,267.25",
+        "protocol_metadata": null,
+        "nft_data": null
+      }
+    ],
+    "pagination": null
+  },
+  "error": false,
+  "error_message": null,
+  "error_code": null
+}
