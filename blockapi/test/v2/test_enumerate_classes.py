@@ -12,6 +12,7 @@ from blockapi.v2.api.covalenth.astar import AstarCovalentApi
 from blockapi.v2.api.covalenth.avalanche import AvalancheCovalentApi
 from blockapi.v2.api.covalenth.axie import AxieCovalentApi
 from blockapi.v2.api.covalenth.binance_smart_chain import BscCovalentApi
+from blockapi.v2.api.covalenth.bitcoin import BitcoinCovalentApi
 from blockapi.v2.api.covalenth.ethereum import EthCovalentApi
 from blockapi.v2.api.covalenth.fantom import FantomCovalentApi
 from blockapi.v2.api.covalenth.heco import HECOCovalentApi
@@ -54,6 +55,7 @@ def test_enumerate_covalent_all_classes():
         PolygonCovalentApi,
         RskCovalentApi,
         EthCovalentApi,
+        BitcoinCovalentApi,
     ] == yield_covalent_api_classes()
 
 
