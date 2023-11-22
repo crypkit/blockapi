@@ -2,11 +2,22 @@
 
 
 
+## v0.30.4 (2023-11-22)
+
+### Fix
+
+* fix: Blockchair and Debank parsing (#154) ([`c723d50`](https://github.com/crypkit/blockapi/commit/c723d5034eb94ce9407ed692a71331e12ebbdfcc))
+
+
 ## v0.30.3 (2023-11-14)
 
 ### Fix
 
 * fix: Change solana token list source (#152) ([`6babc47`](https://github.com/crypkit/blockapi/commit/6babc470d821d7234b07c4a4b2731fe4b1e032ce))
+
+### Unknown
+
+* 0.30.3 ([`5ba4260`](https://github.com/crypkit/blockapi/commit/5ba426036cbd3d13b4d6707322fc1cae2ccafc28))
 
 
 ## v0.30.2 (2023-11-14)
