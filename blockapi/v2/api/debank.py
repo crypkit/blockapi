@@ -270,6 +270,9 @@ class DebankBalanceParser:
         is_wallet: bool = True,
         pool_info: Optional[PoolInfo] = None,
     ) -> List[BalanceItem]:
+        if not response:
+            return []
+
         items = []
         for item in response:
             balance_item = DebankModelBalanceItem(**item)
