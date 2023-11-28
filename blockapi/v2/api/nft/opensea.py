@@ -304,10 +304,9 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         symbol = total.get('floor_price_symbol')
         coin = OPENSEA_COINS.get(symbol)
         if not coin:
-            if not symbol:
-                return None, None
-
-            return None, f'There is no mapping for opensea symbol {symbol}'
+            coin = COIN_ETH
+            if symbol:
+                return None, f'There is no mapping for opensea symbol {symbol}'
 
         total_stats = NftCollectionTotalStats.from_api(
             volume=total.get('volume'),
