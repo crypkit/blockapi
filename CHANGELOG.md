@@ -2,11 +2,22 @@
 
 
 
+## v0.30.5 (2023-11-29)
+
+### Fix
+
+* fix: Parse NFT collection when there is no base symbol (#155) ([`b8f6435`](https://github.com/crypkit/blockapi/commit/b8f643515517d637247b22f45c92d875fb623108))
+
+
 ## v0.30.4 (2023-11-22)
 
 ### Fix
 
 * fix: Blockchair and Debank parsing (#154) ([`c723d50`](https://github.com/crypkit/blockapi/commit/c723d5034eb94ce9407ed692a71331e12ebbdfcc))
+
+### Unknown
+
+* 0.30.4 ([`b3a3602`](https://github.com/crypkit/blockapi/commit/b3a3602bf6997299e3a04cd5046022df4bca360a))
 
 
 ## v0.30.3 (2023-11-14)
