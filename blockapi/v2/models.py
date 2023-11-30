@@ -874,6 +874,7 @@ class FetchResult:
     data: Optional[Union[dict, list]] = None
     errors: Optional[list[Union[str, dict]]] = None
     extra: Optional[dict] = None
+    cursor: Optional[str] = None
     time: Optional[datetime] = None
 
     def json(self):
@@ -888,4 +889,5 @@ class ParseResult:
     ] = None
     warnings: Optional[list[Union[str, dict]]] = None
     errors: Optional[list[Union[str, dict]]] = None
+    cursor: Optional[str] = None
     time: Optional[datetime] = None
