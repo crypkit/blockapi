@@ -25,6 +25,11 @@ def api(fake_sleep_provider):
 
 
 @pytest.fixture
+def api_w_limit(fake_sleep_provider):
+    return OpenSeaApi("some-key", Blockchain.ETHEREUM, fake_sleep_provider, limit=1)
+
+
+@pytest.fixture
 def nfts_response():
     return read_file('data/opensea/nfts.json')
 
@@ -171,6 +176,8 @@ def test_parse_offers(requests_mock, api, offers_response, offers_next_response)
     parsed = api.parse_offers(offers)
 
     assert not parsed.errors
+    assert not parsed.cursor
+
     data = parsed.data[0]
 
     assert data.direction == NftOfferDirection.OFFER
@@ -198,6 +205,24 @@ def test_parse_offers(requests_mock, api, offers_response, offers_next_response)
     assert data.pay_contract == '0x8acb0bc7f6c77e4e2aef83ea928d5a6c2a0b7fcd'
     assert not data.pay_ident
     assert data.pay_amount == Decimal('8')
+
+
+def test_fetch_with_limit(
+    requests_mock, api_w_limit, offers_response, offers_next_response
+):
+    requests_mock.get(
+        f'https://api.opensea.io/api/v2/offers/collection/ever-fragments-of-civitas/all',
+        text=offers_response,
+    )
+    requests_mock.get(
+        f'https://api.opensea.io/api/v2/offers/collection/ever-fragments-of-civitas/all?next=LXBrPTE0MDMyMTEyOTU=',
+        text=offers_next_response,
+    )
+
+    offers = api_w_limit.fetch_offers(test_collection_slug)
+    parsed = api_w_limit.parse_offers(offers)
+    assert offers.cursor == 'LXBrPTE0MDMyMTEyOTU='
+    assert parsed.cursor == 'LXBrPTE0MDMyMTEyOTU='
 
 
 def test_parse_listings(requests_mock, api, listings_response):

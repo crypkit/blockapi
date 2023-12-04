@@ -1,6 +1,6 @@
 import functools
 import logging
-from typing import Callable, Iterable, Optional
+from typing import Callable, Iterable, Optional, Tuple
 
 from blockapi.v2.base import (
     ApiException,
@@ -91,6 +91,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         api_key: str,
         blockchain: Blockchain,
         sleep_provider: ISleepProvider = None,
+        limit: Optional[int] = None,
     ):
         super().__init__(api_key)
 
@@ -101,10 +102,11 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
 
         self._headers = {'accept': 'application/json', 'x-api-key': api_key}
         self._sleep_provider = sleep_provider or SleepProvider()
+        self._limit = limit
 
     def fetch_nfts(self, address: str) -> FetchResult:
         logger.info(f'Fetch nfts from {address}')
-        return self._coallesce(self._yield_nfts(address))
+        return self._coalesce(self._yield_nfts(address))
 
     def parse_nfts(self, fetch_result: FetchResult) -> ParseResult:
         logger.info(f'Parse nfts')
@@ -113,11 +115,15 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             return ParseResult()
 
         parsed = list(self._yield_parsed_nfts(fetch_result.data))
-        return ParseResult(data=parsed, errors=fetch_result.errors)
+        return ParseResult(
+            data=parsed, errors=fetch_result.errors, cursor=fetch_result.cursor
+        )
 
-    def fetch_offers(self, collection: str) -> FetchResult:
-        logger.info(f'Fetch offers from {collection}')
-        return self._coallesce(self._yield_offers(collection))
+    def fetch_offers(
+        self, collection: str, cursor: Optional[str] = None
+    ) -> FetchResult:
+        logger.info(f'Fetch offers from {collection}, cursor={cursor}')
+        return self._coalesce(self._yield_offers(collection, cursor))
 
     def parse_offers(self, fetch_result: FetchResult) -> ParseResult:
         if not fetch_result:
@@ -128,11 +134,15 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
                 NftOfferDirection.OFFER, fetch_result.data, fetch_result.extra
             )
         )
-        return ParseResult(data=parsed, errors=fetch_result.errors)
+        return ParseResult(
+            data=parsed, errors=fetch_result.errors, cursor=fetch_result.cursor
+        )
 
-    def fetch_listings(self, collection: str) -> FetchResult:
-        logger.info(f'Fetch offers from {collection}')
-        return self._coallesce(self._yield_listings(collection))
+    def fetch_listings(
+        self, collection: str, cursor: Optional[str] = None
+    ) -> FetchResult:
+        logger.info(f'Fetch listings from {collection}, cursor={cursor}')
+        return self._coalesce(self._yield_listings(collection, cursor))
 
     def parse_listings(self, fetch_result: FetchResult) -> ParseResult:
         if not fetch_result:
@@ -145,7 +155,9 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
                 fetch_result.extra,
             )
         )
-        return ParseResult(data=parsed, errors=fetch_result.errors)
+        return ParseResult(
+            data=parsed, errors=fetch_result.errors, cursor=fetch_result.cursor
+        )
 
     def fetch_collection(self, collection: str) -> FetchResult:
         stats = self.get_data(
@@ -178,7 +190,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             data=[parsed] if parsed else None, errors=errors if errors else None
         )
 
-    def _yield_nfts(self, address: str) -> Iterable[FetchResult]:
+    def _yield_nfts(self, address: str) -> Iterable[Tuple[FetchResult, Optional[str]]]:
         try:
             yield from self._yield_fetch_data(self._fetch_nfts_page, key=address)
         except Exception as e:
@@ -186,24 +198,28 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             logger.exception(e)
             yield FetchResult(
                 errors=[f'Error fetching OpenSea NFTs from {address}: {e}']
-            )
+            ), None
 
-    def _yield_offers(self, collection: str) -> Iterable[FetchResult]:
+    def _yield_offers(
+        self, collection: str, cursor: Optional[str]
+    ) -> Iterable[Tuple[FetchResult, Optional[str]]]:
         try:
             fetch_page = functools.partial(self._fetch_offers_page, 'get_offers')
-            yield from self._yield_fetch_data(fetch_page, key=collection)
+            yield from self._yield_fetch_data(fetch_page, key=collection, cursor=cursor)
         except Exception as e:
             logger.error(f'Error fetching OpenSea collection {collection} offers')
             logger.exception(e)
             yield FetchResult(
                 errors=[f'Error fetching OpenSea collection {collection} offers: {e}'],
                 extra=dict(collection=collection),
-            )
+            ), None
 
-    def _yield_listings(self, collection: str) -> Iterable[FetchResult]:
+    def _yield_listings(
+        self, collection: str, cursor: Optional[str]
+    ) -> Iterable[Tuple[FetchResult, Optional[str]]]:
         try:
             fetch_page = functools.partial(self._fetch_offers_page, 'get_listings')
-            yield from self._yield_fetch_data(fetch_page, key=collection)
+            yield from self._yield_fetch_data(fetch_page, key=collection, cursor=cursor)
         except Exception as e:
             logger.error(f'Error fetching OpenSea collection {collection} listings')
             logger.exception(e)
@@ -212,21 +228,20 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
                     f'Error fetching OpenSea collection {collection} listings: {e}'
                 ],
                 extra=dict(collection=collection),
-            )
+            ), None
 
     def _yield_fetch_data(
-        self, fetch_method: Callable, key: str
-    ) -> Iterable[FetchResult]:
+        self, fetch_method: Callable, key: str, cursor: Optional[str] = None
+    ) -> Iterable[Tuple[FetchResult, Optional[str]]]:
         cursors = set()
-        cursor = None
 
         count = 0
         while True:
             self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
             count += 1
-            logger.debug(f'Fetching page {count} of {key}')
+            logger.debug(f'Fetching page {count} of {key} from {cursor}')
             fetched, next_cursor = fetch_method(key, cursor)
-            yield fetched
+            yield fetched, next_cursor
 
             if not next_cursor:
                 break
@@ -236,6 +251,9 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
                 raise ApiException(f'Detected duplicate cursor {cursor}')
 
             cursors.add(cursor)
+
+            if self._limit and count >= self._limit:
+                break
 
     def _fetch_offers_page(
         self, method: str, collection: str, cursor: Optional[str] = None
@@ -502,11 +520,13 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         return OFFER_ITEM_TYPES.get(item_type)
 
     @staticmethod
-    def _coallesce(fetch_results: Iterable[FetchResult]):
+    def _coalesce(fetch_results: Iterable[Tuple[FetchResult, Optional[str]]]):
         data = []
         errors = []
         last = None
-        for item in fetch_results:
+        last_cursor = None
+        for item, cursor in fetch_results:
+            last_cursor = cursor
             last = item
             if item.data:
                 data.append(item.data)
@@ -515,13 +535,14 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
                 errors.extend(item.errors)
 
         if not last:
-            return FetchResult(data=data, errors=errors)
+            return FetchResult(data=data, errors=errors, cursor=last_cursor)
 
         return FetchResult(
             status_code=last.status_code,
             headers=last.headers,
-            extra=last.extra,
-            time=last.time,
             data=data,
             errors=errors,
+            extra=last.extra,
+            cursor=last_cursor,
+            time=last.time,
         )
