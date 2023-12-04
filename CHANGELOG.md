@@ -2,11 +2,22 @@
 
 
 
+## v0.31.0 (2023-12-04)
+
+### Feature
+
+* feat: Limit NFT fetches and return cursor (#156) ([`56a0857`](https://github.com/crypkit/blockapi/commit/56a085765ac066cd71abd843ebe616c5201e029f))
+
+
 ## v0.30.5 (2023-11-29)
 
 ### Fix
 
 * fix: Parse NFT collection when there is no base symbol (#155) ([`b8f6435`](https://github.com/crypkit/blockapi/commit/b8f643515517d637247b22f45c92d875fb623108))
+
+### Unknown
+
+* 0.30.5 ([`da76328`](https://github.com/crypkit/blockapi/commit/da7632861fa808e56ac6ffb654cbe190ecf85668))
 
 
 ## v0.30.4 (2023-11-22)
