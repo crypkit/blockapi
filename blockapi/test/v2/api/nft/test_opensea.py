@@ -258,7 +258,7 @@ def test_parse_listings(requests_mock, api, listings_response):
 
     assert data.pay_coin.symbol == 'ETH'
     assert not data.pay_ident
-    assert data.pay_amount == Decimal('0.0175')
+    assert data.pay_amount == Decimal('0.02')
 
 
 def test_parse_collection(
