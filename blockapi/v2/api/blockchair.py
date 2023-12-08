@@ -106,6 +106,9 @@ class BlockchairApi(BlockchainApi, BalanceMixin, ITransactions, ABC):
         return item
 
     def _parse_balances(self, dashboard: dict) -> Iterable[BalanceItem]:
+        if not dashboard:
+            return
+
         addr = dashboard.get('address')
         balance = addr.get('balance')
 
