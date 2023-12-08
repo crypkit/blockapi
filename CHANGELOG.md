@@ -2,11 +2,22 @@
 
 
 
+## v0.31.2 (2023-12-08)
+
+### Fix
+
+* fix: Blockchair fetch error (#158) ([`7b30a1a`](https://github.com/crypkit/blockapi/commit/7b30a1a132e300c71585912eaddd148c3f69cf25))
+
+
 ## v0.31.1 (2023-12-08)
 
 ### Fix
 
 * fix: [OpenSea] Get correct listing price (#157) ([`6e8d4c4`](https://github.com/crypkit/blockapi/commit/6e8d4c4136a2160d60e58942d616ed1a79ec3a2b))
+
+### Unknown
+
+* 0.31.1 ([`571c1d5`](https://github.com/crypkit/blockapi/commit/571c1d56d1ef74dcdac0088bae0cc3b3c1936851))
 
 
 ## v0.31.0 (2023-12-04)
