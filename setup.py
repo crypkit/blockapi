@@ -6,7 +6,7 @@ with open("README.md", "r") as f:
 
 PACKAGES = find_packages(where='.')
 
-__version__ = "0.31.2"
+__version__ = "0.31.3"
 
 setuptools.setup(
     name='blockapi',

@@ -2,11 +2,22 @@
 
 
 
+## v0.31.3 (2023-12-08)
+
+### Fix
+
+* fix: [OpenSea] Parse multiple contracts for collection (#159) ([`fdc40e8`](https://github.com/crypkit/blockapi/commit/fdc40e8a53373439ddff83d086972aca9baa2e27))
+
+
 ## v0.31.2 (2023-12-08)
 
 ### Fix
 
 * fix: Blockchair fetch error (#158) ([`7b30a1a`](https://github.com/crypkit/blockapi/commit/7b30a1a132e300c71585912eaddd148c3f69cf25))
+
+### Unknown
+
+* 0.31.2 ([`de9844a`](https://github.com/crypkit/blockapi/commit/de9844a18b551b6fc3e8ea6710da6f32d312b76d))
 
 
 ## v0.31.1 (2023-12-08)
