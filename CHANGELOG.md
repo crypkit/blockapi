@@ -2,11 +2,22 @@
 
 
 
+## v0.31.1 (2023-12-08)
+
+### Fix
+
+* fix: [OpenSea] Get correct listing price (#157) ([`6e8d4c4`](https://github.com/crypkit/blockapi/commit/6e8d4c4136a2160d60e58942d616ed1a79ec3a2b))
+
+
 ## v0.31.0 (2023-12-04)
 
 ### Feature
 
 * feat: Limit NFT fetches and return cursor (#156) ([`56a0857`](https://github.com/crypkit/blockapi/commit/56a085765ac066cd71abd843ebe616c5201e029f))
+
+### Unknown
+
+* 0.31.0 ([`880a5e5`](https://github.com/crypkit/blockapi/commit/880a5e5768372f5d1d97916e6779934d43bb2053))
 
 
 ## v0.30.5 (2023-11-29)
