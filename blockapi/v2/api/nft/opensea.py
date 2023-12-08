@@ -19,6 +19,7 @@ from blockapi.v2.models import (
     AssetType,
     Blockchain,
     Coin,
+    ContractInfo,
     FetchResult,
     NftCollection,
     NftCollectionIntervalStats,
@@ -67,6 +68,8 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         Blockchain.BASE: 'base',
         Blockchain.ZORA: 'zora',
     }
+
+    opensea_blockchains = {n: b for b, n in supported_blockchains.items()}
 
     coin = COIN_ETH
     api_options = ApiOptions(
@@ -174,12 +177,16 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             headers=self._headers,
             collection=collection,
             chain=self._opensea_chain,
-            extra=dict(stats=stats.data, stats_errors=stats.errors),
+            extra=dict(
+                collection=collection, stats=stats.data, stats_errors=stats.errors
+            ),
         )
 
     def parse_collection(self, fetch_result: FetchResult) -> ParseResult:
         parsed, error = self._parse_collection(
-            fetch_result.data, fetch_result.extra.get('stats')
+            fetch_result.extra.get('collection'),
+            fetch_result.data,
+            fetch_result.extra.get('stats'),
         )
         errors = []
         if error:
@@ -318,9 +325,10 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
                 )
 
     def _parse_collection(
-        self, data: dict, stat_data: dict
+        self, collection_ident: str, data: dict, stat_data: dict
     ) -> tuple[Optional[NftCollection], Optional[str]]:
         if not stat_data or not data:
+            logger.warning(f'No data for collection: {collection_ident}')
             return None, None
 
         total = stat_data.get('total')
@@ -346,19 +354,12 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         week_stats = self._parse_collection_stats(intervals, 'one_week')
         month_stats = self._parse_collection_stats(intervals, 'one_month')
 
-        contract = data.get('collection')
-        if contracts := data.get('contracts'):
-            if contract_filtered := [
-                c.get('address')
-                for c in contracts
-                if c.get('chain') == self._opensea_chain
-            ]:
-                contract = contract_filtered[0].lower()
+        contracts = list(self._yield_contracts(collection_ident, data.get('contracts')))
 
         collection = NftCollection.from_api(
             ident=data.get('collection'),
             name=data.get('name'),
-            contract=contract,
+            contracts=contracts,
             image=data.get('image_url'),
             is_disabled=data.get('is_disabled'),
             is_nsfw=data.get('is_nsfw'),
@@ -559,3 +560,26 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             cursor=last_cursor,
             time=last.time,
         )
+
+    def _yield_contracts(self, ident: str, contracts: dict) -> Iterable[ContractInfo]:
+        if not contracts:
+            return
+
+        for item in contracts:
+            chain = item.get('chain')
+            blockchain = self.opensea_blockchains.get(chain)
+            address = item.get('address')
+
+            if not blockchain:
+                logger.warning(
+                    f'Could not map {chain} to known blockchains for collection {ident}'
+                )
+                continue
+
+            if not address:
+                logger.warning(
+                    f'No address available for item with chain {chain} for collection {ident}'
+                )
+                continue
+
+            yield ContractInfo.from_api(blockchain=blockchain, address=address)

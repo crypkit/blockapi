@@ -300,7 +300,11 @@ def test_parse_collection(
     assert data.total_stats.floor_price == Decimal('0.008')
     assert data.total_stats.coin == COIN_ETH
     assert data.blockchain == Blockchain.ETHEREUM
-    assert data.contract == '0x8acb0bc7f6c77e4e2aef83ea928d5a6c2a0b7fcd'
+    assert len(data.contracts) == 2
+    assert data.contracts[0].blockchain == Blockchain.ETHEREUM
+    assert data.contracts[0].address == '0x8acb0bc7f6c77e4e2aef83ea928d5a6c2a0b7fcd'
+    assert data.contracts[1].blockchain == Blockchain.ETHEREUM
+    assert data.contracts[1].address == '0x9acb0bc7f6c77e4e2aef83ea928d5a6c2a0b7fcd'
 
 
 def test_create_with_unsupported_blockchain():
