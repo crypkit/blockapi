@@ -1,7 +1,9 @@
 import functools
 import logging
+from decimal import Decimal
 from typing import Callable, Iterable, Optional, Tuple
 
+from blockapi.utils.num import raw_to_decimals
 from blockapi.v2.base import (
     ApiException,
     BlockchainApi,
@@ -318,6 +320,9 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
     def _parse_collection(
         self, data: dict, stat_data: dict
     ) -> tuple[Optional[NftCollection], Optional[str]]:
+        if not stat_data or not data:
+            return None, None
+
         total = stat_data.get('total')
         symbol = total.get('floor_price_symbol')
         coin = OPENSEA_COINS.get(symbol)
@@ -439,10 +444,18 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             offer_amount,
             _,
         ) = self._parse_offer_item(offer[0])
-        pay = self._parse_consideration(params.get('consideration'), offerer)
-        pay_coin, pay_contract, pay_ident, pay_amount = next(
-            pay, (None, None, None, None)
-        )
+
+        price = item.get('price', dict()).get('current')
+        if direction == NftOfferDirection.LISTING and price:
+            pay_amount = Decimal(price.get('value'))
+            pay_contract = None
+            pay_ident = None
+            pay_coin = OPENSEA_COINS.get(price.get('currency'))
+        else:
+            pay = self._parse_consideration(params.get('consideration'), offerer)
+            pay_coin, pay_contract, pay_ident, pay_amount = next(
+                pay, (None, None, None, None)
+            )
 
         return NftOffer.from_api(
             offer_key=item.get('order_hash'),
