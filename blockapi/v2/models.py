@@ -717,10 +717,20 @@ class NftCollectionTotalStats:
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
+class ContractInfo:
+    blockchain: Blockchain
+    address: str
+
+    @classmethod
+    def from_api(cls, *, blockchain: Blockchain, address: str):
+        return cls(blockchain=blockchain, address=address)
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
 class NftCollection:
     ident: str
     name: str
-    contract: str
+    contracts: list[ContractInfo]
     image: Optional[str]
     is_disabled: bool
     is_nsfw: bool
@@ -736,7 +746,7 @@ class NftCollection:
         *,
         ident: str,
         name: str,
-        contract: str,
+        contracts: list[ContractInfo],
         image: Optional[str],
         is_disabled: bool,
         is_nsfw: bool,
@@ -749,7 +759,7 @@ class NftCollection:
         return cls(
             ident=ident,
             name=name,
-            contract=contract,
+            contracts=contracts,
             image=image,
             is_disabled=is_disabled,
             is_nsfw=is_nsfw,
