@@ -109,9 +109,9 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         self._sleep_provider = sleep_provider or SleepProvider()
         self._limit = limit
 
-    def fetch_nfts(self, address: str) -> FetchResult:
-        logger.info(f'Fetch nfts from {address}')
-        return self._coalesce(self._yield_nfts(address))
+    def fetch_nfts(self, address: str, cursor: Optional[str] = None) -> FetchResult:
+        logger.info(f'Fetch nfts from {address}, cursor={cursor}')
+        return self._coalesce(self._yield_nfts(address, cursor))
 
     def parse_nfts(self, fetch_result: FetchResult) -> ParseResult:
         logger.info(f'Parse nfts')
@@ -199,9 +199,13 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             data=[parsed] if parsed else None, errors=errors if errors else None
         )
 
-    def _yield_nfts(self, address: str) -> Iterable[Tuple[FetchResult, Optional[str]]]:
+    def _yield_nfts(
+        self, address: str, cursor: Optional[str] = None
+    ) -> Iterable[Tuple[FetchResult, Optional[str]]]:
         try:
-            yield from self._yield_fetch_data(self._fetch_nfts_page, key=address)
+            yield from self._yield_fetch_data(
+                self._fetch_nfts_page, key=address, cursor=cursor
+            )
         except Exception as e:
             logger.error(f'Error fetching OpenSea NFTs from {address}')
             logger.exception(e)
@@ -446,6 +450,11 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             _,
         ) = self._parse_offer_item(offer[0])
 
+        offer_key = item.get('order_hash')
+        if self._is_locked(params.get('consideration'), direction, offerer):
+            logger.info(f'Locked {direction} skipped: offer_key={offer_key}')
+            return None
+
         price = item.get('price', dict()).get('current')
         if direction == NftOfferDirection.LISTING and price:
             pay_amount = Decimal(price.get('value'))
@@ -459,7 +468,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             )
 
         return NftOffer.from_api(
-            offer_key=item.get('order_hash'),
+            offer_key=offer_key,
             direction=direction,
             collection=collection,
             contract=contract,
@@ -476,6 +485,15 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             pay_ident=pay_ident,
             pay_amount=pay_amount,
         )
+
+    @staticmethod
+    def _is_locked(items: list[dict], direction: NftOfferDirection, offerer: str):
+        locks = [t for t in items if t.get('itemType') not in ['0', '1']]
+        if direction == NftOfferDirection.LISTING:
+            return any(locks)
+
+        locks = [t for t in locks if t.get('recipient').lower() != offerer]
+        return any(locks)
 
     @staticmethod
     def _parse_contract(item) -> Optional[str]:

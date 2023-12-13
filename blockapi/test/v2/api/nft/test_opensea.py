@@ -55,6 +55,11 @@ def listings_response():
 
 
 @pytest.fixture
+def locked_listings_response():
+    return read_file('data/opensea/listings-locked.json')
+
+
+@pytest.fixture
 def collection_stats_response():
     return read_file('data/opensea/collection-stats.json')
 
@@ -134,6 +139,9 @@ def test_parse_nfts(requests_mock, api, nfts_response, nfts_next_response):
 
     nfts = api.fetch_nfts(nfts_test_address)
     parsed = api.parse_nfts(nfts)
+
+    assert not parsed.cursor
+
     assert len(parsed.data) == 2
     data = parsed.data[1]
     assert data.ident == '550885'
@@ -160,6 +168,25 @@ def test_parse_nfts(requests_mock, api, nfts_response, nfts_next_response):
     assert data.blockchain == Blockchain.ETHEREUM
     assert data.asset_type == AssetType.AVAILABLE
     assert data.amount == 1
+
+
+def test_fetch_nfts_with_limit(
+    requests_mock, api_w_limit, nfts_response, nfts_next_response
+):
+    requests_mock.get(
+        f'https://api.opensea.io/api/v2/chain/ethereum/account/{nfts_test_address}/nfts',
+        text=nfts_response,
+    )
+    requests_mock.get(
+        f'https://api.opensea.io/api/v2/chain/ethereum/account/{nfts_test_address}/nfts?next=LXBrPTE0MDMyMTEyOTU=',
+        text=nfts_next_response,
+    )
+
+    nfts = api_w_limit.fetch_nfts(nfts_test_address)
+    parsed = api_w_limit.parse_nfts(nfts)
+
+    assert nfts.cursor == 'LXBrPTE0MDMyMTEyOTU='
+    assert parsed.cursor == 'LXBrPTE0MDMyMTEyOTU='
 
 
 def test_parse_offers(requests_mock, api, offers_response, offers_next_response):
@@ -259,6 +286,19 @@ def test_parse_listings(requests_mock, api, listings_response):
     assert data.pay_coin.symbol == 'ETH'
     assert not data.pay_ident
     assert data.pay_amount == Decimal('0.02')
+
+
+def test_ignore_locked_listings(requests_mock, api, locked_listings_response):
+    requests_mock.get(
+        f'https://api.opensea.io/api/v2/listings/collection/ever-fragments-of-civitas/all',
+        text=locked_listings_response,
+    )
+
+    listings = api.fetch_listings(test_collection_slug)
+    parsed = api.parse_listings(listings)
+
+    assert not parsed.errors
+    assert not parsed.data
 
 
 def test_parse_collection(
