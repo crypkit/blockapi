@@ -1,0 +1,75 @@
+{
+  "listings": [
+    {
+      "order_hash": "0x287ef6e41adb614c099081973c57a3780b7bf15c2079215dcdea41fb1f6f956a",
+      "chain": "ethereum",
+      "type": "basic",
+      "price": {
+        "current": {
+          "currency": "ETH",
+          "decimals": "18",
+          "value": "10000000000000000"
+        }
+      },
+      "protocol_data": {
+        "parameters": {
+          "offerer": "0x5e2c5943b2b85a65394988e5efaef599dd55bff0",
+          "offer": [
+            {
+              "itemType": "2",
+              "token": "0x0Fc3DD8C37880a297166BEd57759974A157f0E74",
+              "identifierOrCriteria": "3484",
+              "startAmount": "1",
+              "endAmount": "1"
+            }
+          ],
+          "consideration": [
+            {
+              "itemType": "0",
+              "token": "0x0000000000000000000000000000000000000000",
+              "identifierOrCriteria": "0",
+              "startAmount": "9250000000000000",
+              "endAmount": "9250000000000000",
+              "recipient": "0x5e2c5943B2B85a65394988E5efaEf599DD55bfF0"
+            },
+            {
+              "itemType": "0",
+              "token": "0x0000000000000000000000000000000000000000",
+              "identifierOrCriteria": "0",
+              "startAmount": "250000000000000",
+              "endAmount": "250000000000000",
+              "recipient": "0x0000a26b00c1F0DF003000390027140000fAa719"
+            },
+            {
+              "itemType": "0",
+              "token": "0x0000000000000000000000000000000000000000",
+              "identifierOrCriteria": "0",
+              "startAmount": "500000000000000",
+              "endAmount": "500000000000000",
+              "recipient": "0xd27c9f7Bf5ca9283D41E0a2f6E992525673623Fd"
+            },
+            {
+              "itemType": "2",
+              "token": "0x0Fc3DD8C37880a297166BEd57759974A157f0E74",
+              "identifierOrCriteria": "3484",
+              "startAmount": "1",
+              "endAmount": "1",
+              "recipient": "0xFC31a9Dcd371733fD88845A0AB025203AaCd0a20"
+            }
+          ],
+          "startTime": "1702386370",
+          "endTime": "1705064741",
+          "orderType": "0",
+          "zone": "0x004C00500000aD104D7DBd00e3ae0A5C00560C00",
+          "zoneHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "salt": "0x360c6ebe000000000000000000000000000000000000000008434e2b08e5ea11",
+          "conduitKey": "0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000",
+          "totalOriginalConsiderationItems": "4",
+          "counter": "0"
+        },
+        "signature": null
+      },
+      "protocol_address": "0x00000000000000adc04c56bf30ac9d3c0aaf14dc"
+    }
+  ]
+}
