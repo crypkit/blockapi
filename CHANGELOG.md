@@ -2,11 +2,22 @@
 
 
 
+## v0.32.0 (2023-12-13)
+
+### Feature
+
+* feat: Fetch NFTs iteratively (#160) ([`8172763`](https://github.com/crypkit/blockapi/commit/8172763a546455425d4e81ffaace625ab45f9a20))
+
+
 ## v0.31.3 (2023-12-08)
 
 ### Fix
 
 * fix: [OpenSea] Parse multiple contracts for collection (#159) ([`fdc40e8`](https://github.com/crypkit/blockapi/commit/fdc40e8a53373439ddff83d086972aca9baa2e27))
+
+### Unknown
+
+* 0.31.3 ([`409c897`](https://github.com/crypkit/blockapi/commit/409c8977536d4669f6e7f2f95b24ae7526e29070))
 
 
 ## v0.31.2 (2023-12-08)
