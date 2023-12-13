@@ -1,10 +1,11 @@
-from blockapi.v2.coins import COIN_ETH, COIN_PRIME, COIN_USDC, COIN_WETH
+from blockapi.v2.coins import COIN_DAI, COIN_ETH, COIN_PRIME, COIN_USDC, COIN_WETH
 from blockapi.v2.models import Blockchain, Coin
 
 OPENSEA_COINS: dict[str, Coin] = {
     'ETH': COIN_ETH,
     'USDC': COIN_USDC,
     'PRIME': COIN_PRIME,
+    'DAI': COIN_DAI,
 }
 
 OPENSEA_CONTRACTS = {

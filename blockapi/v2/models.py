@@ -270,6 +270,7 @@ class CoingeckoId(str, Enum):
     CELO = 'celo'
     COSMOS = 'cosmos'
     CRONOS = 'crypto-com-chain'
+    DAI = 'dai'
     DOGECOIN = 'dogecoin'
     ETHEREUM = 'ethereum'
     EVMOS = 'evmos'

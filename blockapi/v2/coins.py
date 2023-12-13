@@ -243,6 +243,14 @@ COIN_XDAI = Coin(
     info=CoinInfo(coingecko_id=CoingeckoId.XDAI),
 )
 
+COIN_DAI = Coin(
+    symbol='DAI',
+    name='Dai',
+    decimals=18,
+    blockchain=Blockchain.ETHEREUM,
+    info=CoinInfo(coingecko_id=CoingeckoId.DAI),
+)
+
 COIN_OKT = Coin(
     symbol='OKT',
     name='OKC',
