@@ -20,7 +20,6 @@ def test_map_none():
 @pytest.mark.parametrize(
     'chain,expected',
     [
-        ('ShibChain', Blockchain.SHIBA_CHAIN),
         ('aptos', Blockchain.APTOS),
         ('base', Blockchain.BASE),
         ('bitkub-chain', Blockchain.BITKUB_CHAIN),
@@ -47,7 +46,9 @@ def test_map_none():
         ('proof-of-memes', Blockchain.PROOF_OF_MEMES),
         ('pulsechain', Blockchain.PULSE),
         ('rollux', Blockchain.ROLLUX),
+        ('sei-network', Blockchain.SEI_NETWORK),
         ('shibarium', Blockchain.SHIBARIUM),
+        ('ShibChain', Blockchain.SHIBA_CHAIN),
         ('sui', Blockchain.SUI),
         ('tenet', Blockchain.TENET),
         ('terra-2', Blockchain.TERRA_2),
