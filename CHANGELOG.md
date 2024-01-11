@@ -2,11 +2,22 @@
 
 
 
+## v0.33.0 (2024-01-11)
+
+### Feature
+
+* feat: Add support for new blockchains (#161) ([`a6c815a`](https://github.com/crypkit/blockapi/commit/a6c815a788c1b845273c1fa2ade31d1a34592c1b))
+
+
 ## v0.32.0 (2023-12-13)
 
 ### Feature
 
 * feat: Fetch NFTs iteratively (#160) ([`8172763`](https://github.com/crypkit/blockapi/commit/8172763a546455425d4e81ffaace625ab45f9a20))
+
+### Unknown
+
+* 0.32.0 ([`8ac6fb1`](https://github.com/crypkit/blockapi/commit/8ac6fb14c54da406b3fbfbb74166c3f10f024e61))
 
 
 ## v0.31.3 (2023-12-08)
