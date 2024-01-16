@@ -1,4 +1,6 @@
+import logging
 from abc import ABCMeta
+from collections import defaultdict
 from decimal import Decimal
 from typing import Iterable, Optional
 
@@ -6,6 +8,8 @@ from blockapi.utils.num import to_decimal
 from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance
 from blockapi.v2.coins import COIN_ATOM
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin
+
+logger = logging.getLogger(__name__)
 
 
 class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
@@ -35,11 +39,57 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
         ),
     }
 
-    _tokens_map: Optional[dict[str, dict]] = None
+    NATIVE_TOKEN_DATA_JSON = 'https://raw.githubusercontent.com/PulsarDefi/IBC-Token-Data-Cosmos/main/native_token_data.min.json'
+    IBC_DATA_JSON = 'https://raw.githubusercontent.com/PulsarDefi/IBC-Token-Data-Cosmos/main/ibc_data.min.json'
+
+    _tokens_map: Optional[dict[str, dict]] = defaultdict(dict)
 
     @property
     def tokens_map(self) -> dict[str, dict]:
-        return NotImplemented
+        if not self._tokens_map:
+            self.parse_native_tokens()
+            self.parse_ibc_data()
+
+        return self._tokens_map
+
+    def parse_native_tokens(self):
+        response = self._session.get(self.NATIVE_TOKEN_DATA_JSON)
+        data = response.json()
+
+        for key, value in data.items():
+            native_denom, chain = key.split('__')
+            self._tokens_map[chain][native_denom] = value
+
+    def parse_ibc_data(self):
+        response = self._session.get(self.IBC_DATA_JSON)
+        data = response.json()
+
+        for key, value in data.items():
+            ibc_denom, chain = key.split('__')
+
+            # Origin is link to already existing native token.
+            native_token_chain = (
+                # TODO: write test for this
+                value["origin"]["chain"][
+                    0
+                ]  # Just the first, BalanceItem has only one coin
+                if isinstance(value["origin"]["chain"], list)
+                else value["origin"]["chain"]
+            )
+
+            native_token_denom = value["origin"]["denom"]
+
+            if native_token_denom not in self._tokens_map[native_token_chain]:
+                logger.debug(
+                    f"Skipping IBC {ibc_denom}, no native token: {native_token_denom}, chain: {native_token_chain}."
+                )
+                continue
+
+            native_token_value = self._tokens_map[native_token_chain][
+                native_token_denom
+            ]
+
+            self._tokens_map[chain][ibc_denom] = native_token_value
 
     def get_balance(self, address: str) -> list[BalanceItem]:
         balances = []
@@ -52,7 +102,9 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
 
         return balances
 
-    def _yield_available_balance(self, address: str) -> Iterable[BalanceItem]:
+    def _yield_available_balance(
+        self, address: str, chain: str = 'cosmoshub'
+    ) -> Iterable[BalanceItem]:
         response = self._get('get_balances', address=address)
 
         for b in response['balances']:
@@ -61,8 +113,8 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
                     balance_raw=b['amount'], coin=self.coin, raw=b
                 )
             else:
-                if b['denom'] in self.tokens_map:
-                    token = self._get_token_data(b['denom'])
+                if b['denom'] in self.tokens_map[chain]:
+                    token = self._get_token_data(chain, b['denom'])
                 else:
                     token = Coin.from_api(
                         blockchain=Blockchain.COSMOS,
@@ -71,15 +123,15 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
                     )
                 yield BalanceItem.from_api(balance_raw=b['amount'], coin=token, raw=b)
 
-    def _get_token_data(self, denom: str) -> Coin:
-        raw_token = self.tokens_map[denom]
+    def _get_token_data(self, chain: str, denom: str) -> Coin:
+        raw_token = self.tokens_map[chain][denom]
         return Coin(
-            symbol=raw_token['dp_denom'],
-            name=raw_token['dp_denom'],
-            decimals=raw_token['decimal'],
-            blockchain=Blockchain.COSMOS,
-            address=raw_token['base_denom'],
-            standards=raw_token['type'],
+            symbol=raw_token['symbol'],
+            name=raw_token['name'],
+            decimals=raw_token['decimals'],
+            blockchain=Blockchain.COSMOS,  # TODO: what about cosmos IBC chains?
+            address=raw_token['denom'],
+            standards=[],
         )
 
     def _get_staked_balance(self, address: str) -> Optional[BalanceItem]:
@@ -144,15 +196,3 @@ class CosmosApi(CosmosApiBase):
         base_url=CosmosApiBase.API_BASE_URL,
         rate_limit=CosmosApiBase.API_BASE_RATE_LIMIT,
     )
-
-    @property
-    def tokens_map(self) -> dict[str, dict]:
-        if self._tokens_map is None:
-            response = self._session.get('https://api.mintscan.io/v2/assets/cosmos')
-            token_list = response.json()
-            if 'assets' not in token_list:
-                self._tokens_map = {}
-            else:
-                self._tokens_map = {a['denom']: a for a in token_list['assets']}
-
-        return self._tokens_map
