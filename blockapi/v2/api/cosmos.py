@@ -219,6 +219,15 @@ class CosmosApi(CosmosApiBase):
     )
 
 
+class CosmosOsmosisApi(CosmosApiBase):
+    coin = COIN_DYDX
+    api_options = ApiOptions(
+        blockchain=Blockchain.COSMOS,
+        base_url='https://lcd-osmosis.cosmostation.io/',
+        rate_limit=CosmosApiBase.API_BASE_RATE_LIMIT,
+    )
+
+
 class CosmosDydxApi(CosmosApiBase):
     coin = COIN_DYDX
     api_options = ApiOptions(
