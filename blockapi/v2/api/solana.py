@@ -46,6 +46,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     supported_requests = {}
 
     token_program_id = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
+    token2022_program_id = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
     _tokens_map: Optional[Dict[str, Dict]] = None
 
     @property
@@ -67,17 +68,35 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
                 {'encoding': 'jsonParsed'},
             ],
         )
+        raw_token2022_balances = self._request(
+            method='getTokenAccountsByOwner',
+            params=[
+                address,
+                {'programId': self.token2022_program_id},
+                {'encoding': 'jsonParsed'},
+            ],
+        )
 
-        return FetchResult(data=data, extra=dict(raw_token_balances=raw_token_balances))
+        return FetchResult(
+            data=data,
+            extra=dict(
+                raw_token_balances=raw_token_balances,
+                raw_token2022_balances=raw_token2022_balances,
+            ),
+        )
 
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
         raw_token_balances = fetch_result.extra['raw_token_balances']
+        raw_token2022_balances = fetch_result.extra['raw_token2022_balances']
+
         balances = []
         sol_balance = self._get_sol_balance(fetch_result.data)
         if sol_balance is not None:
             balances.append(sol_balance)
 
         token_balances = list(self._yield_token_balances(raw_token_balances))
+        token_balances.extend(self._yield_token_balances(raw_token2022_balances))
+
         if token_balances:
             merged_token_balances = self.merge_balances_with_same_coin(token_balances)
             balances.extend(merged_token_balances)
