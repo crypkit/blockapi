@@ -2,11 +2,22 @@
 
 
 
+## v0.34.0 (2024-01-16)
+
+### Feature
+
+* feat: [Solana] Also fetch Token 2022 SPLs (#162) ([`91fbce6`](https://github.com/crypkit/blockapi/commit/91fbce6fa992dd13f787d4ca0739c660e6f39270))
+
+
 ## v0.33.0 (2024-01-11)
 
 ### Feature
 
 * feat: Add support for new blockchains (#161) ([`a6c815a`](https://github.com/crypkit/blockapi/commit/a6c815a788c1b845273c1fa2ade31d1a34592c1b))
+
+### Unknown
+
+* 0.33.0 ([`29bea19`](https://github.com/crypkit/blockapi/commit/29bea197f27b6b727360665154f6694207f42be5))
 
 
 ## v0.32.0 (2023-12-13)
