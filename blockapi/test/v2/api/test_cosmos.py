@@ -1,6 +1,7 @@
 import pytest
 
 from blockapi.v2.api.cosmos import CosmosApi
+from blockapi.v2.models import UNKNOWN
 
 
 @pytest.fixture()
@@ -152,3 +153,11 @@ def test_parse_ibc_tokens_multiple_chains(
         ]
         == cosmos_api.tokens_map['cosmoshub']['uatom']
     )
+
+
+@pytest.mark.vcr()
+@pytest.mark.integration
+def test_get_balance(cosmos_api):
+    balances = cosmos_api.get_balance('cosmos14s5zljjqtzyl2zfey7ytkllyp0tampkel24qyu')
+    assert len(balances) == 17
+    assert all([balance.coin != UNKNOWN for balance in balances])

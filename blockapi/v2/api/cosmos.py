@@ -69,7 +69,6 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
 
             # Origin is link to already existing native token.
             native_token_chain = (
-                # TODO: write test for this
                 value["origin"]["chain"][
                     0
                 ]  # Just the first, BalanceItem has only one coin
@@ -98,7 +97,7 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
         if staked_balance := self._get_staked_balance(address):
             balances.append(staked_balance)
         if reward_balance := self._get_reward_balance(address):
-            balances.append(reward_balance)
+            balances.extend(reward_balance)
 
         return balances
 
@@ -163,17 +162,39 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
             },
         )
 
-    def _get_reward_balance(self, address: str) -> Optional[BalanceItem]:
+    def _get_reward_balance(
+        self, address: str, chain: str = 'cosmoshub'
+    ) -> list[BalanceItem]:
         response = self._get('get_rewards', address=address)
         if not response.get('rewards'):
-            return
+            return []
 
-        return BalanceItem.from_api(
-            balance_raw=response['total'][0]['amount'],
-            coin=self.coin,
-            asset_type=AssetType.REWARDS,
-            raw=response['total'],
-        )
+        rewards = []
+        for reward in response['total']:
+            chain_tokens = self.tokens_map[chain]
+
+            if not chain_tokens:
+                logger.warning(
+                    f"Skipping rewards, chain {chain} has no token mappings."
+                )
+                return []
+
+            if reward['denom'] not in chain_tokens:
+                logger.warning(
+                    f"Skipping reward: {reward['denom']} no matching token found."
+                )
+                continue
+
+            token = self._get_token_data(chain, reward['denom'])
+            balance_reward = BalanceItem.from_api(
+                balance_raw=reward['amount'],
+                coin=token,
+                asset_type=AssetType.REWARDS,
+                raw=reward,
+            )
+            rewards.append(balance_reward)
+
+        return rewards
 
     def _get_commission(self, validator_address: str) -> Decimal:
         response = self._get('get_commission', validator_address=validator_address)
