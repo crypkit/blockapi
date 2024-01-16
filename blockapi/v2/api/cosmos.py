@@ -6,7 +6,7 @@ from typing import Iterable, Optional
 
 from blockapi.utils.num import to_decimal
 from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance
-from blockapi.v2.coins import COIN_ATOM
+from blockapi.v2.coins import COIN_ATOM, COIN_CELESTIA, COIN_DYDX
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin
 
 logger = logging.getLogger(__name__)
@@ -215,5 +215,23 @@ class CosmosApi(CosmosApiBase):
     api_options = ApiOptions(
         blockchain=Blockchain.COSMOS,
         base_url=CosmosApiBase.API_BASE_URL,
+        rate_limit=CosmosApiBase.API_BASE_RATE_LIMIT,
+    )
+
+
+class CosmosDydxApi(CosmosApiBase):
+    coin = COIN_DYDX
+    api_options = ApiOptions(
+        blockchain=Blockchain.COSMOS,
+        base_url='https://lcd-dydx.cosmostation.io/',
+        rate_limit=CosmosApiBase.API_BASE_RATE_LIMIT,
+    )
+
+
+class CosmosCelestiaApi(CosmosApiBase):
+    coin = COIN_CELESTIA
+    api_options = ApiOptions(
+        blockchain=Blockchain.COSMOS,
+        base_url='https://lcd-celestia.cosmostation.io/',
         rate_limit=CosmosApiBase.API_BASE_RATE_LIMIT,
     )
