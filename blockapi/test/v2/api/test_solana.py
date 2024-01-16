@@ -39,7 +39,13 @@ def test_merge_balances_with_different_mixed_coins(
 @pytest.mark.integration
 def test_get_balance(solana_api):
     balances = solana_api.get_balance('FEeSRuEDk8ENZbpzXjn4uHPz3LQijbeKRzhqVr5zPSJ9')
-    assert len(balances) == 14
+    flux = [
+        x
+        for x in balances
+        if x.coin.address == 'FLUXBmPhT3Fd1EDVFdg46YREqHBeNypn1h4EbnTzWERX'
+    ]
+    assert len(flux) == 1
+    assert len(balances) == 29
 
 
 def test_use_custom_url():
@@ -58,7 +64,9 @@ def test_use_base_url_in_post(
 ):
     test_addr = '5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu'
 
-    iterator = iter([solana_value_response, solana_response])
+    iterator = iter(
+        [solana_value_response, solana_response, '{"result": {"value": []}}']
+    )
 
     def get_text(*args, **kwargs):
         assert args[0].url == 'https://proxy/solana/'
