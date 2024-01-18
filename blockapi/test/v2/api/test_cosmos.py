@@ -85,7 +85,8 @@ def mocked_ibc_response():
     }
 
 
-def test_parse_ibc_tokens(
+@pytest.fixture()
+def token_loader_with_mocked_data(
     token_loader, mocked_native_token_response, mocked_ibc_response, requests_mock
 ):
     requests_mock.get(
@@ -98,18 +99,22 @@ def test_parse_ibc_tokens(
         json=mocked_ibc_response,
     )
 
-    assert token_loader.tokens_map
+    assert token_loader.tokens_map  # Force load tokens map
+    yield token_loader
+
+
+def test_parse_ibc_tokens(token_loader_with_mocked_data):
     assert (
-        token_loader.tokens_map["akash"][
+        token_loader_with_mocked_data.tokens_map["akash"][
             "ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2"
         ]
-        == token_loader.tokens_map["cosmoshub"]["uatom"]
+        == token_loader_with_mocked_data.tokens_map["cosmoshub"]["uatom"]
     )
     assert (
-        token_loader.tokens_map["osmosis"][
+        token_loader_with_mocked_data.tokens_map["osmosis"][
             "ibc/276EB8E30E8E1673FFDC80DBC79BF864AD83888F455BE970ED06ED5E13A9BEA6"
         ]
-        == token_loader.tokens_map["dydx"]["adydx"]
+        == token_loader_with_mocked_data.tokens_map["dydx"]["adydx"]
     )
 
 
@@ -135,7 +140,6 @@ def test_parse_ibc_tokens_2(
     mocked_ibc_response_cosmoshub_only,
     requests_mock,
 ):
-    token_loader.filter_by_chain = "cosmoshub"
     requests_mock.get(
         token_loader.NATIVE_TOKEN_DATA_JSON,
         json=mocked_native_token_response,
@@ -244,3 +248,70 @@ def test_celestia_get_balance():
     balances = api.get_balance('celestia1aff76avnwpnk02wxkc6n5xnwasjkgekamaa82d')
     assert len(balances) == 1
     assert all([balance.coin != UNKNOWN for balance in balances])
+
+
+@pytest.mark.vcr()
+def test_dissable_mapping():
+    api = CosmosDydxApi(
+        enable_token_mapping=False,
+    )
+    balances = api.get_balance('dydx1aff76avnwpnk02wxkc6n5xnwasjkgekarwznsh')
+    assert all(
+        [True for balance in balances if balance.coin.symbol in ['unknown', 'DYDX']]
+    )
+
+
+@pytest.mark.parametrize(
+    "coingecko_id, expected_address",
+    [
+        (
+            "cosmos",
+            "ibc/00255B18FBBC1E36845AAFDCB4CBD460DC45331496A64C2A29CEAFDD3B997B5F",
+        ),
+        (None, "ibc/00255B18FBBC1E36845AAFDCB4CBD460DC45331496A64C2A29CEAFDD3B997B5F"),
+    ],
+)
+def test_map_returns_ibc_always(
+    token_loader, coingecko_id, expected_address, requests_mock
+):
+    requests_mock.get(
+        token_loader.NATIVE_TOKEN_DATA_JSON,
+        json={
+            'uatom__cosmoshub': {
+                "name": "Cosmos Hub Atom",
+                "chain": "cosmoshub",
+                "denom": "uatom",
+                "symbol": "ATOM",
+                "decimals": 6,
+                "description": "The native staking and governance token of the Cosmos Hub.",
+                "coingecko_id": coingecko_id,
+                "bridge_asset": None,
+                "logos": {
+                    "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.png",
+                    "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.svg",
+                },
+            },
+        },
+    )
+    requests_mock.get(
+        token_loader.IBC_DATA_JSON,
+        json={
+            "ibc/00255B18FBBC1E36845AAFDCB4CBD460DC45331496A64C2A29CEAFDD3B997B5F__celestia": {
+                "chain": "celestia",
+                "hash": "00255B18FBBC1E36845AAFDCB4CBD460DC45331496A64C2A29CEAFDD3B997B5F",
+                "supply": "3015000000000000000000",
+                "path": "transfer/channel-281",
+                "origin": {
+                    "denom": "uatom",
+                    "chain": "cosmoshub",
+                },
+            }
+        },
+    )
+
+    api = CosmosCelestiaApi(tokens_map=token_loader.tokens_map)
+    token = api.map_or_create_default(
+        'ibc/00255B18FBBC1E36845AAFDCB4CBD460DC45331496A64C2A29CEAFDD3B997B5F'
+    )
+
+    assert token.address == expected_address

@@ -473,18 +473,18 @@ COIN_OSMOSIS = Coin(
     symbol='OSMO',
     name='Osmosis',
     decimals=3,
-    blockchain=Blockchain.COSMOS,  # TODO: split cosmos into other blockchains
+    blockchain=Blockchain.OSMOSIS,
     address="uosmo",
-    info=CoinInfo(coingecko_id=CoingeckoId.PRIME),
+    info=CoinInfo(coingecko_id=CoingeckoId.OSMOSIS),
 )
 
 COIN_DYDX = Coin(
     symbol='DYDX',
     name='dYdX',
     decimals=18,
-    blockchain=Blockchain.COSMOS,  # TODO: split cosmos into other blockchains
+    blockchain=Blockchain.DYDX,
     address="adydx",
-    info=CoinInfo(coingecko_id=CoingeckoId.PRIME),
+    info=CoinInfo(coingecko_id=CoingeckoId.DYDX),
 )
 
 
@@ -492,7 +492,7 @@ COIN_CELESTIA = Coin(
     symbol='TIA',
     name='Celestia',
     decimals=6,
-    blockchain=Blockchain.COSMOS,  # TODO: split cosmos into other blockchains
+    blockchain=Blockchain.CELESTIA,
     address="utia",
-    info=CoinInfo(coingecko_id=CoingeckoId.PRIME),
+    info=CoinInfo(coingecko_id=CoingeckoId.CELESTIA),
 )

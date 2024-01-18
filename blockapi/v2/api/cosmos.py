@@ -8,8 +8,8 @@ from requests import Session
 
 from blockapi.utils.num import to_decimal
 from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance
-from blockapi.v2.coins import COIN_ATOM, COIN_CELESTIA, COIN_DYDX
-from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin
+from blockapi.v2.coins import COIN_ATOM, COIN_CELESTIA, COIN_DYDX, COIN_OSMOSIS
+from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin, CoinInfo
 
 logger = logging.getLogger(__name__)
 
@@ -99,10 +99,13 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
     TOKENS_MAP_BLOCKCHAIN_KEY = None
 
     def __init__(
-        self, tokens_map: defaultdict[str, dict] = None, api_key: Optional[str] = None
+        self,
+        tokens_map: defaultdict[str, dict] = None,
+        enable_token_mapping=True,
     ):
         super().__init__()
         self._tokens_map = tokens_map
+        self.enable_token_mapping = enable_token_mapping
 
     @property
     def blockchain_tokens_map(self) -> dict[str, dict]:
@@ -130,15 +133,32 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
                     balance_raw=b['amount'], coin=self.coin, raw=b
                 )
             else:
-                if b['denom'] in self.blockchain_tokens_map:
-                    token = self._get_token_data(b['denom'])
-                else:
-                    token = Coin.from_api(
-                        blockchain=Blockchain.COSMOS,
-                        decimals=self.coin.decimals,
-                        address=b['denom'],
-                    )
+                token = self.map_or_create_default(b['denom'])
                 yield BalanceItem.from_api(balance_raw=b['amount'], coin=token, raw=b)
+
+    def map_or_create_default(self, denom: str):
+        token = self.map_to_native_token_if_enabled(denom)
+
+        if not token:
+            return self.create_default_coin(denom)
+
+        return token
+
+    def create_default_coin(self, denom: str):
+        return Coin.from_api(
+            blockchain=self.api_options.blockchain,
+            decimals=self.coin.decimals,
+            address=denom,
+        )
+
+    def map_to_native_token_if_enabled(self, denom: str):
+        if not self.enable_token_mapping:
+            return None
+
+        if denom not in self.blockchain_tokens_map:
+            return None
+
+        return self._get_token_data(denom)
 
     def _get_token_data(self, denom: str) -> Coin:
         raw_token = self.blockchain_tokens_map[denom]
@@ -146,9 +166,10 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
             symbol=raw_token['symbol'],
             name=raw_token['name'],
             decimals=raw_token['decimals'],
-            blockchain=Blockchain.COSMOS,  # TODO: what about cosmos IBC chains?
-            address=raw_token['denom'],
+            blockchain=self.api_options.blockchain,
+            address=denom,  # We want original IBC address.
             standards=[],
+            info=CoinInfo(coingecko_id=raw_token['coingecko_id']),
         )
 
     def _get_staked_balance(self, address: str) -> Optional[BalanceItem]:
@@ -189,13 +210,8 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
 
         rewards = []
         for reward in response['total']:
-            if reward['denom'] not in self.blockchain_tokens_map:
-                logger.warning(
-                    f"Skipping reward: {reward['denom']} no matching token found."
-                )
-                continue
+            token = self.map_or_create_default(reward['denom'])
 
-            token = self._get_token_data(reward['denom'])
             balance_reward = BalanceItem.from_api(
                 balance_raw=reward['amount'],
                 coin=token,
@@ -231,10 +247,10 @@ class CosmosApi(CosmosApiBase):
 
 
 class CosmosOsmosisApi(CosmosApiBase):
-    coin = COIN_DYDX
+    coin = COIN_OSMOSIS
     TOKENS_MAP_BLOCKCHAIN_KEY = "osmosis"
     api_options = ApiOptions(
-        blockchain=Blockchain.COSMOS,
+        blockchain=Blockchain.OSMOSIS,
         base_url='https://lcd-osmosis.cosmostation.io/',
         rate_limit=CosmosApiBase.API_BASE_RATE_LIMIT,
     )
@@ -244,7 +260,7 @@ class CosmosDydxApi(CosmosApiBase):
     coin = COIN_DYDX
     TOKENS_MAP_BLOCKCHAIN_KEY = "dydx"
     api_options = ApiOptions(
-        blockchain=Blockchain.COSMOS,
+        blockchain=Blockchain.DYDX,
         base_url='https://lcd-dydx.cosmostation.io/',
         rate_limit=CosmosApiBase.API_BASE_RATE_LIMIT,
     )
@@ -254,7 +270,7 @@ class CosmosCelestiaApi(CosmosApiBase):
     coin = COIN_CELESTIA
     TOKENS_MAP_BLOCKCHAIN_KEY = "celestia"
     api_options = ApiOptions(
-        blockchain=Blockchain.COSMOS,
+        blockchain=Blockchain.CELESTIA,
         base_url='https://lcd-celestia.cosmostation.io/',
         rate_limit=CosmosApiBase.API_BASE_RATE_LIMIT,
     )
