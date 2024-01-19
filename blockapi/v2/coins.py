@@ -467,3 +467,32 @@ COIN_PRIME = Coin(
     address="0xb23d80f5fefcddaa212212f028021b41ded428cf",
     info=CoinInfo(coingecko_id=CoingeckoId.PRIME),
 )
+
+
+COIN_OSMOSIS = Coin(
+    symbol='OSMO',
+    name='Osmosis',
+    decimals=3,
+    blockchain=Blockchain.OSMOSIS,
+    address="uosmo",
+    info=CoinInfo(coingecko_id=CoingeckoId.OSMOSIS),
+)
+
+COIN_DYDX = Coin(
+    symbol='DYDX',
+    name='dYdX',
+    decimals=18,
+    blockchain=Blockchain.DYDX,
+    address="adydx",
+    info=CoinInfo(coingecko_id=CoingeckoId.DYDX),
+)
+
+
+COIN_CELESTIA = Coin(
+    symbol='TIA',
+    name='Celestia',
+    decimals=6,
+    blockchain=Blockchain.CELESTIA,
+    address="utia",
+    info=CoinInfo(coingecko_id=CoingeckoId.CELESTIA),
+)
