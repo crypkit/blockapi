@@ -2,11 +2,40 @@
 
 
 
+## v0.35.0 (2024-01-19)
+
+### Feature
+
+* feat: refactoring: split token map loading into a separate class ([`131efe1`](https://github.com/crypkit/blockapi/commit/131efe122b2c972bc0173bf90a9f0811c3fdfc11))
+
+* feat: cosmos: added osmosis, dydx, celestia ([`a7bd515`](https://github.com/crypkit/blockapi/commit/a7bd515c72997dc95d6de853dcbbfc8144780b7c))
+
+* feat: cosmos: added dydx, celestia ([`1c558cb`](https://github.com/crypkit/blockapi/commit/1c558cb6a92af1a6150e18676a3f3c7b4a4793db))
+
+* feat: cosmos rewards fix (not use just the first reward) ([`12de4e9`](https://github.com/crypkit/blockapi/commit/12de4e96e3a5e56811477bf851d9e5b640fef55d))
+
+* feat: cosmos uses pulsar IBC Token Data ([`9cbbd16`](https://github.com/crypkit/blockapi/commit/9cbbd160820ff0c3d4597b37195143b510ffa158))
+
+### Fix
+
+* fix: cosmos: return original denom always ([`9e13025`](https://github.com/crypkit/blockapi/commit/9e130258caf67b90ea0e1c991b6ffa0f198e1e27))
+
+### Unknown
+
+* Merge pull request #163 from crypkit/feat_fix_cosmos_token_data
+
+feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://github.com/crypkit/blockapi/commit/4b84688438cc18d1b9f271455c920b946d000209))
+
+
 ## v0.34.0 (2024-01-16)
 
 ### Feature
 
 * feat: [Solana] Also fetch Token 2022 SPLs (#162) ([`91fbce6`](https://github.com/crypkit/blockapi/commit/91fbce6fa992dd13f787d4ca0739c660e6f39270))
+
+### Unknown
+
+* 0.34.0 ([`e85c06d`](https://github.com/crypkit/blockapi/commit/e85c06daa4aff71805c0c89f6776cac95e3989bb))
 
 
 ## v0.33.0 (2024-01-11)
