@@ -2,6 +2,19 @@
 
 
 
+## v0.35.1 (2024-01-23)
+
+### Fix
+
+* fix: ocmosis: fix Osmosis decimals ([`bfc48fa`](https://github.com/crypkit/blockapi/commit/bfc48fa70c34593907d7a35685daa16bcefaeefb))
+
+### Unknown
+
+* Merge pull request #164 from crypkit/fix-osmosis-decimals
+
+fix: ocmosis: fix Osmosis decimals ([`1d2087d`](https://github.com/crypkit/blockapi/commit/1d2087d24feb4410c1b1f90dc7707542115b6af3))
+
+
 ## v0.35.0 (2024-01-19)
 
 ### Feature
@@ -21,6 +34,8 @@
 * fix: cosmos: return original denom always ([`9e13025`](https://github.com/crypkit/blockapi/commit/9e130258caf67b90ea0e1c991b6ffa0f198e1e27))
 
 ### Unknown
+
+* 0.35.0 ([`fe30a72`](https://github.com/crypkit/blockapi/commit/fe30a72c458d05afd66792cc1f0a379045106b77))
 
 * Merge pull request #163 from crypkit/feat_fix_cosmos_token_data
 
