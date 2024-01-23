@@ -472,7 +472,7 @@ COIN_PRIME = Coin(
 COIN_OSMOSIS = Coin(
     symbol='OSMO',
     name='Osmosis',
-    decimals=3,
+    decimals=6,
     blockchain=Blockchain.OSMOSIS,
     address="uosmo",
     info=CoinInfo(coingecko_id=CoingeckoId.OSMOSIS),
