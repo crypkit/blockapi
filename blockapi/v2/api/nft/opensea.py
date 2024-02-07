@@ -55,21 +55,22 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
     Explorer: https://opensea.io/
     """
 
-    supported_blockchains = {
-        Blockchain.ETHEREUM: 'ethereum',
-        Blockchain.POLYGON: 'matic',
-        Blockchain.KLAYTN_CYPRESS: 'klaytn',
-        Blockchain.BINANCE_SMART_CHAIN: 'bsc',
+    supported_blockchains_map = {
         Blockchain.ARBITRUM: 'arbitrum',
         Blockchain.ARBITRUM_NOVA: 'arbitrum_nova',
         Blockchain.AVALANCHE: 'avalanche',
-        Blockchain.OPTIMISM: 'optimism',
-        Blockchain.SOLANA: 'solana',
         Blockchain.BASE: 'base',
+        Blockchain.BINANCE_SMART_CHAIN: 'bsc',
+        Blockchain.ETHEREUM: 'ethereum',
+        Blockchain.KLAYTN_CYPRESS: 'klaytn',
+        Blockchain.OPTIMISM: 'optimism',
+        Blockchain.POLYGON: 'matic',
         Blockchain.ZORA: 'zora',
     }
 
-    opensea_blockchains = {n: b for b, n in supported_blockchains.items()}
+    opensea_blockchains_map = {n: b for b, n in supported_blockchains_map.items()}
+
+    supported_blockchains = list(supported_blockchains_map.keys())
 
     coin = COIN_ETH
     api_options = ApiOptions(
@@ -101,7 +102,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         super().__init__(api_key)
 
         self._blockchain = blockchain
-        self._opensea_chain = self.supported_blockchains.get(blockchain)
+        self._opensea_chain = self.supported_blockchains_map.get(blockchain)
         if not self._opensea_chain:
             raise ApiException(f"Blockchain '{blockchain.value}' is not supported")
 
@@ -588,7 +589,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
 
         for item in contracts:
             chain = item.get('chain')
-            blockchain = self.opensea_blockchains.get(chain)
+            blockchain = self.opensea_blockchains_map.get(chain)
             address = item.get('address')
 
             if not blockchain:

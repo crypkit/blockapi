@@ -365,3 +365,7 @@ def test_fetch_nfts_duplicate_cursor(
     assert test_collection_slug in error
     assert 'LXBrPTE0MDMyMTEyOTU=' in error
     assert offers.extra['collection']
+
+
+def test_supported_blockchains():
+    assert Blockchain.BASE.value in OpenSeaApi.supported_blockchains
