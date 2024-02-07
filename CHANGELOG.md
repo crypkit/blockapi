@@ -2,6 +2,17 @@
 
 
 
+## v0.36.0 (2024-02-07)
+
+### Chore
+
+* chore: black update and reformat (#166) ([`1dfc448`](https://github.com/crypkit/blockapi/commit/1dfc4482d90bb6b9a683140303c4c157816c5306))
+
+### Feature
+
+* feat: Support multiple OpenSea blockchains (#165) ([`657d697`](https://github.com/crypkit/blockapi/commit/657d69762b63ce4bc6be027befaa87e145917658))
+
+
 ## v0.35.1 (2024-01-23)
 
 ### Fix
@@ -9,6 +20,8 @@
 * fix: ocmosis: fix Osmosis decimals ([`bfc48fa`](https://github.com/crypkit/blockapi/commit/bfc48fa70c34593907d7a35685daa16bcefaeefb))
 
 ### Unknown
+
+* 0.35.1 ([`7a3cca6`](https://github.com/crypkit/blockapi/commit/7a3cca6239fab103403a6ee55fdcea82c2bc154c))
 
 * Merge pull request #164 from crypkit/fix-osmosis-decimals
 
