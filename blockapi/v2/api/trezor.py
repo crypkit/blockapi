@@ -81,9 +81,11 @@ class TrezorApi(BlockchainApi, ITransactions, BalanceMixin, ABC):
             coin=self.coin,
             date=txdata.get('blockTime'),
             hash=tx.get('txid'),
-            status=TransactionStatus.CONFIRMED
-            if txdata['confirmations'] > 0
-            else TransactionStatus.PENDING,
+            status=(
+                TransactionStatus.CONFIRMED
+                if txdata['confirmations'] > 0
+                else TransactionStatus.PENDING
+            ),
             operations=[
                 OperationItem.from_api(
                     amount_raw=txdata.get('value'),

@@ -94,9 +94,11 @@ class BlockchainosApi(BlockchainApi, BalanceMixin):
             to_address=raw_op.get('target'),
             hash=raw_op.get('tx_hash'),
             type=OperationType(raw_op.get('type')),
-            direction=OperationDirection.OUTGOING
-            if address == from_address
-            else OperationDirection.INCOMING,
+            direction=(
+                OperationDirection.OUTGOING
+                if address == from_address
+                else OperationDirection.INCOMING
+            ),
             raw=raw_op,
             confirmed=raw_op.get('confirmed'),
         )

@@ -3,7 +3,7 @@ from os import environ
 test_addresses = {
     'BTC': [
         '35hK24tcLEWcgNA4JxpvbkNkoAcDGqQPsP',
-        'xpub6CUGRUonZSQ4TWtTMmzXdrXDtypWKiKrhko4egpiMZbpiaQL2jkwSB1icqYh2cfDfVxdx4df189oLKnC5fSwqPfgyP3hooxujYzAu3fDVmz'
+        'xpub6CUGRUonZSQ4TWtTMmzXdrXDtypWKiKrhko4egpiMZbpiaQL2jkwSB1icqYh2cfDfVxdx4df189oLKnC5fSwqPfgyP3hooxujYzAu3fDVmz',
         # 'ypub6WjHjrJLKSg8oQw1E4LGvQDJ2uofgMfJKLnv5Ha4NPRW4rf7LPXffMJ8EReixY1mUCc33SsiDUodUCTvCktFeN7ZW28GVhBXhNnoKYUqXbP',
     ],
     'BCH': [
@@ -22,7 +22,7 @@ test_addresses = {
     ],
     'DCR': [
         'DsjshD6PK3rgcKZtNUP7jnMcGQRvbY3dmwo',
-        'DcrP3rA8RSi8Ai9VZU2pB2m31c9GWhEqii8'
+        'DcrP3rA8RSi8Ai9VZU2pB2m31c9GWhEqii8',
         # current api doesn't support xpub key
         # 'dpubZFwoKEEJYVDxGo8bf2E4qwh6Qve9cku5gvaS5kC96hUdMT7SF9nymaLFeEFQaHy8a3SuiUJRL87rz3bfwFSFqErYVeHUg3xnzPjHftiofFu',
     ],
