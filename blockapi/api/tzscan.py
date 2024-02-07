@@ -165,20 +165,20 @@ class TzscanAPI(BlockchainAPI):
                     'from_address': op['src']['tz'],
                     'to_address': op['destination']['tz'],
                     'amount': float(op['amount']) * self.coef,
-                    'fee': None
-                    if float(op['fee']) == -1
-                    else float(op['fee']) * self.coef,
-                    'gas_limit': None
-                    if int(op['gas_limit']) == -1
-                    else int(op['gas_limit']),
+                    'fee': (
+                        None if float(op['fee']) == -1 else float(op['fee']) * self.coef
+                    ),
+                    'gas_limit': (
+                        None if int(op['gas_limit']) == -1 else int(op['gas_limit'])
+                    ),
                     'hash': tx['hash'],
                     'confirmed': None,
                     'is_error': op['failed'],
                     'type': 'internal' if op['internal'] else 'normal',
                     'kind': op['kind'].lower(),
-                    'direction': 'outgoing'
-                    if self.address == op['src']['tz']
-                    else 'incoming',
+                    'direction': (
+                        'outgoing' if self.address == op['src']['tz'] else 'incoming'
+                    ),
                     'raw': tx,
                 }
             )
@@ -193,9 +193,9 @@ class TzscanAPI(BlockchainAPI):
                     'source_address': op['src']['tz'],
                     'delegate': op['delegate']['tz'],
                     'fee': None if op['fee'] == -1 else op['fee'] * self.coef,
-                    'gas_limit': None
-                    if int(op['gas_limit']) == -1
-                    else int(op['gas_limit']),
+                    'gas_limit': (
+                        None if int(op['gas_limit']) == -1 else int(op['gas_limit'])
+                    ),
                     'hash': tx['hash'],
                     'is_error': op['failed'],
                     'type': 'internal' if op['internal'] else 'normal',
@@ -236,9 +236,9 @@ class TzscanAPI(BlockchainAPI):
                     'delegate_alias': op['delegate']['alias'],
                     'burnt': op['burn_tez'] * self.coef,
                     'fee': None if op['fee'] == -1 else op['fee'] * self.coef,
-                    'gas_limit': None
-                    if int(op['gas_limit']) == -1
-                    else int(op['gas_limit']),
+                    'gas_limit': (
+                        None if int(op['gas_limit']) == -1 else int(op['gas_limit'])
+                    ),
                     'hash': tx['hash'],
                     'is_error': op['failed'],
                     'type': 'internal' if op['internal'] else 'normal',

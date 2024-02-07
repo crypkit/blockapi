@@ -603,9 +603,11 @@ class NftToken:
             image_url=image_url,
             metadata_url=metadata_url,
             metadata=None,
-            updated_time=parse_dt(updated_time)
-            if updated_time and updated_time.strip()
-            else None,
+            updated_time=(
+                parse_dt(updated_time)
+                if updated_time and updated_time.strip()
+                else None
+            ),
             is_disabled=is_disabled,
             is_nsfw=is_nsfw,
             blockchain=blockchain,
@@ -667,15 +669,19 @@ class NftOffer:
             offer_coin=offer_coin,
             offer_contract=offer_contract.lower() if offer_contract else None,
             offer_ident=offer_ident,
-            offer_amount=raw_to_decimals(offer_amount, offer_coin.decimals)
-            if offer_coin
-            else to_decimal(offer_amount),
+            offer_amount=(
+                raw_to_decimals(offer_amount, offer_coin.decimals)
+                if offer_coin
+                else to_decimal(offer_amount)
+            ),
             pay_coin=pay_coin,
             pay_contract=pay_contract.lower() if pay_contract else None,
             pay_ident=pay_ident,
-            pay_amount=raw_to_decimals(pay_amount, pay_coin.decimals)
-            if pay_coin
-            else to_decimal(pay_amount),
+            pay_amount=(
+                raw_to_decimals(pay_amount, pay_coin.decimals)
+                if pay_coin
+                else to_decimal(pay_amount)
+            ),
         )
 
 

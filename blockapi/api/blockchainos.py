@@ -72,9 +72,9 @@ class BlockchainosAPI(BlockchainAPI):
                     'hash': op_hash,
                     'amount': float(op_amount) * self.coef,
                     'type': op_type,
-                    'direction': 'outgoing'
-                    if op_from_address == self.address
-                    else 'incoming',
+                    'direction': (
+                        'outgoing' if op_from_address == self.address else 'incoming'
+                    ),
                     'confirmed': op_confirmed,
                     'raw': operation,
                 }

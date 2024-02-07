@@ -123,15 +123,17 @@ class EtherscanAPI(BlockchainAPI):
             'gas': {
                 'gas': float(tx['gas']),
                 'gas_price': float(tx['gasPrice']) if tx.get('gasPrice') else None,
-                'cumulative_gas_used': float(tx['cumulativeGasUsed'])
-                if tx.get('cumulativeGasUsed')
-                else None,
+                'cumulative_gas_used': (
+                    float(tx['cumulativeGasUsed'])
+                    if tx.get('cumulativeGasUsed')
+                    else None
+                ),
                 'gas_used': float(tx['gasUsed']) if tx.get('gasUsed') else None,
             },
             'hash': tx['hash'],
-            'confirmations': int(tx['confirmations'])
-            if tx.get('confirmations')
-            else None,
+            'confirmations': (
+                int(tx['confirmations']) if tx.get('confirmations') else None
+            ),
             'confirmed': None,
             'is_error': tx.get('isError') == '1',
             'type': tx_type,
