@@ -45,6 +45,7 @@ def test_enumerate_covalent_all_classes():
         AvalancheCovalentApi,
         AxieCovalentApi,
         BscCovalentApi,
+        EthCovalentApi,
         FantomCovalentApi,
         HECOCovalentApi,
         IoTEXCovalentApi,
@@ -53,8 +54,7 @@ def test_enumerate_covalent_all_classes():
         PalmCovalentApi,
         PolygonCovalentApi,
         RskCovalentApi,
-        EthCovalentApi,
-    ] == yield_covalent_api_classes()
+    ] == sorted(yield_covalent_api_classes(), key=lambda x: x.__name__)
 
 
 def test_yield_debank_address():
