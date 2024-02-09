@@ -559,6 +559,7 @@ class BalanceItem:
 class NftToken:
     ident: str
     collection: str
+    collection_name: Optional[str]
     contract: str
     standard: str
     name: str
@@ -582,15 +583,16 @@ class NftToken:
         contract: str,
         standard: Literal['erc721', 'erc1155'],
         name: str,
-        description: str,
+        description: Optional[str],
         amount: int,
         image_url: str,
-        metadata_url: str,
+        metadata_url: Optional[str],
         updated_time: Optional[Union[str, datetime]],
         is_disabled: bool,
         is_nsfw: bool,
         blockchain: Blockchain,
         asset_type: AssetType = AssetType.AVAILABLE,
+        collection_name: Optional[str] = None,
     ) -> 'NftToken':
         return cls(
             ident=ident,
@@ -612,6 +614,7 @@ class NftToken:
             is_nsfw=is_nsfw,
             blockchain=blockchain,
             asset_type=asset_type,
+            collection_name=collection_name,
         )
 
 
@@ -646,8 +649,8 @@ class NftOffer:
         contract: str,
         blockchain: Blockchain,
         offerer: str,
-        start_time: str,
-        end_time: str,
+        start_time: Optional[str],
+        end_time: Optional[str],
         offer_coin: Optional[Coin],
         offer_contract: Optional[str],
         offer_ident: Optional[str],
@@ -744,6 +747,28 @@ class NftCollectionTotalStats:
             market_cap=Decimal(market_cap),
             floor_price=Decimal(floor_price),
             average_price=Decimal(average_price),
+            coin=coin,
+        )
+
+    @classmethod
+    def from_api_convert_decimals(
+        cls,
+        *,
+        volume: str,
+        sales_count: str,
+        owners_count: str,
+        market_cap: str,
+        floor_price: str,
+        average_price: str,
+        coin: Coin,
+    ) -> 'NftCollectionTotalStats':
+        return cls(
+            volume=raw_to_decimals(volume, coin.decimals),
+            sales_count=int(sales_count) if sales_count else 0,
+            owners_count=int(owners_count) if owners_count else 0,
+            market_cap=raw_to_decimals(market_cap, coin.decimals),
+            floor_price=raw_to_decimals(floor_price, coin.decimals),
+            average_price=raw_to_decimals(average_price, coin.decimals),
             coin=coin,
         )
 
