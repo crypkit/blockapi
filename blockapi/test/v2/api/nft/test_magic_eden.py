@@ -54,7 +54,7 @@ def test_parse_collection(requests_mock, api, collection_response):
     )
 
     collection = api.fetch_collection(test_collection_slug)
-    parsed = api.parse_collection(collection)
+    parsed = api.parse_collection(fetch_result=collection)
 
     assert not parsed.errors
     data = parsed.data[0]
@@ -80,12 +80,12 @@ def test_parse_collection(requests_mock, api, collection_response):
 
 def test_parse_offers(requests_mock, api, offers_response):
     requests_mock.get(
-        f'https://api-mainnet.magiceden.dev/v2/collections/magicticket/activities?offset=0&limit=1000',
+        f'https://api-mainnet.magiceden.dev/v2/collections/magicticket/activities?offset=0&limit=500',
         text=offers_response,
     )
 
     offers = api.fetch_offers(test_collection_slug)
-    parsed = api.parse_offers(offers)
+    parsed = api.parse_offers(fetch_result=offers)
 
     assert not parsed.errors
     assert not parsed.cursor
@@ -124,7 +124,7 @@ def test_parse_listings(requests_mock, api, listings_response):
 
     listings = api.fetch_listings(test_collection_slug)
     assert not listings.errors
-    parsed = api.parse_listings(listings)
+    parsed = api.parse_listings(fetch_result=listings)
 
     assert not parsed.errors
     data = parsed.data[0]
@@ -136,7 +136,9 @@ def test_parse_listings(requests_mock, api, listings_response):
     )
     assert data.blockchain == Blockchain.SOLANA
     assert data.collection == 'magicticket'
-    assert not data.start_time
+    assert data.start_time == datetime.datetime(
+        1970, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc
+    )
     assert not data.end_time
 
     assert data.offerer == '2jwVXX5FFFpcFgLAk82XyKUYtk9k5gJAxN1p1z5upxmK'

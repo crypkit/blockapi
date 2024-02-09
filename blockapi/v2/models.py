@@ -627,7 +627,7 @@ class NftOffer:
     blockchain: Blockchain
     offerer: str
     start_time: datetime
-    end_time: datetime
+    end_time: Optional[datetime]
 
     offer_coin: Optional[Coin]
     offer_contract: Optional[str]

@@ -32,11 +32,11 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
     api_options = ApiOptions(
         blockchain=blockchain,
         base_url='https://api-mainnet.magiceden.dev/v2/',
-        rate_limit=0.5,  # 2 per second
+        rate_limit=0.5,  # ~2 per second
     )
 
     supported_requests = {
-        'get_nfts': 'wallets/{address}/tokens',
+        'get_nfts': 'wallets/{address}/tokens?offset={offset}&limit={limit}',
         'get_collection': 'collections/{slug}/stats',
         'get_listings': 'collections/{slug}/listings?offset={offset}&limit={limit}',
         'get_activities': 'collections/{slug}/activities?offset={offset}&limit={limit}',
@@ -50,12 +50,35 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
         self._sleep_provider = sleep_provider
 
     def fetch_nfts(self, address: str) -> FetchResult:
-        self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
+        offset = 0
+        limit = 500
+        items = []
 
-        return self.get_data(
-            'get_nfts',
-            address=address,
-        )
+        while True:
+            self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
+            data = self.get_data(
+                'get_nfts',
+                address=address,
+                limit=limit,
+                offset=offset,
+            )
+
+            if self._should_retry(data):
+                continue
+
+            if data.data:
+                items.extend(data.data)
+                offset += limit
+
+            if data.errors or not data.data or len(data.data) < limit or offset > 15000:
+                return FetchResult(
+                    status_code=data.status_code,
+                    headers=data.headers,
+                    data=items,
+                    errors=data.errors,
+                    extra=data.extra,
+                    time=data.time,
+                )
 
     def parse_nfts(self, fetch_result: FetchResult) -> ParseResult:
         if not fetch_result or not fetch_result.data:
@@ -95,17 +118,23 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
             return 1
 
     def fetch_collection(self, collection: str) -> FetchResult:
-        self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
+        while True:
+            self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
 
-        return self.get_data(
-            'get_collection',
-            slug=collection,
-        )
+            data = self.get_data(
+                'get_collection',
+                slug=collection,
+            )
 
-    def parse_collection(self, data: FetchResult) -> ParseResult:
-        item = data.data
+            if self._should_retry(data):
+                continue
+
+            return data
+
+    def parse_collection(self, fetch_result: FetchResult) -> ParseResult:
+        item = fetch_result.data
         if not item:
-            return ParseResult(errors=data.errors)
+            return ParseResult(errors=fetch_result.errors)
 
         parsed = NftCollection.from_api(
             ident=item.get('symbol'),
@@ -133,26 +162,32 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
             month_stats=None,
         )
 
-        return ParseResult(data=[parsed] if parsed else None, errors=data.errors)
+        return ParseResult(
+            data=[parsed] if parsed else None, errors=fetch_result.errors
+        )
 
     def fetch_offers(
         self, collection: str, cursor: Optional[str] = None
     ) -> FetchResult:
         offset = 0
-        limit = 1000
+        limit = 500
         items = []
 
         while True:
             self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
+            logger.info(f'get_activities: {collection} offset={offset} limit={limit}')
             data = self.get_data(
                 'get_activities', slug=collection, offset=offset, limit=limit
             )
+
+            if self._should_retry(data):
+                continue
 
             if data.data:
                 items.extend(self._bids_only(data.data))
                 offset += limit
 
-            if data.errors or not data.data or len(data.data) < limit:
+            if data.errors or not data.data or len(data.data) < limit or offset > 15000:
                 return FetchResult(
                     status_code=data.status_code,
                     headers=data.headers,
@@ -213,7 +248,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
 
             start_time = item.get('blockTime')
             end_time = end_times.get(key)
-            if end_time < start_time:
+            if end_time and end_time < start_time:
                 end_time = None
 
             seen.add(key)
@@ -230,8 +265,11 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
                 offer_contract=None,
                 offer_ident=None,
                 offer_amount=(
-                    amount[: -coin.decimals] if amount else None
-                ),  # amount seems broken - it has double decimal places,
+                    # amount seems broken - it has double decimal places
+                    amount[: -coin.decimals]
+                    if amount
+                    else None
+                ),
                 pay_coin=None,
                 pay_contract=item.get('collection'),
                 pay_ident=item.get('tokenMint'),
@@ -251,11 +289,15 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
                 'get_listings', slug=collection, offset=offset, limit=limit
             )
 
+            if self._should_retry(data):
+                continue
+
             if data.data:
                 items.extend(data.data)
                 offset += limit
 
-            if data.errors or not data.data or len(data.data) < limit:
+            # note: if offset is greater than 15000, causes response "offset should be non-negative integer"
+            if data.errors or not data.data or len(data.data) < limit or offset > 15000:
                 return FetchResult(
                     status_code=data.status_code,
                     headers=data.headers,
@@ -299,7 +341,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
                 contract=token.get('collection'),
                 blockchain=self.blockchain,
                 offerer=item.get('seller'),
-                start_time=None,
+                start_time='0',
                 end_time=None,
                 offer_coin=None,
                 offer_contract=token.get('collection'),
@@ -325,6 +367,14 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
                 return self.coin_map.get(price.get('address')), price.get('rawAmount')
 
         return None, None
+
+    def _should_retry(self, data: FetchResult) -> bool:
+        if data.errors == ['Service unavailable']:
+            logger.info('Service unavailable - will retry after long sleep')
+            self._sleep_provider.sleep(self.base_url, seconds=60)
+            return True
+
+        return False
 
 
 class MagicEdenSolanaApi(MagicEdenApi):
