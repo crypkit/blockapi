@@ -113,7 +113,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
     def _parse_supply(s: str):
         try:
             return int(s)
-        except Exception as e:
+        except ValueError as e:
             logger.warning(f'Supply cannot be parsed: {s}: {str(e)}')
             return 1
 
