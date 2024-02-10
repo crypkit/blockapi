@@ -2,6 +2,13 @@
 
 
 
+## v0.37.0 (2024-02-10)
+
+### Feature
+
+* feat: Fetch Solana NFT (#167) ([`9e390d8`](https://github.com/crypkit/blockapi/commit/9e390d8ad08fe3cc07067f28805b184ebea9b261))
+
+
 ## v0.36.0 (2024-02-07)
 
 ### Chore
@@ -11,6 +18,10 @@
 ### Feature
 
 * feat: Support multiple OpenSea blockchains (#165) ([`657d697`](https://github.com/crypkit/blockapi/commit/657d69762b63ce4bc6be027befaa87e145917658))
+
+### Unknown
+
+* 0.36.0 ([`092a3c6`](https://github.com/crypkit/blockapi/commit/092a3c6f74bf0c5933ed794cf896096551ca9442))
 
 
 ## v0.35.1 (2024-01-23)
