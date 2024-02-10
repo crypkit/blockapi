@@ -1,0 +1,50 @@
+[
+  {
+    "mintAddress": "Hrm8kNwzxikZ9GnpQLLZZanJB8qScxjmKkKbDJ23ZwTb",
+    "owner": "FEeSRuEDk8ENZbpzXjn4uHPz3LQijbeKRzhqVr5zPSJ9",
+    "supply": 1,
+    "collection": "magicticket",
+    "collectionName": "Magic Ticket",
+    "name": "Magic Ticket: Degen #9753",
+    "updateAuthority": "Y8RKc9MMef3Y3CUefDQNNmAdfszVGEPCFj3Cs1fYXjK",
+    "primarySaleHappened": true,
+    "sellerFeeBasisPoints": 500,
+    "image": "https://bafybeigm42xnsdukek7wupydeiu4n7spmqf7zc73r54x3p3jjiw72nlrla.ipfs.dweb.link/0.gif?ext=gif",
+    "animationUrl": "https://bafybeigm42xnsdukek7wupydeiu4n7spmqf7zc73r54x3p3jjiw72nlrla.ipfs.dweb.link/0.mp4",
+    "externalUrl": "https://magiceden.io",
+    "attributes": [
+      {
+        "trait_type": "Level",
+        "value": 2
+      },
+      {
+        "trait_type": "Tier",
+        "value": "Degen"
+      }
+    ],
+    "properties": {
+      "category": "video",
+      "files": [
+        {
+          "uri": "https://bafybeigm42xnsdukek7wupydeiu4n7spmqf7zc73r54x3p3jjiw72nlrla.ipfs.dweb.link/0.mp4?ext=mp4",
+          "type": "video/mp4"
+        },
+        {
+          "uri": "https://bafybeigm42xnsdukek7wupydeiu4n7spmqf7zc73r54x3p3jjiw72nlrla.ipfs.dweb.link/0.gif?ext=gif",
+          "type": "image/png"
+        }
+      ],
+      "creators": [
+        {
+          "address": "RRUMF9KYPcvNSmnicNMAFKx5wDYix3wjNa6bA7R6xqA",
+          "share": 95
+        },
+        {
+          "address": "mdaoMkGbmV2udu6wpzv4LhQ6fwcHudP4whu1r1k2Jac",
+          "share": 5
+        }
+      ]
+    },
+    "listStatus": "unlisted"
+  }
+]

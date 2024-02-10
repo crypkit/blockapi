@@ -1,7 +1,8 @@
+import logging
 import time
 from abc import ABC
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Tuple, Type, Union
+from typing import Dict, List, Optional
 from urllib.parse import urljoin
 
 from requests import HTTPError, Response, Session
@@ -17,6 +18,8 @@ from blockapi.v2.models import (
     Pool,
     TransactionItem,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class CustomizableBlockchainApi(ABC):
@@ -143,6 +146,7 @@ class CustomizableBlockchainApi(ABC):
         try:
             response.raise_for_status()
         except HTTPError as e:
+            logger.error(response.text)
             raise ApiException(e)
 
     def _opt_raise_on_other_error(self, response: Response) -> None:
