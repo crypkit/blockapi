@@ -26,6 +26,7 @@ class TrezorAPI(BlockchainAPI):
         'get_balance_xpub': '/api/v2/xpub/{address}',
         'get_txs': '/api/v2/utxo/{address}?confirmed={confirmed}',
         'get_tx': '/api/v2/tx/{tx_hash}',
+        'send_tx': '/api/v1/sendtx/{tx_hex}',
     }
 
     def get_balance(self):
@@ -70,6 +71,9 @@ class TrezorAPI(BlockchainAPI):
             'status': 'confirmed' if txdata['confirmations'] > 0 else 'unconfirmed',
             'raw': txdata,
         }
+
+    def send_tx(self, tx_hex):
+        return self.request('send_tx', tx_hex=tx_hex)
 
 
 class Btc1TrezorAPI(TrezorAPI):
