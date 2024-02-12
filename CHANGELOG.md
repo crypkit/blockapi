@@ -2,11 +2,22 @@
 
 
 
+## v0.37.1 (2024-02-12)
+
+### Fix
+
+* fix: Use default values for collection stats (#168) ([`483b5a1`](https://github.com/crypkit/blockapi/commit/483b5a19e60670512baa9831bd15ff8033451780))
+
+
 ## v0.37.0 (2024-02-10)
 
 ### Feature
 
 * feat: Fetch Solana NFT (#167) ([`9e390d8`](https://github.com/crypkit/blockapi/commit/9e390d8ad08fe3cc07067f28805b184ebea9b261))
+
+### Unknown
+
+* 0.37.0 ([`c877cf1`](https://github.com/crypkit/blockapi/commit/c877cf1bcd34e78a428fdb996f4a704579df7c45))
 
 
 ## v0.36.0 (2024-02-07)
