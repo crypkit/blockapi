@@ -741,12 +741,12 @@ class NftCollectionTotalStats:
         coin: Coin,
     ) -> 'NftCollectionTotalStats':
         return cls(
-            volume=Decimal(volume),
+            volume=Decimal(volume) if volume else Decimal('0'),
             sales_count=int(sales_count) if sales_count else 0,
             owners_count=int(owners_count) if owners_count else 0,
-            market_cap=Decimal(market_cap),
-            floor_price=Decimal(floor_price),
-            average_price=Decimal(average_price),
+            market_cap=Decimal(market_cap) if market_cap else Decimal('0'),
+            floor_price=Decimal(floor_price) if floor_price else Decimal('0'),
+            average_price=Decimal(average_price) if average_price else Decimal('0'),
             coin=coin,
         )
 
@@ -763,12 +763,24 @@ class NftCollectionTotalStats:
         coin: Coin,
     ) -> 'NftCollectionTotalStats':
         return cls(
-            volume=raw_to_decimals(volume, coin.decimals),
+            volume=raw_to_decimals(volume, coin.decimals) if volume else Decimal('0'),
             sales_count=int(sales_count) if sales_count else 0,
             owners_count=int(owners_count) if owners_count else 0,
-            market_cap=raw_to_decimals(market_cap, coin.decimals),
-            floor_price=raw_to_decimals(floor_price, coin.decimals),
-            average_price=raw_to_decimals(average_price, coin.decimals),
+            market_cap=(
+                raw_to_decimals(market_cap, coin.decimals)
+                if market_cap
+                else Decimal('0')
+            ),
+            floor_price=(
+                raw_to_decimals(floor_price, coin.decimals)
+                if floor_price
+                else Decimal('0')
+            ),
+            average_price=(
+                raw_to_decimals(average_price, coin.decimals)
+                if average_price
+                else Decimal('0')
+            ),
             coin=coin,
         )
 
