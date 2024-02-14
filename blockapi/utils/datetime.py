@@ -9,7 +9,10 @@ def parse_dt(dt: Union[str, int, float]) -> datetime:
     Convert datetime from string or timestamp into `datetime.datetime`
     """
     if isinstance(dt, str):
-        return parse_date(dt)
+        try:
+            return datetime.fromtimestamp(int(dt), tz=timezone.utc)
+        except ValueError:
+            return parse_date(dt)
     elif isinstance(dt, int) or isinstance(dt, float):
         return datetime.fromtimestamp(dt, tz=timezone.utc)
     else:

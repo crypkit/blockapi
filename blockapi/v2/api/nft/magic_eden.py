@@ -1,6 +1,8 @@
 import logging
 from typing import Iterable, Optional, Tuple
 
+from _decimal import Decimal
+
 from blockapi.v2.base import BlockchainApi, INftParser, INftProvider
 from blockapi.v2.coins import COIN_SOL
 from blockapi.v2.models import (
@@ -40,6 +42,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
         'get_collection': 'collections/{slug}/stats',
         'get_listings': 'collections/{slug}/listings?offset={offset}&limit={limit}',
         'get_activities': 'collections/{slug}/activities?offset={offset}&limit={limit}',
+        'get_pools': 'mmm/pools?collectionSymbol={slug}&showInvalid=false&offset={offset}&limit={limit}&filterOnSide=0&hideExpired=true&direction=1&field=5&attributesMode=0&attributes=[]&enableSNS=true',
     }
 
     coin_map = NotImplemented
@@ -175,19 +178,22 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
 
         while True:
             self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
-            logger.info(f'get_activities: {collection} offset={offset} limit={limit}')
+            logger.info(f'get_pools: {collection} offset={offset} limit={limit}')
             data = self.get_data(
-                'get_activities', slug=collection, offset=offset, limit=limit
+                'get_pools', slug=collection, offset=offset, limit=limit
             )
 
             if self._should_retry(data):
                 continue
 
+            data_len = 0
             if data.data:
-                items.extend(self._bids_only(data.data))
+                results = data.data.get('results')
+                items.extend(results)
+                data_len = len(results)
                 offset += limit
 
-            if data.errors or not data.data or len(data.data) < limit or offset > 15000:
+            if data.errors or not data.data or data_len < limit or offset > 15000:
                 return FetchResult(
                     status_code=data.status_code,
                     headers=data.headers,
@@ -197,84 +203,48 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
                     time=data.time,
                 )
 
-    @staticmethod
-    def _bids_only(items):
-        if not items:
-            return
-
-        for item in items:
-            if item.get('type') in ['bid', 'cancelBid']:
-                yield item
-
     def parse_offers(self, fetch_result: FetchResult) -> ParseResult:
         if not fetch_result or not fetch_result.data:
             return ParseResult(errors=fetch_result.errors if fetch_result else None)
 
-        end_times = self._get_end_times(fetch_result.data)
         return ParseResult(
-            data=list(self._yield_parsed_offers(fetch_result.data, end_times)),
+            data=list(self._yield_parsed_offers(fetch_result.data)),
             errors=fetch_result.errors,
         )
 
-    def _get_end_times(self, items: list[dict]) -> dict:
-        times = {}
+    def _yield_parsed_offers(self, items: list[dict]) -> Iterable[NftOffer]:
         for item in items:
-            if item.get('type') == 'cancelBid':
-                time = item.get('blockTime')
-                key = self._get_offer_key(item)
-                if key not in times or times[key] < time:
-                    times[key] = time
+            key = item.get('uuid')
+            amount = self._get_offer_price(item)
+            coin = COIN_SOL
+            start_time = item.get('updatedAt')
 
-        return times
-
-    def _yield_parsed_offers(
-        self, items: list[dict], end_times: dict
-    ) -> Iterable[NftOffer]:
-        seen = set()
-        for item in items:
-            if item.get('type') != 'bid':
-                continue
-
-            coin, amount = self._get_price(item)
-            if not coin:
-                logger.info(
-                    f'No coin mapped for listing signature {item.get("signature")}'
-                )
-
-            key = self._get_offer_key(item)
-
-            if key in seen:
-                continue
-
-            start_time = item.get('blockTime')
-            end_time = end_times.get(key)
-            if end_time and end_time < start_time:
-                end_time = None
-
-            seen.add(key)
             yield NftOffer.from_api(
                 offer_key=key,
                 direction=NftOfferDirection.OFFER,
-                collection=item.get('collection'),
-                contract=item.get('collection'),
+                collection=item.get('collectionSymbol'),
+                contract=item.get('collectionSymbol'),
                 blockchain=self.blockchain,
-                offerer=item.get('buyer'),
+                offerer=item.get('poolOwner'),
                 start_time=start_time,
-                end_time=end_time,
+                end_time=None,
                 offer_coin=coin,
                 offer_contract=None,
                 offer_ident=None,
-                offer_amount=(
-                    # amount seems broken - it has double decimal places
-                    amount[: -coin.decimals]
-                    if amount
-                    else None
-                ),
+                offer_amount=amount,
                 pay_coin=None,
-                pay_contract=item.get('collection'),
-                pay_ident=item.get('tokenMint'),
-                pay_amount='1',
+                pay_contract=item.get('collectionSymbol'),
+                pay_ident=None,
+                pay_amount=item.get('buyOrdersAmount'),
             )
+
+    def _get_offer_price(self, item: dict) -> str:
+        # details: https://docs.magiceden.io/reference/mmm-pool-pricing
+        spot_price = Decimal(item.get('spotPrice'))
+        seller_fee = Decimal(item.get('collectionSellerFeeBasisPoints', 0)) / 10000
+        lp_fee = Decimal(item.get('lpFeeBp', 0)) / 10000
+        takers_fee = Decimal('0.0225')
+        return str(spot_price * (1 - seller_fee - takers_fee - lp_fee))
 
     def fetch_listings(
         self, collection: str, cursor: Optional[str] = None
@@ -328,7 +298,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
                 )
                 continue
 
-            coin, amount = self._get_price(item)
+            coin, amount = self._get_listing_price(item)
             if not coin:
                 logger.info(
                     f'No coin mapped for listing signature {item.get("signature")}'
@@ -361,7 +331,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
 
         return f'{collection}_{mint}_{user}'
 
-    def _get_price(self, item) -> Tuple[Optional[Coin], Optional[str]]:
+    def _get_listing_price(self, item) -> Tuple[Optional[Coin], Optional[str]]:
         if priceInfo := item.get('priceInfo'):
             if price := priceInfo.get('solPrice'):
                 return self.coin_map.get(price.get('address')), price.get('rawAmount')
