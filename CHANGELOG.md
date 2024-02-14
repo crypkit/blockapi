@@ -2,11 +2,22 @@
 
 
 
+## v0.37.2 (2024-02-14)
+
+### Fix
+
+* fix: Offer fetching and price (#169) ([`e2ae9fa`](https://github.com/crypkit/blockapi/commit/e2ae9fa8389a349c12043448953b1958b4532df4))
+
+
 ## v0.37.1 (2024-02-12)
 
 ### Fix
 
 * fix: Use default values for collection stats (#168) ([`483b5a1`](https://github.com/crypkit/blockapi/commit/483b5a19e60670512baa9831bd15ff8033451780))
+
+### Unknown
+
+* 0.37.1 ([`9b11f63`](https://github.com/crypkit/blockapi/commit/9b11f636079211591e8c54eedc69371dec6e4306))
 
 
 ## v0.37.0 (2024-02-10)
