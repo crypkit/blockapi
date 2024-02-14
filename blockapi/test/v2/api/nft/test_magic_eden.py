@@ -2,6 +2,7 @@ import datetime
 from decimal import Decimal
 
 import pytest
+from dateutil.tz import tzutc
 
 from blockapi.test.v2.api.conftest import read_file
 from blockapi.test.v2.api.fake_sleep_provider import FakeSleepProvider
@@ -80,11 +81,11 @@ def test_parse_collection(requests_mock, api, collection_response):
 
 def test_parse_offers(requests_mock, api, offers_response):
     requests_mock.get(
-        f'https://api-mainnet.magiceden.dev/v2/collections/magicticket/activities?offset=0&limit=500',
+        f'https://api-mainnet.magiceden.dev/v2/mmm/pools?collectionSymbol=mad_lads&showInvalid=false&offset=0&limit=500&filterOnSide=0&hideExpired=true&direction=1&field=5&attributesMode=0&attributes=%5B%5D&enableSNS=true',
         text=offers_response,
     )
 
-    offers = api.fetch_offers(test_collection_slug)
+    offers = api.fetch_offers('mad_lads')
     parsed = api.parse_offers(fetch_result=offers)
 
     assert not parsed.errors
@@ -93,25 +94,22 @@ def test_parse_offers(requests_mock, api, offers_response):
     data = parsed.data[0]
 
     assert data.direction == NftOfferDirection.OFFER
-    assert data.offer_key == 'magicticket__9DxRBPbEE41o4HZM7j4PV4cvKozmWgdEgdGqtqP7h4zd'
+    assert data.offer_key == 'Gk3MRAdWDNu3SdUYRLWyBeQ7tua1zDBPxAyk858XUDSZ'
     assert data.blockchain == Blockchain.SOLANA
-    assert data.collection == 'magicticket'
-    assert data.contract == 'magicticket'
+    assert data.collection == 'mad_lads'
+    assert data.contract == 'mad_lads'
     assert data.start_time == datetime.datetime(
-        2024, 2, 9, 5, 34, 48, tzinfo=datetime.timezone.utc
+        2024, 2, 14, 4, 56, 56, 763000, tzinfo=tzutc()
     )
-    assert data.end_time == datetime.datetime(
-        2024, 2, 9, 5, 35, 26, tzinfo=datetime.timezone.utc
-    )
-
-    assert data.offerer == '9DxRBPbEE41o4HZM7j4PV4cvKozmWgdEgdGqtqP7h4zd'
+    assert data.end_time is None
+    assert data.offerer == 'AbwGJTBZxACtJ62cTAWxaQZFsVBB3BDLVzon7nA6b8YS'
     assert data.offer_coin.symbol == 'SOL'
     assert not data.offer_ident
     assert not data.offer_contract
-    assert data.offer_amount == Decimal('2.570000000')
+    assert data.offer_amount == Decimal('144.66873231')
 
     assert not data.pay_coin
-    assert data.pay_contract == 'magicticket'
+    assert data.pay_contract == 'mad_lads'
     assert not data.pay_ident
     assert data.pay_amount == Decimal('1')
 
