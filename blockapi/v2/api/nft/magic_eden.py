@@ -214,14 +214,9 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
 
     def _yield_parsed_offers(self, items: list[dict]) -> Iterable[NftOffer]:
         for item in items:
-            coin = COIN_SOL
-            amount = self._get_offer_price(item)
-            if not coin:
-                logger.info(
-                    f'No coin mapped for listing signature {item.get("signature")}'
-                )
-
             key = item.get('uuid')
+            amount = self._get_offer_price(item)
+            coin = COIN_SOL
             start_time = item.get('updatedAt')
 
             yield NftOffer.from_api(
