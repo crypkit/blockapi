@@ -2,11 +2,22 @@
 
 
 
+## v0.37.3 (2024-02-16)
+
+### Fix
+
+* fix: Add MATIC mapping (#170) ([`9fcdafa`](https://github.com/crypkit/blockapi/commit/9fcdafa8c3bb9f5f248fa863d8ac59640f1e51e2))
+
+
 ## v0.37.2 (2024-02-14)
 
 ### Fix
 
 * fix: Offer fetching and price (#169) ([`e2ae9fa`](https://github.com/crypkit/blockapi/commit/e2ae9fa8389a349c12043448953b1958b4532df4))
+
+### Unknown
+
+* 0.37.2 ([`9016756`](https://github.com/crypkit/blockapi/commit/9016756c43f87320fcdd4e238745a9719a82c99b))
 
 
 ## v0.37.1 (2024-02-12)
