@@ -213,11 +213,22 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
         )
 
     def _yield_parsed_offers(self, items: list[dict]) -> Iterable[NftOffer]:
+        seen = set()
+
         for item in items:
             key = item.get('uuid')
+            if key in seen:
+                continue
+
             amount = self._get_offer_price(item)
             coin = COIN_SOL
             start_time = item.get('updatedAt')
+            pay_amount = item.get('buyOrdersAmount')
+
+            if not pay_amount:
+                continue
+
+            seen.add(key)
 
             yield NftOffer.from_api(
                 offer_key=key,
@@ -235,7 +246,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
                 pay_coin=None,
                 pay_contract=item.get('collectionSymbol'),
                 pay_ident=None,
-                pay_amount=item.get('buyOrdersAmount'),
+                pay_amount=pay_amount,
             )
 
     def _get_offer_price(self, item: dict) -> str:
@@ -290,7 +301,12 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
         if not items:
             return
 
+        seen = set()
         for item in items:
+            key = self._get_listing_key(item)
+            if key in seen:
+                continue
+
             token = item.get('token')
             if not token:
                 logger.info(
@@ -304,8 +320,13 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
                     f'No coin mapped for listing signature {item.get("signature")}'
                 )
 
+            if not amount:
+                continue
+
+            seen.add(key)
+
             yield NftOffer.from_api(
-                offer_key=self._get_offer_key(item),
+                offer_key=key,
                 direction=NftOfferDirection.LISTING,
                 collection=token.get('collection'),
                 contract=token.get('collection'),
@@ -323,7 +344,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
                 pay_amount=amount,
             )
 
-    def _get_offer_key(self, item) -> str:
+    def _get_listing_key(self, item) -> str:
         token = item.get('token')
         collection = token.get('collection') if token else item.get('collection')
         mint = item.get('tokenMint', '')
