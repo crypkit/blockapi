@@ -2,11 +2,22 @@
 
 
 
+## v0.37.4 (2024-02-16)
+
+### Fix
+
+* fix: Ignore zero listing and skip duplicates (#171) ([`5ef1fc9`](https://github.com/crypkit/blockapi/commit/5ef1fc9e1f9f1b91f838a1963e0a0e217d5396d8))
+
+
 ## v0.37.3 (2024-02-16)
 
 ### Fix
 
 * fix: Add MATIC mapping (#170) ([`9fcdafa`](https://github.com/crypkit/blockapi/commit/9fcdafa8c3bb9f5f248fa863d8ac59640f1e51e2))
+
+### Unknown
+
+* 0.37.3 ([`aa89d1f`](https://github.com/crypkit/blockapi/commit/aa89d1f987ae71fa792e8377aae5574897a15f42))
 
 
 ## v0.37.2 (2024-02-14)
