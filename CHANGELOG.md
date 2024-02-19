@@ -2,11 +2,22 @@
 
 
 
+## v0.37.5 (2024-02-19)
+
+### Fix
+
+* fix: Improve Magic Eden retry logic (#172) ([`8719d5f`](https://github.com/crypkit/blockapi/commit/8719d5f7e0ccfc3a60b2cd0d578af35f4a502658))
+
+
 ## v0.37.4 (2024-02-16)
 
 ### Fix
 
 * fix: Ignore zero listing and skip duplicates (#171) ([`5ef1fc9`](https://github.com/crypkit/blockapi/commit/5ef1fc9e1f9f1b91f838a1963e0a0e217d5396d8))
+
+### Unknown
+
+* 0.37.4 ([`284da35`](https://github.com/crypkit/blockapi/commit/284da350ce1ec29f88c5b2c00fe04b95b2a90927))
 
 
 ## v0.37.3 (2024-02-16)
