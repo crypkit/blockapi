@@ -8,7 +8,7 @@ from blockapi.test.v2.api.conftest import read_file
 from blockapi.test.v2.api.fake_sleep_provider import FakeSleepProvider
 from blockapi.v2.api.nft.magic_eden import MagicEdenSolanaApi
 from blockapi.v2.coins import COIN_SOL
-from blockapi.v2.models import AssetType, Blockchain, NftOfferDirection
+from blockapi.v2.models import AssetType, Blockchain, FetchResult, NftOfferDirection
 
 nfts_test_address = 'FEeSRuEDk8ENZbpzXjn4uHPz3LQijbeKRzhqVr5zPSJ9'
 test_collection_slug = 'magicticket'
@@ -147,6 +147,13 @@ def test_parse_listings(requests_mock, api, listings_response):
     assert data.pay_coin.symbol == 'SOL'
     assert not data.pay_ident
     assert data.pay_amount == Decimal('2.588235261')
+
+
+def test_retry_condition(api):
+    assert api._should_retry(FetchResult(errors=['Service unavailable']))
+    assert api._should_retry(FetchResult(errors=['Service Unavailable']))
+    assert not api._should_retry(FetchResult(errors=['Other error']))
+    assert not api._should_retry(FetchResult(errors=[dict(message='Composed error')]))
 
 
 @pytest.fixture
