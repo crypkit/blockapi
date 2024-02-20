@@ -1,0 +1,30 @@
+{
+  "next_cursor": "MjAyNC0wMi0xOSAxODowMjozNS0wODUzZDZmMGViNDJlODY2YjZiZjAxMThmYTgxZDYxOTZhX29wZW5zZWFfYmM1NTY1MWQ3OTFlMWUwY2VlOTlmZTIyZDBkZWMwNTdfX25leHQ",
+  "next": "",
+  "previous": null,
+  "listings": [
+    {
+      "id": "b224b405af11958569f94a44f24cfbaf",
+      "permalink": "https://blur.io/asset/0x8a90cab2b38dba80c64b7734e58ee1db38b8992e/683",
+      "bundle_item_number": null,
+      "listing_timestamp": "2024-02-20T08:52:53.871000Z",
+      "expiration_timestamp": null,
+      "seller_address": "bc1paw8hlk6aucjv9pluj5fdhtzlvg7qyeg2y8f6thw5vpxe8cf3kh4scyz2d2",
+      "auction_type": null,
+      "quantity": 1,
+      "quantity_remaining": 1,
+      "price": 148500000,
+      "marketplace_id": "magiceden",
+      "collection_id": "4d5b1ef2d87f2212c7b00300296439da",
+      "nft_id": "bitcoin.0477f95b55d8770363e3b7beb6f0320dad38f2915d2fdf99c4271ae1bc266dc2i0",
+      "payment_token": {
+        "payment_token_id": "bitcoin.native",
+        "name": "Bitcoin",
+        "symbol": "BTC",
+        "address": null,
+        "decimals": 8
+      },
+      "is_private": false
+    }
+  ]
+}

@@ -1,7 +1,6 @@
 import logging
+from decimal import Decimal
 from typing import Iterable, Optional, Tuple
-
-from _decimal import Decimal
 
 from blockapi.v2.base import BlockchainApi, INftParser, INftProvider
 from blockapi.v2.coins import COIN_SOL

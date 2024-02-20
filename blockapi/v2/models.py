@@ -581,7 +581,7 @@ class NftToken:
         ident: str,
         collection: str,
         contract: str,
-        standard: Literal['erc721', 'erc1155'],
+        standard: Literal['erc721', 'erc1155', 'ordinals'],
         name: str,
         description: Optional[str],
         amount: int,

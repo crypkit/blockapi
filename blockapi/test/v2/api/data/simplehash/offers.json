@@ -1,0 +1,26 @@
+{
+  "next_cursor": "MjAyNC0wMi0yMCAwMTozOToyOS0wODJlZTNlZDY1YzY1ODc4ZTc4ZTgwMjI4NzAyNjM1NGFjX29wZW5zZWFfMHgxMzgwY2U2NjUxMjY0ODk4NjUwZDRhZDE4NDkwMDA1MjA3YjQ2MzUwNDMzOGYyYzk2NTBmOTBmZDFjNzhhZGFmX19uZXh0",
+  "next": "https://api.simplehash.com/api/v0/nfts/bids/collection/2ccfd6cb165074e4881906dcc701f1d8?cursor=MjAyNC0wMi0yMCAwMTozOToyOS0wODJlZTNlZDY1YzY1ODc4ZTc4ZTgwMjI4NzAyNjM1NGFjX29wZW5zZWFfMHgxMzgwY2U2NjUxMjY0ODk4NjUwZDRhZDE4NDkwMDA1MjA3YjQ2MzUwNDMzOGYyYzk2NTBmOTBmZDFjNzhhZGFmX19uZXh0&limit=50&order_by=bid_timestamp__desc",
+  "previous": null,
+  "bids": [
+    {
+      "id": "0d243797b0b1186dfedb3b8a58556d0f",
+      "quantity": 1,
+      "price": 148500000,
+      "timestamp": "2024-02-20T09:42:55Z",
+      "bidder_address": "bc1paw8hlk6aucjv9pluj5fdhtzlvg7qyeg2y8f6thw5vpxe8cf3kh4scyz2d2",
+      "marketplace_id": "magiceden",
+      "collection_id": "4d5b1ef2d87f2212c7b00300296439da",
+      "nft_id": "bitcoin.0477f95b55d8770363e3b7beb6f0320dad38f2915d2fdf99c4271ae1bc266dc2i0",
+      "payment_token": {
+        "payment_token_id": "bitcoin.native",
+        "name": "Bitcoin",
+        "symbol": "BTC",
+        "address": null,
+        "decimals": 8
+      },
+      "is_private": false,
+      "expiration_timestamp": "2024-02-20T09:57:55Z"
+    }
+  ]
+}
