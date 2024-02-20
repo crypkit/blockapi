@@ -83,15 +83,15 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             if not ident:
                 continue
 
-            collection_id = collection.get(
-                'collection_id', self.inscriptions_collection
+            collection_id = (
+                collection.get('collection_id') or self.inscriptions_collection
             )
             yield NftToken.from_api(
                 ident=ident,
                 collection=collection_id,
                 contract=collection_id,
                 standard=contract.get('type', 'ordinals').lower(),
-                name=item.get('name'),
+                name=item.get('name') or contract.get('name'),
                 description=None,
                 amount=item.get('owner_count'),
                 image_url=item.get('image_url'),
