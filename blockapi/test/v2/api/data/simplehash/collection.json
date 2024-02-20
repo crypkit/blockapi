@@ -1,0 +1,55 @@
+{
+  "collections": [
+    {
+      "collection_id": "4d5b1ef2d87f2212c7b00300296439da",
+      "name": "Bitcoin Frogs",
+      "description": "10,000 generative frogs on Bitcoin minted by the Lightning Network",
+      "image_url": "https://lh3.googleusercontent.com/2potrs-yhEC3T7JvVVS0oGUp6ekCurbV5J4eFgTWbXsZj6L-L3nDlxVRm_VVhq5UihEYoYQumRK-907MkISJP8ddPAgTpEOCiHE",
+      "banner_image_url": null,
+      "category": null,
+      "is_nsfw": null,
+      "external_url": "https://bitcoinfrogs.com",
+      "twitter_username": "https://twitter.com/BitcoinFrogs",
+      "discord_url": "https://discord.gg/ymZmyBzaSR",
+      "instagram_username": null,
+      "medium_username": null,
+      "telegram_url": null,
+      "marketplace_pages": [
+        {
+          "marketplace_id": "magiceden",
+          "marketplace_name": "Magic Eden",
+          "marketplace_collection_id": "bitcoin-frogs",
+          "collection_url": "https://magiceden.io/ordinals/marketplace/bitcoin-frogs",
+          "verified": null
+        }
+      ],
+      "metaplex_mint": null,
+      "metaplex_candy_machine": null,
+      "metaplex_first_verified_creator": null,
+      "floor_prices": [
+        {
+          "marketplace_id": "magiceden",
+          "marketplace_name": "Magic Eden",
+          "value": 15499000,
+          "payment_token": {
+            "payment_token_id": "bitcoin.native",
+            "name": "Bitcoin",
+            "symbol": "BTC",
+            "address": null,
+            "decimals": 8
+          },
+          "value_usd_cents": 801986
+        }
+      ],
+      "top_bids": [],
+      "distinct_owner_count": 4992,
+      "distinct_nft_count": 10000,
+      "total_quantity": 10000,
+      "chains": [
+        "bitcoin"
+      ],
+      "top_contracts": [],
+      "collection_royalties": []
+    }
+  ]
+}

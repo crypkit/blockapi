@@ -1,0 +1,184 @@
+{
+  "next_cursor": "YnRjLW0uODc5MGYyYmMyZmU0YmQ5ZWNmZGIxMzVmNmEwYzFjZmZkYzRiY2RhZGMzNjE2MjYxZjcwNDQwNGViMmY2NzVlNmkwLjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMF8yMDIzLTA1LTI2IDE3OjE0OjQ5KzAwOjAwX19uZXh0",
+  "next": "https://api.simplehash.com/api/v0/nfts/owners?chains=polygon%2Cethereum&chains=bitcoin&cursor=YnRjLW0uODc5MGYyYmMyZmU0YmQ5ZWNmZGIxMzVmNmEwYzFjZmZkYzRiY2RhZGMzNjE2MjYxZjcwNDQwNGViMmY2NzVlNmkwLjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMF8yMDIzLTA1LTI2IDE3OjE0OjQ5KzAwOjAwX19uZXh0&limit=50&queried_wallet_balances=1&wallet_addresses=0xfa6E0aDDF68267b8b6fF2dA55Ce01a53Fad6D8e2&wallet_addresses=bc1p3rwga6xsfal6f5d085scecg8lu4gsjl8drk5e07uqzk3cg9dq43s734vje",
+  "previous": null,
+  "nfts": [
+    {
+      "nft_id": "bitcoin.0477f95b55d8770363e3b7beb6f0320dad38f2915d2fdf99c4271ae1bc266dc2i0",
+      "chain": "bitcoin",
+      "contract_address": "0477f95b55d8770363e3b7beb6f0320dad38f2915d2fdf99c4271ae1bc266dc2i0",
+      "token_id": null,
+      "name": "Bitcoin Frog #7825",
+      "description": null,
+      "previews": {
+        "image_small_url": "https://lh3.googleusercontent.com/hnWRSjPqTTqj5kaOIV5y73pvb22KQO84S0SlcJeCLp8m71d6LO-aV6EdDEhKf2WA3Tj7e9QbiR1GFOKhDxbQLDoKRxq1R_VTem8=s250",
+        "image_medium_url": "https://lh3.googleusercontent.com/hnWRSjPqTTqj5kaOIV5y73pvb22KQO84S0SlcJeCLp8m71d6LO-aV6EdDEhKf2WA3Tj7e9QbiR1GFOKhDxbQLDoKRxq1R_VTem8",
+        "image_large_url": "https://lh3.googleusercontent.com/hnWRSjPqTTqj5kaOIV5y73pvb22KQO84S0SlcJeCLp8m71d6LO-aV6EdDEhKf2WA3Tj7e9QbiR1GFOKhDxbQLDoKRxq1R_VTem8=s1000",
+        "image_opengraph_url": "https://lh3.googleusercontent.com/hnWRSjPqTTqj5kaOIV5y73pvb22KQO84S0SlcJeCLp8m71d6LO-aV6EdDEhKf2WA3Tj7e9QbiR1GFOKhDxbQLDoKRxq1R_VTem8=k-w1200-s2400-rj",
+        "blurhash": "UqNR[df8{boe:hodPBWC=]WCIqoftRj[NHae",
+        "predominant_color": "#1b4071"
+      },
+      "image_url": "https://cdn.simplehash.com/assets/4c2181b3f92d934a3d894f02b1e6bd3c22259ae35e90138cacf8a55b06851050.webp",
+      "image_properties": {
+        "width": 576,
+        "height": 576,
+        "size": 2932,
+        "mime_type": "image/webp"
+      },
+      "video_url": null,
+      "video_properties": null,
+      "audio_url": null,
+      "audio_properties": null,
+      "model_url": null,
+      "model_properties": null,
+      "other_url": null,
+      "other_properties": null,
+      "background_color": null,
+      "external_url": null,
+      "created_date": "2023-03-11T03:46:15",
+      "status": "minted",
+      "token_count": 1,
+      "owner_count": 1,
+      "owners": [
+        {
+          "owner_address": "bc1p3rwga6xsfal6f5d085scecg8lu4gsjl8drk5e07uqzk3cg9dq43s734vje",
+          "quantity": 1,
+          "quantity_string": "1",
+          "first_acquired_date": "2024-02-20T02:45:40",
+          "last_acquired_date": "2024-02-20T02:45:40"
+        }
+      ],
+      "contract": {
+        "type": "ORDINALS",
+        "name": "Inscription #409035",
+        "symbol": null,
+        "deployed_by": null,
+        "deployed_via_contract": null,
+        "owned_by": null,
+        "has_multiple_collections": false
+      },
+      "collection": {
+        "collection_id": "4d5b1ef2d87f2212c7b00300296439da",
+        "name": "Bitcoin Frogs",
+        "description": "10,000 generative frogs on Bitcoin minted by the Lightning Network",
+        "image_url": "https://lh3.googleusercontent.com/2potrs-yhEC3T7JvVVS0oGUp6ekCurbV5J4eFgTWbXsZj6L-L3nDlxVRm_VVhq5UihEYoYQumRK-907MkISJP8ddPAgTpEOCiHE",
+        "banner_image_url": null,
+        "category": null,
+        "is_nsfw": null,
+        "external_url": "https://bitcoinfrogs.com",
+        "twitter_username": "https://twitter.com/BitcoinFrogs",
+        "discord_url": "https://discord.gg/ymZmyBzaSR",
+        "instagram_username": null,
+        "medium_username": null,
+        "telegram_url": null,
+        "marketplace_pages": [
+          {
+            "marketplace_id": "magiceden",
+            "marketplace_name": "Magic Eden",
+            "marketplace_collection_id": "bitcoin-frogs",
+            "nft_url": "https://magiceden.io/ordinals/item-details/0477f95b55d8770363e3b7beb6f0320dad38f2915d2fdf99c4271ae1bc266dc2i0",
+            "collection_url": "https://magiceden.io/ordinals/marketplace/bitcoin-frogs",
+            "verified": null
+          }
+        ],
+        "metaplex_mint": null,
+        "metaplex_candy_machine": null,
+        "metaplex_first_verified_creator": null,
+        "floor_prices": [
+          {
+            "marketplace_id": "magiceden",
+            "marketplace_name": "Magic Eden",
+            "value": 15499000,
+            "payment_token": {
+              "payment_token_id": "bitcoin.native",
+              "name": "Bitcoin",
+              "symbol": "BTC",
+              "address": null,
+              "decimals": 8
+            },
+            "value_usd_cents": 805136
+          }
+        ],
+        "top_bids": [],
+        "distinct_owner_count": 5006,
+        "distinct_nft_count": 10000,
+        "total_quantity": 10000,
+        "chains": [
+          "bitcoin"
+        ],
+        "top_contracts": [],
+        "collection_royalties": []
+      },
+      "last_sale": null,
+      "first_created": {
+        "minted_to": "bc1puqg6a9xlvmlwftajau40vm27fkdd5dx7t766sydfj085d0mfsnqqkhhwdp",
+        "quantity": 1,
+        "quantity_string": "1",
+        "timestamp": "2023-03-11T03:46:15",
+        "block_number": 780239,
+        "transaction": "0477f95b55d8770363e3b7beb6f0320dad38f2915d2fdf99c4271ae1bc266dc2",
+        "transaction_initiator": null
+      },
+      "rarity": {
+        "rank": null,
+        "score": null,
+        "unique_attributes": null
+      },
+      "royalty": [],
+      "extra_metadata": {
+        "attributes": [
+          {
+            "trait_type": "Background",
+            "value": "Bitcoin Orange",
+            "display_type": null
+          },
+          {
+            "trait_type": "Body",
+            "value": "Electro",
+            "display_type": null
+          },
+          {
+            "trait_type": "Clothing",
+            "value": "None",
+            "display_type": null
+          },
+          {
+            "trait_type": "Mouth",
+            "value": "Pipe",
+            "display_type": null
+          },
+          {
+            "trait_type": "Eyes",
+            "value": "Dank Shades",
+            "display_type": null
+          }
+        ],
+        "ordinal_details": {
+          "inscription_id": "0477f95b55d8770363e3b7beb6f0320dad38f2915d2fdf99c4271ae1bc266dc2i0",
+          "inscription_number": 409035,
+          "content_length": 2932,
+          "content_type": "image/webp",
+          "sat_number": 1303519493234639,
+          "sat_name": "eprasoaopsk",
+          "sat_rarity": "common",
+          "protocol_name": null,
+          "protocol_content": null,
+          "location": "bb58ca56136ef18cfd5bd1f667ed9b9e59f7aa73929a04849e11afda9bdff75c:0:0",
+          "output_value": 10000
+        },
+        "image_original_url": "https://ordinals.simplehash.com/content/0477f95b55d8770363e3b7beb6f0320dad38f2915d2fdf99c4271ae1bc266dc2i0",
+        "animation_original_url": null,
+        "metadata_original_url": null
+      },
+      "queried_wallet_balances": [
+        {
+          "address": "bc1p3rwga6xsfal6f5d085scecg8lu4gsjl8drk5e07uqzk3cg9dq43s734vje",
+          "quantity": 1,
+          "quantity_string": "1",
+          "first_acquired_date": "2024-02-20T02:45:40",
+          "last_acquired_date": "2024-02-20T02:45:40"
+        }
+      ]
+    }
+  ]
+}
