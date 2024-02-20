@@ -2,11 +2,22 @@
 
 
 
+## v0.38.0 (2024-02-20)
+
+### Feature
+
+* feat: Fetch BTC NFT (#173) ([`60d81e7`](https://github.com/crypkit/blockapi/commit/60d81e772802ef34b9ddebc20fa167396844f0a6))
+
+
 ## v0.37.5 (2024-02-19)
 
 ### Fix
 
 * fix: Improve Magic Eden retry logic (#172) ([`8719d5f`](https://github.com/crypkit/blockapi/commit/8719d5f7e0ccfc3a60b2cd0d578af35f4a502658))
+
+### Unknown
+
+* 0.37.5 ([`3ee9d65`](https://github.com/crypkit/blockapi/commit/3ee9d6527206490fdc6cee063d84e4d332810b34))
 
 
 ## v0.37.4 (2024-02-16)
