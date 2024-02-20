@@ -1,14 +1,12 @@
 import logging
-from decimal import Decimal
-from typing import Iterable, Optional, Tuple
+from typing import Iterable, Optional
 
 from blockapi.v2.base import BlockchainApi, INftParser, INftProvider
-from blockapi.v2.coins import COIN_BTC, COIN_SOL
+from blockapi.v2.coins import COIN_BTC
 from blockapi.v2.models import (
     ApiOptions,
     AssetType,
     Blockchain,
-    Coin,
     ContractInfo,
     FetchResult,
     NftCollection,
@@ -31,6 +29,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
     coin = COIN_BTC
     blockchain = Blockchain.BITCOIN
     native_coin_id = 'bitcoin.native'
+    inscriptions_collection = 'inscriptions'
 
     api_options = ApiOptions(
         blockchain=blockchain,
@@ -84,10 +83,13 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             if not ident:
                 continue
 
+            collection_id = collection.get(
+                'collection_id', self.inscriptions_collection
+            )
             yield NftToken.from_api(
                 ident=ident,
-                collection=collection.get('collection_id'),
-                contract=collection.get('collection_id'),
+                collection=collection_id,
+                contract=collection_id,
                 standard=contract.get('type', 'ordinals').lower(),
                 name=item.get('name'),
                 description=None,
@@ -102,6 +104,18 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             )
 
     def fetch_collection(self, collection: str) -> FetchResult:
+        if collection == self.inscriptions_collection:
+            return FetchResult(
+                data=dict(
+                    collections=[
+                        dict(
+                            collection_id=self.inscriptions_collection,
+                            name='Inscriptions',
+                        )
+                    ]
+                )
+            )
+
         return self.get_data(
             'get_collection',
             headers=self.headers,

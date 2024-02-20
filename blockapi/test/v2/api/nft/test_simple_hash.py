@@ -90,6 +90,37 @@ def test_parse_collection(requests_mock, api, collection_response):
     assert data.contracts[0].address == '4d5b1ef2d87f2212c7b00300296439da'
 
 
+def test_inscriptions_collection(requests_mock, api, collection_response):
+    requests_mock.get(
+        f'https://api.simplehash.com/api/v0/nfts/collections/ids?collection_ids=inscriptions',
+        text='',
+    )
+
+    collection = api.fetch_collection('inscriptions')
+    parsed = api.parse_collection(fetch_result=collection)
+
+    assert not parsed.errors
+    data = parsed.data[0]
+    assert data.name == 'Inscriptions'
+    assert data.ident == 'inscriptions'
+    assert not data.image
+    assert not data.is_disabled
+    assert not data.is_nsfw
+    assert data.total_stats
+    assert not data.day_stats
+    assert not data.week_stats
+    assert not data.month_stats
+
+    assert data.total_stats.volume == Decimal('0')
+    assert data.total_stats.average_price == Decimal('0')
+    assert data.total_stats.floor_price == Decimal('0')
+    assert data.total_stats.coin == COIN_BTC
+    assert data.blockchain == Blockchain.BITCOIN
+    assert len(data.contracts) == 1
+    assert data.contracts[0].blockchain == Blockchain.BITCOIN
+    assert data.contracts[0].address == 'inscriptions'
+
+
 def test_parse_offers(requests_mock, api, offers_response):
     requests_mock.get(
         f'https://api.simplehash.com/api/v0/nfts/bids/collection/{test_collection_slug}',
