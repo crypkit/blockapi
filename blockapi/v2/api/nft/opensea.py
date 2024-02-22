@@ -166,22 +166,30 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         )
 
     def fetch_collection(self, collection: str) -> FetchResult:
-        stats = self.get_data(
-            'get_collection_stats',
-            headers=self._headers,
-            collection=collection,
-            chain=self._opensea_chain,
-        )
+        while True:
+            stats = self.get_data(
+                'get_collection_stats',
+                headers=self._headers,
+                collection=collection,
+                chain=self._opensea_chain,
+            )
 
-        return self.get_data(
-            'get_collection',
-            headers=self._headers,
-            collection=collection,
-            chain=self._opensea_chain,
-            extra=dict(
-                collection=collection, stats=stats.data, stats_errors=stats.errors
-            ),
-        )
+            if not self._should_retry(stats):
+                break
+
+        while True:
+            result = self.get_data(
+                'get_collection',
+                headers=self._headers,
+                collection=collection,
+                chain=self._opensea_chain,
+                extra=dict(
+                    collection=collection, stats=stats.data, stats_errors=stats.errors
+                ),
+            )
+
+            if not self._should_retry(result):
+                return result
 
     def parse_collection(self, fetch_result: FetchResult) -> ParseResult:
         parsed, error = self._parse_collection(
@@ -255,6 +263,10 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             count += 1
             logger.debug(f'Fetching page {count} of {key} from {cursor}')
             fetched, next_cursor = fetch_method(key, cursor)
+            if self._should_retry(fetched):
+                count -= 1
+                continue
+
             yield fetched, next_cursor
 
             if not next_cursor:
@@ -605,3 +617,22 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
                 continue
 
             yield ContractInfo.from_api(blockchain=blockchain, address=address)
+
+    def _should_retry(self, data):
+        if not data.errors:
+            return False
+
+        retry = bool([t for t in data.errors if 'TOO MANY REQUESTS' in str(t).upper()])
+        if retry:
+            delay = data.headers.get('retry-after', '60')
+            try:
+                seconds = int(delay)
+            except ValueError:
+                seconds = 60
+
+            logger.warning(f'Service unavailable - will retry after {seconds}s sleep')
+
+            self._sleep_provider.sleep(self.base_url, seconds=seconds)
+            return True
+
+        return False
