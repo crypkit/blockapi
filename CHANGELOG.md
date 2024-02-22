@@ -2,11 +2,22 @@
 
 
 
+## v0.39.0 (2024-02-22)
+
+### Feature
+
+* feat: Fix retry logic for OpenSea (#174) ([`cfbf0d1`](https://github.com/crypkit/blockapi/commit/cfbf0d14e5b986ae1714bc9e3e002e1c232d4eb5))
+
+
 ## v0.38.0 (2024-02-20)
 
 ### Feature
 
 * feat: Fetch BTC NFT (#173) ([`60d81e7`](https://github.com/crypkit/blockapi/commit/60d81e772802ef34b9ddebc20fa167396844f0a6))
+
+### Unknown
+
+* 0.38.0 ([`209e85f`](https://github.com/crypkit/blockapi/commit/209e85fcd4a60e38898ffcc60d95a7326a043eec))
 
 
 ## v0.37.5 (2024-02-19)
