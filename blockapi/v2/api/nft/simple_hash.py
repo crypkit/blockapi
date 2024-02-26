@@ -2,22 +2,30 @@ import logging
 from typing import Iterable, Optional
 
 from blockapi.v2.base import BlockchainApi, INftParser, INftProvider
-from blockapi.v2.coins import COIN_BTC
+from blockapi.v2.coins import COIN_BTC, COIN_ETH, COIN_SOL
 from blockapi.v2.models import (
     ApiOptions,
     AssetType,
     Blockchain,
+    Coin,
     ContractInfo,
     FetchResult,
     NftCollection,
-    NftCollectionTotalStats,
     NftOffer,
     NftOfferDirection,
+    NftPrice,
     NftToken,
+    NftVolumes,
     ParseResult,
 )
 
 logger = logging.getLogger(__name__)
+
+SIMPLE_HASH_COINS = {
+    'bitcoin.native': COIN_BTC,
+    'solana.native': COIN_SOL,
+    'ethereum.native': COIN_ETH,
+}
 
 
 class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
@@ -26,51 +34,60 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
     Explorer: https://magiceden.io/
     """
 
-    coin = COIN_BTC
-    blockchain = Blockchain.BITCOIN
-    native_coin_id = 'bitcoin.native'
-    inscriptions_collection = 'inscriptions'
+    default_blockchain = NotImplemented
+    default_collection = NotImplemented
 
     api_options = ApiOptions(
-        blockchain=blockchain,
+        blockchain=NotImplemented,
         base_url='https://api.simplehash.com/api/v0/nfts/',
-        rate_limit=0.5,  # 2 per second
+        rate_limit=0.01,  # 100 per second for free account
     )
 
     supported_requests = {
         'get_nfts': 'owners?chains={chain}&wallet_addresses={address}',
         'get_collection': 'collections/ids?collection_ids={slug}',
+        'get_collection_activity': 'collections_activity?collection_ids={slug}',
         'get_bids': 'bids/collection/{slug}',
         'get_listings': 'listings/collection/{slug}',
+        'get_wallet_bids': 'bids/wallets?chains={chain}&wallet_addresses={address}',
+        'get_wallet_listings': 'listings/wallets?chains={chain}&wallet_addresses={address}',
     }
 
-    def __init__(self, api_key):
+    def __init__(self, blockchain, simplehash_blockchain, api_key):
         super().__init__()
 
         self._api_key = api_key
         self.headers = {'accept': 'application/json', 'X-API-KEY': api_key}
+        self.api_options.blockchain = blockchain
+        self._blockchain = blockchain
+        self._simplehash_blockchain = simplehash_blockchain
 
     def fetch_nfts(self, address: str, cursor: Optional[str] = None) -> FetchResult:
         return self.get_data(
             'get_nfts',
             headers=self.headers,
             params=dict(cursor=cursor) if cursor else None,
-            chain=self.blockchain,
+            chain=self._simplehash_blockchain,
             address=address,
+            extra=dict(address=address),
         )
 
     def parse_nfts(self, fetch_result: FetchResult) -> ParseResult:
         if not fetch_result or not fetch_result.data:
             return ParseResult(errors=fetch_result.errors if fetch_result else None)
 
-        parsed = list(self._yield_parsed_nfts(fetch_result.data))
+        parsed = list(
+            self._yield_parsed_nfts(
+                fetch_result.data, address=fetch_result.extra.get('address')
+            )
+        )
         return ParseResult(
             data=parsed,
             errors=fetch_result.errors,
             cursor=fetch_result.data.get('next_cursor'),
         )
 
-    def _yield_parsed_nfts(self, data):
+    def _yield_parsed_nfts(self, data, address):
         items = data.get('nfts')
         if not items:
             return
@@ -83,92 +100,153 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             if not ident:
                 continue
 
-            collection_id = (
-                collection.get('collection_id') or self.inscriptions_collection
-            )
+            collection_id = collection.get('collection_id') or self.default_collection
+            standard = contract.get('type', 'ordinals').lower()
+
             yield NftToken.from_api(
                 ident=ident,
                 collection=collection_id,
                 contract=collection_id,
-                standard=contract.get('type', 'ordinals').lower(),
+                standard=standard,
                 name=item.get('name') or contract.get('name'),
                 description=None,
-                amount=item.get('owner_count'),
+                amount=self._get_amount(item.get('owners'), address),
                 image_url=item.get('image_url'),
                 metadata_url=None,
                 updated_time=item.get('created_date'),
                 is_disabled=False,
                 is_nsfw=False,
-                blockchain=self.blockchain,
+                blockchain=self._blockchain,
                 asset_type=AssetType.AVAILABLE,
+                market_url=self._get_market_url(collection),
             )
+
+    @staticmethod
+    def _get_market_url(collection):
+        eden = None
+        if pages := collection.get('marketplace_pages'):
+            for page in pages:
+                marketplace = page.get('marketplace_id')
+                if marketplace == 'magiceden':
+                    eden = page.get('nft_url')
+
+                if marketplace == 'opensea':
+                    return page.get('nft_url')
+
+        return eden
+
+    @staticmethod
+    def _get_amount(owners, address):
+        if not owners:
+            return 1
+
+        for t in owners:
+            if t.get('owner_address') == address:
+                return t.get('quantity')
+
+        return 1
 
     def fetch_collection(self, collection: str) -> FetchResult:
-        if collection == self.inscriptions_collection:
-            return FetchResult(
-                data=dict(
-                    collections=[
-                        dict(
-                            collection_id=self.inscriptions_collection,
-                            name='Inscriptions',
-                        )
-                    ]
-                )
-            )
-
-        return self.get_data(
+        collections = self.get_data(
             'get_collection',
             headers=self.headers,
             slug=collection,
         )
 
+        activity = self.get_data(
+            'get_collection_activity', headers=self.headers, slug=collection
+        )
+
+        return FetchResult.from_fetch_results(
+            collections=collections, activity=activity
+        )
+
     def parse_collection(self, fetch_result: FetchResult) -> ParseResult:
-        if not fetch_result or not fetch_result.data:
+        if not fetch_result or fetch_result.errors:
             return ParseResult(errors=fetch_result.errors if fetch_result else None)
 
-        items = fetch_result.data.get('collections')
-        item = items[0]
-        parsed = NftCollection.from_api(
-            ident=item.get('collection_id'),
-            name=item.get('name'),
-            contracts=[
-                ContractInfo.from_api(
-                    blockchain=self.blockchain, address=item.get('collection_id')
-                )
-            ],
-            image=item.get('image_url'),
-            is_disabled=False,
-            is_nsfw=False,
-            blockchain=self.blockchain,
-            total_stats=NftCollectionTotalStats.from_api_convert_decimals(
-                volume=item.get('volumeAll'),
-                sales_count='0',
-                owners_count='0',
-                market_cap='0',
-                floor_price=self.get_price(item.get('floor_prices')),
-                average_price='0',
-                coin=COIN_BTC,
-            ),
-            day_stats=None,
-            week_stats=None,
-            month_stats=None,
-        )
-
         return ParseResult(
-            data=[parsed] if parsed else None, errors=fetch_result.errors
+            data=list(self._yield_parsed_collection(fetch_result)),
+            errors=fetch_result.errors,
         )
 
-    def get_price(self, items):
+    def _yield_parsed_collection(
+        self, fetch_result: FetchResult
+    ) -> Iterable[NftCollection]:
+        collections = {
+            t['collection_id']: t
+            for t in fetch_result.data['collections'].get('collections') or []
+        }
+        activities = {
+            t['collection_id']: t
+            for t in fetch_result.data['activity'].get('collections') or []
+        }
+
+        for key, collection in collections.items():
+            activity = activities.get(key)
+
+            yield NftCollection.from_api(
+                ident=collection.get('collection_id'),
+                name=collection.get('name'),
+                contracts=[
+                    ContractInfo.from_api(
+                        blockchain=self._blockchain,
+                        address=collection.get('collection_id'),
+                    )
+                ],
+                image=collection.get('image_url'),
+                is_disabled=False,
+                is_nsfw=False,
+                blockchain=self._blockchain,
+                floor_prices=self.get_prices(collection.get('floor_prices')),
+                offer_prices=self.get_prices(collection.get('bids')),
+                volumes=self._get_volumes(activity),
+            )
+
+    def _get_volumes(self, activity) -> Optional[NftVolumes]:
+        if not activity:
+            return
+
+        token = activity.get('payment_token') or dict()
+        if coin := self._get_coin(token):
+            return NftVolumes.from_api(
+                coin=coin,
+                market_cap_raw=activity.get('market_cap'),
+                volume_raw=activity.get('all_time_volume'),
+                volume_1d_raw=activity.get('1_day_volume'),
+                volume_7d_raw=activity.get('7_day_volume'),
+                volume_30d_raw=activity.get('30_day_volume'),
+            )
+
+    def get_prices(self, items):
         if not items:
-            return '0'
+            return dict()
 
+        result = dict()
         for item in items:
-            if token := item.get('payment_token'):
-                if token_id := token.get('payment_token_id'):
-                    if token_id == self.native_coin_id:
-                        return item.get('value')
+            marketplace_id = item.get('marketplace_id')
+            amount = item.get('value')
+            token = item.get('payment_token')
+            if coin := self._get_coin(token):
+                result[marketplace_id] = NftPrice.from_api(coin=coin, amount_raw=amount)
 
-        return '0'
+        return result if result else None
+
+    def _get_coin(self, token: Optional[dict]) -> Optional[Coin]:
+        if not token:
+            return None
+
+        if token_id := token.get('payment_token_id'):
+            if coin := SIMPLE_HASH_COINS.get(token_id):
+                return coin
+
+        return Coin.from_api(
+            blockchain=self._blockchain,
+            decimals=token.get('decimals'),
+            symbol=token.get('symbol'),
+            name=token.get('name'),
+            address=token.get('address'),
+        )
 
     def fetch_offers(
         self, collection: str, cursor: Optional[str] = None
@@ -179,6 +257,20 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             params=dict(cursor=cursor) if cursor else None,
             slug=collection,
         )
+
+    def fetch_wallet_offers(
+        self, address: str, cursor: Optional[str] = None
+    ) -> FetchResult:
+        return self.get_data(
+            'get_wallet_bids',
+            headers=self.headers,
+            params=dict(cursor=cursor) if cursor else None,
+            chain=self._simplehash_blockchain,
+            address=address,
+        )
+
+    def parse_wallet_offers(self, fetch_result: FetchResult) -> ParseResult:
+        return self.parse_offers(fetch_result)
 
     def parse_offers(self, fetch_result: FetchResult) -> ParseResult:
         if not fetch_result or not fetch_result.data:
@@ -195,33 +287,29 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             return
 
         for item in items:
-            if (
-                item.get('payment_token', dict()).get('payment_token_id')
-                != self.native_coin_id
-            ):
-                continue
-
             if item.get('is_private') == 'true':
                 continue
 
-            yield NftOffer.from_api(
-                offer_key=item.get('id'),
-                direction=NftOfferDirection.OFFER,
-                collection=item.get('collection_id'),
-                contract=item.get('collection_id'),
-                blockchain=self.blockchain,
-                offerer=item.get('bidder_address'),
-                start_time=item.get('timestamp'),
-                end_time=item.get('expiration_timestamp'),
-                offer_coin=COIN_BTC,
-                offer_amount=item.get('price'),
-                offer_contract=None,
-                offer_ident=None,
-                pay_contract=item.get('collection_id'),
-                pay_ident=item.get('nft_id'),
-                pay_amount=item.get('quantity'),
-                pay_coin=None,
-            )
+            token = item.get('payment_token')
+            if coin := self._get_coin(token):
+                yield NftOffer.from_api(
+                    offer_key=item.get('id'),
+                    direction=NftOfferDirection.OFFER,
+                    collection=item.get('collection_id'),
+                    contract=item.get('collection_id'),
+                    blockchain=self._blockchain,
+                    offerer=item.get('bidder_address'),
+                    start_time=item.get('timestamp'),
+                    end_time=item.get('expiration_timestamp'),
+                    offer_coin=coin,
+                    offer_amount=item.get('price'),
+                    offer_contract=None,
+                    offer_ident=None,
+                    pay_contract=item.get('collection_id'),
+                    pay_ident=item.get('nft_id'),
+                    pay_amount=item.get('quantity'),
+                    pay_coin=None,
+                )
 
     def fetch_listings(
         self, collection: str, cursor: Optional[str] = None
@@ -232,6 +320,20 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             params=dict(cursor=cursor) if cursor else None,
             slug=collection,
         )
+
+    def fetch_wallet_listings(
+        self, address: str, cursor: Optional[str] = None
+    ) -> FetchResult:
+        return self.get_data(
+            'get_wallet_listings',
+            headers=self.headers,
+            params=dict(cursor=cursor) if cursor else None,
+            chain=self._simplehash_blockchain,
+            address=address,
+        )
+
+    def parse_wallet_listings(self, fetch_result: FetchResult) -> ParseResult:
+        return self.parse_listings(fetch_result)
 
     def parse_listings(self, fetch_result: FetchResult) -> ParseResult:
         if not fetch_result or not fetch_result.data:
@@ -248,30 +350,90 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             return
 
         for item in items:
-            if (
-                item.get('payment_token', dict()).get('payment_token_id')
-                != self.native_coin_id
-            ):
-                continue
-
             if item.get('is_private') == 'true':
                 continue
 
-            yield NftOffer.from_api(
-                offer_key=item.get('id'),
-                direction=NftOfferDirection.LISTING,
-                collection=item.get('collection_id'),
-                contract=item.get('collection_id'),
-                blockchain=self.blockchain,
-                offerer=item.get('seller_address'),
-                start_time=item.get('listing_timestamp'),
-                end_time=item.get('expiration_timestamp'),
-                offer_coin=None,
-                offer_amount=item.get('quantity'),
-                offer_contract=item.get('collection_id'),
-                offer_ident=item.get('nft_id'),
-                pay_contract=None,
-                pay_ident=None,
-                pay_amount=item.get('price'),
-                pay_coin=COIN_BTC,
+            token = item.get('payment_token')
+            if coin := self._get_coin(token):
+                yield NftOffer.from_api(
+                    offer_key=item.get('id'),
+                    direction=NftOfferDirection.LISTING,
+                    collection=item.get('collection_id'),
+                    contract=item.get('collection_id'),
+                    blockchain=self._blockchain,
+                    offerer=item.get('seller_address'),
+                    start_time=item.get('listing_timestamp'),
+                    end_time=item.get('expiration_timestamp'),
+                    offer_coin=None,
+                    offer_amount=item.get('quantity'),
+                    offer_contract=item.get('collection_id'),
+                    offer_ident=item.get('nft_id'),
+                    pay_contract=None,
+                    pay_ident=None,
+                    pay_amount=item.get('price'),
+                    pay_coin=coin,
+                )
+
+
+class SimpleHashBitcoinApi(SimpleHashApi):
+    coin = COIN_BTC
+    default_blockchain = Blockchain.BITCOIN
+    default_collection = 'inscriptions'
+
+    def __init__(self, api_key: str):
+        super().__init__(self.default_blockchain, 'bitcoin', api_key)
+
+    def fetch_collection(self, collection: str) -> FetchResult:
+        if collection == self.default_collection:
+            return FetchResult.from_dict(
+                collections=dict(
+                    collections=[
+                        dict(
+                            collection_id=self.default_collection,
+                            name='Inscriptions',
+                        )
+                    ]
+                ),
+                activity=dict(),
             )
+
+        return super().fetch_collection(collection)
+
+
+class SimpleHashSolanaApi(SimpleHashApi):
+    coin = COIN_SOL
+    default_blockchain = Blockchain.SOLANA
+
+    def __init__(self, api_key: str):
+        super().__init__(self.default_blockchain, 'solana', api_key)
+
+
+class SimpleHashEthereumApi(SimpleHashApi):
+    coin = COIN_ETH
+    default_blockchain = Blockchain.ETHEREUM
+
+    supported_blockchains_map = {
+        Blockchain.ARBITRUM: 'arbitrum',
+        Blockchain.ARBITRUM_NOVA: 'arbitrum-nova',
+        Blockchain.AVALANCHE: 'avalanche',
+        Blockchain.BASE: 'base',
+        Blockchain.BINANCE_SMART_CHAIN: 'bsc',
+        Blockchain.CELO: 'celo',
+        Blockchain.ETHEREUM: 'ethereum',
+        Blockchain.FANTOM: 'fantom',
+        Blockchain.KLAYTN_CYPRESS: 'klaytn',
+        Blockchain.OPTIMISM: 'optimism',
+        Blockchain.POLYGON_ZK_EVM: 'polygon-zkevm',
+        Blockchain.TEZOS: 'tezos',
+        Blockchain.ZORA: 'zora',
+    }
+
+    simplehash_blockchains_map = {n: b for b, n in supported_blockchains_map.items()}
+    supported_blockchains = list(supported_blockchains_map.keys())
+
+    def __init__(self, blockchain: Blockchain, api_key: str):
+        chain = self.supported_blockchains_map.get(blockchain)
+        if not chain:
+            raise Exception(f'Blockchain not supported {blockchain}')
+
+        super().__init__(blockchain, chain, api_key)

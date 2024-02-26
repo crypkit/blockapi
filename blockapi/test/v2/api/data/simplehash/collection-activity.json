@@ -1,0 +1,51 @@
+{
+  "collections": [
+    {
+      "collection_id": "4d5b1ef2d87f2212c7b00300296439da",
+      "name": "Bitcoin Frogs",
+      "1_day_volume": 579952001,
+      "1_day_volume_usd_cents": 30376220,
+      "1_day_prior_volume": 793827770,
+      "1_day_prior_volume_usd_cents": 40931529,
+      "1_day_volume_change_percent": -26.94,
+      "1_day_transaction_count": 33,
+      "1_day_seller_count": 33,
+      "1_day_buyer_count": 33,
+      "1_day_trader_count": 66,
+      "7_day_volume": 2823215881,
+      "7_day_volume_usd_cents": 145804885,
+      "7_day_prior_volume": 1424621618,
+      "7_day_prior_volume_usd_cents": 72681196,
+      "7_day_volume_change_percent": 98.17,
+      "7_day_transaction_count": 167,
+      "7_day_seller_count": 167,
+      "7_day_buyer_count": 167,
+      "7_day_trader_count": 334,
+      "30_day_volume": 6793956379,
+      "30_day_volume_usd_cents": 330698993,
+      "30_day_prior_volume": 12708594222,
+      "30_day_prior_volume_usd_cents": 549594259,
+      "30_day_volume_change_percent": -46.54,
+      "30_day_transaction_count": 396,
+      "30_day_seller_count": 396,
+      "30_day_buyer_count": 396,
+      "30_day_trader_count": 792,
+      "90_day_volume": 49612238609,
+      "90_day_volume_usd_cents": 2150502703,
+      "90_day_transaction_count": 2171,
+      "90_day_seller_count": 2171,
+      "90_day_buyer_count": 2171,
+      "90_day_trader_count": 4342,
+      "all_time_volume": 49612238609,
+      "market_cap": 178800000000,
+      "market_cap_usd_cents": 9736520498,
+      "payment_token": {
+        "payment_token_id": "bitcoin.native",
+        "name": "Bitcoin",
+        "symbol": "BTC",
+        "address": null,
+        "decimals": 8
+      }
+    }
+  ]
+}

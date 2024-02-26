@@ -453,7 +453,7 @@ COIN_CANTO = Coin(
 COIN_USDC = Coin(
     symbol='USDC',
     name='USDC',
-    decimals=18,
+    decimals=6,
     blockchain=Blockchain.ETHEREUM,
     address='0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
     info=CoinInfo(coingecko_id=CoingeckoId.USDC),

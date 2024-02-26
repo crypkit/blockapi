@@ -5,9 +5,9 @@ import pytest
 from dateutil.tz import tzutc
 
 from blockapi.test.v2.api.conftest import read_file
-from blockapi.v2.api.nft import SimpleHashApi
+from blockapi.v2.api.nft import SimpleHashBitcoinApi
 from blockapi.v2.coins import COIN_BTC
-from blockapi.v2.models import AssetType, Blockchain, FetchResult, NftOfferDirection
+from blockapi.v2.models import AssetType, Blockchain, NftOfferDirection
 
 nfts_test_address = 'bc1p3rwga6xsfal6f5d085scecg8lu4gsjl8drk5e07uqzk3cg9dq43s734vje'
 test_collection_slug = '4d5b1ef2d87f2212c7b00300296439da'
@@ -53,16 +53,29 @@ def test_parse_nfts(requests_mock, api, nfts_response):
     assert not data.is_nsfw
     assert data.blockchain == Blockchain.BITCOIN
     assert data.asset_type == AssetType.AVAILABLE
-    assert data.amount == 1
+    assert data.amount == 2
+    assert data.market_url == (
+        'https://magiceden.io/ordinals/item-details/'
+        '0477f95b55d8770363e3b7beb6f0320dad38f2915d2fdf99c4271ae1bc266dc2i0'
+    )
 
 
-def test_parse_collection(requests_mock, api, collection_response):
+def test_parse_collection(
+    requests_mock, api, collection_response, collection_activity_response
+):
     requests_mock.get(
         f'https://api.simplehash.com/api/v0/nfts/collections/ids?collection_ids={test_collection_slug}',
         text=collection_response,
     )
 
+    requests_mock.get(
+        f'https://api.simplehash.com/api/v0/nfts/collections_activity?collection_ids={test_collection_slug}',
+        text=collection_activity_response,
+    )
+
     collection = api.fetch_collection(test_collection_slug)
+    assert not collection.errors
+
     parsed = api.parse_collection(fetch_result=collection)
 
     assert not parsed.errors
@@ -75,15 +88,23 @@ def test_parse_collection(requests_mock, api, collection_response):
     )
     assert not data.is_disabled
     assert not data.is_nsfw
-    assert data.total_stats
+    assert not data.total_stats
     assert not data.day_stats
     assert not data.week_stats
     assert not data.month_stats
+    assert data.floor_prices
+    assert not data.offer_prices
 
-    assert data.total_stats.volume == Decimal('0')
-    assert data.total_stats.average_price == Decimal('0')
-    assert data.total_stats.floor_price == Decimal('0.15499')
-    assert data.total_stats.coin == COIN_BTC
+    assert data.floor_prices['magiceden'].coin == COIN_BTC
+    assert data.floor_prices['magiceden'].amount == Decimal('0.15499')
+
+    assert data.volumes.coin == COIN_BTC
+    assert data.volumes.market_cap == Decimal('1788')
+    assert data.volumes.volume == Decimal('496.12238609')
+    assert data.volumes.volume_1d == Decimal('5.79952001')
+    assert data.volumes.volume_7d == Decimal('28.23215881')
+    assert data.volumes.volume_30d == Decimal('67.93956379')
+
     assert data.blockchain == Blockchain.BITCOIN
     assert len(data.contracts) == 1
     assert data.contracts[0].blockchain == Blockchain.BITCOIN
@@ -106,15 +127,13 @@ def test_inscriptions_collection(requests_mock, api, collection_response):
     assert not data.image
     assert not data.is_disabled
     assert not data.is_nsfw
-    assert data.total_stats
+    assert not data.total_stats
     assert not data.day_stats
     assert not data.week_stats
     assert not data.month_stats
+    assert not data.floor_prices
+    assert not data.offer_prices
 
-    assert data.total_stats.volume == Decimal('0')
-    assert data.total_stats.average_price == Decimal('0')
-    assert data.total_stats.floor_price == Decimal('0')
-    assert data.total_stats.coin == COIN_BTC
     assert data.blockchain == Blockchain.BITCOIN
     assert len(data.contracts) == 1
     assert data.contracts[0].blockchain == Blockchain.BITCOIN
@@ -203,7 +222,7 @@ def test_parse_listings(requests_mock, api, listings_response):
 
 @pytest.fixture
 def api():
-    return SimpleHashApi('fake_key')
+    return SimpleHashBitcoinApi('fake_key')
 
 
 @pytest.fixture
@@ -214,6 +233,11 @@ def nfts_response():
 @pytest.fixture
 def collection_response():
     return read_file('data/simplehash/collection.json')
+
+
+@pytest.fixture
+def collection_activity_response():
+    return read_file('data/simplehash/collection-activity.json')
 
 
 @pytest.fixture
