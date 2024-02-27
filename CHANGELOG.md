@@ -2,11 +2,22 @@
 
 
 
+## v0.40.0 (2024-02-27)
+
+### Feature
+
+* feat: Fetch NFTs from Simple Hash (#175) ([`ab5b258`](https://github.com/crypkit/blockapi/commit/ab5b258e09e44e9e6a07629b17aefc0c611ceeaa))
+
+
 ## v0.39.0 (2024-02-22)
 
 ### Feature
 
 * feat: Fix retry logic for OpenSea (#174) ([`cfbf0d1`](https://github.com/crypkit/blockapi/commit/cfbf0d14e5b986ae1714bc9e3e002e1c232d4eb5))
+
+### Unknown
+
+* 0.39.0 ([`a96a577`](https://github.com/crypkit/blockapi/commit/a96a577264a20f1dc16c50289fe6d57ab9943501))
 
 
 ## v0.38.0 (2024-02-20)
