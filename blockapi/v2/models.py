@@ -1,3 +1,4 @@
+import itertools
 import json
 from datetime import datetime
 from decimal import Decimal
@@ -573,6 +574,7 @@ class NftToken:
     is_nsfw: bool
     asset_type: AssetType
     blockchain: Blockchain
+    market_url: str
 
     @classmethod
     def from_api(
@@ -593,6 +595,7 @@ class NftToken:
         blockchain: Blockchain,
         asset_type: AssetType = AssetType.AVAILABLE,
         collection_name: Optional[str] = None,
+        market_url: Optional[str] = None,
     ) -> 'NftToken':
         return cls(
             ident=ident,
@@ -615,6 +618,7 @@ class NftToken:
             blockchain=blockchain,
             asset_type=asset_type,
             collection_name=collection_name,
+            market_url=market_url,
         )
 
 
@@ -796,6 +800,49 @@ class ContractInfo:
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
+class NftPrice:
+    coin: Coin
+    amount: Decimal
+
+    @classmethod
+    def from_api(cls, *, coin: Coin, amount_raw: Union[int, str]):
+        return cls(
+            coin=coin,
+            amount=raw_to_decimals(amount_raw, coin.decimals),
+        )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
+class NftVolumes:
+    coin: Coin
+    volume: Decimal
+    market_cap: Decimal
+    volume_1d: Decimal
+    volume_7d: Decimal
+    volume_30d: Decimal
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        coin: Coin,
+        market_cap_raw: Union[int, str],
+        volume_raw: Union[int, str],
+        volume_1d_raw: Union[int, str],
+        volume_7d_raw: Union[int, str],
+        volume_30d_raw: Union[int, str],
+    ):
+        return cls(
+            coin=coin,
+            market_cap=raw_to_decimals(market_cap_raw, coin.decimals),
+            volume=raw_to_decimals(volume_raw, coin.decimals),
+            volume_1d=raw_to_decimals(volume_1d_raw, coin.decimals),
+            volume_7d=raw_to_decimals(volume_7d_raw, coin.decimals),
+            volume_30d=raw_to_decimals(volume_30d_raw, coin.decimals),
+        )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
 class NftCollection:
     ident: str
     name: str
@@ -804,6 +851,9 @@ class NftCollection:
     is_disabled: bool
     is_nsfw: bool
     blockchain: Blockchain
+    floor_prices: dict[str, NftPrice]
+    offer_prices: dict[str, NftPrice]
+    volumes: NftVolumes
     total_stats: NftCollectionTotalStats
     day_stats: NftCollectionIntervalStats
     week_stats: NftCollectionIntervalStats
@@ -820,10 +870,13 @@ class NftCollection:
         is_disabled: bool,
         is_nsfw: bool,
         blockchain: Blockchain,
-        total_stats: NftCollectionTotalStats,
-        day_stats: Optional[NftCollectionIntervalStats],
-        week_stats: Optional[NftCollectionIntervalStats],
-        month_stats: Optional[NftCollectionIntervalStats],
+        total_stats: Optional[NftCollectionTotalStats] = None,
+        day_stats: Optional[NftCollectionIntervalStats] = None,
+        week_stats: Optional[NftCollectionIntervalStats] = None,
+        month_stats: Optional[NftCollectionIntervalStats] = None,
+        floor_prices: Optional[dict[str, NftPrice]] = None,
+        offer_prices: Optional[dict[str, NftPrice]] = None,
+        volumes: Optional[NftVolumes] = None,
     ) -> 'NftCollection':
         return cls(
             ident=ident,
@@ -837,6 +890,9 @@ class NftCollection:
             day_stats=day_stats,
             week_stats=week_stats,
             month_stats=month_stats,
+            floor_prices=floor_prices,
+            offer_prices=offer_prices,
+            volumes=volumes,
         )
 
 
@@ -959,6 +1015,20 @@ class FetchResult:
     def json(self):
         d = attr.asdict(self)
         return json.dumps({k: v for k, v in d.items() if v}, default=str)
+
+    @classmethod
+    def from_dict(cls, **kwargs):
+        return cls(data=kwargs)
+
+    @classmethod
+    def from_fetch_results(cls, **kwargs):
+        if not kwargs:
+            return FetchResult()
+
+        return cls(
+            data={k: v.data for k, v in kwargs.items()},
+            errors=[err for v in kwargs.values() if v.errors for err in v.errors],
+        )
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
