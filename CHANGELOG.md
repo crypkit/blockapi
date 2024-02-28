@@ -2,11 +2,22 @@
 
 
 
+## v0.40.1 (2024-02-28)
+
+### Fix
+
+* fix: Make more effort do find collection name (#176) ([`a89b963`](https://github.com/crypkit/blockapi/commit/a89b963694d51bff6ca32035b9cba955e6414efb))
+
+
 ## v0.40.0 (2024-02-27)
 
 ### Feature
 
 * feat: Fetch NFTs from Simple Hash (#175) ([`ab5b258`](https://github.com/crypkit/blockapi/commit/ab5b258e09e44e9e6a07629b17aefc0c611ceeaa))
+
+### Unknown
+
+* 0.40.0 ([`2f853b4`](https://github.com/crypkit/blockapi/commit/2f853b4d8d74c7299a7636aa45d35bdaa570e637))
 
 
 ## v0.39.0 (2024-02-22)
