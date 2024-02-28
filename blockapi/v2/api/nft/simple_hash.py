@@ -185,9 +185,12 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
         for key, collection in collections.items():
             activity = activities.get(key)
 
+            ident = collection.get('collection_id')
             yield NftCollection.from_api(
-                ident=collection.get('collection_id'),
-                name=collection.get('name'),
+                ident=ident,
+                name=collection.get('name')
+                or activity.get('name')
+                or f'Collection {ident}',
                 contracts=[
                     ContractInfo.from_api(
                         blockchain=self._blockchain,
