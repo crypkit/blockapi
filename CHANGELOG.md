@@ -2,11 +2,22 @@
 
 
 
+## v0.40.2 (2024-02-28)
+
+### Fix
+
+* fix: Disable Klaytn on SimpleHash ([`6ec846c`](https://github.com/crypkit/blockapi/commit/6ec846c02f8b5ff203981ec700b962e58f9f1cc5))
+
+
 ## v0.40.1 (2024-02-28)
 
 ### Fix
 
 * fix: Make more effort do find collection name (#176) ([`a89b963`](https://github.com/crypkit/blockapi/commit/a89b963694d51bff6ca32035b9cba955e6414efb))
+
+### Unknown
+
+* 0.40.1 ([`2872276`](https://github.com/crypkit/blockapi/commit/2872276333c053d4196f9f9a077231282f72f76e))
 
 
 ## v0.40.0 (2024-02-27)
