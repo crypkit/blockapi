@@ -424,7 +424,6 @@ class SimpleHashEthereumApi(SimpleHashApi):
         Blockchain.CELO: 'celo',
         Blockchain.ETHEREUM: 'ethereum',
         Blockchain.FANTOM: 'fantom',
-        Blockchain.KLAYTN_CYPRESS: 'klaytn',
         Blockchain.OPTIMISM: 'optimism',
         Blockchain.POLYGON_ZK_EVM: 'polygon-zkevm',
         Blockchain.TEZOS: 'tezos',
