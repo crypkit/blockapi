@@ -2,11 +2,22 @@
 
 
 
+## v0.40.4 (2024-02-29)
+
+### Fix
+
+* fix: Include listed tokens in fetch (#179) ([`b229c1e`](https://github.com/crypkit/blockapi/commit/b229c1ee4da9ba8e492c72a811ca42c870d8c972))
+
+
 ## v0.40.3 (2024-02-29)
 
 ### Fix
 
 * fix: Best offers field name (#178) ([`162ad17`](https://github.com/crypkit/blockapi/commit/162ad174d9698076a0c4e2be58c999cbc85d4efb))
+
+### Unknown
+
+* 0.40.3 ([`ec8062b`](https://github.com/crypkit/blockapi/commit/ec8062bcd37612e98e9cca42389771e6c6630606))
 
 
 ## v0.40.2 (2024-02-28)
