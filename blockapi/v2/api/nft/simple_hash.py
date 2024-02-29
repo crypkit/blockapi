@@ -140,9 +140,12 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
         if not owners:
             return 1
 
+        low_address = address.lower()
+
         for t in owners:
-            if t.get('owner_address') == address:
-                return t.get('quantity')
+            if adr := t.get('owner_address'):
+                if adr.lower() == low_address:
+                    return t.get('quantity')
 
         return 1
 
@@ -202,7 +205,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
                 is_nsfw=False,
                 blockchain=self._blockchain,
                 floor_prices=self.get_prices(collection.get('floor_prices')),
-                offer_prices=self.get_prices(collection.get('bids')),
+                best_offers=self.get_prices(collection.get('top_bids')),
                 volumes=self._get_volumes(activity),
             )
 

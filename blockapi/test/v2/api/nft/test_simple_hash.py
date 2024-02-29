@@ -93,7 +93,7 @@ def test_parse_collection(
     assert not data.week_stats
     assert not data.month_stats
     assert data.floor_prices
-    assert not data.offer_prices
+    assert not data.best_offers
 
     assert data.floor_prices['magiceden'].coin == COIN_BTC
     assert data.floor_prices['magiceden'].amount == Decimal('0.15499')
@@ -132,7 +132,7 @@ def test_inscriptions_collection(requests_mock, api, collection_response):
     assert not data.week_stats
     assert not data.month_stats
     assert not data.floor_prices
-    assert not data.offer_prices
+    assert not data.best_offers
 
     assert data.blockchain == Blockchain.BITCOIN
     assert len(data.contracts) == 1
