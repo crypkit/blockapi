@@ -5,6 +5,7 @@ import pytest
 from dateutil.tz import tzutc
 
 from blockapi.test.v2.api.conftest import read_file
+from blockapi.test.v2.api.fake_sleep_provider import FakeSleepProvider
 from blockapi.v2.api.nft import SimpleHashBitcoinApi
 from blockapi.v2.coins import COIN_BTC
 from blockapi.v2.models import AssetType, Blockchain, NftOfferDirection
@@ -93,7 +94,7 @@ def test_parse_collection(
     assert not data.week_stats
     assert not data.month_stats
     assert data.floor_prices
-    assert not data.offer_prices
+    assert not data.best_offers
 
     assert data.floor_prices['magiceden'].coin == COIN_BTC
     assert data.floor_prices['magiceden'].amount == Decimal('0.15499')
@@ -132,7 +133,7 @@ def test_inscriptions_collection(requests_mock, api, collection_response):
     assert not data.week_stats
     assert not data.month_stats
     assert not data.floor_prices
-    assert not data.offer_prices
+    assert not data.best_offers
 
     assert data.blockchain == Blockchain.BITCOIN
     assert len(data.contracts) == 1
@@ -221,8 +222,13 @@ def test_parse_listings(requests_mock, api, listings_response):
 
 
 @pytest.fixture
-def api():
-    return SimpleHashBitcoinApi('fake_key')
+def fake_sleep_provider():
+    return FakeSleepProvider()
+
+
+@pytest.fixture
+def api(fake_sleep_provider):
+    return SimpleHashBitcoinApi('fake_key', fake_sleep_provider)
 
 
 @pytest.fixture

@@ -852,7 +852,7 @@ class NftCollection:
     is_nsfw: bool
     blockchain: Blockchain
     floor_prices: dict[str, NftPrice]
-    offer_prices: dict[str, NftPrice]
+    best_offers: dict[str, NftPrice]
     volumes: NftVolumes
     total_stats: NftCollectionTotalStats
     day_stats: NftCollectionIntervalStats
@@ -875,7 +875,7 @@ class NftCollection:
         week_stats: Optional[NftCollectionIntervalStats] = None,
         month_stats: Optional[NftCollectionIntervalStats] = None,
         floor_prices: Optional[dict[str, NftPrice]] = None,
-        offer_prices: Optional[dict[str, NftPrice]] = None,
+        best_offers: Optional[dict[str, NftPrice]] = None,
         volumes: Optional[NftVolumes] = None,
     ) -> 'NftCollection':
         return cls(
@@ -891,7 +891,7 @@ class NftCollection:
             week_stats=week_stats,
             month_stats=month_stats,
             floor_prices=floor_prices,
-            offer_prices=offer_prices,
+            best_offers=best_offers,
             volumes=volumes,
         )
 
