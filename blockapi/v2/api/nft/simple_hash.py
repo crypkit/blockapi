@@ -1,7 +1,7 @@
 import logging
 from typing import Iterable, Optional
 
-from blockapi.v2.base import BlockchainApi, INftParser, INftProvider
+from blockapi.v2.base import BlockchainApi, INftParser, INftProvider, ISleepProvider
 from blockapi.v2.coins import COIN_BTC, COIN_ETH, COIN_SOL
 from blockapi.v2.models import (
     ApiOptions,
@@ -54,8 +54,8 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
         '&include_nft_details={include_nft_details}',
     }
 
-    def __init__(self, blockchain, simplehash_blockchain, api_key):
-        super().__init__()
+    def __init__(self, blockchain, simplehash_blockchain, api_key, sleep_provider):
+        super().__init__(sleep_provider=sleep_provider)
 
         self._api_key = api_key
         self.headers = {'accept': 'application/json', 'X-API-KEY': api_key}
@@ -402,8 +402,8 @@ class SimpleHashBitcoinApi(SimpleHashApi):
     default_blockchain = Blockchain.BITCOIN
     default_collection = 'inscriptions'
 
-    def __init__(self, api_key: str):
-        super().__init__(self.default_blockchain, 'bitcoin', api_key)
+    def __init__(self, api_key: str, sleep_provider: ISleepProvider):
+        super().__init__(self.default_blockchain, 'bitcoin', api_key, sleep_provider)
 
     def fetch_collection(self, collection: str) -> FetchResult:
         if collection == self.default_collection:
@@ -426,8 +426,8 @@ class SimpleHashSolanaApi(SimpleHashApi):
     coin = COIN_SOL
     default_blockchain = Blockchain.SOLANA
 
-    def __init__(self, api_key: str):
-        super().__init__(self.default_blockchain, 'solana', api_key)
+    def __init__(self, api_key: str, sleep_provider: ISleepProvider):
+        super().__init__(self.default_blockchain, 'solana', api_key, sleep_provider)
 
     def fetch_nfts(self, address: str, cursor: Optional[str] = None) -> FetchResult:
         token_cursor = None
@@ -516,9 +516,11 @@ class SimpleHashEthereumApi(SimpleHashApi):
     simplehash_blockchains_map = {n: b for b, n in supported_blockchains_map.items()}
     supported_blockchains = list(supported_blockchains_map.keys())
 
-    def __init__(self, blockchain: Blockchain, api_key: str):
+    def __init__(
+        self, blockchain: Blockchain, api_key: str, sleep_provider: ISleepProvider
+    ):
         chain = self.supported_blockchains_map.get(blockchain)
         if not chain:
             raise Exception(f'Blockchain not supported {blockchain}')
 
-        super().__init__(blockchain, chain, api_key)
+        super().__init__(blockchain, chain, api_key, sleep_provider)
