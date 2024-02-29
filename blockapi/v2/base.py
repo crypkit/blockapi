@@ -1,3 +1,4 @@
+import json
 import logging
 import time
 from abc import ABC
@@ -22,6 +23,16 @@ from blockapi.v2.models import (
 logger = logging.getLogger(__name__)
 
 
+class ISleepProvider(ABC):
+    def sleep(self, url: str, seconds: float) -> None:
+        raise NotImplementedError
+
+
+class SleepProvider(ISleepProvider):
+    def sleep(self, url: str, seconds: float):
+        time.sleep(seconds)
+
+
 class CustomizableBlockchainApi(ABC):
     """
     Class for handling blockchain API services with customizable base URL,
@@ -38,10 +49,16 @@ class CustomizableBlockchainApi(ABC):
 
     json_parse_args = dict()
 
-    def __init__(self, base_url: Optional[str] = None, api_key: Optional[str] = None):
+    def __init__(
+        self,
+        base_url: Optional[str] = None,
+        api_key: Optional[str] = None,
+        sleep_provider: Optional[ISleepProvider] = None,
+    ):
         self.api_key = api_key
         self._session = Session()
         self.base_url = base_url or self.api_options.base_url
+        self.sleep_provider = sleep_provider
 
         if not self.base_url:
             raise NotImplementedError(
@@ -73,17 +90,32 @@ class CustomizableBlockchainApi(ABC):
         **req_args,
     ) -> FetchResult:
         try:
-            response = self._get_response(request_method, headers, params, req_args)
-            time = self._get_response_time(response.headers)
-            if response.status_code == 200:
-                return FetchResult(
-                    status_code=response.status_code,
-                    headers=self._get_headers_dict(response.headers),
-                    data=response.json(**self.json_parse_args),
-                    extra=extra,
-                    time=time,
-                )
+            while True:
+                response = self._get_response(request_method, headers, params, req_args)
+                time = self._get_response_time(response.headers)
+                if response.status_code == 200:
+                    return FetchResult(
+                        status_code=response.status_code,
+                        headers=self._get_headers_dict(response.headers),
+                        data=response.json(**self.json_parse_args),
+                        extra=extra,
+                        time=time,
+                    )
 
+                if response.status_code == 429 and self.sleep_provider:
+                    delay = response.headers.get('retry-after', '60')
+                    try:
+                        seconds = int(delay)
+                    except ValueError:
+                        seconds = 60
+
+                    logger.warning(
+                        f'Too Many Requests: Will retry after {seconds}s sleep'
+                    )
+                    self.sleep_provider.sleep(self.base_url, seconds=seconds)
+                    continue
+
+                break
             return FetchResult(
                 status_code=response.status_code,
                 headers=self._get_headers_dict(response.headers),
@@ -179,8 +211,10 @@ class BlockchainApi(CustomizableBlockchainApi, ABC):
     General class for handling blockchain API services.
     """
 
-    def __init__(self, api_key: Optional[str] = None):
-        super().__init__(base_url=None, api_key=api_key)
+    def __init__(
+        self, api_key: Optional[str] = None, sleep_provider: ISleepProvider = None
+    ):
+        super().__init__(base_url=None, api_key=api_key, sleep_provider=sleep_provider)
 
 
 class IBalance(ABC):
@@ -203,16 +237,6 @@ class ITransactions(ABC):
 class IPortfolio(ABC):
     def get_portfolio(self, address: str) -> List[Pool]:
         raise NotImplementedError
-
-
-class ISleepProvider(ABC):
-    def sleep(self, url: str, seconds: float) -> None:
-        raise NotImplementedError
-
-
-class SleepProvider(ISleepProvider):
-    def sleep(self, url: str, seconds: float):
-        time.sleep(seconds)
 
 
 class INftProvider(ABC):
