@@ -1,0 +1,281 @@
+{
+  "next_cursor": "c29sYW5hLTEwMS5ENjM1WDR5c1F1ckpiZ2cyZG91S0gzb1FTZ1pMeFNyemVMYkxYTEY0dHhLMy4wMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBfMjAyNC0wMi0yNiAxNDoyODoxNSswMDowMF9fbmV4dA",
+  "next": "https://api.simplehash.com/api/v0/nfts/owners?chains=polygon%2Cethereum&chains=solana&cursor=c29sYW5hLTEwMS5ENjM1WDR5c1F1ckpiZ2cyZG91S0gzb1FTZ1pMeFNyemVMYkxYTEY0dHhLMy4wMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBfMjAyNC0wMi0yNiAxNDoyODoxNSswMDowMF9fbmV4dA&limit=50&wallet_addresses=0xfa6E0aDDF68267b8b6fF2dA55Ce01a53Fad6D8e2&wallet_addresses=FEeSRuEDk8ENZbpzXjn4uHPz3LQijbeKRzhqVr5zPSJ9",
+  "previous": null,
+  "nfts": [
+    {
+      "nft_id": "solana.7bwsNfaSWurdCTpWv5idrt4FgeJYbPCffGUY7FsUQzSV",
+      "chain": "solana",
+      "contract_address": "7bwsNfaSWurdCTpWv5idrt4FgeJYbPCffGUY7FsUQzSV",
+      "token_id": null,
+      "name": "Nyan Hero #10641",
+      "description": "A unique Genesis Nyan fighting to reclaim Nekovia. Unlock their Guardian powers to help turn the tides of battle! An extremely rare, limited edition, all access pass to our most exclusive premium in-game content and rewards.",
+      "previews": {
+        "image_small_url": "https://lh3.googleusercontent.com/QAC4XFW4lz-SqbOtyhg-94L-K5qPF9f8480g3nFvEKtSdRv27vjR3rQS0CWZwB2Trh_i4w8LL5gyBW8CMBPb1hYAq5LwBQR7mvo=s250",
+        "image_medium_url": "https://lh3.googleusercontent.com/QAC4XFW4lz-SqbOtyhg-94L-K5qPF9f8480g3nFvEKtSdRv27vjR3rQS0CWZwB2Trh_i4w8LL5gyBW8CMBPb1hYAq5LwBQR7mvo",
+        "image_large_url": "https://lh3.googleusercontent.com/QAC4XFW4lz-SqbOtyhg-94L-K5qPF9f8480g3nFvEKtSdRv27vjR3rQS0CWZwB2Trh_i4w8LL5gyBW8CMBPb1hYAq5LwBQR7mvo=s1000",
+        "image_opengraph_url": "https://lh3.googleusercontent.com/QAC4XFW4lz-SqbOtyhg-94L-K5qPF9f8480g3nFvEKtSdRv27vjR3rQS0CWZwB2Trh_i4w8LL5gyBW8CMBPb1hYAq5LwBQR7mvo=k-w1200-s2400-rj",
+        "blurhash": "UnH{cfjf9^xGHVR-oyaeXzr=-6WBV@obnNbv",
+        "predominant_color": "#eb8f82"
+      },
+      "image_url": "https://cdn.simplehash.com/assets/0034778dbf20c10cf4046a9d21c42c930b06bf615211f85b17ddec865b30fa89.png",
+      "image_properties": {
+        "width": 2000,
+        "height": 2000,
+        "size": 2201840,
+        "mime_type": "image/png"
+      },
+      "video_url": null,
+      "video_properties": null,
+      "audio_url": null,
+      "audio_properties": null,
+      "model_url": null,
+      "model_properties": null,
+      "other_url": null,
+      "other_properties": null,
+      "background_color": null,
+      "external_url": "https://nyanheroes.com/",
+      "created_date": "2021-11-11T06:26:42",
+      "status": "minted",
+      "token_count": 1,
+      "owner_count": 1,
+      "owners": [
+        {
+          "owner_address": "FEeSRuEDk8ENZbpzXjn4uHPz3LQijbeKRzhqVr5zPSJ9",
+          "quantity": 1,
+          "quantity_string": "1",
+          "first_acquired_date": "2024-02-29T11:01:41",
+          "last_acquired_date": "2024-02-29T11:01:41"
+        }
+      ],
+      "contract": {
+        "type": "NonFungible",
+        "name": "Nyan Hero #10641",
+        "symbol": "Nyan",
+        "deployed_by": null,
+        "deployed_via_contract": null,
+        "owned_by": null,
+        "has_multiple_collections": false
+      },
+      "collection": {
+        "collection_id": "cdbd89d08d42826b2eb570daeec230d4",
+        "name": "Nyan Heroes",
+        "description": "An NFT battle royale shooter, featuring cats and robots - saving IRL kitties one Nyan at a time.",
+        "image_url": "https://lh3.googleusercontent.com/OtKL8sct9fs_ntS9BlOnSTtiwfi4cpVQocfXJ_kTMvOKXxlj78neUZVl_5VCNS5Kbj4Riu-stA7iVuaJ0KhxyPvCxqgeV6GBxRQl",
+        "banner_image_url": "https://lh3.googleusercontent.com/RISQuk8NGigntew_Oe2fflolKHEYAwANUQs7oGbx2qNleH0leHRPsdhK1nfqIRe-W6teusPp19bQl94QmNvlL5eSAYHsJ8ggBjM=w2500",
+        "category": "virtual-worlds",
+        "is_nsfw": false,
+        "external_url": "https://nyanheroes.com/",
+        "twitter_username": "nyanheroes",
+        "discord_url": "https://discord.com/invite/nyanheroes",
+        "instagram_username": "nyanheroes",
+        "medium_username": "nyanheroes",
+        "telegram_url": "https://t.me/nyanheroes",
+        "marketplace_pages": [
+          {
+            "marketplace_id": "magiceden",
+            "marketplace_name": "Magic Eden",
+            "marketplace_collection_id": "nyan_heroes",
+            "nft_url": "https://magiceden.io/item-details/7bwsNfaSWurdCTpWv5idrt4FgeJYbPCffGUY7FsUQzSV",
+            "collection_url": "https://magiceden.io/marketplace/nyan_heroes",
+            "verified": true
+          },
+          {
+            "marketplace_id": "tensor",
+            "marketplace_name": "Tensor",
+            "marketplace_collection_id": "nyan_heroes",
+            "nft_url": "https://www.tensor.trade/item/7bwsNfaSWurdCTpWv5idrt4FgeJYbPCffGUY7FsUQzSV",
+            "collection_url": "https://www.tensor.trade/trade/nyan_heroes",
+            "verified": true
+          },
+          {
+            "marketplace_id": "opensea",
+            "marketplace_name": "OpenSea",
+            "marketplace_collection_id": "nyan-heroes",
+            "nft_url": "https://opensea.io/assets/solana/7bwsNfaSWurdCTpWv5idrt4FgeJYbPCffGUY7FsUQzSV",
+            "collection_url": "https://opensea.io/collection/nyan-heroes",
+            "verified": false
+          }
+        ],
+        "metaplex_mint": null,
+        "metaplex_candy_machine": "BbiYZRfPNJv2cUMtMyiupfiAjBEikBRDTnuofngDcKCS",
+        "metaplex_first_verified_creator": null,
+        "floor_prices": [
+          {
+            "marketplace_id": "magiceden",
+            "marketplace_name": "Magic Eden",
+            "value": 2350000000,
+            "payment_token": {
+              "payment_token_id": "solana.native",
+              "name": "Solana",
+              "symbol": "SOL",
+              "address": null,
+              "decimals": 9
+            },
+            "value_usd_cents": 30528
+          },
+          {
+            "marketplace_id": "tensor",
+            "marketplace_name": "Tensor",
+            "value": 2400000000,
+            "payment_token": {
+              "payment_token_id": "solana.native",
+              "name": "Solana",
+              "symbol": "SOL",
+              "address": null,
+              "decimals": 9
+            },
+            "value_usd_cents": 31178
+          }
+        ],
+        "top_bids": [],
+        "distinct_owner_count": 2807,
+        "distinct_nft_count": 11108,
+        "total_quantity": 11108,
+        "chains": [
+          "solana"
+        ],
+        "top_contracts": [],
+        "collection_royalties": [
+          {
+            "source": "opensea",
+            "total_creator_fee_basis_points": 0,
+            "recipients": []
+          }
+        ]
+      },
+      "last_sale": {
+        "from_address": "4zdNGgAtFsW1cQgHqkiWyRsxaAgxrSRRynnuunxzjxue",
+        "to_address": "FEeSRuEDk8ENZbpzXjn4uHPz3LQijbeKRzhqVr5zPSJ9",
+        "quantity": 1,
+        "quantity_string": "1",
+        "timestamp": "2024-02-29T11:01:41",
+        "transaction": "5fsZXQfezg7tZjHpv5AxjnvZAV1oVhqaeoA3SYjFvD5BCcAsrXCrxBYVTyAgxD7fgjt1epx1iAeoGRb1K9hNPncE",
+        "marketplace_id": "tensor",
+        "marketplace_name": "Tensor",
+        "is_bundle_sale": false,
+        "payment_token": {
+          "payment_token_id": "solana.native",
+          "name": "Solana",
+          "symbol": "SOL",
+          "address": null,
+          "decimals": 9
+        },
+        "unit_price": 2160000000,
+        "total_price": 2160000000,
+        "unit_price_usd_cents": 28060
+      },
+      "first_created": {
+        "minted_to": "NyAnxgKbdRfKvRFYZHtCew39mw8jXchX9XVvX2Q5874",
+        "quantity": 1,
+        "quantity_string": "1",
+        "timestamp": "2021-11-11T06:26:42",
+        "block_number": 106304554,
+        "transaction": "3qiEzLJg2SKq8xrPdYsPfgy5dXQgEWpzvHmuAARjPbfXFwEDEzCeL2uUXBh2sCkrTHJZX34AGH6y1hiscgQ727EW",
+        "transaction_initiator": "NyAnxgKbdRfKvRFYZHtCew39mw8jXchX9XVvX2Q5874"
+      },
+      "rarity": {
+        "rank": 5631,
+        "score": 0.935,
+        "unique_attributes": 0
+      },
+      "royalty": [
+        {
+          "source": "metaplex",
+          "total_creator_fee_basis_points": 500,
+          "recipients": [
+            {
+              "address": "7wzoWjLRJRVKMR7PhGffpXBpBsCqLRks2zb3Cnap8PZ3",
+              "percentage": 100,
+              "basis_points": 500
+            }
+          ]
+        },
+        {
+          "source": "opensea",
+          "total_creator_fee_basis_points": 0,
+          "recipients": []
+        }
+      ],
+      "extra_metadata": {
+        "attributes": [
+          {
+            "trait_type": "Background",
+            "value": "Sky",
+            "display_type": null
+          },
+          {
+            "trait_type": "Mech",
+            "value": "Pink",
+            "display_type": null
+          },
+          {
+            "trait_type": "Body",
+            "value": "Orange-White",
+            "display_type": null
+          },
+          {
+            "trait_type": "Eyes",
+            "value": "Angry",
+            "display_type": null
+          },
+          {
+            "trait_type": "Mouth",
+            "value": "Pout",
+            "display_type": null
+          },
+          {
+            "trait_type": "Eyewear",
+            "value": "Thuglife",
+            "display_type": null
+          },
+          {
+            "trait_type": "Headwear",
+            "value": "Golden Circlet",
+            "display_type": null
+          },
+          {
+            "trait_type": "Special",
+            "value": "None",
+            "display_type": null
+          },
+          {
+            "trait_type": "Equipment",
+            "value": "Bamboo",
+            "display_type": null
+          },
+          {
+            "trait_type": "Border",
+            "value": "Green",
+            "display_type": null
+          },
+          {
+            "trait_type": "Rarity",
+            "value": "Uncommon",
+            "display_type": null
+          }
+        ],
+        "edition": "2021",
+        "is_mutable": true,
+        "seller_fee_basis_points": 500,
+        "creators": [
+          {
+            "address": "FpDKQ92HJYXvNBjLLvejh4gvVZwR28oGoaz36GdupcPp",
+            "verified": true,
+            "share": 0
+          },
+          {
+            "address": "7wzoWjLRJRVKMR7PhGffpXBpBsCqLRks2zb3Cnap8PZ3",
+            "verified": false,
+            "share": 100
+          }
+        ],
+        "token_program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "extensions": [],
+        "image_original_url": "https://www.arweave.net/yXN_YLtZrIg3Ecj2SdUcXOS9n9U1U-4Xb6el9_SMQsI?ext=png",
+        "animation_original_url": null,
+        "metadata_original_url": "https://arweave.net/6B7bcrqsORC8044MPIBZjEfBuaIrV1HvMcP04WQE5A4"
+      }
+    }
+  ]
+}

@@ -5,11 +5,12 @@ import pytest
 from dateutil.tz import tzutc
 
 from blockapi.test.v2.api.conftest import read_file
-from blockapi.v2.api.nft import SimpleHashBitcoinApi
+from blockapi.v2.api.nft import SimpleHashBitcoinApi, SimpleHashSolanaApi
 from blockapi.v2.coins import COIN_BTC
 from blockapi.v2.models import AssetType, Blockchain, NftOfferDirection
 
 nfts_test_address = 'bc1p3rwga6xsfal6f5d085scecg8lu4gsjl8drk5e07uqzk3cg9dq43s734vje'
+solana_test_address = 'FEeSRuEDk8ENZbpzXjn4uHPz3LQijbeKRzhqVr5zPSJ9'
 test_collection_slug = '4d5b1ef2d87f2212c7b00300296439da'
 
 
@@ -58,6 +59,35 @@ def test_parse_nfts(requests_mock, api, nfts_response):
         'https://magiceden.io/ordinals/item-details/'
         '0477f95b55d8770363e3b7beb6f0320dad38f2915d2fdf99c4271ae1bc266dc2i0'
     )
+
+
+def test_parse_listed_nfts(
+    requests_mock, solana_api, solana_listings_nfts_response, solana_nfts_response
+):
+    requests_mock.get(
+        f'https://api.simplehash.com/api/v0/nfts/listings/wallets?chains=solana&wallet_addresses={solana_test_address}&include_nft_details=1',
+        text=solana_listings_nfts_response,
+    )
+
+    requests_mock.get(
+        f'https://api.simplehash.com/api/v0/nfts/owners?chains=solana&wallet_addresses={solana_test_address}',
+        text=solana_nfts_response,
+    )
+
+    nfts = solana_api.fetch_nfts(solana_test_address)
+    parsed = solana_api.parse_nfts(nfts)
+
+    assert not nfts.errors
+    assert parsed.cursor == (
+        'token:c29sYW5hLTEwMS5ENjM1WDR5c1F1ckpiZ2cyZG91S0gzb1FTZ1pMeFNyemVMYkx'
+        'YTEY0dHhLMy4wMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw'
+        'MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBfMjAyNC0wMi0yNiAxNDoyO'
+        'DoxNSswMDowMF9fbmV4dA'
+    )
+
+    assert len(parsed.data) == 2
+    assert parsed.data[0].ident == 'solana.8zRjJ82rg3iiKgV41zvSLe82nGm4eqV9DGVhLQbCtx76'
+    assert parsed.data[1].ident == 'solana.7bwsNfaSWurdCTpWv5idrt4FgeJYbPCffGUY7FsUQzSV'
 
 
 def test_parse_collection(
@@ -226,6 +256,11 @@ def api():
 
 
 @pytest.fixture
+def solana_api():
+    return SimpleHashSolanaApi('fake_key')
+
+
+@pytest.fixture
 def nfts_response():
     return read_file('data/simplehash/nfts.json')
 
@@ -248,3 +283,13 @@ def listings_response():
 @pytest.fixture
 def offers_response():
     return read_file('data/simplehash/offers.json')
+
+
+@pytest.fixture
+def solana_nfts_response():
+    return read_file('data/simplehash/solana-nfts.json')
+
+
+@pytest.fixture
+def solana_listings_nfts_response():
+    return read_file('data/simplehash/solana-listings-nfts.json')

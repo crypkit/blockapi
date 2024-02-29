@@ -1,0 +1,283 @@
+{
+  "next_cursor": null,
+  "next": null,
+  "previous": null,
+  "listings": [
+    {
+      "id": "0f1ef7028392f99d2b3081383fcac4ae",
+      "permalink": "https://www.tensor.trade/item/8zRjJ82rg3iiKgV41zvSLe82nGm4eqV9DGVhLQbCtx76",
+      "bundle_item_number": null,
+      "listing_timestamp": "2023-12-06T13:37:20Z",
+      "expiration_timestamp": null,
+      "seller_address": "FEeSRuEDk8ENZbpzXjn4uHPz3LQijbeKRzhqVr5zPSJ9",
+      "auction_type": null,
+      "quantity": 1,
+      "quantity_remaining": 1,
+      "price": 248000000000,
+      "marketplace_id": "tensor",
+      "collection_id": "34a79e32e53bc2a4068fa978378a8861",
+      "nft_id": "solana.8zRjJ82rg3iiKgV41zvSLe82nGm4eqV9DGVhLQbCtx76",
+      "payment_token": {
+        "payment_token_id": "solana.native",
+        "name": "Solana",
+        "symbol": "SOL",
+        "address": null,
+        "decimals": 9
+      },
+      "is_private": false,
+      "nft_details": {
+        "nft_id": "solana.8zRjJ82rg3iiKgV41zvSLe82nGm4eqV9DGVhLQbCtx76",
+        "chain": "solana",
+        "contract_address": "8zRjJ82rg3iiKgV41zvSLe82nGm4eqV9DGVhLQbCtx76",
+        "token_id": null,
+        "name": "Mad Lads #362",
+        "description": "Fock it.",
+        "previews": {
+          "image_small_url": "https://lh3.googleusercontent.com/kvPU5gebevWKaPsnG5zxLS7cGhhJ8fMvfJCXRfRAUBYnoClQYimWl1BMW09Crk7M0_Md05nhtaEBzTqouyw2AlvG6H6ceEDEQw=s250",
+          "image_medium_url": "https://lh3.googleusercontent.com/kvPU5gebevWKaPsnG5zxLS7cGhhJ8fMvfJCXRfRAUBYnoClQYimWl1BMW09Crk7M0_Md05nhtaEBzTqouyw2AlvG6H6ceEDEQw",
+          "image_large_url": "https://lh3.googleusercontent.com/kvPU5gebevWKaPsnG5zxLS7cGhhJ8fMvfJCXRfRAUBYnoClQYimWl1BMW09Crk7M0_Md05nhtaEBzTqouyw2AlvG6H6ceEDEQw=s1000",
+          "image_opengraph_url": "https://lh3.googleusercontent.com/kvPU5gebevWKaPsnG5zxLS7cGhhJ8fMvfJCXRfRAUBYnoClQYimWl1BMW09Crk7M0_Md05nhtaEBzTqouyw2AlvG6H6ceEDEQw=k-w1200-s2400-rj",
+          "blurhash": "UoG+R+WAXpaxyGogn#j]M{WAelWBxvf6R%bI",
+          "predominant_color": "#9ca1df"
+        },
+        "image_url": "https://cdn.simplehash.com/assets/1879fb9653950a7b0a016abda4c62c77cc27c3be2892edaa0baad2206a00f5a8.png",
+        "image_properties": {
+          "width": 2048,
+          "height": 2560,
+          "size": 5516615,
+          "mime_type": "image/png"
+        },
+        "video_url": null,
+        "video_properties": null,
+        "audio_url": null,
+        "audio_properties": null,
+        "model_url": null,
+        "model_properties": null,
+        "other_url": null,
+        "other_properties": null,
+        "background_color": null,
+        "external_url": "https://madlads.com",
+        "created_date": "2023-04-19T23:43:51",
+        "status": "minted",
+        "token_count": 1,
+        "owner_count": 1,
+        "owners": [
+          {
+            "owner_address": "4zdNGgAtFsW1cQgHqkiWyRsxaAgxrSRRynnuunxzjxue",
+            "quantity": 1,
+            "quantity_string": "1",
+            "first_acquired_date": "2023-04-22T01:27:33",
+            "last_acquired_date": "2023-12-06T13:37:20"
+          }
+        ],
+        "contract": {
+          "type": "ProgrammableNonFungible",
+          "name": "Mad Lads #362",
+          "symbol": "MAD",
+          "deployed_by": null,
+          "deployed_via_contract": null,
+          "owned_by": null,
+          "has_multiple_collections": false
+        },
+        "collection": {
+          "collection_id": "34a79e32e53bc2a4068fa978378a8861",
+          "name": "Mad Lads",
+          "description": "Fock it.",
+          "image_url": "https://lh3.googleusercontent.com/pDrty44_5SHzEiVWwxzA2HlLyIk7wsqN5QRTtt4JCocM_RHezkqbBjYEXnB9NgoyOXA5zkROi5_tSgxYSUl5gLleHz6YgQTCfAHf",
+          "banner_image_url": "https://lh3.googleusercontent.com/LRvZfsxPPCm__QZWIOsZm3yHIwQJjiZFfG7QkK3g6dclz_i93I6LxGSaPZEve6Ne3bXlDkbjmxbKymp0F6dQYq9oTwqFNRtoXbc=w2500",
+          "category": null,
+          "is_nsfw": false,
+          "external_url": "https://www.madlads.com/",
+          "twitter_username": "MadLads",
+          "discord_url": "https://discord.com/invite/madlads",
+          "instagram_username": null,
+          "medium_username": null,
+          "telegram_url": null,
+          "marketplace_pages": [
+            {
+              "marketplace_id": "magiceden",
+              "marketplace_name": "Magic Eden",
+              "marketplace_collection_id": "mad_lads",
+              "nft_url": "https://magiceden.io/item-details/8zRjJ82rg3iiKgV41zvSLe82nGm4eqV9DGVhLQbCtx76",
+              "collection_url": "https://magiceden.io/marketplace/mad_lads",
+              "verified": true
+            },
+            {
+              "marketplace_id": "tensor",
+              "marketplace_name": "Tensor",
+              "marketplace_collection_id": "madlads",
+              "nft_url": "https://www.tensor.trade/item/8zRjJ82rg3iiKgV41zvSLe82nGm4eqV9DGVhLQbCtx76",
+              "collection_url": "https://www.tensor.trade/trade/madlads",
+              "verified": true
+            },
+            {
+              "marketplace_id": "opensea",
+              "marketplace_name": "OpenSea",
+              "marketplace_collection_id": "mad-lads",
+              "nft_url": "https://opensea.io/assets/solana/8zRjJ82rg3iiKgV41zvSLe82nGm4eqV9DGVhLQbCtx76",
+              "collection_url": "https://opensea.io/collection/mad-lads",
+              "verified": false
+            }
+          ],
+          "metaplex_mint": "J1S9H3QjnRtBbbuD4HjPV6RpRhwuk4zKbxsnCHuTgh9w",
+          "metaplex_candy_machine": null,
+          "metaplex_first_verified_creator": null,
+          "floor_prices": [
+            {
+              "marketplace_id": "magiceden",
+              "marketplace_name": "Magic Eden",
+              "value": 179800000000,
+              "payment_token": {
+                "payment_token_id": "solana.native",
+                "name": "Solana",
+                "symbol": "SOL",
+                "address": null,
+                "decimals": 9
+              },
+              "value_usd_cents": 2335732
+            },
+            {
+              "marketplace_id": "tensor",
+              "marketplace_name": "Tensor",
+              "value": 179800000000,
+              "payment_token": {
+                "payment_token_id": "solana.native",
+                "name": "Solana",
+                "symbol": "SOL",
+                "address": null,
+                "decimals": 9
+              },
+              "value_usd_cents": 2335732
+            }
+          ],
+          "top_bids": [],
+          "distinct_owner_count": 5735,
+          "distinct_nft_count": 9967,
+          "total_quantity": 9967,
+          "chains": [
+            "solana"
+          ],
+          "top_contracts": [],
+          "collection_royalties": [
+            {
+              "source": "opensea",
+              "total_creator_fee_basis_points": 0,
+              "recipients": []
+            }
+          ]
+        },
+        "last_sale": {
+          "from_address": "4zdNGgAtFsW1cQgHqkiWyRsxaAgxrSRRynnuunxzjxue",
+          "to_address": "FEeSRuEDk8ENZbpzXjn4uHPz3LQijbeKRzhqVr5zPSJ9",
+          "quantity": 1,
+          "quantity_string": "1",
+          "timestamp": "2023-11-04T22:56:25",
+          "transaction": "2Jyg56PmNaxyhsMdRdMp2tQDvPBJfgUCmbez1c1gQGNemHXJ3NkdQYrA4fb4YL9wuZkVEYLMNKJhwTuMuLS7hzgi",
+          "marketplace_id": "tensor",
+          "marketplace_name": "Tensor",
+          "is_bundle_sale": false,
+          "payment_token": {
+            "payment_token_id": "solana.native",
+            "name": "Solana",
+            "symbol": "SOL",
+            "address": null,
+            "decimals": 9
+          },
+          "unit_price": 54000000000,
+          "total_price": 54000000000,
+          "unit_price_usd_cents": 226781
+        },
+        "first_created": {
+          "minted_to": "Bk75SrUNo74MMCZPrZF29iGfVXwMeeeUSfB9vF9hYigJ",
+          "quantity": 1,
+          "quantity_string": "1",
+          "timestamp": "2023-04-19T23:43:51",
+          "block_number": 189386680,
+          "transaction": "XP7ukwL7yC3tReQEm9cCLGXMCJRPchzpAEhBNPdNoKW3qfUTeDL3C1ucVHVRfMzsXzXPuZB7Hm3xFSjm8LKZwS3",
+          "transaction_initiator": "Bk75SrUNo74MMCZPrZF29iGfVXwMeeeUSfB9vF9hYigJ"
+        },
+        "rarity": {
+          "rank": 8040,
+          "score": 0.763,
+          "unique_attributes": 0
+        },
+        "royalty": [
+          {
+            "source": "metaplex",
+            "total_creator_fee_basis_points": 420,
+            "recipients": [
+              {
+                "address": "2RtGg6fsFiiF1EQzHqbd66AhW7R5bWeQGpTbv2UMkCdW",
+                "percentage": 100,
+                "basis_points": 420
+              }
+            ]
+          },
+          {
+            "source": "opensea",
+            "total_creator_fee_basis_points": 0,
+            "recipients": []
+          }
+        ],
+        "extra_metadata": {
+          "attributes": [
+            {
+              "trait_type": "Gender",
+              "value": "Male",
+              "display_type": null
+            },
+            {
+              "trait_type": "Type",
+              "value": "Light",
+              "display_type": null
+            },
+            {
+              "trait_type": "Expression",
+              "value": "Joy",
+              "display_type": null
+            },
+            {
+              "trait_type": "Hat",
+              "value": "Beanie",
+              "display_type": null
+            },
+            {
+              "trait_type": "Eyes",
+              "value": "Closed",
+              "display_type": null
+            },
+            {
+              "trait_type": "Clothing",
+              "value": "Coral Fancy Overall",
+              "display_type": null
+            },
+            {
+              "trait_type": "Background",
+              "value": "Violet",
+              "display_type": null
+            }
+          ],
+          "is_mutable": true,
+          "seller_fee_basis_points": 420,
+          "creators": [
+            {
+              "address": "5XvhfmRjwXkGp3jHGmaKpqeerNYjkuZZBYLVQYdeVcRv",
+              "verified": true,
+              "share": 0
+            },
+            {
+              "address": "2RtGg6fsFiiF1EQzHqbd66AhW7R5bWeQGpTbv2UMkCdW",
+              "verified": true,
+              "share": 100
+            }
+          ],
+          "token_program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "extensions": [],
+          "image_original_url": "https://madlads.s3.us-west-2.amazonaws.com/images/362.png",
+          "animation_original_url": null,
+          "metadata_original_url": "https://madlads.s3.us-west-2.amazonaws.com/json/362.json"
+        }
+      }
+    }
+  ]
+}
