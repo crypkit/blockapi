@@ -2,11 +2,22 @@
 
 
 
+## v0.40.5 (2024-02-29)
+
+### Fix
+
+* fix: Automatically delay and refetch if 429 (#177) ([`11ad0aa`](https://github.com/crypkit/blockapi/commit/11ad0aa2de4bcafb25d328b2ee21832279d2571e))
+
+
 ## v0.40.4 (2024-02-29)
 
 ### Fix
 
 * fix: Include listed tokens in fetch (#179) ([`b229c1e`](https://github.com/crypkit/blockapi/commit/b229c1ee4da9ba8e492c72a811ca42c870d8c972))
+
+### Unknown
+
+* 0.40.4 ([`ae56d44`](https://github.com/crypkit/blockapi/commit/ae56d444f845302adb177a3147d16e8c6c7b185e))
 
 
 ## v0.40.3 (2024-02-29)
