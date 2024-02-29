@@ -2,11 +2,22 @@
 
 
 
+## v0.40.3 (2024-02-29)
+
+### Fix
+
+* fix: Best offers field name (#178) ([`162ad17`](https://github.com/crypkit/blockapi/commit/162ad174d9698076a0c4e2be58c999cbc85d4efb))
+
+
 ## v0.40.2 (2024-02-28)
 
 ### Fix
 
 * fix: Disable Klaytn on SimpleHash ([`6ec846c`](https://github.com/crypkit/blockapi/commit/6ec846c02f8b5ff203981ec700b962e58f9f1cc5))
+
+### Unknown
+
+* 0.40.2 ([`9463a11`](https://github.com/crypkit/blockapi/commit/9463a1158adf73467388ea6421493cfcd02fcb39))
 
 
 ## v0.40.1 (2024-02-28)
