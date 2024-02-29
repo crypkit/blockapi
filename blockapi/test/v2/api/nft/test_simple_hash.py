@@ -5,7 +5,6 @@ import pytest
 from dateutil.tz import tzutc
 
 from blockapi.test.v2.api.conftest import read_file
-from blockapi.test.v2.api.fake_sleep_provider import FakeSleepProvider
 from blockapi.v2.api.nft import SimpleHashBitcoinApi
 from blockapi.v2.coins import COIN_BTC
 from blockapi.v2.models import AssetType, Blockchain, NftOfferDirection
@@ -222,13 +221,8 @@ def test_parse_listings(requests_mock, api, listings_response):
 
 
 @pytest.fixture
-def fake_sleep_provider():
-    return FakeSleepProvider()
-
-
-@pytest.fixture
-def api(fake_sleep_provider):
-    return SimpleHashBitcoinApi('fake_key', fake_sleep_provider)
+def api():
+    return SimpleHashBitcoinApi('fake_key')
 
 
 @pytest.fixture
