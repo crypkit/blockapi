@@ -48,6 +48,7 @@ class CustomizableBlockchainApi(ABC):
     supported_requests: Dict[str, str] = {}
 
     json_parse_args = dict()
+    max_rate_limit_retries = 5
 
     def __init__(
         self,
@@ -90,6 +91,7 @@ class CustomizableBlockchainApi(ABC):
         **req_args,
     ) -> FetchResult:
         try:
+            retries = self.max_rate_limit_retries
             while True:
                 response = self._get_response(request_method, headers, params, req_args)
                 time = self._get_response_time(response.headers)
@@ -102,7 +104,8 @@ class CustomizableBlockchainApi(ABC):
                         time=time,
                     )
 
-                if response.status_code == 429 and self.sleep_provider:
+                if response.status_code == 429 and self.sleep_provider and retries > 0:
+                    retries -= 1
                     delay = response.headers.get('retry-after', '60')
                     try:
                         seconds = int(delay)
@@ -110,7 +113,7 @@ class CustomizableBlockchainApi(ABC):
                         seconds = 60
 
                     logger.warning(
-                        f'Too Many Requests: Will retry after {seconds}s sleep'
+                        f'Too Many Requests: Will retry after {seconds}s sleep. Remaining attempts {retries}.'
                     )
                     self.sleep_provider.sleep(self.base_url, seconds=seconds)
                     continue
