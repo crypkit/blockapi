@@ -50,7 +50,8 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
         'get_bids': 'bids/collection/{slug}',
         'get_listings': 'listings/collection/{slug}',
         'get_wallet_bids': 'bids/wallets?chains={chain}&wallet_addresses={address}',
-        'get_wallet_listings': 'listings/wallets?chains={chain}&wallet_addresses={address}',
+        'get_wallet_listings': 'listings/wallets?chains={chain}&wallet_addresses={address}'
+        '&include_nft_details={include_nft_details}',
     }
 
     def __init__(self, blockchain, simplehash_blockchain, api_key):
@@ -88,7 +89,21 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
         )
 
     def _yield_parsed_nfts(self, data, address):
-        items = data.get('nfts')
+        yield from self._yield_parsed_nfts_from_tokens(
+            self._yield_tokens(data.get('listings')), address
+        )
+        yield from self._yield_parsed_nfts_from_tokens(data.get('nfts'), address)
+
+    @staticmethod
+    def _yield_tokens(items):
+        if not items:
+            return
+
+        for item in items:
+            if nft := item.get('nft_details'):
+                yield nft
+
+    def _yield_parsed_nfts_from_tokens(self, items, address):
         if not items:
             return
 
@@ -332,6 +347,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             headers=self.headers,
             params=dict(cursor=cursor) if cursor else None,
             chain=self._simplehash_blockchain,
+            include_nft_details=0,
             address=address,
         )
 
@@ -409,6 +425,70 @@ class SimpleHashSolanaApi(SimpleHashApi):
 
     def __init__(self, api_key: str):
         super().__init__(self.default_blockchain, 'solana', api_key)
+
+    def fetch_nfts(self, address: str, cursor: Optional[str] = None) -> FetchResult:
+        token_cursor = None
+        listing_cursor = None
+        if cursor:
+            target, crs = cursor.split(':')
+            if target == 'token':
+                token_cursor = crs
+            elif target == 'listing':
+                listing_cursor = crs
+
+        listings = None
+        if not token_cursor:
+            listings = self.get_data(
+                'get_wallet_listings',
+                headers=self.headers,
+                params=dict(cursor=listing_cursor) if listing_cursor else None,
+                chain=self._simplehash_blockchain,
+                include_nft_details=1,
+                address=address,
+                extra=dict(address=address),
+            )
+
+            if self._update_cursor(listings, 'listing'):
+                return listings
+
+        data = self.get_data(
+            'get_nfts',
+            headers=self.headers,
+            params=dict(cursor=token_cursor) if token_cursor else None,
+            chain=self._simplehash_blockchain,
+            address=address,
+            extra=dict(address=address),
+        )
+
+        self._update_cursor(data, 'token')
+        return self._coallesce(listings, data)
+
+    @staticmethod
+    def _update_cursor(data, prefix):
+        if not data.data:
+            return False
+
+        if crs := data.data.get('next_cursor'):
+            data.data['next_cursor'] = f'{prefix}:{crs}'
+            return True
+
+        return False
+
+    def _coallesce(self, listings, data):
+        if data and data.errors:
+            return data
+
+        if listings and listings.errors:
+            return listings
+
+        if not data or not data.data:
+            return listings
+
+        if not listings or not listings.data:
+            return data
+
+        data.data['listings'] = listings.data.get('listings', [])
+        return data
 
 
 class SimpleHashEthereumApi(SimpleHashApi):
