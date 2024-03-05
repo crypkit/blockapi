@@ -164,6 +164,7 @@ def test_inscriptions_collection(requests_mock, api, collection_response):
     assert not data.month_stats
     assert not data.floor_prices
     assert not data.best_offers
+    assert data.volumes
 
     assert data.blockchain == Blockchain.BITCOIN
     assert len(data.contracts) == 1
