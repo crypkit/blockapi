@@ -224,7 +224,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
                 volumes=self._get_volumes(activity),
             )
 
-    def _get_volumes(self, activity) -> Optional[NftVolumes]:
+    def _get_volumes(self, activity) -> NftVolumes:
         if not activity:
             return NftVolumes.from_api(
                 coin=self.coin,
