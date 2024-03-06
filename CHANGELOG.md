@@ -2,11 +2,22 @@
 
 
 
+## v0.40.7 (2024-03-06)
+
+### Fix
+
+* fix: Empty collection activity (#181) ([`63615d4`](https://github.com/crypkit/blockapi/commit/63615d45f07671662a0e9d940bc129ff262d216c))
+
+
 ## v0.40.6 (2024-03-06)
 
 ### Fix
 
 * fix: SimpleHash: Add default volumes if none is available ([`4a004b1`](https://github.com/crypkit/blockapi/commit/4a004b1129ad1b0a9d1df331fc93db2f9a32c9f4))
+
+### Unknown
+
+* 0.40.6 ([`5d05f84`](https://github.com/crypkit/blockapi/commit/5d05f843e88792f698997eb36577da96c322d6a2))
 
 
 ## v0.40.5 (2024-02-29)
