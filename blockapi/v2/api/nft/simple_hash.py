@@ -241,6 +241,10 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
                 volume_30d_raw=activity.get('30_day_volume'),
             )
 
+        return NftVolumes.from_api(
+            coin=self.coin,
+        )
+
     def get_prices(self, items):
         if not items:
             return dict()
