@@ -2,11 +2,22 @@
 
 
 
+## v0.40.6 (2024-03-06)
+
+### Fix
+
+* fix: SimpleHash: Add default volumes if none is available ([`4a004b1`](https://github.com/crypkit/blockapi/commit/4a004b1129ad1b0a9d1df331fc93db2f9a32c9f4))
+
+
 ## v0.40.5 (2024-02-29)
 
 ### Fix
 
 * fix: Automatically delay and refetch if 429 (#177) ([`11ad0aa`](https://github.com/crypkit/blockapi/commit/11ad0aa2de4bcafb25d328b2ee21832279d2571e))
+
+### Unknown
+
+* 0.40.5 ([`9440a4a`](https://github.com/crypkit/blockapi/commit/9440a4a19bc6e0dadda04552ced3f76a0f38869a))
 
 
 ## v0.40.4 (2024-02-29)
