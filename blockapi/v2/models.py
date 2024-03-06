@@ -826,11 +826,11 @@ class NftVolumes:
         cls,
         *,
         coin: Coin,
-        market_cap_raw: Union[int, str],
-        volume_raw: Union[int, str],
-        volume_1d_raw: Union[int, str],
-        volume_7d_raw: Union[int, str],
-        volume_30d_raw: Union[int, str],
+        market_cap_raw: Union[int, str] = 0,
+        volume_raw: Union[int, str] = 0,
+        volume_1d_raw: Union[int, str] = 0,
+        volume_7d_raw: Union[int, str] = 0,
+        volume_30d_raw: Union[int, str] = 0,
     ):
         return cls(
             coin=coin,
