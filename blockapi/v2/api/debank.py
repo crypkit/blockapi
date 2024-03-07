@@ -190,13 +190,15 @@ class DebankChainParser:
             if chain := self.parse_item(model):
                 chains.append(chain)
 
-        return chains
+        return list(sorted(chains, key=lambda x: x.name))
 
     @staticmethod
     def parse_item(item: DebankModelChain) -> Optional[DebankChain]:
         blockchain = get_blockchain_from_debank_chain(item.id)
         if not blockchain:
-            logger.warning(f'No blockchain found for debank chain {item.id}. Skipping.')
+            logger.warning(
+                f'No blockchain found for debank chain {item.id} ({item.name}, {item.community_id}). Skipping.'
+            )
             return None
 
         return DebankChain(
