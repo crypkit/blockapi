@@ -2,11 +2,22 @@
 
 
 
+## v0.40.8 (2024-03-07)
+
+### Fix
+
+* fix: Add new blockchains and mapping (#182) ([`9e834d3`](https://github.com/crypkit/blockapi/commit/9e834d398e5a4b939580f0ebaa3ffc26fb17ae8e))
+
+
 ## v0.40.7 (2024-03-06)
 
 ### Fix
 
 * fix: Empty collection activity (#181) ([`63615d4`](https://github.com/crypkit/blockapi/commit/63615d45f07671662a0e9d940bc129ff262d216c))
+
+### Unknown
+
+* 0.40.7 ([`d702dd7`](https://github.com/crypkit/blockapi/commit/d702dd7ee5806e51706ba4d1bc39d697ea0ba58b))
 
 
 ## v0.40.6 (2024-03-06)
