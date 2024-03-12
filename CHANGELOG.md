@@ -2,11 +2,28 @@
 
 
 
+## v0.41.0 (2024-03-12)
+
+### Feature
+
+* feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`5315052`](https://github.com/crypkit/blockapi/commit/53150526f3bf3c75627eb20389a27875eed55bab))
+
+### Unknown
+
+* Merge pull request #183 from crypkit/feat-bump-coinaddrng
+
+feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.com/crypkit/blockapi/commit/58db71db7f6707aef69f5b4e52d0781e25c576c0))
+
+
 ## v0.40.8 (2024-03-07)
 
 ### Fix
 
 * fix: Add new blockchains and mapping (#182) ([`9e834d3`](https://github.com/crypkit/blockapi/commit/9e834d398e5a4b939580f0ebaa3ffc26fb17ae8e))
+
+### Unknown
+
+* 0.40.8 ([`7f323cf`](https://github.com/crypkit/blockapi/commit/7f323cfb207f349b3a09812246d44521df5c6f27))
 
 
 ## v0.40.7 (2024-03-06)
