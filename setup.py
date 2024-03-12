@@ -21,7 +21,7 @@ setuptools.setup(
         'requests==2.31.0',
         'pytz>=2019.2',
         'python-dateutil>=2.8.0',
-        'coinaddrng==1.0.30',
+        'coinaddrng==1.1.1',
         'cfscrape>=2.0.8',
         'ethereum_input_decoder>=0.2.2',
         'web3>=5.2.2,<6.0.0',
