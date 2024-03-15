@@ -2,6 +2,13 @@
 
 
 
+## v0.42.0 (2024-03-15)
+
+### Feature
+
+* feat: add pending_transaction asset type ([`c03f335`](https://github.com/crypkit/blockapi/commit/c03f335c2439b91da13070b9b385bcb319ad0d00))
+
+
 ## v0.41.0 (2024-03-12)
 
 ### Feature
@@ -9,6 +16,8 @@
 * feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`5315052`](https://github.com/crypkit/blockapi/commit/53150526f3bf3c75627eb20389a27875eed55bab))
 
 ### Unknown
+
+* 0.41.0 ([`428e842`](https://github.com/crypkit/blockapi/commit/428e8423c03c5436be3318d35025cfd1a861ab8d))
 
 * Merge pull request #183 from crypkit/feat-bump-coinaddrng
 
