@@ -2,11 +2,22 @@
 
 
 
+## v0.42.1 (2024-03-19)
+
+### Fix
+
+* fix: SimpleHash: Fetch all chains at the same time (#185) ([`419b2da`](https://github.com/crypkit/blockapi/commit/419b2da5ebf39edbf9832ff0316b0325f78868ec))
+
+
 ## v0.42.0 (2024-03-15)
 
 ### Feature
 
 * feat: add pending_transaction asset type ([`c03f335`](https://github.com/crypkit/blockapi/commit/c03f335c2439b91da13070b9b385bcb319ad0d00))
+
+### Unknown
+
+* 0.42.0 ([`caea7e0`](https://github.com/crypkit/blockapi/commit/caea7e0bc4e0ea95f5f1419772f4f9bf169112e2))
 
 
 ## v0.41.0 (2024-03-12)
