@@ -1,4 +1,5 @@
 import logging
+from functools import cached_property
 from typing import Iterable, Optional
 
 from blockapi.v2.base import BlockchainApi, INftParser, INftProvider, ISleepProvider
@@ -31,10 +32,8 @@ SIMPLE_HASH_COINS = {
 class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
     """
     API docs: https://docs.simplehash.com/reference/overview
-    Explorer: https://magiceden.io/
     """
 
-    default_blockchain = NotImplemented
     default_collection = NotImplemented
 
     api_options = ApiOptions(
@@ -54,21 +53,29 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
         '&include_nft_details={include_nft_details}',
     }
 
-    def __init__(self, blockchain, simplehash_blockchain, api_key, sleep_provider):
+    supported_blockchains_map = {}
+
+    def __init__(self, blockchain, api_key, sleep_provider):
         super().__init__(sleep_provider=sleep_provider)
 
         self._api_key = api_key
         self.headers = {'accept': 'application/json', 'X-API-KEY': api_key}
         self.api_options.blockchain = blockchain
-        self._blockchain = blockchain
-        self._simplehash_blockchain = simplehash_blockchain
+
+    @cached_property
+    def simplehash_blockchains_map(self) -> dict:
+        return {v: k for k, v in self.supported_blockchains_map.items()}
+
+    @cached_property
+    def simplehash_blockchains(self) -> str:
+        return ','.join([v for v in self.supported_blockchains_map.values()])
 
     def fetch_nfts(self, address: str, cursor: Optional[str] = None) -> FetchResult:
         return self.get_data(
             'get_nfts',
             headers=self.headers,
             params=dict(cursor=cursor) if cursor else None,
-            chain=self._simplehash_blockchain,
+            chain=self.simplehash_blockchains,
             address=address,
             extra=dict(address=address),
         )
@@ -117,6 +124,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
 
             collection_id = collection.get('collection_id') or self.default_collection
             standard = contract.get('type', 'ordinals').lower()
+            blockchain = self._get_blockchain(item)
 
             yield NftToken.from_api(
                 ident=ident,
@@ -131,24 +139,24 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
                 updated_time=item.get('created_date'),
                 is_disabled=False,
                 is_nsfw=False,
-                blockchain=self._blockchain,
+                blockchain=blockchain,
                 asset_type=AssetType.AVAILABLE,
                 market_url=self._get_market_url(collection),
             )
 
     @staticmethod
     def _get_market_url(collection):
-        eden = None
+        opensea = None
         if pages := collection.get('marketplace_pages'):
             for page in pages:
                 marketplace = page.get('marketplace_id')
-                if marketplace == 'magiceden':
-                    eden = page.get('nft_url')
-
                 if marketplace == 'opensea':
+                    opensea = page.get('nft_url')
+
+                if marketplace == 'magiceden':
                     return page.get('nft_url')
 
-        return eden
+        return opensea
 
     @staticmethod
     def _get_amount(owners, address):
@@ -204,25 +212,40 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             activity = activities.get(key)
 
             ident = collection.get('collection_id')
+            blockchains = list(self._get_blockchains(collection))
+            if not blockchains:
+                logger.warning(f'No blockchains for collection {ident}')
+                continue
+
+            contracts = list(self._get_contracts(ident, blockchains))
+
             yield NftCollection.from_api(
                 ident=ident,
                 name=collection.get('name')
                 or activity.get('name')
                 or f'Collection {ident}',
-                contracts=[
-                    ContractInfo.from_api(
-                        blockchain=self._blockchain,
-                        address=collection.get('collection_id'),
-                    )
-                ],
+                contracts=contracts,
                 image=collection.get('image_url'),
                 is_disabled=False,
                 is_nsfw=False,
-                blockchain=self._blockchain,
+                blockchain=blockchains[0],
                 floor_prices=self.get_prices(collection.get('floor_prices')),
                 best_offers=self.get_prices(collection.get('top_bids')),
                 volumes=self._get_volumes(activity),
             )
+
+    def _get_blockchain(self, item):
+        return self.simplehash_blockchains_map.get(item.get('chain'))
+
+    def _get_blockchains(self, collection) -> Iterable[Blockchain]:
+        if chains := collection.get('chains'):
+            for c in chains:
+                if chain := self.simplehash_blockchains_map.get(c):
+                    yield chain
+
+    def _get_contracts(self, ident, blockchains):
+        for b in blockchains:
+            yield ContractInfo.from_api(blockchain=b, address=ident)
 
     def _get_volumes(self, activity) -> NftVolumes:
         if not activity:
@@ -292,7 +315,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             'get_wallet_bids',
             headers=self.headers,
             params=dict(cursor=cursor) if cursor else None,
-            chain=self._simplehash_blockchain,
+            chain=self.simplehash_blockchains,
             address=address,
         )
 
@@ -324,7 +347,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
                     direction=NftOfferDirection.OFFER,
                     collection=item.get('collection_id'),
                     contract=item.get('collection_id'),
-                    blockchain=self._blockchain,
+                    blockchain=self.api_options.blockchain,
                     offerer=item.get('bidder_address'),
                     start_time=item.get('timestamp'),
                     end_time=item.get('expiration_timestamp'),
@@ -355,7 +378,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             'get_wallet_listings',
             headers=self.headers,
             params=dict(cursor=cursor) if cursor else None,
-            chain=self._simplehash_blockchain,
+            chain=self.simplehash_blockchains,
             include_nft_details=0,
             address=address,
         )
@@ -388,7 +411,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
                     direction=NftOfferDirection.LISTING,
                     collection=item.get('collection_id'),
                     contract=item.get('collection_id'),
-                    blockchain=self._blockchain,
+                    blockchain=self.api_options.blockchain,
                     offerer=item.get('seller_address'),
                     start_time=item.get('listing_timestamp'),
                     end_time=item.get('expiration_timestamp'),
@@ -408,8 +431,12 @@ class SimpleHashBitcoinApi(SimpleHashApi):
     default_blockchain = Blockchain.BITCOIN
     default_collection = 'inscriptions'
 
+    supported_blockchains_map = {
+        Blockchain.BITCOIN: 'bitcoin',
+    }
+
     def __init__(self, api_key: str, sleep_provider: ISleepProvider):
-        super().__init__(self.default_blockchain, 'bitcoin', api_key, sleep_provider)
+        super().__init__(Blockchain.BITCOIN, api_key, sleep_provider)
 
     def fetch_collection(self, collection: str) -> FetchResult:
         if collection == self.default_collection:
@@ -419,6 +446,7 @@ class SimpleHashBitcoinApi(SimpleHashApi):
                         dict(
                             collection_id=self.default_collection,
                             name='Inscriptions',
+                            chains=['bitcoin'],
                         )
                     ]
                 ),
@@ -430,10 +458,13 @@ class SimpleHashBitcoinApi(SimpleHashApi):
 
 class SimpleHashSolanaApi(SimpleHashApi):
     coin = COIN_SOL
-    default_blockchain = Blockchain.SOLANA
+
+    supported_blockchains_map = {
+        Blockchain.SOLANA: 'solana',
+    }
 
     def __init__(self, api_key: str, sleep_provider: ISleepProvider):
-        super().__init__(self.default_blockchain, 'solana', api_key, sleep_provider)
+        super().__init__(Blockchain.SOLANA, api_key, sleep_provider)
 
     def fetch_nfts(self, address: str, cursor: Optional[str] = None) -> FetchResult:
         token_cursor = None
@@ -451,7 +482,7 @@ class SimpleHashSolanaApi(SimpleHashApi):
                 'get_wallet_listings',
                 headers=self.headers,
                 params=dict(cursor=listing_cursor) if listing_cursor else None,
-                chain=self._simplehash_blockchain,
+                chain=self.simplehash_blockchains,
                 include_nft_details=1,
                 address=address,
                 extra=dict(address=address),
@@ -464,7 +495,7 @@ class SimpleHashSolanaApi(SimpleHashApi):
             'get_nfts',
             headers=self.headers,
             params=dict(cursor=token_cursor) if token_cursor else None,
-            chain=self._simplehash_blockchain,
+            chain=self.simplehash_blockchains,
             address=address,
             extra=dict(address=address),
         )
@@ -519,14 +550,5 @@ class SimpleHashEthereumApi(SimpleHashApi):
         Blockchain.ZORA: 'zora',
     }
 
-    simplehash_blockchains_map = {n: b for b, n in supported_blockchains_map.items()}
-    supported_blockchains = list(supported_blockchains_map.keys())
-
-    def __init__(
-        self, blockchain: Blockchain, api_key: str, sleep_provider: ISleepProvider
-    ):
-        chain = self.supported_blockchains_map.get(blockchain)
-        if not chain:
-            raise Exception(f'Blockchain not supported {blockchain}')
-
-        super().__init__(blockchain, chain, api_key, sleep_provider)
+    def __init__(self, api_key: str, sleep_provider: ISleepProvider):
+        super().__init__(Blockchain.ETHEREUM, api_key, sleep_provider)
