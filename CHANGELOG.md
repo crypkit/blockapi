@@ -2,11 +2,22 @@
 
 
 
+## v0.42.2 (2024-03-20)
+
+### Fix
+
+* fix: Parse non-native tokens (#186) ([`4f08d06`](https://github.com/crypkit/blockapi/commit/4f08d0683d0679b5f6ec4fc82247b0e20a412c3c))
+
+
 ## v0.42.1 (2024-03-19)
 
 ### Fix
 
 * fix: SimpleHash: Fetch all chains at the same time (#185) ([`419b2da`](https://github.com/crypkit/blockapi/commit/419b2da5ebf39edbf9832ff0316b0325f78868ec))
+
+### Unknown
+
+* 0.42.1 ([`9557402`](https://github.com/crypkit/blockapi/commit/955740247983fb10ed7886593d4293ee8f422317))
 
 
 ## v0.42.0 (2024-03-15)
