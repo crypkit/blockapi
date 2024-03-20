@@ -229,9 +229,13 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
                 is_disabled=False,
                 is_nsfw=False,
                 blockchain=blockchains[0],
-                floor_prices=self.get_prices(collection.get('floor_prices')),
-                best_offers=self.get_prices(collection.get('top_bids')),
-                volumes=self._get_volumes(activity),
+                floor_prices=self.get_prices(
+                    collection.get('floor_prices'), chain=blockchains[0]
+                ),
+                best_offers=self.get_prices(
+                    collection.get('top_bids'), chain=blockchains[0]
+                ),
+                volumes=self._get_volumes(activity, chain=blockchains[0]),
             )
 
     def _get_blockchain(self, item):
@@ -247,14 +251,14 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
         for b in blockchains:
             yield ContractInfo.from_api(blockchain=b, address=ident)
 
-    def _get_volumes(self, activity) -> NftVolumes:
+    def _get_volumes(self, activity, chain) -> NftVolumes:
         if not activity:
             return NftVolumes.from_api(
                 coin=self.coin,
             )
 
         token = activity.get('payment_token') or dict()
-        if coin := self._get_coin(token):
+        if coin := self._get_coin(token, chain):
             return NftVolumes.from_api(
                 coin=coin,
                 market_cap_raw=activity.get('market_cap'),
@@ -268,7 +272,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             coin=self.coin,
         )
 
-    def get_prices(self, items):
+    def get_prices(self, items, chain):
         if not items:
             return dict()
 
@@ -277,12 +281,13 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             marketplace_id = item.get('marketplace_id')
             amount = item.get('value')
             token = item.get('payment_token')
-            if coin := self._get_coin(token):
+            if coin := self._get_coin(token, chain):
                 result[marketplace_id] = NftPrice.from_api(coin=coin, amount_raw=amount)
 
         return result if result else None
 
-    def _get_coin(self, token: Optional[dict]) -> Optional[Coin]:
+    @staticmethod
+    def _get_coin(token: Optional[dict], chain) -> Optional[Coin]:
         if not token:
             return None
 
@@ -291,7 +296,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
                 return coin
 
         return Coin.from_api(
-            blockchain=self._blockchain,
+            blockchain=chain,
             decimals=token.get('decimals'),
             symbol=token.get('symbol'),
             name=token.get('name'),
@@ -341,7 +346,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
                 continue
 
             token = item.get('payment_token')
-            if coin := self._get_coin(token):
+            if coin := self._get_coin(token, self.api_options.blockchain):
                 yield NftOffer.from_api(
                     offer_key=item.get('id'),
                     direction=NftOfferDirection.OFFER,
@@ -405,7 +410,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
                 continue
 
             token = item.get('payment_token')
-            if coin := self._get_coin(token):
+            if coin := self._get_coin(token, self.api_options.blockchain):
                 yield NftOffer.from_api(
                     offer_key=item.get('id'),
                     direction=NftOfferDirection.LISTING,
