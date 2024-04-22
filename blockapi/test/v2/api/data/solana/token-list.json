@@ -79,6 +79,31 @@
       "tags": [
         "social-token"
       ]
+    },
+    {
+      "address": "METAewgxyPbgwsseH8T16a39CQ5VyVxZi9zXiDPY18m",
+      "chainId": 101,
+      "name": "Metaplex",
+      "symbol": "MPLX",
+      "verified": true,
+      "decimals": 6,
+      "holders": 1016,
+      "logoURI": "https://assets.coingecko.com/coins/images/27344/large/mplx.png?1696526391",
+      "tags": [],
+      "extensions": {
+        "coingeckoId": "metaplex"
+      }
+    },
+    {
+      "address": "METAewgxyPbgwsseH8T16a39CQ5VyVxZi9zXiDPY18m",
+      "chainId": 103,
+      "name": "Metaplex",
+      "symbol": "META",
+      "verified": true,
+      "decimals": 6,
+      "holders": 29,
+      "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/METAewgxyPbgwsseH8T16a39CQ5VyVxZi9zXiDPY18m/logo.png",
+      "tags": []
     }
   ]
 }

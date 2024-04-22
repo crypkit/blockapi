@@ -54,7 +54,9 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         if self._tokens_map is None:
             response = self._session.get(TOKEN_LIST_URL)
             token_list = response.json()
-            self._tokens_map = {t['address']: t for t in token_list['content']}
+            self._tokens_map = {
+                t['address']: t for t in token_list['content'] if t['chainId'] == 101
+            }
 
         return self._tokens_map
 
