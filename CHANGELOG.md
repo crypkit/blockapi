@@ -2,11 +2,22 @@
 
 
 
+## v0.42.3 (2024-04-25)
+
+### Fix
+
+* fix: Improve Solana token mapping (#187) ([`9284176`](https://github.com/crypkit/blockapi/commit/9284176f64258a1faf09ceadf6c0c1f75339f2e9))
+
+
 ## v0.42.2 (2024-03-20)
 
 ### Fix
 
 * fix: Parse non-native tokens (#186) ([`4f08d06`](https://github.com/crypkit/blockapi/commit/4f08d0683d0679b5f6ec4fc82247b0e20a412c3c))
+
+### Unknown
+
+* 0.42.2 ([`2841c6b`](https://github.com/crypkit/blockapi/commit/2841c6b8b61c2e08f083d672e6ba068a222ba4b8))
 
 
 ## v0.42.1 (2024-03-19)
