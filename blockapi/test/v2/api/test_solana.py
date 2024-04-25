@@ -95,6 +95,18 @@ def test_create_token(requests_mock, token_list_response):
     assert coin.address == 'J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn'
 
 
+def test_map_mplx_token(requests_mock, token_list_response):
+    requests_mock.get(
+        'https://token-list-api.solana.cloud/v1/list', text=token_list_response
+    )
+
+    coin = SolanaApi().get_token_data('METAewgxyPbgwsseH8T16a39CQ5VyVxZi9zXiDPY18m')
+    assert coin.symbol == 'MPLX'
+    assert coin.decimals == 6
+    assert coin.blockchain == Blockchain.SOLANA
+    assert coin.address == 'METAewgxyPbgwsseH8T16a39CQ5VyVxZi9zXiDPY18m'
+
+
 def test_solscan_get_staked_balance(requests_mock, solscan_staked_response):
     test_addr = '5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu'
     requests_mock.get(
