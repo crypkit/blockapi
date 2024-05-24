@@ -2,11 +2,28 @@
 
 
 
+## v0.43.0 (2024-05-24)
+
+### Feature
+
+* feat: add more solana token lists ([`6cb65ae`](https://github.com/crypkit/blockapi/commit/6cb65ae5e41deb1ad587d184bc2291f60ea2f1f4))
+
+### Fix
+
+* fix: fix unittests ([`dbe48ee`](https://github.com/crypkit/blockapi/commit/dbe48eebac83bed09a1679c80e0860a1601aacd1))
+
+* fix: fix imports ([`d2565e5`](https://github.com/crypkit/blockapi/commit/d2565e53aa332ed6440bd7688be1fbde0da0c701))
+
+
 ## v0.42.3 (2024-04-25)
 
 ### Fix
 
 * fix: Improve Solana token mapping (#187) ([`9284176`](https://github.com/crypkit/blockapi/commit/9284176f64258a1faf09ceadf6c0c1f75339f2e9))
+
+### Unknown
+
+* 0.42.3 ([`4e7c250`](https://github.com/crypkit/blockapi/commit/4e7c25008cc631e625278274c687aac39d70e2aa))
 
 
 ## v0.42.2 (2024-03-20)
