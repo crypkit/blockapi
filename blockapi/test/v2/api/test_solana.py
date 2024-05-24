@@ -69,6 +69,7 @@ def test_use_base_url():
 def test_use_base_url_in_post(
     solana_value_response,
     solana_response,
+    staked_solana_response,
     token_list_sol_response,
     token_list_jup_ag_response,
     token_list_sonar_response,
@@ -77,7 +78,12 @@ def test_use_base_url_in_post(
     test_addr = '5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu'
 
     iterator = iter(
-        [solana_value_response, solana_response, '{"result": {"value": []}}']
+        [
+            solana_value_response,
+            solana_response,
+            '{"result": {"value": []}}',
+            staked_solana_response,
+        ]
     )
 
     def get_text(*args, **kwargs):
@@ -299,6 +305,11 @@ def solana_response():
 @pytest.fixture
 def solana_value_response():
     return json.dumps(dict(result=dict(value=0)))
+
+
+@pytest.fixture
+def staked_solana_response():
+    return read_file('data/solana/staked_solana_response.json')
 
 
 @pytest.fixture
