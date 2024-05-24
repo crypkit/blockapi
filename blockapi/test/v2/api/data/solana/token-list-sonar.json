@@ -1,0 +1,82 @@
+{
+  "name": "SonarWatch Solana list",
+  "timestamp": "2024-05-22T13:53:43.261Z",
+  "version": {
+    "major": 1,
+    "minor": 20,
+    "patch": 532
+  },
+  "tags": {},
+  "logoURI": "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/lists/sw_solana.png",
+  "keywords": [
+    "sonarwatch",
+    "solana"
+  ],
+  "tokens": [
+    {
+      "chainId": 101,
+      "address": "So11111111111111111111111111111111111111112",
+      "symbol": "wSOL",
+      "name": "Wrapped SOL",
+      "decimals": 9,
+      "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png",
+      "tags": [
+        "wnative"
+      ],
+      "extensions": {
+        "coingeckoId": "wrapped-solana",
+        "indexedTo": [
+          "11111111111111111111111111111111"
+        ]
+      }
+    },
+    {
+      "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "chainId": 101,
+      "decimals": 6,
+      "name": "USD Coin",
+      "symbol": "USDC",
+      "logoURI": "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/solana/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.webp",
+      "tags": [
+        "old-registry",
+        "solana-fm",
+        "from-jupiter"
+      ],
+      "extensions": {
+        "coingeckoId": "usd-coin"
+      }
+    },
+    {
+      "address": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+      "chainId": 101,
+      "decimals": 6,
+      "name": "USDT",
+      "symbol": "USDT",
+      "logoURI": "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/solana/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB.webp",
+      "tags": [
+        "old-registry",
+        "solana-fm",
+        "from-jupiter"
+      ],
+      "extensions": {
+        "coingeckoId": "tether"
+      }
+    },
+    {
+      "address": "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm",
+      "chainId": 101,
+      "decimals": 6,
+      "name": "dogwifhat",
+      "symbol": "$WIF",
+      "logoURI": "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/solana/EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm.webp",
+      "tags": [
+        "community",
+        "solana-fm",
+        "from-jupiter"
+      ],
+      "extensions": {
+        "coingeckoId": "dogwifcoin"
+      }
+    }
+  ]
+}

@@ -6,6 +6,12 @@ from requests_mock import ANY, Mocker
 
 from blockapi.test.v2.api.conftest import read_file
 from blockapi.v2.api import SolanaApi, SolscanApi
+from blockapi.v2.api.solana import (
+    JUP_AG_BAN_LIST_URL,
+    JUP_AG_TOKEN_LIST_URL,
+    SOL_TOKEN_LIST_URL,
+    SONAR_TOKEN_LIST_URL,
+)
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin, CoinInfo
 
 
@@ -35,6 +41,7 @@ def test_merge_balances_with_different_mixed_coins(
         }
 
 
+@pytest.mark.skip(reason='token list responses are too big, skipping')
 @pytest.mark.vcr()
 @pytest.mark.integration
 def test_get_balance(solana_api):
@@ -60,7 +67,12 @@ def test_use_base_url():
 
 
 def test_use_base_url_in_post(
-    solana_value_response, solana_response, token_list_response
+    solana_value_response,
+    solana_response,
+    token_list_sol_response,
+    token_list_jup_ag_response,
+    token_list_sonar_response,
+    ban_list_jup_ag_response,
 ):
     test_addr = '5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu'
 
@@ -74,19 +86,27 @@ def test_use_base_url_in_post(
         return data
 
     with Mocker() as m:
-        m.get(
-            'https://token-list-api.solana.cloud/v1/list',
-            text=token_list_response,
-        )
+        m.get(SOL_TOKEN_LIST_URL, text=token_list_sol_response)
+        m.get(JUP_AG_TOKEN_LIST_URL, text=token_list_jup_ag_response)
+        m.get(SONAR_TOKEN_LIST_URL, text=token_list_sonar_response)
+        m.get(JUP_AG_BAN_LIST_URL, text=ban_list_jup_ag_response)
         m.post(ANY, text=get_text),
         api = SolanaApi(base_url='https://proxy/solana/')
         api.get_balance(test_addr)
 
 
-def test_create_token(requests_mock, token_list_response):
-    requests_mock.get(
-        'https://token-list-api.solana.cloud/v1/list', text=token_list_response
-    )
+def test_create_token(
+    requests_mock,
+    token_list_sol_response,
+    token_list_jup_ag_response,
+    token_list_sonar_response,
+    ban_list_jup_ag_response,
+):
+    requests_mock.get(SOL_TOKEN_LIST_URL, text=token_list_sol_response)
+    requests_mock.get(JUP_AG_TOKEN_LIST_URL, text=token_list_jup_ag_response)
+    requests_mock.get(SONAR_TOKEN_LIST_URL, text=token_list_sonar_response)
+    requests_mock.get(JUP_AG_BAN_LIST_URL, text=ban_list_jup_ag_response)
+
     coin = SolanaApi().get_token_data('J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn')
     assert coin.symbol == 'JITOSOL'
     assert coin.name == 'Jito Staked SOL'
@@ -95,10 +115,17 @@ def test_create_token(requests_mock, token_list_response):
     assert coin.address == 'J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn'
 
 
-def test_map_mplx_token(requests_mock, token_list_response):
-    requests_mock.get(
-        'https://token-list-api.solana.cloud/v1/list', text=token_list_response
-    )
+def test_map_mplx_token(
+    requests_mock,
+    token_list_sol_response,
+    token_list_jup_ag_response,
+    token_list_sonar_response,
+    ban_list_jup_ag_response,
+):
+    requests_mock.get(SOL_TOKEN_LIST_URL, text=token_list_sol_response)
+    requests_mock.get(JUP_AG_TOKEN_LIST_URL, text=token_list_jup_ag_response)
+    requests_mock.get(SONAR_TOKEN_LIST_URL, text=token_list_sonar_response)
+    requests_mock.get(JUP_AG_BAN_LIST_URL, text=ban_list_jup_ag_response)
 
     coin = SolanaApi().get_token_data('METAewgxyPbgwsseH8T16a39CQ5VyVxZi9zXiDPY18m')
     assert coin.symbol == 'MPLX'
@@ -275,8 +302,23 @@ def solana_value_response():
 
 
 @pytest.fixture
-def token_list_response():
-    return read_file('data/solana/token-list.json')
+def token_list_sol_response():
+    return read_file('data/solana/token-list-solana.json')
+
+
+@pytest.fixture
+def token_list_jup_ag_response():
+    return read_file('data/solana/token-list-jup-ag.csv')
+
+
+@pytest.fixture
+def token_list_sonar_response():
+    return read_file('data/solana/token-list-sonar.json')
+
+
+@pytest.fixture
+def ban_list_jup_ag_response():
+    return read_file('data/solana/ban-list-jup-ag.csv')
 
 
 @pytest.fixture
