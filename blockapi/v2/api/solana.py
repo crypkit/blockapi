@@ -1,10 +1,11 @@
 import json
-from typing import Dict, Iterable, Optional
+from typing import Dict, Iterable, Optional, Set
 
 from cytoolz import reduceby
 from requests import Response
 
 from blockapi.utils.user_agent import get_random_user_agent
+from blockapi.v2.api.sonar_watch import SonarWatchSolanaApi
 from blockapi.v2.base import (
     ApiException,
     ApiOptions,
@@ -24,7 +25,14 @@ from blockapi.v2.models import (
     ParseResult,
 )
 
-TOKEN_LIST_URL = 'https://token-list-api.solana.cloud/v1/list'
+SOL_TOKEN_LIST_URL = 'https://token-list-api.solana.cloud/v1/list'
+JUP_AG_TOKEN_LIST_URL = (
+    'https://raw.githubusercontent.com/jup-ag/token-list/main/validated-tokens.csv'
+)
+JUP_AG_BAN_LIST_URL = (
+    'https://raw.githubusercontent.com/jup-ag/token-list/main/banned-tokens.csv'
+)
+SONAR_TOKEN_LIST_URL = 'https://cdn.jsdelivr.net/npm/@sonarwatch/token-lists/build/sonarwatch.solana.tokenlist.json'
 
 
 class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
@@ -48,17 +56,59 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     token_program_id = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
     token2022_program_id = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
     _tokens_map: Optional[Dict[str, Dict]] = None
+    _ban_list: Optional[Set[str]] = None
 
     @property
     def tokens_map(self) -> Dict[str, Dict]:
         if self._tokens_map is None:
-            response = self._session.get(TOKEN_LIST_URL)
-            token_list = response.json()
-            self._tokens_map = {
-                t['address']: t for t in token_list['content'] if t['chainId'] == 101
-            }
-
+            map_jup_ag = self._get_token_map_jup_ag()
+            map_solana = self._get_token_map_solana()
+            map_sonar = self._get_token_map_sonar()
+            self._tokens_map = {**map_jup_ag, **map_sonar, **map_solana}
         return self._tokens_map
+
+    def _get_token_map_solana(self) -> Dict[str, Dict]:
+        response = self._session.get(SOL_TOKEN_LIST_URL)
+        token_list = response.json()
+        return {t['address']: t for t in token_list['content'] if t['chainId'] == 101}
+
+    def _get_token_map_jup_ag(self) -> Dict[str, Dict]:
+        response = self._session.get(JUP_AG_TOKEN_LIST_URL)
+
+        csv_rows = response.text.split('\n')
+        header = csv_rows[0].split(',')
+        rows = [
+            {header[i]: v for i, v in enumerate(row.split(','))} for row in csv_rows[1:]
+        ]
+
+        return {
+            r['Mint']: {
+                'address': r['Mint'],
+                'chainId': 101,
+                'name': r['Name'],
+                'symbol': r['Symbol'],
+                'verified': True,
+                'decimals': r['Decimals'],
+                'logoURI': r['LogoURI'],
+                'tags': [],
+                'extensions': {},
+            }
+            for r in rows
+            if 'Mint' in r
+        }
+
+    def _get_token_map_sonar(self) -> Dict[str, Dict]:
+        response = self._session.get(SONAR_TOKEN_LIST_URL)
+        token_list = response.json()
+        return {t['address']: t for t in token_list['tokens'] if t['chainId'] == 101}
+
+    @property
+    def ban_list(self) -> set[str]:
+        if self._ban_list is None:
+            response = self._session.get(JUP_AG_BAN_LIST_URL)
+            ban_list = response.text.strip().split('\n')
+            self._ban_list = set(i.split(',')[0] for i in ban_list[1:])
+        return self._ban_list
 
     def fetch_balances(self, address: str) -> FetchResult:
         data = self._request(method='getBalance', params=[address])
@@ -150,6 +200,10 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         # TODO unknown token is for 99% NFT, add loading NFT metadata using metaplex
         #  token account
         if address not in self.tokens_map:
+            return
+
+        # ignore banned tokens
+        if address in self.ban_list:
             return
 
         return BalanceItem.from_api(
