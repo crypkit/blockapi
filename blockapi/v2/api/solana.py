@@ -5,7 +5,6 @@ from cytoolz import reduceby
 from requests import Response
 
 from blockapi.utils.user_agent import get_random_user_agent
-from blockapi.v2.api.sonar_watch import SonarWatchSolanaApi
 from blockapi.v2.base import (
     ApiException,
     ApiOptions,
