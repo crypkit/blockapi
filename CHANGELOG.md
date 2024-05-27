@@ -2,6 +2,25 @@
 
 
 
+## v0.44.0 (2024-05-27)
+
+### Chore
+
+* chore(deps): bump requests from 2.31.0 to 2.32.0 (#188)
+
+updated-dependencies:
+- dependency-name: requests
+  dependency-type: direct:production
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt;
+Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.github.com&gt; ([`13b1fc4`](https://github.com/crypkit/blockapi/commit/13b1fc444e6505d679b2a65bb0189c799c4da131))
+
+### Feature
+
+* feat: add stake balance for solana ([`22a1951`](https://github.com/crypkit/blockapi/commit/22a1951e8d7e5631441ebbc56721eabfd0f96989))
+
+
 ## v0.43.0 (2024-05-24)
 
 ### Feature
@@ -13,6 +32,10 @@
 * fix: fix unittests ([`dbe48ee`](https://github.com/crypkit/blockapi/commit/dbe48eebac83bed09a1679c80e0860a1601aacd1))
 
 * fix: fix imports ([`d2565e5`](https://github.com/crypkit/blockapi/commit/d2565e53aa332ed6440bd7688be1fbde0da0c701))
+
+### Unknown
+
+* 0.43.0 ([`8c6bed7`](https://github.com/crypkit/blockapi/commit/8c6bed7932ba16d39e3bac3fb211e7e11b73e55e))
 
 
 ## v0.42.3 (2024-04-25)
