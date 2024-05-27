@@ -127,7 +127,21 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
                 {'encoding': 'jsonParsed'},
             ],
         )
-        raw_staked_sol = self._request(
+        raw_staked_sol = self._fetch_staked_sol(address)
+        raw_rent_reserve = self._fetch_stake_rent_reserve(raw_staked_sol)
+
+        return FetchResult(
+            data=data,
+            extra=dict(
+                raw_token_balances=raw_token_balances,
+                raw_token2022_balances=raw_token2022_balances,
+                raw_staked_sol=raw_staked_sol,
+                raw_rent_reserve=raw_rent_reserve,
+            ),
+        )
+
+    def _fetch_staked_sol(self, address: str) -> dict:
+        return self._request(
             method='getProgramAccounts',
             params=[
                 'Stake11111111111111111111111111111111111111',
@@ -150,19 +164,19 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             ],
         )
 
-        return FetchResult(
-            data=data,
-            extra=dict(
-                raw_token_balances=raw_token_balances,
-                raw_token2022_balances=raw_token2022_balances,
-                raw_staked_sol=raw_staked_sol,
-            ),
-        )
+    def _fetch_stake_rent_reserve(self, raw_staked_sol: dict) -> list[dict]:
+        stake_accounts = [r['pubkey'] for r in raw_staked_sol['result']]
+        results = []
+        for a in stake_accounts:
+            results.append(self._request(method='getBalance', params=[a]))
+
+        return results
 
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
         raw_token_balances = fetch_result.extra['raw_token_balances']
         raw_token2022_balances = fetch_result.extra['raw_token2022_balances']
         raw_staked_sol = fetch_result.extra['raw_staked_sol']
+        raw_rent_reserve = fetch_result.extra['raw_rent_reserve']
 
         balances = []
         if sol_balance := self._get_sol_balance(fetch_result.data):
@@ -170,6 +184,10 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
         if staked_sol_balance := self._get_staked_sol_balance(raw_staked_sol):
             balances.append(staked_sol_balance)
+            rent_reserve_balance = self._get_stake_rent_reserve(
+                staked_sol_balance, raw_rent_reserve
+            )
+            balances.append(rent_reserve_balance)
 
         token_balances = list(self._yield_token_balances(raw_token_balances))
         token_balances.extend(self._yield_token_balances(raw_token2022_balances))
@@ -220,6 +238,19 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             coin=self.coin,
             asset_type=AssetType.STAKED,
             raw=response['result'],
+        )
+
+    def _get_stake_rent_reserve(
+        self, staked_sol: BalanceItem, responses: list[dict]
+    ) -> BalanceItem:
+        total_raw = sum(r['result']['value'] for r in responses)
+        available_raw = total_raw - int(staked_sol.balance_raw)
+
+        return BalanceItem.from_api(
+            balance_raw=available_raw,
+            coin=self.coin,
+            asset_type=AssetType.RENT_RESERVE,
+            raw=responses,
         )
 
     def _yield_token_balances(self, response: dict) -> Iterable[BalanceItem]:
