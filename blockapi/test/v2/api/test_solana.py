@@ -70,6 +70,7 @@ def test_use_base_url_in_post(
     solana_value_response,
     solana_response,
     staked_solana_response,
+    rent_reserve_solana_response,
     token_list_sol_response,
     token_list_jup_ag_response,
     token_list_sonar_response,
@@ -83,6 +84,7 @@ def test_use_base_url_in_post(
             solana_response,
             '{"result": {"value": []}}',
             staked_solana_response,
+            rent_reserve_solana_response,
         ]
     )
 
@@ -310,6 +312,11 @@ def solana_value_response():
 @pytest.fixture
 def staked_solana_response():
     return read_file('data/solana/staked_solana_response.json')
+
+
+@pytest.fixture
+def rent_reserve_solana_response():
+    return read_file('data/solana/rent_reserve_solana_response.json')
 
 
 @pytest.fixture

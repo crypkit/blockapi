@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "result": {
+    "context": {
+      "apiVersion": "1.17.34",
+      "slot": 268207149
+    },
+    "value": 179570097204898
+  }
+}

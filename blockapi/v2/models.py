@@ -280,6 +280,7 @@ class AssetType(str, Enum):
     NFT = 'nft'
     PENDING_TRANSACTION = 'pending_transaction'
     PRICED_VESTING = 'priced_vesting'
+    RENT_RESERVE = 'rent_reserve'
     REWARDS = 'rewards'
     STAKED = 'staked'
     UNREALIZED_AVAILABLE = 'unrealized_available'
@@ -539,7 +540,7 @@ class BalanceItem:
         balance_raw: Union[int, float, str, Decimal],
         coin: Coin,
         asset_type: AssetType = AssetType.AVAILABLE,
-        raw: Dict,
+        raw: Union[Dict, List[Dict]],
         last_updated: Optional[Union[int, str]] = None,
         protocol: Optional[Protocol] = None,
         is_wallet: bool = True,
