@@ -2,6 +2,13 @@
 
 
 
+## v0.45.1 (2024-05-29)
+
+### Fix
+
+* fix: change rent_reserve type to locked ([`df1d2be`](https://github.com/crypkit/blockapi/commit/df1d2bef5dd5d9dd08804b65518c83a57e9ec080))
+
+
 ## v0.45.0 (2024-05-29)
 
 ### Feature
@@ -11,6 +18,10 @@
 ### Fix
 
 * fix: formatting ([`e0fbb6f`](https://github.com/crypkit/blockapi/commit/e0fbb6f853415f6bdd21dd091ed2dc8917b5ea4d))
+
+### Unknown
+
+* 0.45.0 ([`56ccc47`](https://github.com/crypkit/blockapi/commit/56ccc47b1d1d6c3ea948afe92faf7091422cecf7))
 
 
 ## v0.44.0 (2024-05-27)
