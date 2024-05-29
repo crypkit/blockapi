@@ -2,6 +2,17 @@
 
 
 
+## v0.45.0 (2024-05-29)
+
+### Feature
+
+* feat: add staking rent reserve balance for solana ([`43b5702`](https://github.com/crypkit/blockapi/commit/43b5702ee538360ccedc5aa0366432a561792576))
+
+### Fix
+
+* fix: formatting ([`e0fbb6f`](https://github.com/crypkit/blockapi/commit/e0fbb6f853415f6bdd21dd091ed2dc8917b5ea4d))
+
+
 ## v0.44.0 (2024-05-27)
 
 ### Chore
@@ -19,6 +30,10 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 ### Feature
 
 * feat: add stake balance for solana ([`22a1951`](https://github.com/crypkit/blockapi/commit/22a1951e8d7e5631441ebbc56721eabfd0f96989))
+
+### Unknown
+
+* 0.44.0 ([`05c64ef`](https://github.com/crypkit/blockapi/commit/05c64efa078b0c5eb2028040d50013cf09097941))
 
 
 ## v0.43.0 (2024-05-24)
