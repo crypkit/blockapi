@@ -280,7 +280,6 @@ class AssetType(str, Enum):
     NFT = 'nft'
     PENDING_TRANSACTION = 'pending_transaction'
     PRICED_VESTING = 'priced_vesting'
-    RENT_RESERVE = 'rent_reserve'
     REWARDS = 'rewards'
     STAKED = 'staked'
     UNREALIZED_AVAILABLE = 'unrealized_available'
