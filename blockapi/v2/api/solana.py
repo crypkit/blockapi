@@ -252,7 +252,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         return BalanceItem.from_api(
             balance_raw=available_raw,
             coin=self.coin,
-            asset_type=AssetType.RENT_RESERVE,
+            asset_type=AssetType.LOCKED,
             raw=responses,
         )
 
