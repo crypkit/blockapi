@@ -113,7 +113,8 @@ class CustomizableBlockchainApi(ABC):
                         seconds = 60
 
                     logger.warning(
-                        f'Too Many Requests: Will retry after {seconds}s sleep. Remaining attempts {retries}.'
+                        f'Too Many Requests: Will retry after {seconds}s sleep.'
+                        f' Remaining attempts {retries}.'
                     )
                     self.sleep_provider.sleep(self.base_url, seconds=seconds)
                     continue

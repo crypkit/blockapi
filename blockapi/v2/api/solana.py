@@ -31,7 +31,10 @@ JUP_AG_TOKEN_LIST_URL = (
 JUP_AG_BAN_LIST_URL = (
     'https://raw.githubusercontent.com/jup-ag/token-list/main/banned-tokens.csv'
 )
-SONAR_TOKEN_LIST_URL = 'https://cdn.jsdelivr.net/npm/@sonarwatch/token-lists/build/sonarwatch.solana.tokenlist.json'
+SONAR_TOKEN_LIST_URL = (
+    'https://cdn.jsdelivr.net/npm/@sonarwatch'
+    '/token-lists/build/sonarwatch.solana.tokenlist.json'
+)
 
 
 class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
