@@ -2,11 +2,22 @@
 
 
 
+## v0.45.2 (2024-05-30)
+
+### Fix
+
+* fix: Update list of known blockchains (#193) ([`4dc23a0`](https://github.com/crypkit/blockapi/commit/4dc23a0b5fa8c4bbd9e09c2e67ca5ddce8dd4c9a))
+
+
 ## v0.45.1 (2024-05-29)
 
 ### Fix
 
 * fix: change rent_reserve type to locked ([`df1d2be`](https://github.com/crypkit/blockapi/commit/df1d2bef5dd5d9dd08804b65518c83a57e9ec080))
+
+### Unknown
+
+* 0.45.1 ([`b341baf`](https://github.com/crypkit/blockapi/commit/b341baf76adfb1ec801579b1ea6c25a971330705))
 
 
 ## v0.45.0 (2024-05-29)
