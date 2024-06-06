@@ -2,11 +2,22 @@
 
 
 
+## v0.45.3 (2024-06-06)
+
+### Fix
+
+* fix: Update known blockchains (#194) ([`b163e19`](https://github.com/crypkit/blockapi/commit/b163e197eea820a24c9cafd3d5aa9ae1cc5cc527))
+
+
 ## v0.45.2 (2024-05-30)
 
 ### Fix
 
 * fix: Update list of known blockchains (#193) ([`4dc23a0`](https://github.com/crypkit/blockapi/commit/4dc23a0b5fa8c4bbd9e09c2e67ca5ddce8dd4c9a))
+
+### Unknown
+
+* 0.45.2 ([`912c5f6`](https://github.com/crypkit/blockapi/commit/912c5f632dd7f39dd7ece8b2dfe872ae83e37d16))
 
 
 ## v0.45.1 (2024-05-29)
