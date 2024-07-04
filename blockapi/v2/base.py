@@ -104,6 +104,7 @@ class CustomizableBlockchainApi(ABC):
                         time=time,
                     )
 
+                logger.error(f"Request failed with error: {response.status_code}")
                 if response.status_code == 429 and self.sleep_provider and retries > 0:
                     retries -= 1
                     delay = response.headers.get('retry-after', '60')
@@ -128,6 +129,7 @@ class CustomizableBlockchainApi(ABC):
                 time=time,
             )
         except Exception as ex:
+            logger.exception(ex)
             return FetchResult(
                 status_code=0,
                 headers=dict(),
