@@ -1,6 +1,16 @@
 # CHANGELOG
 
+## v0.46.0 (2024-07-04)
 
+### Feature
+
+* feat: added logging to &#39;get_data&#39; method to investigate SOL fetching errors ([`23cb3a0`](https://github.com/crypkit/blockapi/commit/23cb3a04d6b5eb1314f0517e0d4c55fb0f114e08))
+
+### Unknown
+
+* Merge pull request #195 from crypkit/1813-sol-fetch-error-connectionreseterror-connection-reset-by-peer
+
+feat: added logging to &#39;get_data&#39; method to investigate SOL fetching errors ([`334bc4d`](https://github.com/crypkit/blockapi/commit/334bc4d6e4f06165f6f7cb511328f7eb23f206ff))
 
 ## v0.45.3 (2024-06-06)
 
@@ -8,6 +18,9 @@
 
 * fix: Update known blockchains (#194) ([`b163e19`](https://github.com/crypkit/blockapi/commit/b163e197eea820a24c9cafd3d5aa9ae1cc5cc527))
 
+### Unknown
+
+* 0.45.3 ([`bbf8497`](https://github.com/crypkit/blockapi/commit/bbf8497c0f23931e3c49bb32ae2a4aa6fe06a2fe))
 
 ## v0.45.2 (2024-05-30)
 
@@ -19,7 +32,6 @@
 
 * 0.45.2 ([`912c5f6`](https://github.com/crypkit/blockapi/commit/912c5f632dd7f39dd7ece8b2dfe872ae83e37d16))
 
-
 ## v0.45.1 (2024-05-29)
 
 ### Fix
@@ -29,7 +41,6 @@
 ### Unknown
 
 * 0.45.1 ([`b341baf`](https://github.com/crypkit/blockapi/commit/b341baf76adfb1ec801579b1ea6c25a971330705))
-
 
 ## v0.45.0 (2024-05-29)
 
@@ -44,7 +55,6 @@
 ### Unknown
 
 * 0.45.0 ([`56ccc47`](https://github.com/crypkit/blockapi/commit/56ccc47b1d1d6c3ea948afe92faf7091422cecf7))
-
 
 ## v0.44.0 (2024-05-27)
 
@@ -68,7 +78,6 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 
 * 0.44.0 ([`05c64ef`](https://github.com/crypkit/blockapi/commit/05c64efa078b0c5eb2028040d50013cf09097941))
 
-
 ## v0.43.0 (2024-05-24)
 
 ### Feature
@@ -85,7 +94,6 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 
 * 0.43.0 ([`8c6bed7`](https://github.com/crypkit/blockapi/commit/8c6bed7932ba16d39e3bac3fb211e7e11b73e55e))
 
-
 ## v0.42.3 (2024-04-25)
 
 ### Fix
@@ -95,7 +103,6 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 ### Unknown
 
 * 0.42.3 ([`4e7c250`](https://github.com/crypkit/blockapi/commit/4e7c25008cc631e625278274c687aac39d70e2aa))
-
 
 ## v0.42.2 (2024-03-20)
 
@@ -107,7 +114,6 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 
 * 0.42.2 ([`2841c6b`](https://github.com/crypkit/blockapi/commit/2841c6b8b61c2e08f083d672e6ba068a222ba4b8))
 
-
 ## v0.42.1 (2024-03-19)
 
 ### Fix
@@ -118,7 +124,6 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 
 * 0.42.1 ([`9557402`](https://github.com/crypkit/blockapi/commit/955740247983fb10ed7886593d4293ee8f422317))
 
-
 ## v0.42.0 (2024-03-15)
 
 ### Feature
@@ -128,7 +133,6 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 ### Unknown
 
 * 0.42.0 ([`caea7e0`](https://github.com/crypkit/blockapi/commit/caea7e0bc4e0ea95f5f1419772f4f9bf169112e2))
-
 
 ## v0.41.0 (2024-03-12)
 
@@ -144,7 +148,6 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 
 feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.com/crypkit/blockapi/commit/58db71db7f6707aef69f5b4e52d0781e25c576c0))
 
-
 ## v0.40.8 (2024-03-07)
 
 ### Fix
@@ -154,7 +157,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 ### Unknown
 
 * 0.40.8 ([`7f323cf`](https://github.com/crypkit/blockapi/commit/7f323cfb207f349b3a09812246d44521df5c6f27))
-
 
 ## v0.40.7 (2024-03-06)
 
@@ -166,7 +168,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.40.7 ([`d702dd7`](https://github.com/crypkit/blockapi/commit/d702dd7ee5806e51706ba4d1bc39d697ea0ba58b))
 
-
 ## v0.40.6 (2024-03-06)
 
 ### Fix
@@ -176,7 +177,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 ### Unknown
 
 * 0.40.6 ([`5d05f84`](https://github.com/crypkit/blockapi/commit/5d05f843e88792f698997eb36577da96c322d6a2))
-
 
 ## v0.40.5 (2024-02-29)
 
@@ -188,7 +188,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.40.5 ([`9440a4a`](https://github.com/crypkit/blockapi/commit/9440a4a19bc6e0dadda04552ced3f76a0f38869a))
 
-
 ## v0.40.4 (2024-02-29)
 
 ### Fix
@@ -198,7 +197,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 ### Unknown
 
 * 0.40.4 ([`ae56d44`](https://github.com/crypkit/blockapi/commit/ae56d444f845302adb177a3147d16e8c6c7b185e))
-
 
 ## v0.40.3 (2024-02-29)
 
@@ -210,7 +208,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.40.3 ([`ec8062b`](https://github.com/crypkit/blockapi/commit/ec8062bcd37612e98e9cca42389771e6c6630606))
 
-
 ## v0.40.2 (2024-02-28)
 
 ### Fix
@@ -220,7 +217,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 ### Unknown
 
 * 0.40.2 ([`9463a11`](https://github.com/crypkit/blockapi/commit/9463a1158adf73467388ea6421493cfcd02fcb39))
-
 
 ## v0.40.1 (2024-02-28)
 
@@ -232,7 +228,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.40.1 ([`2872276`](https://github.com/crypkit/blockapi/commit/2872276333c053d4196f9f9a077231282f72f76e))
 
-
 ## v0.40.0 (2024-02-27)
 
 ### Feature
@@ -242,7 +237,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 ### Unknown
 
 * 0.40.0 ([`2f853b4`](https://github.com/crypkit/blockapi/commit/2f853b4d8d74c7299a7636aa45d35bdaa570e637))
-
 
 ## v0.39.0 (2024-02-22)
 
@@ -254,7 +248,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.39.0 ([`a96a577`](https://github.com/crypkit/blockapi/commit/a96a577264a20f1dc16c50289fe6d57ab9943501))
 
-
 ## v0.38.0 (2024-02-20)
 
 ### Feature
@@ -264,7 +257,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 ### Unknown
 
 * 0.38.0 ([`209e85f`](https://github.com/crypkit/blockapi/commit/209e85fcd4a60e38898ffcc60d95a7326a043eec))
-
 
 ## v0.37.5 (2024-02-19)
 
@@ -276,7 +268,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.37.5 ([`3ee9d65`](https://github.com/crypkit/blockapi/commit/3ee9d6527206490fdc6cee063d84e4d332810b34))
 
-
 ## v0.37.4 (2024-02-16)
 
 ### Fix
@@ -286,7 +277,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 ### Unknown
 
 * 0.37.4 ([`284da35`](https://github.com/crypkit/blockapi/commit/284da350ce1ec29f88c5b2c00fe04b95b2a90927))
-
 
 ## v0.37.3 (2024-02-16)
 
@@ -298,7 +288,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.37.3 ([`aa89d1f`](https://github.com/crypkit/blockapi/commit/aa89d1f987ae71fa792e8377aae5574897a15f42))
 
-
 ## v0.37.2 (2024-02-14)
 
 ### Fix
@@ -308,7 +297,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 ### Unknown
 
 * 0.37.2 ([`9016756`](https://github.com/crypkit/blockapi/commit/9016756c43f87320fcdd4e238745a9719a82c99b))
-
 
 ## v0.37.1 (2024-02-12)
 
@@ -320,7 +308,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.37.1 ([`9b11f63`](https://github.com/crypkit/blockapi/commit/9b11f636079211591e8c54eedc69371dec6e4306))
 
-
 ## v0.37.0 (2024-02-10)
 
 ### Feature
@@ -330,7 +317,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 ### Unknown
 
 * 0.37.0 ([`c877cf1`](https://github.com/crypkit/blockapi/commit/c877cf1bcd34e78a428fdb996f4a704579df7c45))
-
 
 ## v0.36.0 (2024-02-07)
 
@@ -346,7 +332,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.36.0 ([`092a3c6`](https://github.com/crypkit/blockapi/commit/092a3c6f74bf0c5933ed794cf896096551ca9442))
 
-
 ## v0.35.1 (2024-01-23)
 
 ### Fix
@@ -360,7 +345,6 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 * Merge pull request #164 from crypkit/fix-osmosis-decimals
 
 fix: ocmosis: fix Osmosis decimals ([`1d2087d`](https://github.com/crypkit/blockapi/commit/1d2087d24feb4410c1b1f90dc7707542115b6af3))
-
 
 ## v0.35.0 (2024-01-19)
 
@@ -388,7 +372,6 @@ fix: ocmosis: fix Osmosis decimals ([`1d2087d`](https://github.com/crypkit/block
 
 feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://github.com/crypkit/blockapi/commit/4b84688438cc18d1b9f271455c920b946d000209))
 
-
 ## v0.34.0 (2024-01-16)
 
 ### Feature
@@ -398,7 +381,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 ### Unknown
 
 * 0.34.0 ([`e85c06d`](https://github.com/crypkit/blockapi/commit/e85c06daa4aff71805c0c89f6776cac95e3989bb))
-
 
 ## v0.33.0 (2024-01-11)
 
@@ -410,7 +392,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.33.0 ([`29bea19`](https://github.com/crypkit/blockapi/commit/29bea197f27b6b727360665154f6694207f42be5))
 
-
 ## v0.32.0 (2023-12-13)
 
 ### Feature
@@ -420,7 +401,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 ### Unknown
 
 * 0.32.0 ([`8ac6fb1`](https://github.com/crypkit/blockapi/commit/8ac6fb14c54da406b3fbfbb74166c3f10f024e61))
-
 
 ## v0.31.3 (2023-12-08)
 
@@ -432,7 +412,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.31.3 ([`409c897`](https://github.com/crypkit/blockapi/commit/409c8977536d4669f6e7f2f95b24ae7526e29070))
 
-
 ## v0.31.2 (2023-12-08)
 
 ### Fix
@@ -442,7 +421,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 ### Unknown
 
 * 0.31.2 ([`de9844a`](https://github.com/crypkit/blockapi/commit/de9844a18b551b6fc3e8ea6710da6f32d312b76d))
-
 
 ## v0.31.1 (2023-12-08)
 
@@ -454,7 +432,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.31.1 ([`571c1d5`](https://github.com/crypkit/blockapi/commit/571c1d56d1ef74dcdac0088bae0cc3b3c1936851))
 
-
 ## v0.31.0 (2023-12-04)
 
 ### Feature
@@ -464,7 +441,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 ### Unknown
 
 * 0.31.0 ([`880a5e5`](https://github.com/crypkit/blockapi/commit/880a5e5768372f5d1d97916e6779934d43bb2053))
-
 
 ## v0.30.5 (2023-11-29)
 
@@ -476,7 +452,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.30.5 ([`da76328`](https://github.com/crypkit/blockapi/commit/da7632861fa808e56ac6ffb654cbe190ecf85668))
 
-
 ## v0.30.4 (2023-11-22)
 
 ### Fix
@@ -486,7 +461,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 ### Unknown
 
 * 0.30.4 ([`b3a3602`](https://github.com/crypkit/blockapi/commit/b3a3602bf6997299e3a04cd5046022df4bca360a))
-
 
 ## v0.30.3 (2023-11-14)
 
@@ -498,7 +472,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.30.3 ([`5ba4260`](https://github.com/crypkit/blockapi/commit/5ba426036cbd3d13b4d6707322fc1cae2ccafc28))
 
-
 ## v0.30.2 (2023-11-14)
 
 ### Fix
@@ -508,7 +481,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 ### Unknown
 
 * 0.30.2 ([`fea80a1`](https://github.com/crypkit/blockapi/commit/fea80a14a4f1839a0db073a89868cb7c44c683d6))
-
 
 ## v0.30.1 (2023-11-10)
 
@@ -520,7 +492,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.30.1 ([`48406fc`](https://github.com/crypkit/blockapi/commit/48406fc3ef20ac6a753b4ba9c17c90d91efcccb0))
 
-
 ## v0.30.0 (2023-11-09)
 
 ### Feature
@@ -530,7 +501,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 ### Unknown
 
 * 0.30.0 ([`ecc9fdf`](https://github.com/crypkit/blockapi/commit/ecc9fdf3c8bdf25145b5dd8e71b79804fc1417d4))
-
 
 ## v0.29.1 (2023-10-27)
 
@@ -542,7 +512,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.29.1 ([`6c25146`](https://github.com/crypkit/blockapi/commit/6c25146c665979f78519d0585fa3c2c2c1a5d5c2))
 
-
 ## v0.29.0 (2023-10-25)
 
 ### Feature
@@ -552,7 +521,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 ### Unknown
 
 * 0.29.0 ([`fb31f0d`](https://github.com/crypkit/blockapi/commit/fb31f0d99d6f5f61f2960bce3b109a238191eac7))
-
 
 ## v0.28.0 (2023-10-20)
 
@@ -564,7 +532,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.28.0 ([`8d9eee7`](https://github.com/crypkit/blockapi/commit/8d9eee7666ee91e9c5aca14f6f93e4a635ef142d))
 
-
 ## v0.27.2 (2023-09-29)
 
 ### Fix
@@ -574,7 +541,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 ### Unknown
 
 * 0.27.2 ([`739f5d6`](https://github.com/crypkit/blockapi/commit/739f5d673843120bee6765865193eaa8a63f970a))
-
 
 ## v0.27.1 (2023-09-13)
 
@@ -590,7 +556,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.27.1 ([`327566a`](https://github.com/crypkit/blockapi/commit/327566a30dec97a276c7dc0bf20e2c7feb062600))
 
-
 ## v0.27.0 (2023-09-11)
 
 ### Feature
@@ -601,7 +566,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.27.0 ([`aa0fa11`](https://github.com/crypkit/blockapi/commit/aa0fa116ad59104f9a7984bf8c105f4362563396))
 
-
 ## v0.26.3 (2023-09-01)
 
 ### Fix
@@ -611,7 +575,6 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 ### Unknown
 
 * 0.26.3 ([`eaa9b81`](https://github.com/crypkit/blockapi/commit/eaa9b81b826471fa1c7748c42162e46ad55183d4))
-
 
 ## v0.26.2 (2023-09-01)
 
@@ -641,7 +604,6 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 
 * 0.26.2 ([`c9f7486`](https://github.com/crypkit/blockapi/commit/c9f748606d7902cb968ab93541e5ad36b13a5aa2))
 
-
 ## v0.26.1 (2023-08-30)
 
 ### Fix
@@ -654,7 +616,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * 0.26.1 ([`fc504a8`](https://github.com/crypkit/blockapi/commit/fc504a8e4e2d77254a143bc1262a0108acaa2c71))
 
-
 ## v0.26.0 (2023-08-23)
 
 ### Feature
@@ -664,7 +625,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 ### Unknown
 
 * 0.26.0 ([`9259aff`](https://github.com/crypkit/blockapi/commit/9259aff2684b156e0f14122d5946a93de35c3d97))
-
 
 ## v0.25.0 (2023-08-17)
 
@@ -676,7 +636,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * 0.25.0 ([`cfe2c3a`](https://github.com/crypkit/blockapi/commit/cfe2c3a8b8484bbe1ddafed753ccf13a4a59114a))
 
-
 ## v0.24.2 (2023-07-31)
 
 ### Fix
@@ -686,7 +645,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 ### Unknown
 
 * 0.24.2 ([`999314e`](https://github.com/crypkit/blockapi/commit/999314e0ac50d7c3ce2669fdfe46f68ebc8968fa))
-
 
 ## v0.24.1 (2023-07-28)
 
@@ -704,7 +662,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * 0.24.1 ([`f9f66ed`](https://github.com/crypkit/blockapi/commit/f9f66eddf3a4f132579cecc5d3bd3f407d978e77))
 
-
 ## v0.24.0 (2023-07-28)
 
 ### Chore
@@ -715,7 +672,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * feat(debank): Add PoolInfo (#132) ([`589026c`](https://github.com/crypkit/blockapi/commit/589026cb005c70ec629fd68343defd9e67c8f6e6))
 
-
 ## v0.23.0 (2023-07-14)
 
 ### Feature
@@ -725,7 +681,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 ### Unknown
 
 * Update to v0.23.0 ([`c7ee54b`](https://github.com/crypkit/blockapi/commit/c7ee54b32844cf51c9e4d5b23e024fec637978b9))
-
 
 ## v0.22.0 (2023-07-13)
 
@@ -741,7 +696,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.22.0 ([`258284f`](https://github.com/crypkit/blockapi/commit/258284f0650aef1eec07d33fdbdb9d3be99716c9))
 
-
 ## v0.21.3 (2023-05-31)
 
 ### Fix
@@ -754,7 +708,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * tests(BTC, LTC): Compare data from different sources (#125) ([`0c19e6f`](https://github.com/crypkit/blockapi/commit/0c19e6f7a3d5798a84966e693285379fde01d8ca))
 
-
 ## v0.21.2 (2023-05-22)
 
 ### Fix
@@ -765,7 +718,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.21.2 ([`10ea10d`](https://github.com/crypkit/blockapi/commit/10ea10d7a2de9a1d733022e90c54329692f17a75))
 
-
 ## v0.21.1 (2023-05-16)
 
 ### Fix
@@ -775,7 +727,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 ### Unknown
 
 * Update to v0.21.1 ([`488a894`](https://github.com/crypkit/blockapi/commit/488a89474d3a58f46360c71de83f564260df991e))
-
 
 ## v0.21.0 (2023-05-16)
 
@@ -791,7 +742,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.21.0 ([`da2bc85`](https://github.com/crypkit/blockapi/commit/da2bc85aefbde2ff71254eb60b7c95aa0eac4fd0))
 
-
 ## v0.20.0 (2023-04-24)
 
 ### Feature
@@ -801,7 +751,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 ### Unknown
 
 * Update to v0.20.0 ([`da54767`](https://github.com/crypkit/blockapi/commit/da54767ffe9176d5acbf696f78fa9eed6ec4111e))
-
 
 ## v0.19.4 (2023-04-20)
 
@@ -813,7 +762,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.19.4 ([`be4ea1c`](https://github.com/crypkit/blockapi/commit/be4ea1c517c2249e32044d18221f6cca718ee5b6))
 
-
 ## v0.19.3 (2023-04-14)
 
 ### Fix
@@ -823,7 +771,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 ### Unknown
 
 * Update to v0.19.3 ([`e5acbdb`](https://github.com/crypkit/blockapi/commit/e5acbdbab527f4cfde567c4eefd6c1a5a2a47aec))
-
 
 ## v0.19.2 (2023-04-14)
 
@@ -835,7 +782,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.19.2 ([`4850f84`](https://github.com/crypkit/blockapi/commit/4850f841c2c85282c7266607d39ab4453e1e8343))
 
-
 ## v0.19.1 (2023-04-13)
 
 ### Fix
@@ -846,7 +792,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.19.1 ([`aded908`](https://github.com/crypkit/blockapi/commit/aded9088f42737d32256b1d37c43efa6478b139f))
 
-
 ## v0.19.0 (2023-04-13)
 
 ### Feature
@@ -856,7 +801,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 ### Unknown
 
 * Update to v0.19.0 ([`c8f5c15`](https://github.com/crypkit/blockapi/commit/c8f5c157060a5885c0151a6f7627bffe33ae567d))
-
 
 ## v0.18.0 (2023-04-04)
 
@@ -872,7 +816,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/crypkit/blockapi/commit/10b750db6af2063d6df9d763ade90a4a47187792))
 
-
 ## v0.17.1 (2023-03-23)
 
 ### Fix
@@ -882,7 +825,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.17.1 ([`fee22d9`](https://github.com/crypkit/blockapi/commit/fee22d906b097a67bac11a99aac3905ba5e73d67))
-
 
 ## v0.17.0 (2023-03-21)
 
@@ -898,7 +840,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.17.0 ([`5c1887d`](https://github.com/crypkit/blockapi/commit/5c1887d6b79d737b0b04dc31cc718e04db9ca26a))
 
-
 ## v0.16.1 (2023-03-21)
 
 ### Fix
@@ -908,7 +849,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.16.1 ([`5e5401f`](https://github.com/crypkit/blockapi/commit/5e5401ff2b5fc4b86aa5a04264ee3ec933491da8))
-
 
 ## v0.16.0 (2023-03-08)
 
@@ -920,7 +860,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.16.0 ([`7959311`](https://github.com/crypkit/blockapi/commit/7959311cc0ea37cb6374c392309ed05b595ee5e8))
 
-
 ## v0.15.5 (2023-03-03)
 
 ### Fix
@@ -930,7 +869,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.15.5 ([`e766359`](https://github.com/crypkit/blockapi/commit/e76635935529f42ba3316f680cd0b95658c9676b))
-
 
 ## v0.15.4 (2023-02-22)
 
@@ -942,7 +880,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.15.4 ([`321dc5b`](https://github.com/crypkit/blockapi/commit/321dc5b186991c6707d7b1bfe5a8a33e31f8bbee))
 
-
 ## v0.15.3 (2023-02-15)
 
 ### Fix
@@ -952,7 +889,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.15.3 ([`4eadfc0`](https://github.com/crypkit/blockapi/commit/4eadfc01875b217578565fbfbdbba8a0bb7a2026))
-
 
 ## v0.15.2 (2023-02-13)
 
@@ -964,7 +900,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.15.2 ([`21cf507`](https://github.com/crypkit/blockapi/commit/21cf5073fc1f17c1cc4373093f71107d3403085f))
 
-
 ## v0.15.1 (2023-02-13)
 
 ### Fix
@@ -974,7 +909,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.15.1 ([`e130185`](https://github.com/crypkit/blockapi/commit/e1301858cebb45f8197c400e4b4e64d47fb6dc8e))
-
 
 ## v0.15.0 (2023-02-13)
 
@@ -986,7 +920,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.15.0 ([`6748666`](https://github.com/crypkit/blockapi/commit/67486661c71dd7560cef842f02bdd990c5fa2543))
 
-
 ## v0.14.10 (2023-02-10)
 
 ### Fix
@@ -997,7 +930,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.10 ([`666d38d`](https://github.com/crypkit/blockapi/commit/666d38d3b1ef1b2f9106ee008235a12d15ba752f))
 
-
 ## v0.14.9 (2023-02-10)
 
 ### Fix
@@ -1007,7 +939,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.14.9 ([`caabe42`](https://github.com/crypkit/blockapi/commit/caabe42aae2703e8a7d8a83f7f7ce72d28386755))
-
 
 ## v0.14.8 (2023-02-10)
 
@@ -1037,7 +968,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.8 ([`01f8b1c`](https://github.com/crypkit/blockapi/commit/01f8b1c3141d845b5c344a0b11903059709a6d46))
 
-
 ## v0.14.7 (2023-02-09)
 
 ### Chore
@@ -1052,7 +982,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.7 ([`b04fe40`](https://github.com/crypkit/blockapi/commit/b04fe4077036c1558449751cdbe56c01adea51b2))
 
-
 ## v0.14.6 (2023-01-31)
 
 ### Fix
@@ -1065,7 +994,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.6 ([`042683c`](https://github.com/crypkit/blockapi/commit/042683c173725eec5573cd9bdc029eec147b99c0))
 
-
 ## v0.14.5 (2023-01-11)
 
 ### Fix
@@ -1075,7 +1003,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.14.5 ([`ee010d8`](https://github.com/crypkit/blockapi/commit/ee010d85a43d67308db054c31dd3929c70f857ab))
-
 
 ## v0.14.4 (2023-01-10)
 
@@ -1087,7 +1014,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.4 ([`3f3a61c`](https://github.com/crypkit/blockapi/commit/3f3a61ce309f75582e79c8be52fcb5fbbf7b3533))
 
-
 ## v0.14.3 (2022-12-20)
 
 ### Fix
@@ -1097,7 +1023,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.14.3 ([`188c697`](https://github.com/crypkit/blockapi/commit/188c697cdd5e205a4b8773cdd8f9c83b9f4dab9e))
-
 
 ## v0.14.2 (2022-12-16)
 
@@ -1113,7 +1038,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.2 ([`524c469`](https://github.com/crypkit/blockapi/commit/524c46953d784fbf66b48e3e46f462b9190adc34))
 
-
 ## v0.14.1 (2022-12-15)
 
 ### Fix
@@ -1124,7 +1048,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.1 ([`c633b6d`](https://github.com/crypkit/blockapi/commit/c633b6d77dd88c8ae50f61cbe4e9e7725cd0602e))
 
-
 ## v0.14.0 (2022-12-15)
 
 ### Feature
@@ -1134,7 +1057,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.14.0 ([`f091429`](https://github.com/crypkit/blockapi/commit/f091429a0048d1288de016d4f450db787749382f))
-
 
 ## v0.13.0 (2022-12-15)
 
@@ -1150,7 +1072,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.13.0 ([`da7e6e9`](https://github.com/crypkit/blockapi/commit/da7e6e9ac5cd55c5dca274c54c497527b38eb6df))
 
-
 ## v0.12.0 (2022-12-07)
 
 ### Feature
@@ -1160,7 +1081,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.12.0 ([`5e3672d`](https://github.com/crypkit/blockapi/commit/5e3672d67d19977aa1a332e2ad3b598b0e8087d4))
-
 
 ## v0.11.0 (2022-12-07)
 
@@ -1172,7 +1092,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.11.0 ([`f631164`](https://github.com/crypkit/blockapi/commit/f6311641f0acae8524da2b94d5df935092ecb440))
 
-
 ## v0.10.0 (2022-12-01)
 
 ### Feature
@@ -1182,7 +1101,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.10.0 ([`4bb6618`](https://github.com/crypkit/blockapi/commit/4bb6618f6e8196a13fdba1cc8b1bbd8451a8319b))
-
 
 ## v0.9.0 (2022-11-30)
 
@@ -1194,7 +1112,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.9.0 ([`6a43a85`](https://github.com/crypkit/blockapi/commit/6a43a854646521ba191add5aa8d973ad349f4606))
 
-
 ## v0.8.1 (2022-11-30)
 
 ### Fix
@@ -1205,7 +1122,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.8.1 ([`f245d09`](https://github.com/crypkit/blockapi/commit/f245d0969a54ac3195d7d2cea81c0bc98cac725b))
 
-
 ## v0.8.0 (2022-11-29)
 
 ### Feature
@@ -1215,7 +1131,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.8.0 ([`51ea51e`](https://github.com/crypkit/blockapi/commit/51ea51e53138f76725fc48fe3ea5bdcb3e1ee3f4))
-
 
 ## v0.7.0 (2022-11-16)
 
@@ -1233,7 +1148,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.7.0 ([`b0fd720`](https://github.com/crypkit/blockapi/commit/b0fd720130d3d09050d34d55338462c79300aebd))
 
-
 ## v0.6.0 (2022-11-08)
 
 ### Feature
@@ -1243,7 +1157,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.6.0 ([`0b87934`](https://github.com/crypkit/blockapi/commit/0b879349db9c64b7c820f53ae63af54733c20d96))
-
 
 ## v0.5.0 (2022-11-01)
 
@@ -1255,7 +1168,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.5.0 ([`928ef75`](https://github.com/crypkit/blockapi/commit/928ef75fc3f4be6f005cb0f90673249f6b4142a0))
 
-
 ## v0.4.2 (2022-10-26)
 
 ### Fix
@@ -1265,7 +1177,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.4.2 ([`1a44a4b`](https://github.com/crypkit/blockapi/commit/1a44a4be0b0585db85187f93f95550c30ff3813e))
-
 
 ## v0.4.1 (2022-10-26)
 
@@ -1280,7 +1191,6 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 ### Unknown
 
 * Update to v0.4.1 ([`3dc1493`](https://github.com/crypkit/blockapi/commit/3dc149318bec9958501a4cca8c5b5edefd5b1388))
-
 
 ## v0.4.0 (2022-10-11)
 
@@ -1300,7 +1210,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`5db6ba5`](https:/
 
 * Update to v0.4.0 ([`2d75d4d`](https://github.com/crypkit/blockapi/commit/2d75d4db4765d9cfc3d24813eec895e19af5b367))
 
-
 ## v0.3.0 (2022-10-07)
 
 ### Feature
@@ -1319,7 +1228,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`5db6ba5`](https:/
 
 * Use correct version of pypi publish and create changelog (#71) ([`7c07a33`](https://github.com/crypkit/blockapi/commit/7c07a33b70cd5073a261de6e2d1460194bfe01d2))
 
-
 ## v0.2.0 (2022-10-06)
 
 ### Feature
@@ -1333,7 +1241,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`5db6ba5`](https:/
 * Fixes for CI (#70) ([`9569bfc`](https://github.com/crypkit/blockapi/commit/9569bfc351da106c579d877ee32731614cda562a))
 
 * Enable version upgrading and releasing to pypi (#69) ([`43c36c2`](https://github.com/crypkit/blockapi/commit/43c36c2801a405caa80e8a7d358e0c3cfcf6dfd0))
-
 
 ## v0.1.23 (2022-09-23)
 
