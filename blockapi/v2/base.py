@@ -90,52 +90,76 @@ class CustomizableBlockchainApi(ABC):
         extra: Optional[dict] = None,
         **req_args,
     ) -> FetchResult:
-        try:
-            retries = self.max_rate_limit_retries
-            while True:
+        retries = self.max_rate_limit_retries
+        while True:
+            try:
                 response = self._get_response(request_method, headers, params, req_args)
-                time = self._get_response_time(response.headers)
-                if response.status_code == 200:
+                response.raise_for_status()
+            except ConnectionError as connection_error:
+                sleep_seconds = 10
+                logger.error(
+                    f'Exception {connection_error} occurred, will try again in {sleep_seconds}'
+                )
+
+                retries -= 1
+
+                if retries <= 0 or not self.sleep_provider:
+                    return FetchResult(
+                        status_code=1,
+                        errors=[str(connection_error)],
+                        time=datetime.utcnow(),
+                    )
+
+                self.sleep_provider.sleep(self.base_url, seconds=sleep_seconds)
+                continue
+            except HTTPError:
+                logger.error(f"Request failed with http error: {response.status_code}")
+
+                retries -= 1
+
+                if (
+                    retries <= 0
+                    or (response.status_code < 500 and response.status_code != 429)
+                    or not self.sleep_provider
+                ):
+                    time = self._get_response_time(response.headers)
                     return FetchResult(
                         status_code=response.status_code,
                         headers=self._get_headers_dict(response.headers),
-                        data=response.json(**self.json_parse_args),
+                        errors=[self._get_reason(response)],
                         extra=extra,
                         time=time,
                     )
 
-                logger.error(f"Request failed with error: {response.status_code}")
-                if response.status_code == 429 and self.sleep_provider and retries > 0:
-                    retries -= 1
-                    delay = response.headers.get('retry-after', '60')
-                    try:
-                        seconds = int(delay)
-                    except ValueError:
-                        seconds = 60
+                delay = response.headers.get('retry-after', '60')
+                try:
+                    seconds = int(delay)
+                except ValueError:
+                    seconds = 60
 
-                    logger.warning(
-                        f'Too Many Requests: Will retry after {seconds}s sleep.'
-                        f' Remaining attempts {retries}.'
-                    )
-                    self.sleep_provider.sleep(self.base_url, seconds=seconds)
-                    continue
+                logger.warning(
+                    f'Too Many Requests: Will retry after {seconds}s sleep.'
+                    f' Remaining attempts {retries}.'
+                )
+                self.sleep_provider.sleep(self.base_url, seconds=seconds)
+                continue
+            except Exception as ex:
+                logger.exception(ex)
+                return FetchResult(
+                    status_code=2,
+                    headers=dict(),
+                    errors=[f'{type(ex).__name__}: {str(ex)}'],
+                    extra=extra,
+                    time=datetime.utcnow(),
+                )
 
-                break
+            time = self._get_response_time(response.headers)
             return FetchResult(
                 status_code=response.status_code,
                 headers=self._get_headers_dict(response.headers),
-                errors=[self._get_reason(response)],
+                data=response.json(**self.json_parse_args),
                 extra=extra,
                 time=time,
-            )
-        except Exception as ex:
-            logger.exception(ex)
-            return FetchResult(
-                status_code=0,
-                headers=dict(),
-                errors=[f'{type(ex).__name__}: {str(ex)}'],
-                extra=extra,
-                time=datetime.utcnow(),
             )
 
     def _get_response(self, request_method, headers, params, req_args):
