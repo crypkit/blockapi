@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v0.47.0 (2024-07-09)
+
+### Feature
+
+* feat: handle ConnectionError in CustomizableBlockchainApi.get_data ([`3db6e22`](https://github.com/crypkit/blockapi/commit/3db6e22b359ec0b239036688e65ba8c7c484a028))
+
+### Unknown
+
+* Merge pull request #196 from crypkit/1813-sol-fetch-error-connectionreseterror
+
+feat: handle ConnectionError in CustomizableBlockchainApi.get_data ([`57f27fc`](https://github.com/crypkit/blockapi/commit/57f27fc6f66c66f72fb8f41bae1c3d54bbaa153f))
+
 ## v0.46.0 (2024-07-04)
 
 ### Feature
@@ -7,6 +19,8 @@
 * feat: added logging to &#39;get_data&#39; method to investigate SOL fetching errors ([`23cb3a0`](https://github.com/crypkit/blockapi/commit/23cb3a04d6b5eb1314f0517e0d4c55fb0f114e08))
 
 ### Unknown
+
+* 0.46.0 ([`044dc5e`](https://github.com/crypkit/blockapi/commit/044dc5efa76d92414265e1911eddc56b8b3d8feb))
 
 * Merge pull request #195 from crypkit/1813-sol-fetch-error-connectionreseterror-connection-reset-by-peer
 
@@ -1374,8 +1388,6 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`5db6ba5`](https:/
 
 * feat(release): new release ([`a207bd9`](https://github.com/crypkit/blockapi/commit/a207bd9a152da85150f44def89714378fb1dc66b))
 
-* feat(release): new release ([`3d86d60`](https://github.com/crypkit/blockapi/commit/3d86d60bdce0fa1dc6f926e38b453f605650cbc1))
-
 * feat(api + test): (#19)
 
 - on_failure_return_none removed
@@ -1391,6 +1403,8 @@ all providers and not all subclasses were tested) ([`956bdf6`](https://github.co
 * feat(alethio): rename contract address field in get_balance ([`64335e3`](https://github.com/crypkit/blockapi/commit/64335e30392617fba5f7be5b8a521fec67dd9f4e))
 
 * feat(request): don&#39;t use basic rate limiter by default ([`2d7420d`](https://github.com/crypkit/blockapi/commit/2d7420d6e4556a96804f593a0b42b6fca5118117))
+
+* feat(release): new release ([`3d86d60`](https://github.com/crypkit/blockapi/commit/3d86d60bdce0fa1dc6f926e38b453f605650cbc1))
 
 * feat(test): tezos tests + minor fixes on tezos + new xtz explorer added (#15)
 
@@ -1424,9 +1438,9 @@ all providers and not all subclasses were tested) ([`956bdf6`](https://github.co
 
 * fix: solana: group by coin address (coins with tags set are not hashable) ([`da6dac1`](https://github.com/crypkit/blockapi/commit/da6dac16d8e0d331cf34b1213ffe3fcfad78229a))
 
-* fix(debank): Actually get protocol from fetched data (#40) ([`3f26b5b`](https://github.com/crypkit/blockapi/commit/3f26b5b198cf1a15239f1f1dd7fff0e4869f1d31))
-
 * fix: `make_checksum_address` returns `None` if `ValueError` ([`53a166f`](https://github.com/crypkit/blockapi/commit/53a166f18db2f5562857ada9e853e4c0f2d22cc2))
+
+* fix(debank): Actually get protocol from fetched data (#40) ([`3f26b5b`](https://github.com/crypkit/blockapi/commit/3f26b5b198cf1a15239f1f1dd7fff0e4869f1d31))
 
 * fix(v2): Unify enums - AssetTypes (#37) ([`b198918`](https://github.com/crypkit/blockapi/commit/b19891839dbb9ae7b11d20e951dfc6cdda2a64ee))
 
@@ -1664,8 +1678,6 @@ etherscan.io ([`8a6ab1a`](https://github.com/crypkit/blockapi/commit/8a6ab1a32b3
 
 * Merge branch &#39;master&#39; of github.com:crypkit/blockapi ([`22b7249`](https://github.com/crypkit/blockapi/commit/22b7249813462ad201f6966c2889cc2b3cd7a5a4))
 
-* dcr update; fix ssl recursion problem ([`abf7004`](https://github.com/crypkit/blockapi/commit/abf70043aa02aeeed660070628c793452e396ba1))
-
 * OntioAPI (Ontology - balance, txs), Blockchainos (boscoin - balance, txs), Digonchain (vechain - balance) ([`0c34d6d`](https://github.com/crypkit/blockapi/commit/0c34d6d4dedf4e982ba59a10d81664a93ca354a6))
 
 * README updated/fixed ([`9caddc5`](https://github.com/crypkit/blockapi/commit/9caddc58c403bd327a465dc332d84ebaa99ba3fb))
@@ -1675,6 +1687,8 @@ etherscan.io ([`8a6ab1a`](https://github.com/crypkit/blockapi/commit/8a6ab1a32b3
 * tests fixed, orphans removed ([`7d01ce3`](https://github.com/crypkit/blockapi/commit/7d01ce38b6723943670edd05ea774fa17b39e97c))
 
 * tests fixed, orphans removed ([`674a496`](https://github.com/crypkit/blockapi/commit/674a4967f849bc622f01144c3738b56f06b1cbb3))
+
+* dcr update; fix ssl recursion problem ([`abf7004`](https://github.com/crypkit/blockapi/commit/abf70043aa02aeeed660070628c793452e396ba1))
 
 * change version ([`407cc96`](https://github.com/crypkit/blockapi/commit/407cc9628a5aba389f82e7e552e2ed671eb7b994))
 
@@ -1710,8 +1724,6 @@ etherscan.io ([`8a6ab1a`](https://github.com/crypkit/blockapi/commit/8a6ab1a32b3
 #	blockapi/api/ravencoin.py
 #	blockapi/services.py ([`f9d6b7b`](https://github.com/crypkit/blockapi/commit/f9d6b7bf36a1c6c05ba6116a2ca919428fcb97e2))
 
-* add auto-recognition for testnet ([`97a7e4d`](https://github.com/crypkit/blockapi/commit/97a7e4d4d758dc66eb16ae8e198b82b8401cfdc2))
-
 * README updated ([`8803372`](https://github.com/crypkit/blockapi/commit/88033724b76dc798d4c8c11961bbe87378e3f9d2))
 
 * new version set ([`44afe03`](https://github.com/crypkit/blockapi/commit/44afe03e5b2c0d166a5924a734d615832b58c489))
@@ -1726,19 +1738,21 @@ etherscan.io ([`8a6ab1a`](https://github.com/crypkit/blockapi/commit/8a6ab1a32b3
 
 * change currency_id to BNB and some minor changes ([`32b194c`](https://github.com/crypkit/blockapi/commit/32b194cc1f0bca59f172f3fafe78f3f93e00836b))
 
+* add auto-recognition for testnet ([`97a7e4d`](https://github.com/crypkit/blockapi/commit/97a7e4d4d758dc66eb16ae8e198b82b8401cfdc2))
+
 * merge + fix cosmos and etherscan + edit tests + minor bug fixes ([`009df31`](https://github.com/crypkit/blockapi/commit/009df31718b59ae6d0f232ddee4bbb11a66ad95f))
 
 * README updated ([`6ad34a2`](https://github.com/crypkit/blockapi/commit/6ad34a29a10115da388772838348c53b7e5516ce))
 
 * README modified ([`700ac6c`](https://github.com/crypkit/blockapi/commit/700ac6cca22dbc6d2ab8539f993d66181d378cd4))
 
-* change currency_id to BNB and some minor changes ([`05b4203`](https://github.com/crypkit/blockapi/commit/05b42039e3f2fe60995e398c9bfc6ba23f2571fb))
-
 * Ethereum apis and minor changes (#7)
 
 * update ethereum APIs and minor enhancements
 
 * change version ([`9aa3960`](https://github.com/crypkit/blockapi/commit/9aa3960285903589af934a850ce1629f9848a957))
+
+* change currency_id to BNB and some minor changes ([`05b4203`](https://github.com/crypkit/blockapi/commit/05b42039e3f2fe60995e398c9bfc6ba23f2571fb))
 
 * change version ([`30913fd`](https://github.com/crypkit/blockapi/commit/30913fd30713770974622120d2a083fe43be8f1f))
 
