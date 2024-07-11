@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v0.47.1 (2024-07-11)
+
+### Fix
+
+* fix: handling requests ConnectionError (instead of buildin) in CustomizableBlockchainApi.get_data ([`fe16722`](https://github.com/crypkit/blockapi/commit/fe1672273d3b389d15ea02a1a355668936fa20cd))
+
+### Unknown
+
+* Merge pull request #197 from crypkit/1813-sol-fetch-error-connectionreseterror-2
+
+feat: handling requests ConnectionError (instead of buildin) in Custo… ([`74ba9f5`](https://github.com/crypkit/blockapi/commit/74ba9f5f16349ca1bd7a652a562ec06a53fac7e2))
+
 ## v0.47.0 (2024-07-09)
 
 ### Feature
@@ -7,6 +19,8 @@
 * feat: handle ConnectionError in CustomizableBlockchainApi.get_data ([`3db6e22`](https://github.com/crypkit/blockapi/commit/3db6e22b359ec0b239036688e65ba8c7c484a028))
 
 ### Unknown
+
+* 0.47.0 ([`a158387`](https://github.com/crypkit/blockapi/commit/a158387656f65db74f3d234c33543b02766e3823))
 
 * Merge pull request #196 from crypkit/1813-sol-fetch-error-connectionreseterror
 
