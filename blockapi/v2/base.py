@@ -1,4 +1,3 @@
-import json
 import logging
 import time
 from abc import ABC
@@ -7,6 +6,7 @@ from typing import Dict, List, Optional
 from urllib.parse import urljoin
 
 from requests import HTTPError, Response, Session
+from requests.exceptions import ConnectionError as RequestsConnectionError
 from requests.structures import CaseInsensitiveDict
 
 from blockapi.utils.datetime import parse_dt
@@ -95,7 +95,7 @@ class CustomizableBlockchainApi(ABC):
             try:
                 response = self._get_response(request_method, headers, params, req_args)
                 response.raise_for_status()
-            except ConnectionError as connection_error:
+            except RequestsConnectionError as connection_error:
                 sleep_seconds = 10
                 logger.error(
                     f'Exception {connection_error} occurred, will try again in {sleep_seconds}'
