@@ -2,6 +2,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from requests import HTTPError
+from requests.exceptions import ConnectionError as RequestsConnectionError
 
 from blockapi.v2.base import CustomizableBlockchainApi
 from build.lib.blockapi.test.v2.api.fake_sleep_provider import FakeSleepProvider
@@ -21,8 +22,8 @@ def mocked_get_response_with_some_errors():
 
     with patch('blockapi.v2.base.CustomizableBlockchainApi._get_response') as patched:
         patched.side_effect = [
-            ConnectionError("Wrong!"),
-            ConnectionError("Wrong!"),
+            RequestsConnectionError("Wrong!"),
+            RequestsConnectionError("Wrong!"),
             mocked_response,
         ]
         yield patched
@@ -40,11 +41,11 @@ def test_get_data_connection_error_success(
 def mocked_get_response_with_only_errors():
     with patch('blockapi.v2.base.CustomizableBlockchainApi._get_response') as patched:
         patched.side_effect = [
-            ConnectionError("Wrong!"),
-            ConnectionError("Wrong!"),
-            ConnectionError("Wrong!"),
-            ConnectionError("Wrong!"),
-            ConnectionError("Wrong!"),
+            RequestsConnectionError("Wrong!"),
+            RequestsConnectionError("Wrong!"),
+            RequestsConnectionError("Wrong!"),
+            RequestsConnectionError("Wrong!"),
+            RequestsConnectionError("Wrong!"),
         ]
         yield patched
 
