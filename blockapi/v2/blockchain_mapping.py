@@ -39,6 +39,7 @@ DEBANK_BLOCKCHAINS_MAP = {
     'ftm': Blockchain.FANTOM,
     'fx': Blockchain.FUNCTION_X,
     'hmy': Blockchain.HARMONY,
+    'iota': Blockchain.IOTA_EVM,
     'iotx': Blockchain.IOTEX,
     'kcc': Blockchain.KUCOIN,
     'klay': Blockchain.KLAY_TOKEN,
@@ -70,7 +71,9 @@ DEBANK_BLOCKCHAINS_MAP = {
     'sdn': Blockchain.SHIDEN_NETWORK,
     'sgb': Blockchain.SONGBIRD,
     'shib': Blockchain.SHIBARIUM,
+    'smr': Blockchain.SHIMMER_EVM,
     'step': Blockchain.STEP_NETWORK,
+    'strax': Blockchain.STRATIS,
     'sx': Blockchain.SX_NETWORK,
     'tlos': Blockchain.TELOS,
     'tomb': Blockchain.TOMBCHAIN,
@@ -83,9 +86,12 @@ DEBANK_BLOCKCHAINS_MAP = {
 }
 
 COINGECKO_BLOCKCHAINS_MAP = {
+    'areon-network': Blockchain.AREON,
     'astar-zkevm': Blockchain.ASTAR_ZKEVM,
     'bifrost-network': Blockchain.BIFROST,
+    'bitlayer': Blockchain.BIT_LAYER,
     'bittorrent': Blockchain.BIT_TORRENT,
+    'bob-network': Blockchain.BOB,
     'bouncebit': Blockchain.BOUNCE_BIT,
     'bsquared-network': Blockchain.B2,
     'casper-network': Blockchain.CASPER,
@@ -110,6 +116,7 @@ COINGECKO_BLOCKCHAINS_MAP = {
     'pulsechain': Blockchain.PULSE,
     'rails-network': Blockchain.RAILS,
     're-al': Blockchain.REAL,
+    'saita-chain': Blockchain.SAITA,
     'shibchain': Blockchain.SHIBA_CHAIN,
     'shiden network': Blockchain.SHIDEN_NETWORK,
     'smartbch': Blockchain.SMART_BITCOIN_CASH,
