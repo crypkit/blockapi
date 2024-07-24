@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.48.0 (2024-07-24)
+
+### Feature
+
+* feat: Add support and mapping for new blockchains (#198) ([`3a5698d`](https://github.com/crypkit/blockapi/commit/3a5698d9b69412226174fa23026ddb580ec20ce4))
+
 ## v0.47.1 (2024-07-11)
 
 ### Fix
@@ -7,6 +13,8 @@
 * fix: handling requests ConnectionError (instead of buildin) in CustomizableBlockchainApi.get_data ([`fe16722`](https://github.com/crypkit/blockapi/commit/fe1672273d3b389d15ea02a1a355668936fa20cd))
 
 ### Unknown
+
+* 0.47.1 ([`6ed8dd6`](https://github.com/crypkit/blockapi/commit/6ed8dd69af73f2b1b9f4ce27f59896d1832c5da2))
 
 * Merge pull request #197 from crypkit/1813-sol-fetch-error-connectionreseterror-2
 
