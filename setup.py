@@ -33,5 +33,6 @@ setuptools.setup(
         'pytest',
         'pytest-vcr',
         'requests_mock>=1.9.3',
+        'attrs>=17.4.0,<=22.1.0',
     ],
 )
