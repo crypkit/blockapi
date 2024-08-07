@@ -1,10 +1,28 @@
 # CHANGELOG
 
+## v0.48.1 (2024-08-07)
+
+### Fix
+
+* fix: fix reqs ([`7db17da`](https://github.com/crypkit/blockapi/commit/7db17da79e700aa1d269fbda6e3b4b9597a4d139))
+
+* fix: fix sonarwatch tokenlist ([`bc06022`](https://github.com/crypkit/blockapi/commit/bc06022b55ded6096e125f9f0a260bddde4171ed))
+
+### Unknown
+
+* Merge pull request #199 from crypkit/fix-sonarwatch-token-list
+
+fix: SonarWatch token list ([`e71e930`](https://github.com/crypkit/blockapi/commit/e71e930c9247ceef1c7ca76cbdb1b1357777ca00))
+
 ## v0.48.0 (2024-07-24)
 
 ### Feature
 
 * feat: Add support and mapping for new blockchains (#198) ([`3a5698d`](https://github.com/crypkit/blockapi/commit/3a5698d9b69412226174fa23026ddb580ec20ce4))
+
+### Unknown
+
+* 0.48.0 ([`fba1c1b`](https://github.com/crypkit/blockapi/commit/fba1c1b8672f4a632600c654a0e0f9b471d41456))
 
 ## v0.47.1 (2024-07-11)
 
