@@ -42,7 +42,7 @@ def test_parse_nfts(requests_mock, api, nfts_response):
     assert data.contract == '4d5b1ef2d87f2212c7b00300296439da'
     assert data.standard == 'ordinals'
     assert data.name == 'Bitcoin Frog #7825'
-    assert not data.collection_name
+    assert data.collection_name == 'Bitcoin Frogs'
     assert not data.description
     assert (
         data.image_url

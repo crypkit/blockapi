@@ -129,6 +129,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
             yield NftToken.from_api(
                 ident=ident,
                 collection=collection_id,
+                collection_name=collection.get('name'),
                 contract=collection_id,
                 standard=standard,
                 name=item.get('name') or contract.get('name'),
