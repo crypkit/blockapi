@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.48.2 (2024-09-11)
+
+### Fix
+
+* fix: NFT collection name (#200) ([`e421814`](https://github.com/crypkit/blockapi/commit/e4218147271822e4f44f8d628cb33ed1948b3701))
+
 ## v0.48.1 (2024-08-07)
 
 ### Fix
@@ -9,6 +15,8 @@
 * fix: fix sonarwatch tokenlist ([`bc06022`](https://github.com/crypkit/blockapi/commit/bc06022b55ded6096e125f9f0a260bddde4171ed))
 
 ### Unknown
+
+* 0.48.1 ([`30b7624`](https://github.com/crypkit/blockapi/commit/30b7624915ccafbe90371ee087d13815336f96e2))
 
 * Merge pull request #199 from crypkit/fix-sonarwatch-token-list
 
