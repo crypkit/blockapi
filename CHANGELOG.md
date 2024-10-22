@@ -1,11 +1,22 @@
 # CHANGELOG
 
 
+## v0.48.4 (2024-10-22)
+
+### Bug Fixes
+
+* fix: Ignore data from IPFS if not responding (#202) ([`cc8b2d4`](https://github.com/crypkit/blockapi/commit/cc8b2d41079dea10b7ad2ebe64579a391095b661))
+
+
 ## v0.48.3 (2024-10-22)
 
 ### Bug Fixes
 
 * fix: fetch token data from metaplex if not in list (#201) ([`db58cdc`](https://github.com/crypkit/blockapi/commit/db58cdc51674daea1ade2be22b4b971688c18c3b))
+
+### Unknown
+
+* 0.48.3 ([`db096f9`](https://github.com/crypkit/blockapi/commit/db096f92fe2b8170677b0af6310090bbfd4a69ce))
 
 
 ## v0.48.2 (2024-09-11)
