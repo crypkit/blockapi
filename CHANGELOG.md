@@ -1,14 +1,27 @@
 # CHANGELOG
 
+
+## v0.48.3 (2024-10-22)
+
+### Bug Fixes
+
+* fix: fetch token data from metaplex if not in list (#201) ([`db58cdc`](https://github.com/crypkit/blockapi/commit/db58cdc51674daea1ade2be22b4b971688c18c3b))
+
+
 ## v0.48.2 (2024-09-11)
 
-### Fix
+### Bug Fixes
 
 * fix: NFT collection name (#200) ([`e421814`](https://github.com/crypkit/blockapi/commit/e4218147271822e4f44f8d628cb33ed1948b3701))
 
+### Unknown
+
+* 0.48.2 ([`efa495e`](https://github.com/crypkit/blockapi/commit/efa495e93b11493a2824bca3df99e2b62ffe4677))
+
+
 ## v0.48.1 (2024-08-07)
 
-### Fix
+### Bug Fixes
 
 * fix: fix reqs ([`7db17da`](https://github.com/crypkit/blockapi/commit/7db17da79e700aa1d269fbda6e3b4b9597a4d139))
 
@@ -22,9 +35,10 @@
 
 fix: SonarWatch token list ([`e71e930`](https://github.com/crypkit/blockapi/commit/e71e930c9247ceef1c7ca76cbdb1b1357777ca00))
 
+
 ## v0.48.0 (2024-07-24)
 
-### Feature
+### Features
 
 * feat: Add support and mapping for new blockchains (#198) ([`3a5698d`](https://github.com/crypkit/blockapi/commit/3a5698d9b69412226174fa23026ddb580ec20ce4))
 
@@ -32,9 +46,10 @@ fix: SonarWatch token list ([`e71e930`](https://github.com/crypkit/blockapi/comm
 
 * 0.48.0 ([`fba1c1b`](https://github.com/crypkit/blockapi/commit/fba1c1b8672f4a632600c654a0e0f9b471d41456))
 
+
 ## v0.47.1 (2024-07-11)
 
-### Fix
+### Bug Fixes
 
 * fix: handling requests ConnectionError (instead of buildin) in CustomizableBlockchainApi.get_data ([`fe16722`](https://github.com/crypkit/blockapi/commit/fe1672273d3b389d15ea02a1a355668936fa20cd))
 
@@ -46,9 +61,10 @@ fix: SonarWatch token list ([`e71e930`](https://github.com/crypkit/blockapi/comm
 
 feat: handling requests ConnectionError (instead of buildin) in Custo… ([`74ba9f5`](https://github.com/crypkit/blockapi/commit/74ba9f5f16349ca1bd7a652a562ec06a53fac7e2))
 
+
 ## v0.47.0 (2024-07-09)
 
-### Feature
+### Features
 
 * feat: handle ConnectionError in CustomizableBlockchainApi.get_data ([`3db6e22`](https://github.com/crypkit/blockapi/commit/3db6e22b359ec0b239036688e65ba8c7c484a028))
 
@@ -60,11 +76,12 @@ feat: handling requests ConnectionError (instead of buildin) in Custo… ([`74ba
 
 feat: handle ConnectionError in CustomizableBlockchainApi.get_data ([`57f27fc`](https://github.com/crypkit/blockapi/commit/57f27fc6f66c66f72fb8f41bae1c3d54bbaa153f))
 
+
 ## v0.46.0 (2024-07-04)
 
-### Feature
+### Features
 
-* feat: added logging to &#39;get_data&#39; method to investigate SOL fetching errors ([`23cb3a0`](https://github.com/crypkit/blockapi/commit/23cb3a04d6b5eb1314f0517e0d4c55fb0f114e08))
+* feat: added logging to 'get_data' method to investigate SOL fetching errors ([`23cb3a0`](https://github.com/crypkit/blockapi/commit/23cb3a04d6b5eb1314f0517e0d4c55fb0f114e08))
 
 ### Unknown
 
@@ -72,11 +89,12 @@ feat: handle ConnectionError in CustomizableBlockchainApi.get_data ([`57f27fc`](
 
 * Merge pull request #195 from crypkit/1813-sol-fetch-error-connectionreseterror-connection-reset-by-peer
 
-feat: added logging to &#39;get_data&#39; method to investigate SOL fetching errors ([`334bc4d`](https://github.com/crypkit/blockapi/commit/334bc4d6e4f06165f6f7cb511328f7eb23f206ff))
+feat: added logging to 'get_data' method to investigate SOL fetching errors ([`334bc4d`](https://github.com/crypkit/blockapi/commit/334bc4d6e4f06165f6f7cb511328f7eb23f206ff))
+
 
 ## v0.45.3 (2024-06-06)
 
-### Fix
+### Bug Fixes
 
 * fix: Update known blockchains (#194) ([`b163e19`](https://github.com/crypkit/blockapi/commit/b163e197eea820a24c9cafd3d5aa9ae1cc5cc527))
 
@@ -84,9 +102,10 @@ feat: added logging to &#39;get_data&#39; method to investigate SOL fetching err
 
 * 0.45.3 ([`bbf8497`](https://github.com/crypkit/blockapi/commit/bbf8497c0f23931e3c49bb32ae2a4aa6fe06a2fe))
 
+
 ## v0.45.2 (2024-05-30)
 
-### Fix
+### Bug Fixes
 
 * fix: Update list of known blockchains (#193) ([`4dc23a0`](https://github.com/crypkit/blockapi/commit/4dc23a0b5fa8c4bbd9e09c2e67ca5ddce8dd4c9a))
 
@@ -94,9 +113,10 @@ feat: added logging to &#39;get_data&#39; method to investigate SOL fetching err
 
 * 0.45.2 ([`912c5f6`](https://github.com/crypkit/blockapi/commit/912c5f632dd7f39dd7ece8b2dfe872ae83e37d16))
 
+
 ## v0.45.1 (2024-05-29)
 
-### Fix
+### Bug Fixes
 
 * fix: change rent_reserve type to locked ([`df1d2be`](https://github.com/crypkit/blockapi/commit/df1d2bef5dd5d9dd08804b65518c83a57e9ec080))
 
@@ -104,23 +124,25 @@ feat: added logging to &#39;get_data&#39; method to investigate SOL fetching err
 
 * 0.45.1 ([`b341baf`](https://github.com/crypkit/blockapi/commit/b341baf76adfb1ec801579b1ea6c25a971330705))
 
+
 ## v0.45.0 (2024-05-29)
 
-### Feature
-
-* feat: add staking rent reserve balance for solana ([`43b5702`](https://github.com/crypkit/blockapi/commit/43b5702ee538360ccedc5aa0366432a561792576))
-
-### Fix
+### Bug Fixes
 
 * fix: formatting ([`e0fbb6f`](https://github.com/crypkit/blockapi/commit/e0fbb6f853415f6bdd21dd091ed2dc8917b5ea4d))
+
+### Features
+
+* feat: add staking rent reserve balance for solana ([`43b5702`](https://github.com/crypkit/blockapi/commit/43b5702ee538360ccedc5aa0366432a561792576))
 
 ### Unknown
 
 * 0.45.0 ([`56ccc47`](https://github.com/crypkit/blockapi/commit/56ccc47b1d1d6c3ea948afe92faf7091422cecf7))
 
+
 ## v0.44.0 (2024-05-27)
 
-### Chore
+### Chores
 
 * chore(deps): bump requests from 2.31.0 to 2.32.0 (#188)
 
@@ -129,10 +151,10 @@ updated-dependencies:
   dependency-type: direct:production
 ...
 
-Signed-off-by: dependabot[bot] &lt;support@github.com&gt;
-Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.github.com&gt; ([`13b1fc4`](https://github.com/crypkit/blockapi/commit/13b1fc444e6505d679b2a65bb0189c799c4da131))
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com> ([`13b1fc4`](https://github.com/crypkit/blockapi/commit/13b1fc444e6505d679b2a65bb0189c799c4da131))
 
-### Feature
+### Features
 
 * feat: add stake balance for solana ([`22a1951`](https://github.com/crypkit/blockapi/commit/22a1951e8d7e5631441ebbc56721eabfd0f96989))
 
@@ -140,25 +162,27 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 
 * 0.44.0 ([`05c64ef`](https://github.com/crypkit/blockapi/commit/05c64efa078b0c5eb2028040d50013cf09097941))
 
+
 ## v0.43.0 (2024-05-24)
 
-### Feature
-
-* feat: add more solana token lists ([`6cb65ae`](https://github.com/crypkit/blockapi/commit/6cb65ae5e41deb1ad587d184bc2291f60ea2f1f4))
-
-### Fix
+### Bug Fixes
 
 * fix: fix unittests ([`dbe48ee`](https://github.com/crypkit/blockapi/commit/dbe48eebac83bed09a1679c80e0860a1601aacd1))
 
 * fix: fix imports ([`d2565e5`](https://github.com/crypkit/blockapi/commit/d2565e53aa332ed6440bd7688be1fbde0da0c701))
 
+### Features
+
+* feat: add more solana token lists ([`6cb65ae`](https://github.com/crypkit/blockapi/commit/6cb65ae5e41deb1ad587d184bc2291f60ea2f1f4))
+
 ### Unknown
 
 * 0.43.0 ([`8c6bed7`](https://github.com/crypkit/blockapi/commit/8c6bed7932ba16d39e3bac3fb211e7e11b73e55e))
 
+
 ## v0.42.3 (2024-04-25)
 
-### Fix
+### Bug Fixes
 
 * fix: Improve Solana token mapping (#187) ([`9284176`](https://github.com/crypkit/blockapi/commit/9284176f64258a1faf09ceadf6c0c1f75339f2e9))
 
@@ -166,9 +190,10 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 
 * 0.42.3 ([`4e7c250`](https://github.com/crypkit/blockapi/commit/4e7c25008cc631e625278274c687aac39d70e2aa))
 
+
 ## v0.42.2 (2024-03-20)
 
-### Fix
+### Bug Fixes
 
 * fix: Parse non-native tokens (#186) ([`4f08d06`](https://github.com/crypkit/blockapi/commit/4f08d0683d0679b5f6ec4fc82247b0e20a412c3c))
 
@@ -176,9 +201,10 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 
 * 0.42.2 ([`2841c6b`](https://github.com/crypkit/blockapi/commit/2841c6b8b61c2e08f083d672e6ba068a222ba4b8))
 
+
 ## v0.42.1 (2024-03-19)
 
-### Fix
+### Bug Fixes
 
 * fix: SimpleHash: Fetch all chains at the same time (#185) ([`419b2da`](https://github.com/crypkit/blockapi/commit/419b2da5ebf39edbf9832ff0316b0325f78868ec))
 
@@ -186,9 +212,10 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 
 * 0.42.1 ([`9557402`](https://github.com/crypkit/blockapi/commit/955740247983fb10ed7886593d4293ee8f422317))
 
+
 ## v0.42.0 (2024-03-15)
 
-### Feature
+### Features
 
 * feat: add pending_transaction asset type ([`c03f335`](https://github.com/crypkit/blockapi/commit/c03f335c2439b91da13070b9b385bcb319ad0d00))
 
@@ -196,11 +223,12 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 
 * 0.42.0 ([`caea7e0`](https://github.com/crypkit/blockapi/commit/caea7e0bc4e0ea95f5f1419772f4f9bf169112e2))
 
+
 ## v0.41.0 (2024-03-12)
 
-### Feature
+### Features
 
-* feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`5315052`](https://github.com/crypkit/blockapi/commit/53150526f3bf3c75627eb20389a27875eed55bab))
+* feat: bump 'coinaddrng' to '1.1.1' ([`5315052`](https://github.com/crypkit/blockapi/commit/53150526f3bf3c75627eb20389a27875eed55bab))
 
 ### Unknown
 
@@ -208,11 +236,12 @@ Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.githu
 
 * Merge pull request #183 from crypkit/feat-bump-coinaddrng
 
-feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.com/crypkit/blockapi/commit/58db71db7f6707aef69f5b4e52d0781e25c576c0))
+feat: bump 'coinaddrng' to '1.1.1' ([`58db71d`](https://github.com/crypkit/blockapi/commit/58db71db7f6707aef69f5b4e52d0781e25c576c0))
+
 
 ## v0.40.8 (2024-03-07)
 
-### Fix
+### Bug Fixes
 
 * fix: Add new blockchains and mapping (#182) ([`9e834d3`](https://github.com/crypkit/blockapi/commit/9e834d398e5a4b939580f0ebaa3ffc26fb17ae8e))
 
@@ -220,9 +249,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.40.8 ([`7f323cf`](https://github.com/crypkit/blockapi/commit/7f323cfb207f349b3a09812246d44521df5c6f27))
 
+
 ## v0.40.7 (2024-03-06)
 
-### Fix
+### Bug Fixes
 
 * fix: Empty collection activity (#181) ([`63615d4`](https://github.com/crypkit/blockapi/commit/63615d45f07671662a0e9d940bc129ff262d216c))
 
@@ -230,9 +260,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.40.7 ([`d702dd7`](https://github.com/crypkit/blockapi/commit/d702dd7ee5806e51706ba4d1bc39d697ea0ba58b))
 
+
 ## v0.40.6 (2024-03-06)
 
-### Fix
+### Bug Fixes
 
 * fix: SimpleHash: Add default volumes if none is available ([`4a004b1`](https://github.com/crypkit/blockapi/commit/4a004b1129ad1b0a9d1df331fc93db2f9a32c9f4))
 
@@ -240,9 +271,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.40.6 ([`5d05f84`](https://github.com/crypkit/blockapi/commit/5d05f843e88792f698997eb36577da96c322d6a2))
 
+
 ## v0.40.5 (2024-02-29)
 
-### Fix
+### Bug Fixes
 
 * fix: Automatically delay and refetch if 429 (#177) ([`11ad0aa`](https://github.com/crypkit/blockapi/commit/11ad0aa2de4bcafb25d328b2ee21832279d2571e))
 
@@ -250,9 +282,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.40.5 ([`9440a4a`](https://github.com/crypkit/blockapi/commit/9440a4a19bc6e0dadda04552ced3f76a0f38869a))
 
+
 ## v0.40.4 (2024-02-29)
 
-### Fix
+### Bug Fixes
 
 * fix: Include listed tokens in fetch (#179) ([`b229c1e`](https://github.com/crypkit/blockapi/commit/b229c1ee4da9ba8e492c72a811ca42c870d8c972))
 
@@ -260,9 +293,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.40.4 ([`ae56d44`](https://github.com/crypkit/blockapi/commit/ae56d444f845302adb177a3147d16e8c6c7b185e))
 
+
 ## v0.40.3 (2024-02-29)
 
-### Fix
+### Bug Fixes
 
 * fix: Best offers field name (#178) ([`162ad17`](https://github.com/crypkit/blockapi/commit/162ad174d9698076a0c4e2be58c999cbc85d4efb))
 
@@ -270,9 +304,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.40.3 ([`ec8062b`](https://github.com/crypkit/blockapi/commit/ec8062bcd37612e98e9cca42389771e6c6630606))
 
+
 ## v0.40.2 (2024-02-28)
 
-### Fix
+### Bug Fixes
 
 * fix: Disable Klaytn on SimpleHash ([`6ec846c`](https://github.com/crypkit/blockapi/commit/6ec846c02f8b5ff203981ec700b962e58f9f1cc5))
 
@@ -280,9 +315,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.40.2 ([`9463a11`](https://github.com/crypkit/blockapi/commit/9463a1158adf73467388ea6421493cfcd02fcb39))
 
+
 ## v0.40.1 (2024-02-28)
 
-### Fix
+### Bug Fixes
 
 * fix: Make more effort do find collection name (#176) ([`a89b963`](https://github.com/crypkit/blockapi/commit/a89b963694d51bff6ca32035b9cba955e6414efb))
 
@@ -290,9 +326,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.40.1 ([`2872276`](https://github.com/crypkit/blockapi/commit/2872276333c053d4196f9f9a077231282f72f76e))
 
+
 ## v0.40.0 (2024-02-27)
 
-### Feature
+### Features
 
 * feat: Fetch NFTs from Simple Hash (#175) ([`ab5b258`](https://github.com/crypkit/blockapi/commit/ab5b258e09e44e9e6a07629b17aefc0c611ceeaa))
 
@@ -300,9 +337,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.40.0 ([`2f853b4`](https://github.com/crypkit/blockapi/commit/2f853b4d8d74c7299a7636aa45d35bdaa570e637))
 
+
 ## v0.39.0 (2024-02-22)
 
-### Feature
+### Features
 
 * feat: Fix retry logic for OpenSea (#174) ([`cfbf0d1`](https://github.com/crypkit/blockapi/commit/cfbf0d14e5b986ae1714bc9e3e002e1c232d4eb5))
 
@@ -310,9 +348,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.39.0 ([`a96a577`](https://github.com/crypkit/blockapi/commit/a96a577264a20f1dc16c50289fe6d57ab9943501))
 
+
 ## v0.38.0 (2024-02-20)
 
-### Feature
+### Features
 
 * feat: Fetch BTC NFT (#173) ([`60d81e7`](https://github.com/crypkit/blockapi/commit/60d81e772802ef34b9ddebc20fa167396844f0a6))
 
@@ -320,9 +359,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.38.0 ([`209e85f`](https://github.com/crypkit/blockapi/commit/209e85fcd4a60e38898ffcc60d95a7326a043eec))
 
+
 ## v0.37.5 (2024-02-19)
 
-### Fix
+### Bug Fixes
 
 * fix: Improve Magic Eden retry logic (#172) ([`8719d5f`](https://github.com/crypkit/blockapi/commit/8719d5f7e0ccfc3a60b2cd0d578af35f4a502658))
 
@@ -330,9 +370,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.37.5 ([`3ee9d65`](https://github.com/crypkit/blockapi/commit/3ee9d6527206490fdc6cee063d84e4d332810b34))
 
+
 ## v0.37.4 (2024-02-16)
 
-### Fix
+### Bug Fixes
 
 * fix: Ignore zero listing and skip duplicates (#171) ([`5ef1fc9`](https://github.com/crypkit/blockapi/commit/5ef1fc9e1f9f1b91f838a1963e0a0e217d5396d8))
 
@@ -340,9 +381,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.37.4 ([`284da35`](https://github.com/crypkit/blockapi/commit/284da350ce1ec29f88c5b2c00fe04b95b2a90927))
 
+
 ## v0.37.3 (2024-02-16)
 
-### Fix
+### Bug Fixes
 
 * fix: Add MATIC mapping (#170) ([`9fcdafa`](https://github.com/crypkit/blockapi/commit/9fcdafa8c3bb9f5f248fa863d8ac59640f1e51e2))
 
@@ -350,9 +392,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.37.3 ([`aa89d1f`](https://github.com/crypkit/blockapi/commit/aa89d1f987ae71fa792e8377aae5574897a15f42))
 
+
 ## v0.37.2 (2024-02-14)
 
-### Fix
+### Bug Fixes
 
 * fix: Offer fetching and price (#169) ([`e2ae9fa`](https://github.com/crypkit/blockapi/commit/e2ae9fa8389a349c12043448953b1958b4532df4))
 
@@ -360,9 +403,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.37.2 ([`9016756`](https://github.com/crypkit/blockapi/commit/9016756c43f87320fcdd4e238745a9719a82c99b))
 
+
 ## v0.37.1 (2024-02-12)
 
-### Fix
+### Bug Fixes
 
 * fix: Use default values for collection stats (#168) ([`483b5a1`](https://github.com/crypkit/blockapi/commit/483b5a19e60670512baa9831bd15ff8033451780))
 
@@ -370,9 +414,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.37.1 ([`9b11f63`](https://github.com/crypkit/blockapi/commit/9b11f636079211591e8c54eedc69371dec6e4306))
 
+
 ## v0.37.0 (2024-02-10)
 
-### Feature
+### Features
 
 * feat: Fetch Solana NFT (#167) ([`9e390d8`](https://github.com/crypkit/blockapi/commit/9e390d8ad08fe3cc07067f28805b184ebea9b261))
 
@@ -380,13 +425,14 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.37.0 ([`c877cf1`](https://github.com/crypkit/blockapi/commit/c877cf1bcd34e78a428fdb996f4a704579df7c45))
 
+
 ## v0.36.0 (2024-02-07)
 
-### Chore
+### Chores
 
 * chore: black update and reformat (#166) ([`1dfc448`](https://github.com/crypkit/blockapi/commit/1dfc4482d90bb6b9a683140303c4c157816c5306))
 
-### Feature
+### Features
 
 * feat: Support multiple OpenSea blockchains (#165) ([`657d697`](https://github.com/crypkit/blockapi/commit/657d69762b63ce4bc6be027befaa87e145917658))
 
@@ -394,9 +440,10 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 * 0.36.0 ([`092a3c6`](https://github.com/crypkit/blockapi/commit/092a3c6f74bf0c5933ed794cf896096551ca9442))
 
+
 ## v0.35.1 (2024-01-23)
 
-### Fix
+### Bug Fixes
 
 * fix: ocmosis: fix Osmosis decimals ([`bfc48fa`](https://github.com/crypkit/blockapi/commit/bfc48fa70c34593907d7a35685daa16bcefaeefb))
 
@@ -408,9 +455,14 @@ feat: bump &#39;coinaddrng&#39; to &#39;1.1.1&#39; ([`58db71d`](https://github.c
 
 fix: ocmosis: fix Osmosis decimals ([`1d2087d`](https://github.com/crypkit/blockapi/commit/1d2087d24feb4410c1b1f90dc7707542115b6af3))
 
+
 ## v0.35.0 (2024-01-19)
 
-### Feature
+### Bug Fixes
+
+* fix: cosmos: return original denom always ([`9e13025`](https://github.com/crypkit/blockapi/commit/9e130258caf67b90ea0e1c991b6ffa0f198e1e27))
+
+### Features
 
 * feat: refactoring: split token map loading into a separate class ([`131efe1`](https://github.com/crypkit/blockapi/commit/131efe122b2c972bc0173bf90a9f0811c3fdfc11))
 
@@ -422,10 +474,6 @@ fix: ocmosis: fix Osmosis decimals ([`1d2087d`](https://github.com/crypkit/block
 
 * feat: cosmos uses pulsar IBC Token Data ([`9cbbd16`](https://github.com/crypkit/blockapi/commit/9cbbd160820ff0c3d4597b37195143b510ffa158))
 
-### Fix
-
-* fix: cosmos: return original denom always ([`9e13025`](https://github.com/crypkit/blockapi/commit/9e130258caf67b90ea0e1c991b6ffa0f198e1e27))
-
 ### Unknown
 
 * 0.35.0 ([`fe30a72`](https://github.com/crypkit/blockapi/commit/fe30a72c458d05afd66792cc1f0a379045106b77))
@@ -434,9 +482,10 @@ fix: ocmosis: fix Osmosis decimals ([`1d2087d`](https://github.com/crypkit/block
 
 feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://github.com/crypkit/blockapi/commit/4b84688438cc18d1b9f271455c920b946d000209))
 
+
 ## v0.34.0 (2024-01-16)
 
-### Feature
+### Features
 
 * feat: [Solana] Also fetch Token 2022 SPLs (#162) ([`91fbce6`](https://github.com/crypkit/blockapi/commit/91fbce6fa992dd13f787d4ca0739c660e6f39270))
 
@@ -444,9 +493,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.34.0 ([`e85c06d`](https://github.com/crypkit/blockapi/commit/e85c06daa4aff71805c0c89f6776cac95e3989bb))
 
+
 ## v0.33.0 (2024-01-11)
 
-### Feature
+### Features
 
 * feat: Add support for new blockchains (#161) ([`a6c815a`](https://github.com/crypkit/blockapi/commit/a6c815a788c1b845273c1fa2ade31d1a34592c1b))
 
@@ -454,9 +504,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.33.0 ([`29bea19`](https://github.com/crypkit/blockapi/commit/29bea197f27b6b727360665154f6694207f42be5))
 
+
 ## v0.32.0 (2023-12-13)
 
-### Feature
+### Features
 
 * feat: Fetch NFTs iteratively (#160) ([`8172763`](https://github.com/crypkit/blockapi/commit/8172763a546455425d4e81ffaace625ab45f9a20))
 
@@ -464,9 +515,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.32.0 ([`8ac6fb1`](https://github.com/crypkit/blockapi/commit/8ac6fb14c54da406b3fbfbb74166c3f10f024e61))
 
+
 ## v0.31.3 (2023-12-08)
 
-### Fix
+### Bug Fixes
 
 * fix: [OpenSea] Parse multiple contracts for collection (#159) ([`fdc40e8`](https://github.com/crypkit/blockapi/commit/fdc40e8a53373439ddff83d086972aca9baa2e27))
 
@@ -474,9 +526,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.31.3 ([`409c897`](https://github.com/crypkit/blockapi/commit/409c8977536d4669f6e7f2f95b24ae7526e29070))
 
+
 ## v0.31.2 (2023-12-08)
 
-### Fix
+### Bug Fixes
 
 * fix: Blockchair fetch error (#158) ([`7b30a1a`](https://github.com/crypkit/blockapi/commit/7b30a1a132e300c71585912eaddd148c3f69cf25))
 
@@ -484,9 +537,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.31.2 ([`de9844a`](https://github.com/crypkit/blockapi/commit/de9844a18b551b6fc3e8ea6710da6f32d312b76d))
 
+
 ## v0.31.1 (2023-12-08)
 
-### Fix
+### Bug Fixes
 
 * fix: [OpenSea] Get correct listing price (#157) ([`6e8d4c4`](https://github.com/crypkit/blockapi/commit/6e8d4c4136a2160d60e58942d616ed1a79ec3a2b))
 
@@ -494,9 +548,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.31.1 ([`571c1d5`](https://github.com/crypkit/blockapi/commit/571c1d56d1ef74dcdac0088bae0cc3b3c1936851))
 
+
 ## v0.31.0 (2023-12-04)
 
-### Feature
+### Features
 
 * feat: Limit NFT fetches and return cursor (#156) ([`56a0857`](https://github.com/crypkit/blockapi/commit/56a085765ac066cd71abd843ebe616c5201e029f))
 
@@ -504,9 +559,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.31.0 ([`880a5e5`](https://github.com/crypkit/blockapi/commit/880a5e5768372f5d1d97916e6779934d43bb2053))
 
+
 ## v0.30.5 (2023-11-29)
 
-### Fix
+### Bug Fixes
 
 * fix: Parse NFT collection when there is no base symbol (#155) ([`b8f6435`](https://github.com/crypkit/blockapi/commit/b8f643515517d637247b22f45c92d875fb623108))
 
@@ -514,9 +570,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.30.5 ([`da76328`](https://github.com/crypkit/blockapi/commit/da7632861fa808e56ac6ffb654cbe190ecf85668))
 
+
 ## v0.30.4 (2023-11-22)
 
-### Fix
+### Bug Fixes
 
 * fix: Blockchair and Debank parsing (#154) ([`c723d50`](https://github.com/crypkit/blockapi/commit/c723d5034eb94ce9407ed692a71331e12ebbdfcc))
 
@@ -524,9 +581,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.30.4 ([`b3a3602`](https://github.com/crypkit/blockapi/commit/b3a3602bf6997299e3a04cd5046022df4bca360a))
 
+
 ## v0.30.3 (2023-11-14)
 
-### Fix
+### Bug Fixes
 
 * fix: Change solana token list source (#152) ([`6babc47`](https://github.com/crypkit/blockapi/commit/6babc470d821d7234b07c4a4b2731fe4b1e032ce))
 
@@ -534,9 +592,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.30.3 ([`5ba4260`](https://github.com/crypkit/blockapi/commit/5ba426036cbd3d13b4d6707322fc1cae2ccafc28))
 
+
 ## v0.30.2 (2023-11-14)
 
-### Fix
+### Bug Fixes
 
 * fix: Return error when source closes connection (#151) ([`8e7c9ce`](https://github.com/crypkit/blockapi/commit/8e7c9ce5173db6bbea5f0e9981b3a6806c4cd72b))
 
@@ -544,9 +603,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.30.2 ([`fea80a1`](https://github.com/crypkit/blockapi/commit/fea80a14a4f1839a0db073a89868cb7c44c683d6))
 
+
 ## v0.30.1 (2023-11-10)
 
-### Fix
+### Bug Fixes
 
 * fix: Add Opensea coin mapping (#150) ([`821f026`](https://github.com/crypkit/blockapi/commit/821f02615d922e051b76c7a11c0de79349d186d4))
 
@@ -554,9 +614,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.30.1 ([`48406fc`](https://github.com/crypkit/blockapi/commit/48406fc3ef20ac6a753b4ba9c17c90d91efcccb0))
 
+
 ## v0.30.0 (2023-11-09)
 
-### Feature
+### Features
 
 * feat: Fetch multiple pages of NFT offers, add key and blockchain (#149) ([`74b0528`](https://github.com/crypkit/blockapi/commit/74b0528623ce5b8b5be715aa0d53d5281f5238ae))
 
@@ -564,9 +625,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.30.0 ([`ecc9fdf`](https://github.com/crypkit/blockapi/commit/ecc9fdf3c8bdf25145b5dd8e71b79804fc1417d4))
 
+
 ## v0.29.1 (2023-10-27)
 
-### Fix
+### Bug Fixes
 
 * fix: Enum values for NFT offer type (#148) ([`78df014`](https://github.com/crypkit/blockapi/commit/78df014503886554568fbbdf44d8aa8213b5f619))
 
@@ -574,9 +636,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.29.1 ([`6c25146`](https://github.com/crypkit/blockapi/commit/6c25146c665979f78519d0585fa3c2c2c1a5d5c2))
 
+
 ## v0.29.0 (2023-10-25)
 
-### Feature
+### Features
 
 * feat: Opensea - Parse collection contract (#147) ([`61a1646`](https://github.com/crypkit/blockapi/commit/61a1646b3d77d259610edfb7def3c78119a68b4c))
 
@@ -584,9 +647,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.29.0 ([`fb31f0d`](https://github.com/crypkit/blockapi/commit/fb31f0d99d6f5f61f2960bce3b109a238191eac7))
 
+
 ## v0.28.0 (2023-10-20)
 
-### Feature
+### Features
 
 * feat: Fetch NFT from OpenSea (#146) ([`edc1ffa`](https://github.com/crypkit/blockapi/commit/edc1ffa6d2f9af42eac77c3f8236e64421817097))
 
@@ -594,9 +658,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.28.0 ([`8d9eee7`](https://github.com/crypkit/blockapi/commit/8d9eee7666ee91e9c5aca14f6f93e4a635ef142d))
 
+
 ## v0.27.2 (2023-09-29)
 
-### Fix
+### Bug Fixes
 
 * fix: Build correct URL when using POST (#145) ([`4eea5b2`](https://github.com/crypkit/blockapi/commit/4eea5b230e87f980e3e73180dbd6db231c839bbf))
 
@@ -604,23 +669,25 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.27.2 ([`739f5d6`](https://github.com/crypkit/blockapi/commit/739f5d673843120bee6765865193eaa8a63f970a))
 
+
 ## v0.27.1 (2023-09-13)
 
-### Chore
+### Bug Fixes
+
+* fix: Don't detect errors on empty portfolio (#144) ([`157da4a`](https://github.com/crypkit/blockapi/commit/157da4a4ee4ce0d6166c75b7c95eb2f08ea210a5))
+
+### Chores
 
 * chore: Run CI only once when merging branch (#143) ([`38b2db5`](https://github.com/crypkit/blockapi/commit/38b2db5ed532a25255b3a65b0768e3b37cf569c1))
-
-### Fix
-
-* fix: Don&#39;t detect errors on empty portfolio (#144) ([`157da4a`](https://github.com/crypkit/blockapi/commit/157da4a4ee4ce0d6166c75b7c95eb2f08ea210a5))
 
 ### Unknown
 
 * 0.27.1 ([`327566a`](https://github.com/crypkit/blockapi/commit/327566a30dec97a276c7dc0bf20e2c7feb062600))
 
+
 ## v0.27.0 (2023-09-11)
 
-### Feature
+### Features
 
 * feat: Add new coingecko platforms mapping (#142) ([`f96424d`](https://github.com/crypkit/blockapi/commit/f96424deef055a7deb0a4a8b7a70fdc9ff8d30d5))
 
@@ -628,9 +695,10 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.27.0 ([`aa0fa11`](https://github.com/crypkit/blockapi/commit/aa0fa116ad59104f9a7984bf8c105f4362563396))
 
+
 ## v0.26.3 (2023-09-01)
 
-### Fix
+### Bug Fixes
 
 * fix: Remove unusable web3 limiter method (#141) ([`610e592`](https://github.com/crypkit/blockapi/commit/610e5928ba8bc02c971467b379b1b8eb58e983e1))
 
@@ -638,9 +706,14 @@ feat: fix cosmos fetching + added Celestia, Osmosis, dYdX ([`4b84688`](https://g
 
 * 0.26.3 ([`eaa9b81`](https://github.com/crypkit/blockapi/commit/eaa9b81b826471fa1c7748c42162e46ad55183d4))
 
+
 ## v0.26.2 (2023-09-01)
 
-### Chore
+### Bug Fixes
+
+* fix: Add tests for fetchers (#140) ([`fb205f5`](https://github.com/crypkit/blockapi/commit/fb205f588bcc4e564b9db056686fd8a229602fa8))
+
+### Chores
 
 * chore(deps): bump requests from 2.28.1 to 2.31.0 (#124)
 
@@ -655,32 +728,30 @@ updated-dependencies:
   dependency-type: direct:production
 ...
 
-Signed-off-by: dependabot[bot] &lt;support@github.com&gt;
-Co-authored-by: dependabot[bot] &lt;49699333+dependabot[bot]@users.noreply.github.com&gt; ([`1e74df9`](https://github.com/crypkit/blockapi/commit/1e74df9f7d00c24cec8dcc4da5f5a89363a13d4f))
-
-### Fix
-
-* fix: Add tests for fetchers (#140) ([`fb205f5`](https://github.com/crypkit/blockapi/commit/fb205f588bcc4e564b9db056686fd8a229602fa8))
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com> ([`1e74df9`](https://github.com/crypkit/blockapi/commit/1e74df9f7d00c24cec8dcc4da5f5a89363a13d4f))
 
 ### Unknown
 
 * 0.26.2 ([`c9f7486`](https://github.com/crypkit/blockapi/commit/c9f748606d7902cb968ab93541e5ad36b13a5aa2))
 
+
 ## v0.26.1 (2023-08-30)
 
-### Fix
+### Bug Fixes
 
 * fix: Add blockchains and mapping (#139)
 
-Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https://github.com/crypkit/blockapi/commit/bf20508a80ebca1b748f5eacb3c1b04b712759e1))
+Co-authored-by: galvanizze <marek.galvanek@gmail.com> ([`bf20508`](https://github.com/crypkit/blockapi/commit/bf20508a80ebca1b748f5eacb3c1b04b712759e1))
 
 ### Unknown
 
 * 0.26.1 ([`fc504a8`](https://github.com/crypkit/blockapi/commit/fc504a8e4e2d77254a143bc1262a0108acaa2c71))
 
+
 ## v0.26.0 (2023-08-23)
 
-### Feature
+### Features
 
 * feat: Refactor Debank fetching and parsing (#138) ([`fd7cb8c`](https://github.com/crypkit/blockapi/commit/fd7cb8ce82d11406bc1686d3de431dbf04675a5c))
 
@@ -688,9 +759,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * 0.26.0 ([`9259aff`](https://github.com/crypkit/blockapi/commit/9259aff2684b156e0f14122d5946a93de35c3d97))
 
+
 ## v0.25.0 (2023-08-17)
 
-### Feature
+### Features
 
 * feat: Improve V2 interface (#131) ([`133123d`](https://github.com/crypkit/blockapi/commit/133123d07f141483429ca2b8f26d1702be406907))
 
@@ -698,9 +770,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * 0.25.0 ([`cfe2c3a`](https://github.com/crypkit/blockapi/commit/cfe2c3a8b8484bbe1ddafed753ccf13a4a59114a))
 
+
 ## v0.24.2 (2023-07-31)
 
-### Fix
+### Bug Fixes
 
 * fix(debank): Pool fields availability (#137) ([`89498f9`](https://github.com/crypkit/blockapi/commit/89498f93469c204e0a3ad623003ffb2cfa461290))
 
@@ -708,35 +781,38 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * 0.24.2 ([`999314e`](https://github.com/crypkit/blockapi/commit/999314e0ac50d7c3ce2669fdfe46f68ebc8968fa))
 
+
 ## v0.24.1 (2023-07-28)
 
-### Chore
+### Bug Fixes
 
-* chore(ci): Fix semantic release configuration (#134) ([`e82d901`](https://github.com/crypkit/blockapi/commit/e82d90171d57585a059faabe3dfdeb869889e50c))
-
-### Fix
-
-* fix(release): Don&#39;t fail if no tag is present (#136) ([`3b55c19`](https://github.com/crypkit/blockapi/commit/3b55c192da14942ca8955a67a4e7e0bd16292168))
+* fix(release): Don't fail if no tag is present (#136) ([`3b55c19`](https://github.com/crypkit/blockapi/commit/3b55c192da14942ca8955a67a4e7e0bd16292168))
 
 * fix(debank): Remove unused TokenRole (#135) ([`fbf9d17`](https://github.com/crypkit/blockapi/commit/fbf9d170f920fdf9e86bceccebf77c54793b9675))
+
+### Chores
+
+* chore(ci): Fix semantic release configuration (#134) ([`e82d901`](https://github.com/crypkit/blockapi/commit/e82d90171d57585a059faabe3dfdeb869889e50c))
 
 ### Unknown
 
 * 0.24.1 ([`f9f66ed`](https://github.com/crypkit/blockapi/commit/f9f66eddf3a4f132579cecc5d3bd3f407d978e77))
 
+
 ## v0.24.0 (2023-07-28)
 
-### Chore
+### Chores
 
 * chore(ci): fix semantic-release version detection (#133) ([`eee8f33`](https://github.com/crypkit/blockapi/commit/eee8f3312e621f3a06bf39beeeb99f3477887a2a))
 
-### Feature
+### Features
 
 * feat(debank): Add PoolInfo (#132) ([`589026c`](https://github.com/crypkit/blockapi/commit/589026cb005c70ec629fd68343defd9e67c8f6e6))
 
+
 ## v0.23.0 (2023-07-14)
 
-### Feature
+### Features
 
 * feat: Move token list to Pool (#130) ([`436d765`](https://github.com/crypkit/blockapi/commit/436d765575e0a36d9e572dcbe89c3011d4d7beb5))
 
@@ -744,13 +820,14 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.23.0 ([`c7ee54b`](https://github.com/crypkit/blockapi/commit/c7ee54b32844cf51c9e4d5b23e024fec637978b9))
 
+
 ## v0.22.0 (2023-07-13)
 
-### Chore
+### Chores
 
 * chore(debank): Add default values for pydantic optional fields (#129) ([`2eeae2b`](https://github.com/crypkit/blockapi/commit/2eeae2b627cb0cb063f5025d6ebeccd6900f9ba4))
 
-### Feature
+### Features
 
 * feat: add pending_transaction asset type ([`68e9abf`](https://github.com/crypkit/blockapi/commit/68e9abfe24a1fb96074b3160451ffb2b9b5e5c8a))
 
@@ -758,9 +835,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.22.0 ([`258284f`](https://github.com/crypkit/blockapi/commit/258284f0650aef1eec07d33fdbdb9d3be99716c9))
 
+
 ## v0.21.3 (2023-05-31)
 
-### Fix
+### Bug Fixes
 
 * fix: TrezorLitecoinApi base coin (#126) ([`a5b9fef`](https://github.com/crypkit/blockapi/commit/a5b9fefda158b2a2005b4a6c176d5accb1aae455))
 
@@ -770,9 +848,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * tests(BTC, LTC): Compare data from different sources (#125) ([`0c19e6f`](https://github.com/crypkit/blockapi/commit/0c19e6f7a3d5798a84966e693285379fde01d8ca))
 
+
 ## v0.21.2 (2023-05-22)
 
-### Fix
+### Bug Fixes
 
 * fix: Disable Solana staking endpoint (#123) ([`ed2b9f3`](https://github.com/crypkit/blockapi/commit/ed2b9f3f9a8a19fa470ffeabdeedddc5571c8995))
 
@@ -780,9 +859,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.21.2 ([`10ea10d`](https://github.com/crypkit/blockapi/commit/10ea10d7a2de9a1d733022e90c54329692f17a75))
 
+
 ## v0.21.1 (2023-05-16)
 
-### Fix
+### Bug Fixes
 
 * fix: fix requirements ([`c453850`](https://github.com/crypkit/blockapi/commit/c453850bacfc9df40760b1add714cd80fa01a157))
 
@@ -790,9 +870,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.21.1 ([`488a894`](https://github.com/crypkit/blockapi/commit/488a89474d3a58f46360c71de83f564260df991e))
 
+
 ## v0.21.0 (2023-05-16)
 
-### Feature
+### Features
 
 * feat: fix requirements ([`5ce61c0`](https://github.com/crypkit/blockapi/commit/5ce61c03bbe7bbd02503d14395dcb949b6abb928))
 
@@ -804,9 +885,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.21.0 ([`da2bc85`](https://github.com/crypkit/blockapi/commit/da2bc85aefbde2ff71254eb60b7c95aa0eac4fd0))
 
+
 ## v0.20.0 (2023-04-24)
 
-### Feature
+### Features
 
 * feat: add solana staked balance ([`828df57`](https://github.com/crypkit/blockapi/commit/828df576a1146faea273bf469dba7af7d49ffcbf))
 
@@ -814,9 +896,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.20.0 ([`da54767`](https://github.com/crypkit/blockapi/commit/da54767ffe9176d5acbf696f78fa9eed6ec4111e))
 
+
 ## v0.19.4 (2023-04-20)
 
-### Fix
+### Bug Fixes
 
 * fix(TrezorApi): send UA in headers (#120) ([`316cf24`](https://github.com/crypkit/blockapi/commit/316cf247f79776967f7227de9f1b51ba89c76524))
 
@@ -824,9 +907,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.19.4 ([`be4ea1c`](https://github.com/crypkit/blockapi/commit/be4ea1c517c2249e32044d18221f6cca718ee5b6))
 
+
 ## v0.19.3 (2023-04-14)
 
-### Fix
+### Bug Fixes
 
 * fix(coingecko): Oasis chain mapping (#119) ([`1e69514`](https://github.com/crypkit/blockapi/commit/1e6951436eea7360f43577c5e74173f3e5a665e6))
 
@@ -834,9 +918,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.19.3 ([`e5acbdb`](https://github.com/crypkit/blockapi/commit/e5acbdbab527f4cfde567c4eefd6c1a5a2a47aec))
 
+
 ## v0.19.2 (2023-04-14)
 
-### Fix
+### Bug Fixes
 
 * fix: Debank portfolio parse crash on unknown chain (#118) ([`57a4322`](https://github.com/crypkit/blockapi/commit/57a432245e9f7b73279f2b37e0c686d451ebee19))
 
@@ -844,9 +929,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.19.2 ([`4850f84`](https://github.com/crypkit/blockapi/commit/4850f841c2c85282c7266607d39ab4453e1e8343))
 
+
 ## v0.19.1 (2023-04-13)
 
-### Fix
+### Bug Fixes
 
 * fix(debank, coingecko): Add blockchains and mapping (#117) ([`368ec1d`](https://github.com/crypkit/blockapi/commit/368ec1d251e647faf6468937bc222eaae5898335))
 
@@ -854,9 +940,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.19.1 ([`aded908`](https://github.com/crypkit/blockapi/commit/aded9088f42737d32256b1d37c43efa6478b139f))
 
+
 ## v0.19.0 (2023-04-13)
 
-### Feature
+### Features
 
 * feat: Add V2 Bitcoin Trezor API (#116) ([`e82c4b8`](https://github.com/crypkit/blockapi/commit/e82c4b8260684d577fdada4bad8fdfce8f1705fc))
 
@@ -864,9 +951,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 * Update to v0.19.0 ([`c8f5c15`](https://github.com/crypkit/blockapi/commit/c8f5c157060a5885c0151a6f7627bffe33ae567d))
 
+
 ## v0.18.0 (2023-04-04)
 
-### Feature
+### Features
 
 * feat: synthetix: AssetType.STAKED contains collateral. ([`f8e73a8`](https://github.com/crypkit/blockapi/commit/f8e73a8510fc539e6ff815cd88b77275c8530e31))
 
@@ -878,9 +966,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`bf20508`](https:/
 
 feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/crypkit/blockapi/commit/10b750db6af2063d6df9d763ade90a4a47187792))
 
+
 ## v0.17.1 (2023-03-23)
 
-### Fix
+### Bug Fixes
 
 * fix: Perpetual not fetching data (#114) ([`f0fdf79`](https://github.com/crypkit/blockapi/commit/f0fdf79d39d5376a7494154e246570e505486cc9))
 
@@ -888,13 +977,14 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.17.1 ([`fee22d9`](https://github.com/crypkit/blockapi/commit/fee22d906b097a67bac11a99aac3905ba5e73d67))
 
+
 ## v0.17.0 (2023-03-21)
 
-### Chore
+### Chores
 
 * chore: Update pre-commit dependencies to current versions (#111) ([`c0efb21`](https://github.com/crypkit/blockapi/commit/c0efb2117ad62d3bfb96169a86030c8da237f31b))
 
-### Feature
+### Features
 
 * feat(debank): Add usage endpoint (#113) ([`cc295d3`](https://github.com/crypkit/blockapi/commit/cc295d36b84e7ac80eea53f31b105149f84408d2))
 
@@ -902,9 +992,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.17.0 ([`5c1887d`](https://github.com/crypkit/blockapi/commit/5c1887d6b79d737b0b04dc31cc718e04db9ca26a))
 
+
 ## v0.16.1 (2023-03-21)
 
-### Fix
+### Bug Fixes
 
 * fix: Limit web3 version (#112) ([`4260ea9`](https://github.com/crypkit/blockapi/commit/4260ea956f1156a150826c3df45052afe8affc73))
 
@@ -912,9 +1003,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.16.1 ([`5e5401f`](https://github.com/crypkit/blockapi/commit/5e5401ff2b5fc4b86aa5a04264ee3ec933491da8))
 
+
 ## v0.16.0 (2023-03-08)
 
-### Feature
+### Features
 
 * feat: Add position_index to distinguish reused LPs (#110) ([`6ab1a27`](https://github.com/crypkit/blockapi/commit/6ab1a272caffb98ea81e06b2d85ddb3b5a37c0c1))
 
@@ -922,9 +1014,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.16.0 ([`7959311`](https://github.com/crypkit/blockapi/commit/7959311cc0ea37cb6374c392309ed05b595ee5e8))
 
+
 ## v0.15.5 (2023-03-03)
 
-### Fix
+### Bug Fixes
 
 * fix: Different AssetType for rewards for LP and Locked assets ([`b0793ba`](https://github.com/crypkit/blockapi/commit/b0793ba3b9de6725ff125911fbdfadcd65bafff2))
 
@@ -932,9 +1025,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.15.5 ([`e766359`](https://github.com/crypkit/blockapi/commit/e76635935529f42ba3316f680cd0b95658c9676b))
 
+
 ## v0.15.4 (2023-02-22)
 
-### Fix
+### Bug Fixes
 
 * fix: Parse Aurora AETH (#109) ([`4e0b3a1`](https://github.com/crypkit/blockapi/commit/4e0b3a173b5c2352c6f2bc3f4135ad3ab1172905))
 
@@ -942,9 +1036,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.15.4 ([`321dc5b`](https://github.com/crypkit/blockapi/commit/321dc5b186991c6707d7b1bfe5a8a33e31f8bbee))
 
+
 ## v0.15.3 (2023-02-15)
 
-### Fix
+### Bug Fixes
 
 * fix: Add AssetType Priced Vesting (#108) ([`95c140c`](https://github.com/crypkit/blockapi/commit/95c140cb5d5948ddfa56b1c9365de7f00f9a85c1))
 
@@ -952,9 +1047,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.15.3 ([`4eadfc0`](https://github.com/crypkit/blockapi/commit/4eadfc01875b217578565fbfbdbba8a0bb7a2026))
 
+
 ## v0.15.2 (2023-02-13)
 
-### Fix
+### Bug Fixes
 
 * fix: Update AssetTypes (#107) ([`858f942`](https://github.com/crypkit/blockapi/commit/858f94235c954bfeb9ed04c734b3719275f3055b))
 
@@ -962,9 +1058,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.15.2 ([`21cf507`](https://github.com/crypkit/blockapi/commit/21cf5073fc1f17c1cc4373093f71107d3403085f))
 
+
 ## v0.15.1 (2023-02-13)
 
-### Fix
+### Bug Fixes
 
 * fix: Parse pool name from description if provided (#106) ([`240ed21`](https://github.com/crypkit/blockapi/commit/240ed21ae5c2ea7bfdc4c23fe4369b58b86d3b05))
 
@@ -972,9 +1069,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.15.1 ([`e130185`](https://github.com/crypkit/blockapi/commit/e1301858cebb45f8197c400e4b4e64d47fb6dc8e))
 
+
 ## v0.15.0 (2023-02-13)
 
-### Feature
+### Features
 
 * feat: snx revision ([`ee676a1`](https://github.com/crypkit/blockapi/commit/ee676a1e802b969a32ec1ee2083af5a1fb00667a))
 
@@ -982,9 +1080,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.15.0 ([`6748666`](https://github.com/crypkit/blockapi/commit/67486661c71dd7560cef842f02bdd990c5fa2543))
 
+
 ## v0.14.10 (2023-02-10)
 
-### Fix
+### Bug Fixes
 
 * fix: Add missing Canto mapping (#104) ([`7ef4325`](https://github.com/crypkit/blockapi/commit/7ef43254ce434c894781f8d70a3da5f25c14a286))
 
@@ -992,9 +1091,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.10 ([`666d38d`](https://github.com/crypkit/blockapi/commit/666d38d3b1ef1b2f9106ee008235a12d15ba752f))
 
+
 ## v0.14.9 (2023-02-10)
 
-### Fix
+### Bug Fixes
 
 * fix: Debank keep chain and protocol on coin by symbol (#103) ([`23aa321`](https://github.com/crypkit/blockapi/commit/23aa3212dcdb21df2c98ed436645fd5c0b1fb9bf))
 
@@ -1002,9 +1102,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.9 ([`caabe42`](https://github.com/crypkit/blockapi/commit/caabe42aae2703e8a7d8a83f7f7ce72d28386755))
 
+
 ## v0.14.8 (2023-02-10)
 
-### Fix
+### Bug Fixes
 
 * fix: skip failing test ([`abe56af`](https://github.com/crypkit/blockapi/commit/abe56af4022cc72748d061a57ceb9316ee61817c))
 
@@ -1030,23 +1131,25 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.8 ([`01f8b1c`](https://github.com/crypkit/blockapi/commit/01f8b1c3141d845b5c344a0b11903059709a6d46))
 
+
 ## v0.14.7 (2023-02-09)
 
-### Chore
-
-* chore: Reformat using new black version (#101) ([`c271b48`](https://github.com/crypkit/blockapi/commit/c271b488a309f6cbd948adbf6e61502e049ce72c))
-
-### Fix
+### Bug Fixes
 
 * fix: Select better coin if contract address is chain (#100) ([`7b79b8c`](https://github.com/crypkit/blockapi/commit/7b79b8c88ab9d6727d7518c3012f70c4e3146977))
+
+### Chores
+
+* chore: Reformat using new black version (#101) ([`c271b48`](https://github.com/crypkit/blockapi/commit/c271b488a309f6cbd948adbf6e61502e049ce72c))
 
 ### Unknown
 
 * Update to v0.14.7 ([`b04fe40`](https://github.com/crypkit/blockapi/commit/b04fe4077036c1558449751cdbe56c01adea51b2))
 
+
 ## v0.14.6 (2023-01-31)
 
-### Fix
+### Bug Fixes
 
 * fix: fix solana contract address and ignore using coingecko ids for cw20 tokens ([`9e90d57`](https://github.com/crypkit/blockapi/commit/9e90d57ddcb4c2bd8aa6e27f549a85231b476ff5))
 
@@ -1056,9 +1159,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.6 ([`042683c`](https://github.com/crypkit/blockapi/commit/042683c173725eec5573cd9bdc029eec147b99c0))
 
+
 ## v0.14.5 (2023-01-11)
 
-### Fix
+### Bug Fixes
 
 * fix: Skip unknown chains when fetching DeBank (#96) ([`a75afc5`](https://github.com/crypkit/blockapi/commit/a75afc50fb7ac14bacceb365192a11bbabd1e812))
 
@@ -1066,9 +1170,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.5 ([`ee010d8`](https://github.com/crypkit/blockapi/commit/ee010d85a43d67308db054c31dd3929c70f857ab))
 
+
 ## v0.14.4 (2023-01-10)
 
-### Fix
+### Bug Fixes
 
 * fix: fix fetching LUNA ([`3b77950`](https://github.com/crypkit/blockapi/commit/3b779506cd6cf4ab0bc14345535019b3de7e208a))
 
@@ -1076,9 +1181,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.4 ([`3f3a61c`](https://github.com/crypkit/blockapi/commit/3f3a61ce309f75582e79c8be52fcb5fbbf7b3533))
 
+
 ## v0.14.3 (2022-12-20)
 
-### Fix
+### Bug Fixes
 
 * fix: Update coins (#90) ([`1667891`](https://github.com/crypkit/blockapi/commit/16678918c702f777f138bd0f8ff98cdb4d59fbcb))
 
@@ -1086,9 +1192,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.3 ([`188c697`](https://github.com/crypkit/blockapi/commit/188c697cdd5e205a4b8773cdd8f9c83b9f4dab9e))
 
+
 ## v0.14.2 (2022-12-16)
 
-### Fix
+### Bug Fixes
 
 * fix: add tests ([`eabe119`](https://github.com/crypkit/blockapi/commit/eabe119ef885ca7196abaf11652e13bb862a045c))
 
@@ -1100,9 +1207,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.2 ([`524c469`](https://github.com/crypkit/blockapi/commit/524c46953d784fbf66b48e3e46f462b9190adc34))
 
+
 ## v0.14.1 (2022-12-15)
 
-### Fix
+### Bug Fixes
 
 * fix: Update coingecko mapping (#87) ([`06c8810`](https://github.com/crypkit/blockapi/commit/06c8810ba003b3b0be1f0a5219908fb645a26e33))
 
@@ -1110,9 +1218,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.1 ([`c633b6d`](https://github.com/crypkit/blockapi/commit/c633b6d77dd88c8ae50f61cbe4e9e7725cd0602e))
 
+
 ## v0.14.0 (2022-12-15)
 
-### Feature
+### Features
 
 * feat: temporary ignore Solana NFTs (or unknown tokens) ([`b7fa209`](https://github.com/crypkit/blockapi/commit/b7fa20914634bc283cd544c074123b62d3785a98))
 
@@ -1120,9 +1229,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.14.0 ([`f091429`](https://github.com/crypkit/blockapi/commit/f091429a0048d1288de016d4f450db787749382f))
 
+
 ## v0.13.0 (2022-12-15)
 
-### Feature
+### Features
 
 * feat: Add method get_unspent to ChainSoAPI (#81)
 
@@ -1134,9 +1244,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.13.0 ([`da7e6e9`](https://github.com/crypkit/blockapi/commit/da7e6e9ac5cd55c5dca274c54c497527b38eb6df))
 
+
 ## v0.12.0 (2022-12-07)
 
-### Feature
+### Features
 
 * feat: Add Blockchair LTC fetching (#66) ([`04dfc8f`](https://github.com/crypkit/blockapi/commit/04dfc8fa5af41619272f3f0db215d805704d9a72))
 
@@ -1144,9 +1255,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.12.0 ([`5e3672d`](https://github.com/crypkit/blockapi/commit/5e3672d67d19977aa1a332e2ad3b598b0e8087d4))
 
+
 ## v0.11.0 (2022-12-07)
 
-### Feature
+### Features
 
 * feat: Add blockchainos (#64) ([`ad39c83`](https://github.com/crypkit/blockapi/commit/ad39c8393df9e8bce177f4f6f1b10ad2ce62ba9b))
 
@@ -1154,9 +1266,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.11.0 ([`f631164`](https://github.com/crypkit/blockapi/commit/f6311641f0acae8524da2b94d5df935092ecb440))
 
+
 ## v0.10.0 (2022-12-01)
 
-### Feature
+### Features
 
 * feat: Extend Blockchain Mapping (#86) ([`8447b68`](https://github.com/crypkit/blockapi/commit/8447b680bb069f9653f2c3ff232956f1b262fbb4))
 
@@ -1164,9 +1277,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.10.0 ([`4bb6618`](https://github.com/crypkit/blockapi/commit/4bb6618f6e8196a13fdba1cc8b1bbd8451a8319b))
 
+
 ## v0.9.0 (2022-11-30)
 
-### Feature
+### Features
 
 * feat: add kusama support ([`d7e8380`](https://github.com/crypkit/blockapi/commit/d7e8380a7d6edf79d71430c52a94a2f8f757fd26))
 
@@ -1174,9 +1288,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.9.0 ([`6a43a85`](https://github.com/crypkit/blockapi/commit/6a43a854646521ba191add5aa8d973ad349f4606))
 
+
 ## v0.8.1 (2022-11-30)
 
-### Fix
+### Bug Fixes
 
 * fix: Make tests less change resisting (#85) ([`55091b7`](https://github.com/crypkit/blockapi/commit/55091b7c4f31c3ed3faad0075c0859e03db60fa4))
 
@@ -1184,9 +1299,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.8.1 ([`f245d09`](https://github.com/crypkit/blockapi/commit/f245d0969a54ac3195d7d2cea81c0bc98cac725b))
 
+
 ## v0.8.0 (2022-11-29)
 
-### Feature
+### Features
 
 * feat: Add Blockchair DOGE fetching (#68) ([`fd009ea`](https://github.com/crypkit/blockapi/commit/fd009ea193b8984b60edf32186455201abc3497b))
 
@@ -1194,15 +1310,16 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.8.0 ([`51ea51e`](https://github.com/crypkit/blockapi/commit/51ea51e53138f76725fc48fe3ea5bdcb3e1ee3f4))
 
+
 ## v0.7.0 (2022-11-16)
 
-### Chore
+### Chores
 
 * chore: Make action skip when there is no release (#83) ([`4de25c2`](https://github.com/crypkit/blockapi/commit/4de25c283f4174ada0c26e3865ee6cd5c3b566e4))
 
 * chore: Upgrade actions (#80) ([`d62d7db`](https://github.com/crypkit/blockapi/commit/d62d7db78afc8d83128bac12a88dd7b01661168e))
 
-### Feature
+### Features
 
 * feat: Blockchain mapping (#82) ([`f84824f`](https://github.com/crypkit/blockapi/commit/f84824f2f496c660861dfc3c133b8ec3af5ca7ca))
 
@@ -1210,9 +1327,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.7.0 ([`b0fd720`](https://github.com/crypkit/blockapi/commit/b0fd720130d3d09050d34d55338462c79300aebd))
 
+
 ## v0.6.0 (2022-11-08)
 
-### Feature
+### Features
 
 * feat: Customize API endpoints (#79) ([`7f98c32`](https://github.com/crypkit/blockapi/commit/7f98c327fce5231576b685fea1b5d7596309abdc))
 
@@ -1220,9 +1338,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.6.0 ([`0b87934`](https://github.com/crypkit/blockapi/commit/0b879349db9c64b7c820f53ae63af54733c20d96))
 
+
 ## v0.5.0 (2022-11-01)
 
-### Feature
+### Features
 
 * feat: Add Blockchair BTC fetching (#65) ([`c6c00fc`](https://github.com/crypkit/blockapi/commit/c6c00fce934115f6f8323a4e42cbb9738ff15d8b))
 
@@ -1230,9 +1349,10 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.5.0 ([`928ef75`](https://github.com/crypkit/blockapi/commit/928ef75fc3f4be6f005cb0f90673249f6b4142a0))
 
+
 ## v0.4.2 (2022-10-26)
 
-### Fix
+### Bug Fixes
 
 * fix: Tests and repr implementation (#76) ([`cd746f1`](https://github.com/crypkit/blockapi/commit/cd746f1c716204d62e6b0480fca73d3a90afeae3))
 
@@ -1240,41 +1360,44 @@ feat: SNX AssetType.STAKED contains collateral ([`10b750d`](https://github.com/c
 
 * Update to v0.4.2 ([`1a44a4b`](https://github.com/crypkit/blockapi/commit/1a44a4be0b0585db85187f93f95550c30ff3813e))
 
+
 ## v0.4.1 (2022-10-26)
 
-### Chore
-
-* chore: Verify PR message (#74) ([`87df219`](https://github.com/crypkit/blockapi/commit/87df21920544aaf43c5fa9b256b26ce43d0f8bb7))
-
-### Fix
+### Bug Fixes
 
 * fix(api): Simplify Synthetix and Perpetual imports (#75) ([`e1e17e3`](https://github.com/crypkit/blockapi/commit/e1e17e39d99d07bd344d4f9995e65bb9c168ab7e))
+
+### Chores
+
+* chore: Verify PR message (#74) ([`87df219`](https://github.com/crypkit/blockapi/commit/87df21920544aaf43c5fa9b256b26ce43d0f8bb7))
 
 ### Unknown
 
 * Update to v0.4.1 ([`3dc1493`](https://github.com/crypkit/blockapi/commit/3dc149318bec9958501a4cca8c5b5edefd5b1388))
 
+
 ## v0.4.0 (2022-10-11)
 
-### Feature
-
-* feat: Customize API base URL (#73)
-
-Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`5db6ba5`](https://github.com/crypkit/blockapi/commit/5db6ba5d57c09af982f0af47211a2d88476c1759))
-
-### Fix
+### Bug Fixes
 
 * fix: Cleanup Coin definitions (#67) ([`280b83b`](https://github.com/crypkit/blockapi/commit/280b83bb1b537b3064687ceda79bae99700d0adf))
 
 * fix: Add Synthetix coin (#72) ([`fd75722`](https://github.com/crypkit/blockapi/commit/fd757225b6af0baf22ebd1fca309cc7887783d3c))
 
+### Features
+
+* feat: Customize API base URL (#73)
+
+Co-authored-by: galvanizze <marek.galvanek@gmail.com> ([`5db6ba5`](https://github.com/crypkit/blockapi/commit/5db6ba5d57c09af982f0af47211a2d88476c1759))
+
 ### Unknown
 
 * Update to v0.4.0 ([`2d75d4d`](https://github.com/crypkit/blockapi/commit/2d75d4db4765d9cfc3d24813eec895e19af5b367))
 
+
 ## v0.3.0 (2022-10-07)
 
-### Feature
+### Features
 
 * feat: Add Synthetix fetching (#63) ([`4f336ab`](https://github.com/crypkit/blockapi/commit/4f336ab300138eb7a9315d3e13c7516160481a59))
 
@@ -1290,9 +1413,10 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`5db6ba5`](https:/
 
 * Use correct version of pypi publish and create changelog (#71) ([`7c07a33`](https://github.com/crypkit/blockapi/commit/7c07a33b70cd5073a261de6e2d1460194bfe01d2))
 
+
 ## v0.2.0 (2022-10-06)
 
-### Feature
+### Features
 
 * feat(ci): Add GitHub actions (#61) ([`2581d8b`](https://github.com/crypkit/blockapi/commit/2581d8b67a47f15f7f3b3c653c4fe1f5d41aa4c3))
 
@@ -1304,9 +1428,52 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`5db6ba5`](https:/
 
 * Enable version upgrading and releasing to pypi (#69) ([`43c36c2`](https://github.com/crypkit/blockapi/commit/43c36c2801a405caa80e8a7d358e0c3cfcf6dfd0))
 
+
 ## v0.1.23 (2022-09-23)
 
-### Feature
+### Bug Fixes
+
+* fix(debank): Update API endpoints (#58) ([`eb169ac`](https://github.com/crypkit/blockapi/commit/eb169ace1c5b901539d043d7262891480d8ebe78))
+
+* fix(debank): BNB decimals (#57) ([`af1c66e`](https://github.com/crypkit/blockapi/commit/af1c66ef68435f227bedc7b7e07aadb35f7d7eb8))
+
+* fix(debank): Fix debank fetching (#43)
+
+* fix(debank): Fix fetching from debank
+
+* fix(debank): less strict getting of tokenset ([`fecec0f`](https://github.com/crypkit/blockapi/commit/fecec0ff57a7c354d2b7a17a3a26fa3b1a4b369b))
+
+* fix: solana: use of reduceby ([`6864440`](https://github.com/crypkit/blockapi/commit/68644400a82bfc7b51a808b6f2c4725e7abefa73))
+
+* fix: solana: tried to make it readable ([`6a8360b`](https://github.com/crypkit/blockapi/commit/6a8360b191ea37651febcbcc12ece496d17782d4))
+
+* fix: solana: group by coin address (coins with tags set are not hashable) ([`da6dac1`](https://github.com/crypkit/blockapi/commit/da6dac16d8e0d331cf34b1213ffe3fcfad78229a))
+
+* fix: `make_checksum_address` returns `None` if `ValueError` ([`53a166f`](https://github.com/crypkit/blockapi/commit/53a166f18db2f5562857ada9e853e4c0f2d22cc2))
+
+* fix(debank): Actually get protocol from fetched data (#40) ([`3f26b5b`](https://github.com/crypkit/blockapi/commit/3f26b5b198cf1a15239f1f1dd7fff0e4869f1d31))
+
+* fix(v2): Unify enums - AssetTypes (#37) ([`b198918`](https://github.com/crypkit/blockapi/commit/b19891839dbb9ae7b11d20e951dfc6cdda2a64ee))
+
+* fix: fixed blochains in covalent api, added missing blockchains. ([`5d8cce7`](https://github.com/crypkit/blockapi/commit/5d8cce7485b602235376612a1cece7258bee5d97))
+
+* fix: changed CHAIN_ID and api_options to abstract properties, removed chain_id from the constructor. ([`5a93303`](https://github.com/crypkit/blockapi/commit/5a93303502a8ce45b852dd15335e7bf03a171a91))
+
+* fix: fix eth address ([`3ff1e0f`](https://github.com/crypkit/blockapi/commit/3ff1e0f293c309c65513217a9ce7a6bd0c45515e))
+
+* fix: eth and ethplorer ([`c481044`](https://github.com/crypkit/blockapi/commit/c481044675adab93a579bf3dd168048363f4c077))
+
+* fix: amberdata - ignore tokens when decimals = 0 ([`69b1cdf`](https://github.com/crypkit/blockapi/commit/69b1cdfee0019bd48876ad0a83d5f950263ea902))
+
+* fix: return only non-zero solana balances ([`a5291ab`](https://github.com/crypkit/blockapi/commit/a5291ab46625035cb03ff9e7831977c54576229f))
+
+* fix(terra): fix symbols mapping and converting amounts ([`247a9f0`](https://github.com/crypkit/blockapi/commit/247a9f0646efde12b68511f25086a0747dd6bcb8))
+
+* fix(amberdata): fix get_balances ([`a100f7e`](https://github.com/crypkit/blockapi/commit/a100f7e054f5d3e46647ad5f44668c75c4d6e9af))
+
+* fix(ethplorer): add default symbol and name in case they're missing ([`041376a`](https://github.com/crypkit/blockapi/commit/041376a7ad8c78c1733a81521b9aa1c22cb802c2))
+
+### Features
 
 * feat(debank): Properly convert protocol chain (#59) ([`feea912`](https://github.com/crypkit/blockapi/commit/feea91244a2198b8975f3e983eb731d2c6676d84))
 
@@ -1324,7 +1491,7 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`5db6ba5`](https:/
 
 * feat(debank): Add pool_id  to BalanceItem
 
-* Rename TokenUse -&gt; TokenRole
+* Rename TokenUse -> TokenRole
 
 * Add LiquidityPool token role ([`89dc284`](https://github.com/crypkit/blockapi/commit/89dc2849c80f9cd4e599e46f2b01f43e09f98a90))
 
@@ -1354,7 +1521,7 @@ Co-authored-by: galvanizze &lt;marek.galvanek@gmail.com&gt; ([`5db6ba5`](https:/
 
 * chore(blockapi): Update version
 
-* fix(debank): Don&#39;t convert bool to string ([`56a1e36`](https://github.com/crypkit/blockapi/commit/56a1e364651e8dbf97dc50d2c89ac4f3aef55f93))
+* fix(debank): Don't convert bool to string ([`56a1e36`](https://github.com/crypkit/blockapi/commit/56a1e364651e8dbf97dc50d2c89ac4f3aef55f93))
 
 * feat: bump version to 0.1.14. ([`7a6f31e`](https://github.com/crypkit/blockapi/commit/7a6f31e3186b22bfe23b301ac9f73cf9425263e1))
 
@@ -1450,7 +1617,7 @@ all providers and not all subclasses were tested) ([`956bdf6`](https://github.co
 
 * feat(alethio): rename contract address field in get_balance ([`64335e3`](https://github.com/crypkit/blockapi/commit/64335e30392617fba5f7be5b8a521fec67dd9f4e))
 
-* feat(request): don&#39;t use basic rate limiter by default ([`2d7420d`](https://github.com/crypkit/blockapi/commit/2d7420d6e4556a96804f593a0b42b6fca5118117))
+* feat(request): don't use basic rate limiter by default ([`2d7420d`](https://github.com/crypkit/blockapi/commit/2d7420d6e4556a96804f593a0b42b6fca5118117))
 
 * feat(release): new release ([`3d86d60`](https://github.com/crypkit/blockapi/commit/3d86d60bdce0fa1dc6f926e38b453f605650cbc1))
 
@@ -1468,49 +1635,7 @@ all providers and not all subclasses were tested) ([`956bdf6`](https://github.co
 
 * feat(test): decred tests + minor fixes on decred (#14) ([`1d2a0c8`](https://github.com/crypkit/blockapi/commit/1d2a0c8c8e96a70daa18709c8ab948137bdfe99e))
 
-### Fix
-
-* fix(debank): Update API endpoints (#58) ([`eb169ac`](https://github.com/crypkit/blockapi/commit/eb169ace1c5b901539d043d7262891480d8ebe78))
-
-* fix(debank): BNB decimals (#57) ([`af1c66e`](https://github.com/crypkit/blockapi/commit/af1c66ef68435f227bedc7b7e07aadb35f7d7eb8))
-
-* fix(debank): Fix debank fetching (#43)
-
-* fix(debank): Fix fetching from debank
-
-* fix(debank): less strict getting of tokenset ([`fecec0f`](https://github.com/crypkit/blockapi/commit/fecec0ff57a7c354d2b7a17a3a26fa3b1a4b369b))
-
-* fix: solana: use of reduceby ([`6864440`](https://github.com/crypkit/blockapi/commit/68644400a82bfc7b51a808b6f2c4725e7abefa73))
-
-* fix: solana: tried to make it readable ([`6a8360b`](https://github.com/crypkit/blockapi/commit/6a8360b191ea37651febcbcc12ece496d17782d4))
-
-* fix: solana: group by coin address (coins with tags set are not hashable) ([`da6dac1`](https://github.com/crypkit/blockapi/commit/da6dac16d8e0d331cf34b1213ffe3fcfad78229a))
-
-* fix: `make_checksum_address` returns `None` if `ValueError` ([`53a166f`](https://github.com/crypkit/blockapi/commit/53a166f18db2f5562857ada9e853e4c0f2d22cc2))
-
-* fix(debank): Actually get protocol from fetched data (#40) ([`3f26b5b`](https://github.com/crypkit/blockapi/commit/3f26b5b198cf1a15239f1f1dd7fff0e4869f1d31))
-
-* fix(v2): Unify enums - AssetTypes (#37) ([`b198918`](https://github.com/crypkit/blockapi/commit/b19891839dbb9ae7b11d20e951dfc6cdda2a64ee))
-
-* fix: fixed blochains in covalent api, added missing blockchains. ([`5d8cce7`](https://github.com/crypkit/blockapi/commit/5d8cce7485b602235376612a1cece7258bee5d97))
-
-* fix: changed CHAIN_ID and api_options to abstract properties, removed chain_id from the constructor. ([`5a93303`](https://github.com/crypkit/blockapi/commit/5a93303502a8ce45b852dd15335e7bf03a171a91))
-
-* fix: fix eth address ([`3ff1e0f`](https://github.com/crypkit/blockapi/commit/3ff1e0f293c309c65513217a9ce7a6bd0c45515e))
-
-* fix: eth and ethplorer ([`c481044`](https://github.com/crypkit/blockapi/commit/c481044675adab93a579bf3dd168048363f4c077))
-
-* fix: amberdata - ignore tokens when decimals = 0 ([`69b1cdf`](https://github.com/crypkit/blockapi/commit/69b1cdfee0019bd48876ad0a83d5f950263ea902))
-
-* fix: return only non-zero solana balances ([`a5291ab`](https://github.com/crypkit/blockapi/commit/a5291ab46625035cb03ff9e7831977c54576229f))
-
-* fix(terra): fix symbols mapping and converting amounts ([`247a9f0`](https://github.com/crypkit/blockapi/commit/247a9f0646efde12b68511f25086a0747dd6bcb8))
-
-* fix(amberdata): fix get_balances ([`a100f7e`](https://github.com/crypkit/blockapi/commit/a100f7e054f5d3e46647ad5f44668c75c4d6e9af))
-
-* fix(ethplorer): add default symbol and name in case they&#39;re missing ([`041376a`](https://github.com/crypkit/blockapi/commit/041376a7ad8c78c1733a81521b9aa1c22cb802c2))
-
-### Refactor
+### Refactoring
 
 * refactor(api): overflows cosmetic changes + cosmos functional fixes + (#13)
 
@@ -1576,7 +1701,7 @@ fix: `make_checksum_address` returns `None` if `ValueError` ([`664c617`](https:/
 
 * fix: Sort Blockchain enum alphabetically ([`96502c2`](https://github.com/crypkit/blockapi/commit/96502c2340b0a6b2f33b35f168be2e608de3dfc7))
 
-* fix (Debank): Don&#39;t return empty asset type (#34) ([`2bdb131`](https://github.com/crypkit/blockapi/commit/2bdb131fff30157952868cfe7ef0e523d411fb4c))
+* fix (Debank): Don't return empty asset type (#34) ([`2bdb131`](https://github.com/crypkit/blockapi/commit/2bdb131fff30157952868cfe7ef0e523d411fb4c))
 
 * Feat: Add DeBank API (#32)
 
@@ -1609,7 +1734,7 @@ F v2 extend ([`83178b2`](https://github.com/crypkit/blockapi/commit/83178b2f3b2e
 
 * set rate-limits, inactive old apis, reformatting and minor bugs ([`a3423a6`](https://github.com/crypkit/blockapi/commit/a3423a6d7509c7a6b0ca1f0ae506a67446807c32))
 
-* ontology: update version (v1 -&gt; v2) ([`aaea862`](https://github.com/crypkit/blockapi/commit/aaea862624b0f26d34c314985f3b33974a32363e))
+* ontology: update version (v1 -> v2) ([`aaea862`](https://github.com/crypkit/blockapi/commit/aaea862624b0f26d34c314985f3b33974a32363e))
 
 * amberdata: update rate-limit ([`455137d`](https://github.com/crypkit/blockapi/commit/455137d4a2f6c70259192341d457e6cd2f0078bc))
 
@@ -1633,7 +1758,7 @@ feat(api): new api TzStats implementation ([`690a91a`](https://github.com/crypki
 
 feat(terra): terra money implementation ([`3422d4e`](https://github.com/crypkit/blockapi/commit/3422d4e23d56166b79ae64c9b3456c39fdb5631b))
 
-* Merge remote-tracking branch &#39;origin/master&#39;
+* Merge remote-tracking branch 'origin/master'
 
 # Conflicts:
 #	setup.py ([`07a9469`](https://github.com/crypkit/blockapi/commit/07a946932bc09ffcad141ca18990b15c5611340b))
@@ -1654,7 +1779,7 @@ feat(terra): terra money implementation ([`3422d4e`](https://github.com/crypkit/
 
 * increase version ([`1799358`](https://github.com/crypkit/blockapi/commit/17993584600546b8adf28b6197a3504fd9d9b249))
 
-* add api key for etherscan&#39;s abi endpoint ([`5ef30b6`](https://github.com/crypkit/blockapi/commit/5ef30b6bde18866374282c5e1f61b76d6e35383c))
+* add api key for etherscan's abi endpoint ([`5ef30b6`](https://github.com/crypkit/blockapi/commit/5ef30b6bde18866374282c5e1f61b76d6e35383c))
 
 * minor fixes ([`d46fc17`](https://github.com/crypkit/blockapi/commit/d46fc17861d6e914b823bbbf77e312dcaac1b6af))
 
@@ -1724,13 +1849,13 @@ etherscan.io ([`8a6ab1a`](https://github.com/crypkit/blockapi/commit/8a6ab1a32b3
 
 * update version ([`804760a`](https://github.com/crypkit/blockapi/commit/804760ac471012128836eadb393e63457bb05fcd))
 
-* Merge branch &#39;master&#39; of github.com:crypkit/blockapi ([`22b7249`](https://github.com/crypkit/blockapi/commit/22b7249813462ad201f6966c2889cc2b3cd7a5a4))
+* Merge branch 'master' of github.com:crypkit/blockapi ([`22b7249`](https://github.com/crypkit/blockapi/commit/22b7249813462ad201f6966c2889cc2b3cd7a5a4))
 
 * OntioAPI (Ontology - balance, txs), Blockchainos (boscoin - balance, txs), Digonchain (vechain - balance) ([`0c34d6d`](https://github.com/crypkit/blockapi/commit/0c34d6d4dedf4e982ba59a10d81664a93ca354a6))
 
 * README updated/fixed ([`9caddc5`](https://github.com/crypkit/blockapi/commit/9caddc58c403bd327a465dc332d84ebaa99ba3fb))
 
-* cosmos bugfixes, tzscan-&gt;dunscan, missing coins added to test, README improved ([`f30c112`](https://github.com/crypkit/blockapi/commit/f30c112b1c58a210ae502e06847ac5d25e968a2f))
+* cosmos bugfixes, tzscan->dunscan, missing coins added to test, README improved ([`f30c112`](https://github.com/crypkit/blockapi/commit/f30c112b1c58a210ae502e06847ac5d25e968a2f))
 
 * tests fixed, orphans removed ([`7d01ce3`](https://github.com/crypkit/blockapi/commit/7d01ce38b6723943670edd05ea774fa17b39e97c))
 
@@ -1764,7 +1889,7 @@ etherscan.io ([`8a6ab1a`](https://github.com/crypkit/blockapi/commit/8a6ab1a32b3
 
 * update version ([`40da2c4`](https://github.com/crypkit/blockapi/commit/40da2c42257ac6e42820c6fe4df1d714ad09ecab))
 
-* Merge branch &#39;master&#39; of github.com:crypkit/blockapi
+* Merge branch 'master' of github.com:crypkit/blockapi
 
 # Conflicts:
 #	blockapi/__init__.py
@@ -1776,7 +1901,7 @@ etherscan.io ([`8a6ab1a`](https://github.com/crypkit/blockapi/commit/8a6ab1a32b3
 
 * new version set ([`44afe03`](https://github.com/crypkit/blockapi/commit/44afe03e5b2c0d166a5924a734d615832b58c489))
 
-* MercerweissAPI,RavencoinAPI -&gt; InsightAPI, added BitpayAPI -&gt; InsightAPI, TrezorAPI (Btc1TrezorAPI,Btc2TrezorAPI,Ltc1TrezorAPI) ([`4418414`](https://github.com/crypkit/blockapi/commit/4418414ecce02e8cc7113b7186b5384d0e9398fc))
+* MercerweissAPI,RavencoinAPI -> InsightAPI, added BitpayAPI -> InsightAPI, TrezorAPI (Btc1TrezorAPI,Btc2TrezorAPI,Ltc1TrezorAPI) ([`4418414`](https://github.com/crypkit/blockapi/commit/4418414ecce02e8cc7113b7186b5384d0e9398fc))
 
 * refactoring and bug fixes (#8)
 
