@@ -1,8 +1,11 @@
+import base64
 import json
 from typing import Dict, Iterable, Optional, Set
 
+import requests
 from cytoolz import reduceby
 from requests import Response
+from solders.pubkey import Pubkey
 
 from blockapi.utils.user_agent import get_random_user_agent
 from blockapi.v2.base import (
@@ -54,16 +57,24 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
     token_program_id = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
     token2022_program_id = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
+    METADATA_PROGRAM_ID = Pubkey.from_string(
+        "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+    )
+
     _tokens_map: Optional[Dict[str, Dict]] = None
     _ban_list: Optional[Set[str]] = None
+
+    def __init__(self, base_url: Optional[str] = None, fetch_metaplex: bool = True):
+        super().__init__(base_url)
+        self.fetch_metaplex = fetch_metaplex
 
     @property
     def tokens_map(self) -> Dict[str, Dict]:
         if self._tokens_map is None:
             map_jup_ag = self._get_token_map_jup_ag()
             map_solana = self._get_token_map_solana()
-            map_sonar = self._get_token_map_sonar()
-            self._tokens_map = {**map_jup_ag, **map_sonar, **map_solana}
+            self._tokens_map = {**map_jup_ag, **map_solana}
+
         return self._tokens_map
 
     def _get_token_map_solana(self) -> Dict[str, Dict]:
@@ -266,14 +277,18 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
         address = info['mint']
 
-        # TODO unknown token is for 99% NFT, add loading NFT metadata using metaplex
-        #  token account
-        if address not in self.tokens_map:
-            return
-
         # ignore banned tokens
         if address in self.ban_list:
             return
+
+        # TODO unknown token is for 99% NFT, add loading NFT metadata using metaplex
+        #  token account
+        # TODO move fetching tokens_map to fetch
+        if address not in self.tokens_map:
+            if not self.update_token_from_metaplex(
+                address, decimals=info['tokenAmount']['decimals']
+            ):
+                return
 
         return BalanceItem.from_api(
             balance_raw=info['tokenAmount']['amount'],
@@ -299,6 +314,86 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
                 # coingecko_id=extensions.get('coingeckoId'),
                 website=extensions.get('website'),
             ),
+        )
+
+    def update_token_from_metaplex(self, address: str, decimals: int) -> bool:
+        if not self.fetch_metaplex:
+            return False
+
+        pda = self.get_metadata_pda(address)
+        content = self.fetch_metaplex_account(pda)
+        token = self.parse_metaplex_account(content, decimals)
+        if not token or not token.get('symbol'):
+            return False
+
+        self.tokens_map[address] = token
+        return True
+
+    def get_metadata_pda(self, mint_address: str) -> str:
+        """
+        Derives Metaplex metadata address from mint address
+
+        :param mint_address: Token mint to get metadata for, e.g. `8ZperFA2cciv2rN2YC1QC3YjkuGcTQYiq9vc9aKmdoWM`
+        :return: Token metadata account
+        """
+        return str(
+            Pubkey.find_program_address(
+                [
+                    b"metadata",
+                    bytes(self.METADATA_PROGRAM_ID),
+                    bytes(Pubkey.from_string(mint_address)),
+                ],
+                self.METADATA_PROGRAM_ID,
+            )[0]
+        )
+
+    def fetch_metaplex_account(self, metadata_pda: str) -> Optional[str]:
+        """
+        Fetch and validate metaplex account content
+        :param metadata_pda: address of metadata account
+        :return: base64 encoded account content
+        """
+        response = self._request(
+            'getAccountInfo', [metadata_pda, {"encoding": "base64"}]
+        )
+        value = response['result']['value']
+        if value:
+            data = value['data'][0]
+            if value['data'][1] != 'base64':
+                return None
+
+            if value['owner'] != 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s':
+                return None
+
+            return data
+
+        return None
+
+    def parse_metaplex_account(self, content: str, decimals: int) -> Optional[dict]:
+        if not content:
+            return None
+
+        raw = base64.b64decode(content)
+
+        url = raw[119:255].decode('utf-8').rstrip('\x00')
+        data = requests.get(url)
+        if data:
+            data.raise_for_status()
+            parsed = data.json()
+            return dict(
+                name=parsed.get('name'),
+                symbol=parsed.get('symbol'),
+                tags=parsed.get('tags'),
+                logoURI=parsed.get('image'),
+                decimals=decimals,
+                chainId=101,
+            )
+
+        return dict(
+            name=raw[69:101].decode('utf-8').rstrip('\x00'),
+            symbol=raw[105:115].decode('utf-8').rstrip('\x00'),
+            decimals=decimals,
+            chainId=101,
         )
 
     def _request(self, method, params):

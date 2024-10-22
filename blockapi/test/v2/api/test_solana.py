@@ -3,6 +3,7 @@ from decimal import Decimal
 
 import pytest
 from requests_mock import ANY, Mocker
+from solders.pubkey import Pubkey
 
 from blockapi.test.v2.api.conftest import read_file
 from blockapi.v2.api import SolanaApi, SolscanApi
@@ -99,7 +100,7 @@ def test_use_base_url_in_post(
         m.get(SONAR_TOKEN_LIST_URL, text=token_list_sonar_response)
         m.get(JUP_AG_BAN_LIST_URL, text=ban_list_jup_ag_response)
         m.post(ANY, text=get_text),
-        api = SolanaApi(base_url='https://proxy/solana/')
+        api = SolanaApi(base_url='https://proxy/solana/', fetch_metaplex=False)
         api.get_balance(test_addr)
 
 
@@ -496,3 +497,50 @@ def balances_with_different_coins():
             is_wallet=True,
         ),
     ]
+
+
+def test_derive_metaplex_account_address_from_mint(solana_api):
+    mint = 'C2PxCHLeDkp1BsG1uueu7aGEfXQkKoXxzTgMPQ5DA6QW'
+    metadata = solana_api.get_metadata_pda(mint)
+
+    assert metadata == '3G5bT5bgpdwiUbYHfoBSe6SDAwiQaTKc3TFGks7bA3Qw'
+
+
+@pytest.mark.vcr()
+def test_fetch_metaplex_account(solana_api, metaplex_content):
+    data = solana_api.fetch_metaplex_account(
+        '3G5bT5bgpdwiUbYHfoBSe6SDAwiQaTKc3TFGks7bA3Qw'
+    )
+    assert data == metaplex_content
+
+
+@pytest.mark.vcr()
+def test_parse_metaplex_account(solana_api, metaplex_content):
+    token = solana_api.parse_metaplex_account(metaplex_content, decimals=9)
+    assert token['symbol'] == 'ACT'
+    assert token['name'] == 'Act I : The AI Prophecy'
+    assert token['decimals'] == 9
+    assert token['chainId'] == 101
+    assert token['tags'] == ['SOLANA', 'MEME']
+    assert (
+        token['logoURI']
+        == 'https://gateway.pinata.cloud/ipfs/QmS4m4cBjukg7YhimqhfRUb2pUE4bBPXbrbMBb5hzxNbUA'
+    )
+
+
+@pytest.fixture
+def metaplex_content():
+    return (
+        'BJ5okXRntUEewuGiuQOIMWt8+YkvFnY7/DoghPyz5qwNo8wWpzohlcKPjWIDCl3nggGst3'
+        'CeFvU+P1wA6yNMhm8gAAAAQWN0IEkgOiBUaGUgQUkgUHJvcGhlY3kAAAAAAAAAAAAKAAAA'
+        'QUNUAAAAAAAAAMgAAABodHRwczovL2dhdGV3YXkucGluYXRhLmNsb3VkL2lwZnMvUW1WZk'
+        '1QQ1VQczVWMW9tYUR2b25pMzh3OGFFSnBGVGpFWlJOUm1vVnlleFhXZQAAAAAAAAAAAAAA'
+        'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+        'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+        'AAAAAAAAAAAAAf4BAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+        'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+        'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+        'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+        'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+        'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=='
+    )

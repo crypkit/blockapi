@@ -1,0 +1,93 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.31.0
+    method: GET
+    uri: https://gateway.pinata.cloud/ipfs/QmVfMPCUPs5V1omaDvoni38w8aEJpFTjEZRNRmoVyexXWe
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//RI9Ba8JAFITv/oohZzVYLAVvWjwI1dqq0FJ6eJs8s6vJ7rr7Qkyl/70k
+        Hnp8wzfzZm4DILFUcTJDMs8EK8yw14z5CtvgvOasTYYdFNtKubLHnvd3yVRU9EYt4uMsTQsSbqgd
+        e2NJaJyVrs5T448xfat202qaLU71uXj61Ka66OP7QT34w3KqFtsPFdR6oR71z3WjDvN7fM4xC8aL
+        cfa/nYlwluGOEM04cgMf3IkzieCrL10wtoB2DcSBbUEFozGiuz2KW2dzEDJX5iCbI6fKYzJydjRB
+        HTmkFKOJQlbgKVBuimoIVQsogmBZGhfO3W++1FTGe02+CttonI3JDLffXhMquutrAADJ7vVlvrmP
+        ApL1cr1MBsB3T2aBSVzorYPfPwAAAP//AwAE4qjcjwEAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '198388'
+      CF-Cache-Status:
+      - HIT
+      CF-Ray:
+      - 8d688cb5c809cbf3-MAD
+      Cache-Control:
+      - public, max-age=864000
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 22 Oct 2024 09:44:35 GMT
+      ETag:
+      - W/"QmVfMPCUPs5V1omaDvoni38w8aEJpFTjEZRNRmoVyexXWe"
+      Expires:
+      - Fri, 01 Nov 2024 09:44:35 GMT
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      Via:
+      - 1.1 3e64b4bceb49543044d7ca6510e86e3a.cloudfront.net (CloudFront)
+      X-Robots-Tag:
+      - noindex
+      access-control-allow-headers:
+      - Content-Type
+      - Range
+      - User-Agent
+      - X-Requested-With
+      access-control-allow-methods:
+      - GET
+      - HEAD
+      - OPTIONS
+      access-control-expose-headers:
+      - Content-Length
+      - Content-Range
+      - X-Chunked-Output
+      - X-Ipfs-Path
+      - X-Ipfs-Roots
+      - X-Stream-Output
+      content-security-policy:
+      - 'default-src ''self''; img-src * data: blob: ''unsafe-inline''; style-src
+        * ''unsafe-inline'''
+      x-amz-cf-id:
+      - Q2h-wBzIZXZ7r_fJ0O1vRsDizW7pZVa6jf0Ig2nKKR60zWRFmKpIow==
+      x-amz-cf-pop:
+      - MAD56-P1
+      x-cache:
+      - Hit from cloudfront
+      x-ipfs-path:
+      - /ipfs/QmVfMPCUPs5V1omaDvoni38w8aEJpFTjEZRNRmoVyexXWe
+      x-ipfs-roots:
+      - QmVfMPCUPs5V1omaDvoni38w8aEJpFTjEZRNRmoVyexXWe
+      x-request-id:
+      - 9d0047ad6bed38faa10f9dd5ae9de7b1
+    status:
+      code: 200
+      message: OK
+version: 1
