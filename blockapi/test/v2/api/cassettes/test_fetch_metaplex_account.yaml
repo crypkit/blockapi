@@ -1,0 +1,85 @@
+interactions:
+- request:
+    body: '{"jsonrpc": "2.0", "id": 1, "method": "getAccountInfo", "params": ["3G5bT5bgpdwiUbYHfoBSe6SDAwiQaTKc3TFGks7bA3Qw",
+      {"encoding": "base64"}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '139'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.31.0
+    method: POST
+    uri: https://api.mainnet-beta.solana.com/
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWyirOzysqSFayUjLSM1DSUSpKLS7NKVGyqlZKzs8rSa0AMxMLMsNSi4oz8/OU
+        rJQM9Qwt9IxMlXSUinPyS5SsjCzNDYwsjU1ManWUyhJzSlNBmlMSSxKVrKKVnLxM87MjgvJKQl1T
+        y0vdM0sD/T19w0sstCOzy9zyIs31XfLTMwIqq0wLy/3yLcrDC6ryM3KSvQOywj1dnHOM89LT3YtL
+        jJ1T3cpCtQMMyx3NKv18M3It0h0dHR0Dw/0MPF2z0/0znUIT3UPTA0Oz00M9vMqS3TNyIo2zQUpg
+        2BvECAz1CwXRYOwLMsIpP8UjqDy5Kr/MxyglI8U9zDgyIrs02T2nNDIiKMMn1684yTgs28copzwq
+        z7csNNwwPCrbMDDQMCwwuSos3DfcsiQyNMgoyci0wLcqw9jf3c0tOM/JPcy9wC08x8s/NNewLCwv
+        JyfVLSMiKhBs6+An0kycHEFBM/hdOrxcGGhrq6SjlJRYnGpmohSro5RakZpcWpKYlJOqZJWWmFOc
+        qqOUk5hbkF9UUqxkZWhqaGhqZmCgo5RfnpdapGSllJtakliYVFERmlqUUmhkkZxlGJTkGJ4dGZhr
+        XJlUlZVklmiRVGJqaFFhWAzO5IDllbgW5CdnKFkZWpiYmJmbmBiYG5sbWJqaGpoZmuooFRckJqcq
+        WZkZmNfW6ihlpihZGdZyAQAzXeNRLQQAAA==
+    headers:
+      access-control-allow-headers:
+      - authorization, *
+      access-control-allow-methods:
+      - OPTIONS, POST, GET
+      access-control-allow-origin:
+      - backend_traffic
+      access-control-max-age:
+      - '86400'
+      allow:
+      - OPTIONS, POST, GET
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Tue, 22 Oct 2024 09:44:34 GMT
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+      x-ratelimit-conn-limit:
+      - '40'
+      x-ratelimit-conn-remaining:
+      - '39'
+      x-ratelimit-connrate-limit:
+      - '40'
+      x-ratelimit-connrate-remaining:
+      - '39'
+      x-ratelimit-endpoint-limit:
+      - unlimited
+      x-ratelimit-endpoint-remaining:
+      - '-778'
+      x-ratelimit-method-limit:
+      - '10'
+      x-ratelimit-method-remaining:
+      - '9'
+      x-ratelimit-pubsub-limit:
+      - '5'
+      x-ratelimit-pubsub-remaining:
+      - '5'
+      x-ratelimit-rps-limit:
+      - '100'
+      x-ratelimit-rps-remaining:
+      - '99'
+      x-ratelimit-tier:
+      - free
+      x-rpc-node:
+      - lon68
+    status:
+      code: 200
+      message: OK
+version: 1

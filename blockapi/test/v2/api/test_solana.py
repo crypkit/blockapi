@@ -506,7 +506,7 @@ def test_derive_metaplex_account_address_from_mint(solana_api):
     assert metadata == '3G5bT5bgpdwiUbYHfoBSe6SDAwiQaTKc3TFGks7bA3Qw'
 
 
-# @pytest.mark.skip()
+@pytest.mark.vcr()
 def test_fetch_metaplex_account(solana_api, metaplex_content):
     data = solana_api.fetch_metaplex_account(
         '3G5bT5bgpdwiUbYHfoBSe6SDAwiQaTKc3TFGks7bA3Qw'
@@ -514,6 +514,7 @@ def test_fetch_metaplex_account(solana_api, metaplex_content):
     assert data == metaplex_content
 
 
+@pytest.mark.vcr()
 def test_parse_metaplex_account(solana_api, metaplex_content):
     token = solana_api.parse_metaplex_account(metaplex_content, decimals=9)
     assert token['symbol'] == 'ACT'
