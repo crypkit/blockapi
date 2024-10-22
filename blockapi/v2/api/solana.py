@@ -62,8 +62,8 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         if self._tokens_map is None:
             map_jup_ag = self._get_token_map_jup_ag()
             map_solana = self._get_token_map_solana()
-            map_sonar = self._get_token_map_sonar()
-            self._tokens_map = {**map_jup_ag, **map_sonar, **map_solana}
+            self._tokens_map = {**map_jup_ag, **map_solana}
+
         return self._tokens_map
 
     def _get_token_map_solana(self) -> Dict[str, Dict]:
@@ -266,14 +266,16 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
         address = info['mint']
 
-        # TODO unknown token is for 99% NFT, add loading NFT metadata using metaplex
-        #  token account
-        if address not in self.tokens_map:
-            return
-
         # ignore banned tokens
         if address in self.ban_list:
             return
+
+        # TODO unknown token is for 99% NFT, add loading NFT metadata using metaplex
+        #  token account
+        # TODO move fetching tokens_map to fetch
+        if address not in self.tokens_map:
+            if not self.update_token_from_metaplex(address):
+                return
 
         return BalanceItem.from_api(
             balance_raw=info['tokenAmount']['amount'],
@@ -300,6 +302,9 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
                 website=extensions.get('website'),
             ),
         )
+
+    def update_token_from_metaplex(self, address: str) -> bool:
+        return False
 
     def _request(self, method, params):
         body = json.dumps(
