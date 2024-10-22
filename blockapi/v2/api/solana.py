@@ -64,6 +64,10 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     _tokens_map: Optional[Dict[str, Dict]] = None
     _ban_list: Optional[Set[str]] = None
 
+    def __init__(self, base_url: Optional[str] = None, fetch_metaplex: bool = True):
+        super().__init__(base_url)
+        self.fetch_metaplex = fetch_metaplex
+
     @property
     def tokens_map(self) -> Dict[str, Dict]:
         if self._tokens_map is None:
@@ -313,6 +317,9 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         )
 
     def update_token_from_metaplex(self, address: str, decimals: int) -> bool:
+        if not self.fetch_metaplex:
+            return False
+
         pda = self.get_metadata_pda(address)
         content = self.fetch_metaplex_account(pda)
         token = self.parse_metaplex_account(content, decimals)

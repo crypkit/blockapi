@@ -100,7 +100,7 @@ def test_use_base_url_in_post(
         m.get(SONAR_TOKEN_LIST_URL, text=token_list_sonar_response)
         m.get(JUP_AG_BAN_LIST_URL, text=ban_list_jup_ag_response)
         m.post(ANY, text=get_text),
-        api = SolanaApi(base_url='https://proxy/solana/')
+        api = SolanaApi(base_url='https://proxy/solana/', fetch_metaplex=False)
         api.get_balance(test_addr)
 
 
