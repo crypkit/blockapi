@@ -1,5 +1,6 @@
 import base64
 import json
+import logging
 from typing import Dict, Iterable, Optional, Set
 
 import requests
@@ -26,6 +27,8 @@ from blockapi.v2.models import (
     FetchResult,
     ParseResult,
 )
+
+logger = logging.getLogger(__name__)
 
 SOL_TOKEN_LIST_URL = 'https://token-list-api.solana.cloud/v1/list'
 JUP_AG_TOKEN_LIST_URL = (
@@ -376,7 +379,12 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         raw = base64.b64decode(content)
 
         url = raw[119:255].decode('utf-8').rstrip('\x00')
-        data = requests.get(url)
+        try:
+            data = requests.get(url)
+        except Exception as e:
+            logger.error(e)
+            data = None
+
         if data:
             data.raise_for_status()
             parsed = data.json()
