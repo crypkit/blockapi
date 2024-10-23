@@ -1,11 +1,22 @@
 # CHANGELOG
 
 
+## v0.48.5 (2024-10-23)
+
+### Bug Fixes
+
+* fix(Solana): when fetching meme coin details ignore malformed data (#203) ([`dd566a2`](https://github.com/crypkit/blockapi/commit/dd566a22d2411acf3e8211051f50e5fa934a201e))
+
+
 ## v0.48.4 (2024-10-22)
 
 ### Bug Fixes
 
 * fix: Ignore data from IPFS if not responding (#202) ([`cc8b2d4`](https://github.com/crypkit/blockapi/commit/cc8b2d41079dea10b7ad2ebe64579a391095b661))
+
+### Unknown
+
+* 0.48.4 ([`d37bcb1`](https://github.com/crypkit/blockapi/commit/d37bcb1c5c54f3f46b4d581530e0df75d2f7652f))
 
 
 ## v0.48.3 (2024-10-22)
