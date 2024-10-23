@@ -382,20 +382,23 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         try:
             data = requests.get(url)
         except Exception as e:
-            logger.error(e)
+            logger.exception(e)
             data = None
 
         if data:
-            data.raise_for_status()
-            parsed = data.json()
-            return dict(
-                name=parsed.get('name'),
-                symbol=parsed.get('symbol'),
-                tags=parsed.get('tags'),
-                logoURI=parsed.get('image'),
-                decimals=decimals,
-                chainId=101,
-            )
+            try:
+                data.raise_for_status()
+                parsed = data.json()
+                return dict(
+                    name=parsed.get('name'),
+                    symbol=parsed.get('symbol'),
+                    tags=parsed.get('tags'),
+                    logoURI=parsed.get('image'),
+                    decimals=decimals,
+                    chainId=101,
+                )
+            except Exception as e:
+                logger.exception(e)
 
         return dict(
             name=raw[69:101].decode('utf-8').rstrip('\x00'),
