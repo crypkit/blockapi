@@ -382,7 +382,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         try:
             data = requests.get(url)
         except Exception as e:
-            logger.error(e)
+            logger.exception(e)
             data = None
 
         if data:
@@ -398,7 +398,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
                     chainId=101,
                 )
             except Exception as e:
-                logger.error(e)
+                logger.exception(e)
 
         return dict(
             name=raw[69:101].decode('utf-8').rstrip('\x00'),
