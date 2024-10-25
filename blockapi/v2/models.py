@@ -407,6 +407,7 @@ class CoingeckoId(str, Enum):
     SHIDEN = 'shiden'
     SOLANA = 'solana'
     SONGBIRD = 'songbird'
+    SUI = 'sui'
     SYNTHETIX = 'havven'
     TELOS = 'telos'
     USDC = 'usd-coin'

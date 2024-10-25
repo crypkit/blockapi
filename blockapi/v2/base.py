@@ -174,11 +174,11 @@ class CustomizableBlockchainApi(ABC):
 
         return urljoin(self.base_url, path_url)
 
-    def post(self, request_method=None, body=None, json=None, headers=None):
+    def post(self, request_method=None, body=None, json=None, headers=None, **req_args):
         """
         Call request using json.
         """
-        url = self._build_request_url(request_method)
+        url = self._build_request_url(request_method, **req_args)
         response = self._session.post(url, data=body, json=json, headers=headers)
         return self._check_and_get_from_response(response)
 
