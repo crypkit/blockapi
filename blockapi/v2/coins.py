@@ -496,3 +496,12 @@ COIN_CELESTIA = Coin(
     address="utia",
     info=CoinInfo(coingecko_id=CoingeckoId.CELESTIA),
 )
+
+COIN_SUI = Coin(
+    symbol='SUI',
+    name='Sui',
+    decimals=9,
+    blockchain=Blockchain.SUI,
+    address="0x0000000000000000000000000000000000000000000000000000000000000002",
+    info=CoinInfo(coingecko_id=CoingeckoId.SUI),
+)
