@@ -1,11 +1,28 @@
 # CHANGELOG
 
 
+## v0.49.0 (2024-10-30)
+
+### Features
+
+* feat: add SUI API ([`8c43d8b`](https://github.com/crypkit/blockapi/commit/8c43d8bd196733d3ea60e7cd864dac32fd742541))
+
+### Unknown
+
+* Merge pull request #204 from crypkit/1886-add-support-for-sui-blockchain
+
+feat: add SUI API ([`f4f7658`](https://github.com/crypkit/blockapi/commit/f4f765854ecf43a09bf03efd8ce09722bc649f4e))
+
+
 ## v0.48.5 (2024-10-23)
 
 ### Bug Fixes
 
 * fix(Solana): when fetching meme coin details ignore malformed data (#203) ([`dd566a2`](https://github.com/crypkit/blockapi/commit/dd566a22d2411acf3e8211051f50e5fa934a201e))
+
+### Unknown
+
+* 0.48.5 ([`1e20703`](https://github.com/crypkit/blockapi/commit/1e20703cbcd451222aa19560bff0892c6b9c1d04))
 
 
 ## v0.48.4 (2024-10-22)
