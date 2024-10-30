@@ -4,8 +4,8 @@ import pytest
 from requests import HTTPError
 from requests.exceptions import ConnectionError as RequestsConnectionError
 
+from blockapi.test.v2.api.fake_sleep_provider import FakeSleepProvider
 from blockapi.v2.base import CustomizableBlockchainApi
-from build.lib.blockapi.test.v2.api.fake_sleep_provider import FakeSleepProvider
 
 
 @pytest.fixture()
