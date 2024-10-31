@@ -1,10 +1,8 @@
 from typing import Iterable, List
 
-from blockapi.v2.base import BlockchainApi
+from blockapi.v2.base import BlockchainApi, IBalance
 from blockapi.v2.coins import COIN_SUI
-from blockapi.v2.models import ApiOptions, BalanceItem, Coin
-from build.lib.blockapi.v2.base import IBalance
-from build.lib.blockapi.v2.models import Blockchain
+from blockapi.v2.models import ApiOptions, BalanceItem, Blockchain, Coin
 
 
 class SuiApi(BlockchainApi, IBalance):

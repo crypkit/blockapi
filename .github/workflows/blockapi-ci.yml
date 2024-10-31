@@ -40,6 +40,23 @@ jobs:
         run: |
           TZ=UTC pytest -m "not integration"
 
+  check-imports:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Run grep to find imports from build folder.
+        run: |
+          if grep -rE '^from build\..*' blockapi; then
+            echo "Error: found disallowed imports starting with 'from build.'"
+            exit 1
+          fi;
+        shell: bash
+
+
   version:
     runs-on: ubuntu-latest
     outputs:
