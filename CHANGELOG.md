@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.49.1 (2024-10-31)
+
+### Bug Fixes
+
+* fix: fix build imports ([`8e8d04d`](https://github.com/crypkit/blockapi/commit/8e8d04d05cef724c732d93519fba88648e04585c))
+
+### Unknown
+
+* Merge pull request #205 from crypkit/fix-sui-imports
+
+fix: fix build imports ([`d36b754`](https://github.com/crypkit/blockapi/commit/d36b7544e72328c5f300d6ac521a2caa16c0aad3))
+
+
 ## v0.49.0 (2024-10-30)
 
 ### Features
@@ -8,6 +21,8 @@
 * feat: add SUI API ([`8c43d8b`](https://github.com/crypkit/blockapi/commit/8c43d8bd196733d3ea60e7cd864dac32fd742541))
 
 ### Unknown
+
+* 0.49.0 ([`2d74ee6`](https://github.com/crypkit/blockapi/commit/2d74ee66cd407b69d737ca8f7141802bd7b2eadc))
 
 * Merge pull request #204 from crypkit/1886-add-support-for-sui-blockchain
 
