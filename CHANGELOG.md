@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.49.2 (2024-11-04)
+
+### Bug Fixes
+
+* fix: SUI coin address with all "::" suffixes (shortform) ([`47890fe`](https://github.com/crypkit/blockapi/commit/47890fe0e38e3643defcaeedc9089ba963328cc8))
+
+### Unknown
+
+* Merge pull request #206 from crypkit/fix-sui-coin-address
+
+fix: SUI coin address with all "::" suffixes (shortform) ([`1836773`](https://github.com/crypkit/blockapi/commit/1836773ec71064394845e6beb5c2c5aad1da6367))
+
+
 ## v0.49.1 (2024-10-31)
 
 ### Bug Fixes
@@ -8,6 +21,8 @@
 * fix: fix build imports ([`8e8d04d`](https://github.com/crypkit/blockapi/commit/8e8d04d05cef724c732d93519fba88648e04585c))
 
 ### Unknown
+
+* 0.49.1 ([`0f90f3a`](https://github.com/crypkit/blockapi/commit/0f90f3a18e6e4f8aebda1ab8f4470093a180adf9))
 
 * Merge pull request #205 from crypkit/fix-sui-imports
 
