@@ -502,6 +502,6 @@ COIN_SUI = Coin(
     name='Sui',
     decimals=9,
     blockchain=Blockchain.SUI,
-    address="0x0000000000000000000000000000000000000000000000000000000000000002",
+    address="0x2::sui::SUI",
     info=CoinInfo(coingecko_id=CoingeckoId.SUI),
 )
