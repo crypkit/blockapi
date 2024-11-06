@@ -13,7 +13,14 @@ from blockapi.v2.api.solana import (
     SOL_TOKEN_LIST_URL,
     SONAR_TOKEN_LIST_URL,
 )
-from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin, CoinInfo
+from blockapi.v2.models import (
+    AssetType,
+    BalanceItem,
+    Blockchain,
+    Coin,
+    CoinContract,
+    CoinInfo,
+)
 
 
 def test_merge_balances_with_different_coins(solana_api, balances_with_different_coins):
@@ -544,3 +551,52 @@ def metaplex_content():
         'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
         'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=='
     )
+
+
+def test_merge_balances_contract_merge(solana_api):
+    balances = [
+        BalanceItem(
+            **{
+                'balance': Decimal('1'),
+                'balance_raw': Decimal('1'),
+                'coin': None,
+                'coin_contract': CoinContract(
+                    **{
+                        'blockchain': 'solana',
+                        'contract': 'HEL6KGUEvwYgTtcjenf9qeAb2Zg9Yr77usWPY9UZvoQj',
+                        'decimals': 0,
+                    }
+                ),
+                'raw': {},
+                'asset_type': 'available',
+                'last_updated': None,
+                'protocol': None,
+                'is_wallet': True,
+                'pool_info': None,
+            }
+        ),
+        BalanceItem(
+            **{
+                'balance': Decimal('11'),
+                'balance_raw': Decimal('11'),
+                'coin': None,
+                'coin_contract': CoinContract(
+                    **{
+                        'blockchain': 'solana',
+                        'contract': 'HEL6KGUEvwYgTtcjenf9qeAb2Zg9Yr77usWPY9UZvoQj',
+                        'decimals': 0,
+                    }
+                ),
+                'raw': {},
+                'asset_type': 'available',
+                'last_updated': None,
+                'protocol': None,
+                'is_wallet': True,
+                'pool_info': None,
+            }
+        ),
+    ]
+
+    merged = solana_api.merge_balances_with_same_coin(balances)
+    assert len(merged) == 1
+    assert merged[0].coin_contract is not None

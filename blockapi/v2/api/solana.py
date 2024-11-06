@@ -477,3 +477,12 @@ class SolscanApi(BlockchainApi):
             last_updated=None,
             raw=response['data'],
         )
+
+
+if __name__ == "__main__":
+    api = SolanaApi(
+        base_url="https://solemn-practical-tree.solana-mainnet.quiknode.pro/00205ae683fa5c6aab1bc6a47b9d6aa28c47e0fc/",
+        fetch_metaplex=False,
+    )
+    api.get_balance("FEeSRuEDk8ENZbpzXjn4uHPz3LQijbeKRzhqVr5zPSJ9")
+    x = 1

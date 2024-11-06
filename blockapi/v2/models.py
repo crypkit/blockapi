@@ -642,6 +642,7 @@ class BalanceItem:
             balance_raw=self.balance_raw + other.balance_raw,
             balance=self.balance + other.balance,
             coin=self.coin,
+            coin_contract=self.coin_contract,
             asset_type=self.asset_type,
             raw=self._add_raw(other),
             last_updated=self.last_updated,
