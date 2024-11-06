@@ -1,11 +1,28 @@
 # CHANGELOG
 
 
+## v0.49.4 (2024-11-06)
+
+### Bug Fixes
+
+* fix: solana token mapping ([`e469995`](https://github.com/crypkit/blockapi/commit/e469995f3959a74fb715eed17cbb545251d106de))
+
+### Unknown
+
+* Merge pull request #208 from crypkit/fix-solana-token-mapping
+
+fix: solana token mapping ([`10a0708`](https://github.com/crypkit/blockapi/commit/10a0708f9dd44d8d2dd4d83ee0f8dbe42a3fdd6e))
+
+
 ## v0.49.3 (2024-11-06)
 
 ### Bug Fixes
 
 * fix: fetch coins later (#207) ([`8895464`](https://github.com/crypkit/blockapi/commit/8895464005cbc707c86c4ffe6c7ce717ed8bffbb))
+
+### Unknown
+
+* 0.49.3 ([`4b240bc`](https://github.com/crypkit/blockapi/commit/4b240bcac0415f62041831092eb103807e75cd46))
 
 
 ## v0.49.2 (2024-11-04)
