@@ -471,6 +471,17 @@ class CoinInfo:
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
+class CoinContract:
+    blockchain: Blockchain
+    contract: str
+    decimals: int
+
+    @classmethod
+    def from_api(cls, *, blockchain: Blockchain, contract: str, decimals: int):
+        return cls(blockchain=blockchain, contract=contract, decimals=decimals)
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
 class Coin:
     symbol: str
     name: str
@@ -583,7 +594,8 @@ class BalanceItem:
     balance: Decimal
     balance_raw: Decimal
     raw: Dict
-    coin: Coin
+    coin: Optional[Coin] = attr.ib(default=None)
+    coin_contract: Optional[CoinContract] = attr.ib(default=None)
     asset_type: AssetType = AssetType.AVAILABLE
     last_updated: Optional[datetime] = attr.ib(default=None)
     protocol: Optional[Protocol] = attr.ib(default=None)
@@ -595,7 +607,8 @@ class BalanceItem:
         cls,
         *,
         balance_raw: Union[int, float, str, Decimal],
-        coin: Coin,
+        coin: Optional[Coin] = None,
+        coin_contract: Optional[CoinContract] = None,
         asset_type: AssetType = AssetType.AVAILABLE,
         raw: Union[Dict, List[Dict]],
         last_updated: Optional[Union[int, str]] = None,
@@ -603,10 +616,16 @@ class BalanceItem:
         is_wallet: bool = True,
         pool_info: Optional[PoolInfo] = None,
     ) -> 'BalanceItem':
+        if coin is None and coin_contract is None:
+            raise ValueError('Either coin or coin_contract must be set')
+
         return cls(
             balance_raw=to_decimal(balance_raw),
-            balance=raw_to_decimals(balance_raw, coin.decimals),
+            balance=raw_to_decimals(
+                balance_raw, coin.decimals if coin else coin_contract.decimals
+            ),
             coin=coin,
+            coin_contract=coin_contract,
             asset_type=asset_type,
             raw=raw,
             last_updated=(parse_dt(last_updated) if last_updated is not None else None),
