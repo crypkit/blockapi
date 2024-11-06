@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.49.3 (2024-11-06)
+
+### Bug Fixes
+
+* fix: fetch coins later (#207) ([`8895464`](https://github.com/crypkit/blockapi/commit/8895464005cbc707c86c4ffe6c7ce717ed8bffbb))
+
+
 ## v0.49.2 (2024-11-04)
 
 ### Bug Fixes
@@ -8,6 +15,8 @@
 * fix: SUI coin address with all "::" suffixes (shortform) ([`47890fe`](https://github.com/crypkit/blockapi/commit/47890fe0e38e3643defcaeedc9089ba963328cc8))
 
 ### Unknown
+
+* 0.49.2 ([`a706fe0`](https://github.com/crypkit/blockapi/commit/a706fe02f9bb336cf7e43073532be0cfe89e37d6))
 
 * Merge pull request #206 from crypkit/fix-sui-coin-address
 
