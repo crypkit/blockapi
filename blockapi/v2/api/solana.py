@@ -155,6 +155,13 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             ),
         )
 
+    def get_coin(self, fetch_params: tuple[str, int]) -> Coin:
+        contract, decimals = fetch_params
+        if contract not in self.tokens_map:
+            self.update_token_from_metaplex(contract, decimals=decimals, force=True)
+
+        return self.get_token_data(contract)
+
     def _fetch_staked_sol(self, address: str) -> dict:
         return self._request(
             method='getProgramAccounts',
@@ -332,8 +339,10 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             ),
         )
 
-    def update_token_from_metaplex(self, address: str, decimals: int) -> bool:
-        if not self.fetch_metaplex:
+    def update_token_from_metaplex(
+        self, address: str, decimals: int, force: bool = False
+    ) -> bool:
+        if not self.fetch_metaplex and not force:
             return False
 
         pda = self.get_metadata_pda(address)
