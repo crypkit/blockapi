@@ -23,6 +23,7 @@ from blockapi.v2.models import (
     BalanceItem,
     Blockchain,
     Coin,
+    CoinContract,
     CoinInfo,
     FetchResult,
     ParseResult,
@@ -218,7 +219,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     ) -> list[BalanceItem]:
         return list(
             reduceby(
-                key=lambda b: b.coin.address,
+                key=lambda b: b.coin.address if b.coin else b.coin_contract.contract,
                 binop=lambda v1, v2: v1 + v2,
                 seq=token_balances,
             ).values()
@@ -288,19 +289,31 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         #  token account
         # TODO move fetching tokens_map to fetch
         if address not in self.tokens_map:
-            if not self.update_token_from_metaplex(
+            self.update_token_from_metaplex(
                 address, decimals=info['tokenAmount']['decimals']
-            ):
-                return
+            )
+
+        coin = self.get_token_data(address)
+        contract = None
+        if not coin:
+            contract = CoinContract.from_api(
+                blockchain=Blockchain.SOLANA,
+                contract=address,
+                decimals=int(info['tokenAmount']['decimals']),
+            )
 
         return BalanceItem.from_api(
             balance_raw=info['tokenAmount']['amount'],
-            coin=self.get_token_data(address),
+            coin=coin,
+            coin_contract=contract,
             raw=raw,
         )
 
-    def get_token_data(self, address: str) -> Coin:
-        raw_token = self.tokens_map[address]
+    def get_token_data(self, address: str) -> Optional[Coin]:
+        raw_token = self.tokens_map.get(address)
+        if not raw_token:
+            return None
+
         extensions = raw_token.get('extensions', {})
 
         return Coin(
