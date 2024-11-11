@@ -36,7 +36,7 @@ class SuiApi(BlockchainApi, IBalance):
             )
 
             yield BalanceItem.from_api(
-                balance_raw=response_coin.get('objectCount', 0),
+                balance_raw=response_coin.get('totalBalance', 0),
                 coin=coin,
                 raw=response_coin,
             )
