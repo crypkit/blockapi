@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.50.0 (2024-11-14)
+
+### Features
+
+- Switch sui to blockberry api
+  ([`ebdebf2`](https://github.com/crypkit/blockapi/commit/ebdebf2fa92d9f9b7843abfa924f70b2ecb95a87))
+
+
 ## v0.49.5 (2024-11-11)
 
 ### Bug Fixes
