@@ -34,9 +34,9 @@ class SuiApi(BlockchainApi, IBalance):
             coin = Coin.from_api(
                 blockchain=Blockchain.SUI,
                 decimals=response_coin.get('decimals'),
-                symbol=response_coin.get('symbol'),
-                name=response_coin.get('name'),
-                address=response_coin.get('type'),
+                symbol=response_coin.get('coinSymbol'),
+                name=response_coin.get('coinName'),
+                address=response_coin.get('coinType'),
             )
 
             yield BalanceItem.from_api(
