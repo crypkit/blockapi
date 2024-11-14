@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.50.1 (2024-11-14)
+
+### Bug Fixes
+
+- Sui parsing after api base change
+  ([`dfb90f0`](https://github.com/crypkit/blockapi/commit/dfb90f00f0872e65ead9d5ade892d93dc492d722))
+
+
 ## v0.50.0 (2024-11-14)
 
 ### Features
