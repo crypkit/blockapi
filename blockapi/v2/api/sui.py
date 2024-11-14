@@ -11,13 +11,17 @@ class SuiApi(BlockchainApi, IBalance):
 
     api_options = ApiOptions(
         blockchain=Blockchain.SUI,
-        base_url="https://suiscan.xyz",
+        base_url="https://api.blockberry.one",
         rate_limit=0.25,  # 4 per second
     )
 
     supported_requests = {
-        'get_balances': '/api/sui-backend/mainnet/api/accounts/{address}/objects',
+        'get_balances': '/sui/v1/accounts/{address}/objects',
     }
+
+    def __init__(self, api_key, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._headers = {'accept': 'application/json', 'x-api-key': api_key}
 
     def get_balance(self, address: str) -> List[BalanceItem]:
         balances = list(self._yield_available_balance(address))
@@ -42,15 +46,11 @@ class SuiApi(BlockchainApi, IBalance):
             )
 
     def _post(self, request_method: str, address) -> dict:
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0',
-            'Origin': 'https://suiscan.xyz/',
-        }
 
         json_request = {"objectTypes": ["coin"]}
         return self.post(
             request_method=request_method,
-            headers=headers,
+            headers=self._headers,
             json=json_request,
             address=address,
         )

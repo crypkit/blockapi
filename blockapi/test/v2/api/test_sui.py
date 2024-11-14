@@ -15,7 +15,7 @@ def sui_response_data():
 @pytest.fixture
 def mocked_sui_response(requests_mock, sui_response_data):
     requests_mock.post(
-        f"https://suiscan.xyz/api/sui-backend/mainnet/api/accounts/0x123/objects",
+        f"https://api.blockberry.one/sui/v1/accounts/0x123/objects",
         status_code=20,
         json=sui_response_data,
     )
@@ -23,7 +23,7 @@ def mocked_sui_response(requests_mock, sui_response_data):
 
 
 def test_sui(mocked_sui_response):
-    api = SuiApi()
+    api = SuiApi("test_key")
     balances = api.get_balance(TEST_ADDRESS)
     assert balances
 
