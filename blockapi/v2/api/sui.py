@@ -1,3 +1,4 @@
+import re
 from typing import Iterable, List
 
 from blockapi.v2.base import BlockchainApi, IBalance
@@ -36,7 +37,7 @@ class SuiApi(BlockchainApi, IBalance):
                 decimals=response_coin.get('decimals'),
                 symbol=response_coin.get('coinSymbol'),
                 name=response_coin.get('coinName'),
-                address=response_coin.get('coinType'),
+                address=self._format_address(response_coin.get('coinType')),
             )
 
             yield BalanceItem.from_api(
@@ -44,6 +45,13 @@ class SuiApi(BlockchainApi, IBalance):
                 coin=coin,
                 raw=response_coin,
             )
+
+    @staticmethod
+    def _format_address(address):
+        if not address:
+            return None
+
+        return re.sub(r"0x0+", "0x", address)
 
     def _post(self, request_method: str, address) -> dict:
 

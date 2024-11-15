@@ -38,3 +38,28 @@ def test_sui(mocked_sui_response):
 
         assert balance
         assert balance.balance_raw
+
+
+@pytest.mark.parametrize(
+    'address, expected',
+    [
+        (
+            "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
+            "0x6864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
+        ),
+        (
+            "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
+            "0x2::sui::SUI",
+        ),
+        (
+            None,
+            None,
+        ),
+        (
+            "",
+            None,
+        ),
+    ],
+)
+def test_format_address(address, expected):
+    assert SuiApi._format_address(address) == expected
