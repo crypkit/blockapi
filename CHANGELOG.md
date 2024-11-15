@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.51.0 (2024-11-15)
+
+### Features
+
+- Sui: format address without leading '0'
+  ([`64e7910`](https://github.com/crypkit/blockapi/commit/64e7910b9bb00ed298526942e6021df0b8f8f3f3))
+
+
 ## v0.50.1 (2024-11-14)
 
 ### Bug Fixes
