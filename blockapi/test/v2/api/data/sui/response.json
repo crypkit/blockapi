@@ -1,76 +1,29 @@
-{
-   "coins":[
-      {
-         "coinType":"0x2::sui::SUI",
-         "coinName":"Sui",
-         "coinDenom":"SUI",
-         "decimals":9,
-         "coinSymbol":"SUI",
-         "objectType":"Coin",
-         "objectsCount":1,
-         "lockedBalance":null,
-         "totalBalance":376709800,
-         "coinPrice":3.36,
-         "imgUrl":"https://strapi-dev.scand.app/uploads/sui_c07df05f00.png",
-         "securityMessage":null,
-         "bridged":false,
-         "hasNoMetadata":false,
-         "verified":true
-      },
-      {
-         "coinType":"0x9fe1780ac27ec50c9c441fb31822f5c148f841f09ee455c6a0daf7c634a30a27::aifrens::AIFRENS",
-         "coinName":"xAIFRENS",
-         "coinDenom":"xAIFRENS",
-         "decimals":0,
-         "coinSymbol":"xAIFRENS",
-         "objectType":"Coin",
-         "objectsCount":1,
-         "lockedBalance":null,
-         "totalBalance":80,
-         "coinPrice":1.229095042620968e-13,
-         "imgUrl":"https://strapi-dev.scand.app/uploads/x_AIFRENS_Logo_26fd7a81e1.jpeg",
-         "securityMessage":null,
-         "bridged":false,
-         "hasNoMetadata":false,
-         "verified":true
-      },
-      {
-         "coinType":"0xa8816d3a6e3136e86bc2873b1f94a15cadc8af2703c075f2d546c2ae367f4df9::ocean::OCEAN",
-         "coinName":"Ocean Token",
-         "coinDenom":"OCEAN",
-         "decimals":9,
-         "coinSymbol":"OCEAN",
-         "objectType":"Coin",
-         "objectsCount":16,
-         "lockedBalance":null,
-         "totalBalance":31000000000,
-         "coinPrice":0.00013589238714095824,
-         "imgUrl":"https://file.walletapp.waveonsui.com/logos/ocean.png",
-         "securityMessage":null,
-         "bridged":false,
-         "hasNoMetadata":false,
-         "verified":true
-      },
-      {
-         "coinType":"0xf33945da679604ad966a7381156549be43f94bd2d919665d406389ba1475e86b::dogai::DOGAI",
-         "coinName":"SuiDog AI",
-         "coinDenom":"DOGAI",
-         "decimals":6,
-         "coinSymbol":"DOGAI",
-         "objectType":"Coin",
-         "objectsCount":1,
-         "lockedBalance":null,
-         "totalBalance":42714100000,
-         "coinPrice":0.0000019948186051715394,
-         "imgUrl":"https://r.turbos.finance/icon/1731177923663.jpg",
-         "securityMessage":null,
-         "bridged":false,
-         "hasNoMetadata":false,
-         "verified":false
-      }
-   ],
-   "nfts":null,
-   "domains":null,
-   "unknowns":null,
-   "kiosks":null
-}
+[
+  {
+    "coinType": "0x9fe1780ac27ec50c9c441fb31822f5c148f841f09ee455c6a0daf7c634a30a27::aifrens::AIFRENS",
+    "coinName": "xAIFRENS",
+    "coinSymbol": "xAIFRENS",
+    "balance": 80,
+    "balanceUsd": 1.0965306954562768e-11,
+    "decimals": 0,
+    "coinPrice": 1.370663369320346e-13
+  },
+  {
+    "coinType": "0x2::sui::SUI",
+    "coinName": "Sui",
+    "coinSymbol": "SUI",
+    "balance": 0.13706648,
+    "balanceUsd": 0.5660845624,
+    "decimals": 9,
+    "coinPrice": 4.13
+  },
+  {
+    "coinType": "0xa8816d3a6e3136e86bc2873b1f94a15cadc8af2703c075f2d546c2ae367f4df9::ocean::OCEAN",
+    "coinName": "Ocean Token",
+    "coinSymbol": "OCEAN",
+    "balance": 31,
+    "balanceUsd": 0.0040252012787930554,
+    "decimals": 9,
+    "coinPrice": 0.00012984520254171147
+  }
+]
