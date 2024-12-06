@@ -606,7 +606,7 @@ class BalanceItem:
     def from_api(
         cls,
         *,
-        balance_raw: Union[int, float, str, Decimal],
+        balance_raw: Union[int, float, str, Decimal] = None,
         coin: Optional[Coin] = None,
         coin_contract: Optional[CoinContract] = None,
         asset_type: AssetType = AssetType.AVAILABLE,
@@ -615,15 +615,22 @@ class BalanceItem:
         protocol: Optional[Protocol] = None,
         is_wallet: bool = True,
         pool_info: Optional[PoolInfo] = None,
+        balance: Optional[Decimal] = None,
     ) -> 'BalanceItem':
         if coin is None and coin_contract is None:
             raise ValueError('Either coin or coin_contract must be set')
 
-        return cls(
-            balance_raw=to_decimal(balance_raw),
-            balance=raw_to_decimals(
+        raw_balance = to_decimal(balance_raw) if balance_raw else None
+        balance = (
+            balance
+            if balance
+            else raw_to_decimals(
                 balance_raw, coin.decimals if coin else coin_contract.decimals
-            ),
+            )
+        )
+        return cls(
+            balance_raw=raw_balance,
+            balance=balance,
             coin=coin,
             coin_contract=coin_contract,
             asset_type=asset_type,

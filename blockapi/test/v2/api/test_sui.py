@@ -15,9 +15,9 @@ def sui_response_data():
 
 @pytest.fixture
 def mocked_sui_response(requests_mock, sui_response_data):
-    requests_mock.post(
-        f"https://api.blockberry.one/sui/v1/accounts/0x123/objects",
-        status_code=20,
+    requests_mock.get(
+        f"https://api.blockberry.one/sui/v1/accounts/0x123/balance",
+        status_code=200,
         json=sui_response_data,
     )
     yield requests_mock
@@ -28,7 +28,7 @@ def test_sui(mocked_sui_response):
     balances = api.get_balance(TEST_ADDRESS)
 
     assert balances
-    assert len(balances) == 4
+    assert len(balances) == 3
 
     for balance in balances:
         assert balance.coin.address
@@ -37,7 +37,8 @@ def test_sui(mocked_sui_response):
         assert balance.coin.name != 'unknown'
 
         assert balance
-        assert balance.balance_raw
+        assert balance.balance
+        assert not balance.balance_raw  # We got only balances from blockberry SUI API
 
 
 @pytest.mark.parametrize(
