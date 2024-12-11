@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.51.2 (2024-12-11)
+
+### Bug Fixes
+
+- Sui: sleep 10s between requests
+  ([`fb5e0b9`](https://github.com/crypkit/blockapi/commit/fb5e0b9078e13aa207875c07f55c4980e73d1af7))
+
+
 ## v0.51.1 (2024-12-06)
 
 ### Bug Fixes
