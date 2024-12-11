@@ -13,7 +13,7 @@ class SuiApi(BlockchainApi, IBalance):
     api_options = ApiOptions(
         blockchain=Blockchain.SUI,
         base_url="https://api.blockberry.one",
-        rate_limit=1,  # 1 per second
+        rate_limit=10,
     )
 
     supported_requests = {
