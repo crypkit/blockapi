@@ -6,6 +6,8 @@ from blockapi.v2.models import Blockchain
 logger = logging.getLogger(__name__)
 
 DEBANK_BLOCKCHAINS_MAP = {
+    'a8': Blockchain.ANCIENT8,
+    'ace': Blockchain.ENDURANCE,
     'ailayer': Blockchain.AI_LAYER,
     'alot': Blockchain.DEX_ALOT,
     'apex': Blockchain.PROOF_OF_PLAY_APEX,
@@ -23,6 +25,7 @@ DEBANK_BLOCKCHAINS_MAP = {
     'ckb': Blockchain.GODWOKEN,
     'core': Blockchain.CORE_CHAIN,
     'cro': Blockchain.CRONOS,
+    'croze': Blockchain.CRONOS_ZKEVM,
     'dfk': Blockchain.DEFI_KINGDOMS,
     'doge': Blockchain.DOGECHAIN,
     'dym': Blockchain.DYMENSION,
@@ -31,6 +34,7 @@ DEBANK_BLOCKCHAINS_MAP = {
     'era': Blockchain.ZKSYNC_ERA,
     'etc': Blockchain.ETHEREUM_CLASSIC,
     'eth': Blockchain.ETHEREUM,
+    'ethlink': Blockchain.ETHERLINK,
     'evmos': Blockchain.COSMOS,
     'flr': Blockchain.FLARE,
     'fon': Blockchain.FON_CHAIN,
@@ -41,9 +45,11 @@ DEBANK_BLOCKCHAINS_MAP = {
     'hmy': Blockchain.HARMONY,
     'iota': Blockchain.IOTA_EVM,
     'iotx': Blockchain.IOTEX,
+    'itze': Blockchain.IMMUTABLE,
     'kcc': Blockchain.KUCOIN,
     'klay': Blockchain.KLAY_TOKEN,
     'lumio': Blockchain.SUPER_LUMIO,
+    'lyra': Blockchain.DERIVE,
     'lyx': Blockchain.LUKSO,
     'mada': Blockchain.MILKOMEDA_C1,
     'manta': Blockchain.MANTA_PACIFIC,
@@ -80,6 +86,7 @@ DEBANK_BLOCKCHAINS_MAP = {
     'ulx': Blockchain.ULTRON,
     'wan': Blockchain.WANCHAIN,
     'wemix': Blockchain.WEMIX_NETWORK,
+    'world': Blockchain.WORLD_CHAIN,
     'xlayer': Blockchain.X_LAYER,
     'zeta': Blockchain.ZETA_CHAIN,
     'zklink': Blockchain.ZKLINK_NOVA,
@@ -101,6 +108,7 @@ COINGECKO_BLOCKCHAINS_MAP = {
     'defichain': Blockchain.DEFI,
     'eos-evm': Blockchain.EOS,
     'flare-network': Blockchain.FLARE,
+    'flow-evm': Blockchain.FLOW,
     'galachain': Blockchain.GALA,
     'genesys-network': Blockchain.GENESYS,
     'harmony-shard-0': Blockchain.HARMONY,
@@ -235,7 +243,7 @@ def _get_chain_mapping(
     if not chain:
         return None
 
-    chain_lower = chain.lower() if hasattr(chain, 'lower') else str(chain)
+    chain_lower = chain.lower() if hasattr(chain, 'lower') else str(chain).lower()
 
     blockchain = mapping.get(chain_lower)
     if blockchain:
