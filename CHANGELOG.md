@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.51.3 (2024-12-18)
+
+### Bug Fixes
+
+- Update blockchain list ([#215](https://github.com/crypkit/blockapi/pull/215),
+  [`09d020a`](https://github.com/crypkit/blockapi/commit/09d020a4036687aa3a489aa07675b9e99d16b5b1))
+
+
 ## v0.51.2 (2024-12-11)
 
 ### Bug Fixes
