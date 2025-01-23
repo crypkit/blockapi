@@ -38,18 +38,20 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
 
     api_options = ApiOptions(
         blockchain=NotImplemented,
-        base_url='https://api.simplehash.com/api/v0/nfts/',
+        base_url='https://api.simplehash.com/api/v0/',
         rate_limit=0.01,  # 100 per second for free account
     )
 
     supported_requests = {
-        'get_nfts': 'owners?chains={chain}&wallet_addresses={address}',
-        'get_collection': 'collections/ids?collection_ids={slug}',
-        'get_collection_activity': 'collections_activity?collection_ids={slug}',
-        'get_bids': 'bids/collection/{slug}',
-        'get_listings': 'listings/collection/{slug}',
-        'get_wallet_bids': 'bids/wallets?chains={chain}&wallet_addresses={address}',
-        'get_wallet_listings': 'listings/wallets?chains={chain}&wallet_addresses={address}'
+        'get_nfts': 'nfts/owners?chains={chain}&wallet_addresses={address}',
+        'get_fungibles': 'fungibles/balances?chains={chain}&wallet_addresses={address}'
+        '&include_fungible_details=1&include_native_tokens=0',
+        'get_collection': 'nfts/collections/ids?collection_ids={slug}',
+        'get_collection_activity': 'nfts/collections_activity?collection_ids={slug}',
+        'get_bids': 'nfts/bids/collection/{slug}',
+        'get_listings': 'nfts/listings/collection/{slug}',
+        'get_wallet_bids': 'nfts/bids/wallets?chains={chain}&wallet_addresses={address}',
+        'get_wallet_listings': 'nfts/listings/wallets?chains={chain}&wallet_addresses={address}'
         '&include_nft_details={include_nft_details}',
     }
 
@@ -99,6 +101,9 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
         yield from self._yield_parsed_nfts_from_tokens(
             self._yield_tokens(data.get('listings')), address
         )
+        yield from self._yield_parsed_nfts_from_fungibles(
+            data.get('fungibles'), address
+        )
         yield from self._yield_parsed_nfts_from_tokens(data.get('nfts'), address)
 
     @staticmethod
@@ -144,6 +149,54 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
                 asset_type=AssetType.AVAILABLE,
                 market_url=self._get_market_url(collection),
             )
+
+    def _yield_parsed_nfts_from_fungibles(self, items, address):
+        if not items:
+            return
+
+        for item in items:
+            fungible = item.get('fungible_id').split(':')
+            collection_id = 'runes'
+            ident = item.get('fungible_id')
+            if ident:
+                ident = ident.replace(':', '.')
+
+            if not ident:
+                continue
+
+            standard = 'rune'
+            blockchain = self._get_blockchain(item)
+            details = item.get('fungible_details')
+
+            yield NftToken.from_api(
+                ident=ident,
+                collection=collection_id,
+                collection_name='Runes',
+                contract=collection_id,
+                standard=standard,
+                name=details.get('name'),
+                description=None,
+                amount=item.get('total_quantity'),
+                image_url=item.get('image_url'),
+                metadata_url=None,
+                updated_time=item.get('created_date'),
+                is_disabled=False,
+                is_nsfw=False,
+                blockchain=blockchain,
+                asset_type=AssetType.AVAILABLE,
+                market_url=None,
+            )
+
+    @staticmethod
+    def _update_cursor(data, prefix):
+        if not data.data:
+            return False
+
+        if crs := data.data.get('next_cursor'):
+            data.data['next_cursor'] = f'{prefix}:{crs}'
+            return True
+
+        return False
 
     @staticmethod
     def _get_market_url(collection):
@@ -444,6 +497,45 @@ class SimpleHashBitcoinApi(SimpleHashApi):
     def __init__(self, api_key: str, sleep_provider: ISleepProvider):
         super().__init__(Blockchain.BITCOIN, api_key, sleep_provider)
 
+    def fetch_nfts(self, address: str, cursor: Optional[str] = None) -> FetchResult:
+        token_cursor = None
+        fungibles_cursor = None
+        if cursor:
+            target, crs = cursor.split(':')
+            if target == 'token':
+                token_cursor = crs
+            elif target == 'fungibles':
+                fungibles_cursor = crs
+
+        print(f'token = {token_cursor}, fungibles_cursor = {fungibles_cursor}')
+
+        fungibles = None
+        if not token_cursor:
+            fungibles = self.get_data(
+                'get_fungibles',
+                headers=self.headers,
+                params=dict(cursor=fungibles_cursor) if fungibles_cursor else None,
+                chain=self.simplehash_blockchains,
+                include_nft_details=1,
+                address=address,
+                extra=dict(address=address),
+            )
+
+            if self._update_cursor(fungibles, 'fungibles'):
+                return fungibles
+
+        data = self.get_data(
+            'get_nfts',
+            headers=self.headers,
+            params=dict(cursor=token_cursor) if token_cursor else None,
+            chain=self.simplehash_blockchains,
+            address=address,
+            extra=dict(address=address),
+        )
+
+        self._update_cursor(data, 'token')
+        return self._coallesce(fungibles, data)
+
     def fetch_collection(self, collection: str) -> FetchResult:
         if collection == self.default_collection:
             return FetchResult.from_dict(
@@ -460,6 +552,22 @@ class SimpleHashBitcoinApi(SimpleHashApi):
             )
 
         return super().fetch_collection(collection)
+
+    def _coallesce(self, fungibles, data):
+        if data and data.errors:
+            return data
+
+        if fungibles and fungibles.errors:
+            return fungibles
+
+        if not data or not data.data:
+            return fungibles
+
+        if not fungibles or not fungibles.data:
+            return data
+
+        data.data['fungibles'] = fungibles.data.get('fungibles', [])
+        return data
 
 
 class SimpleHashSolanaApi(SimpleHashApi):
@@ -508,17 +616,6 @@ class SimpleHashSolanaApi(SimpleHashApi):
 
         self._update_cursor(data, 'token')
         return self._coallesce(listings, data)
-
-    @staticmethod
-    def _update_cursor(data, prefix):
-        if not data.data:
-            return False
-
-        if crs := data.data.get('next_cursor'):
-            data.data['next_cursor'] = f'{prefix}:{crs}'
-            return True
-
-        return False
 
     def _coallesce(self, listings, data):
         if data and data.errors:

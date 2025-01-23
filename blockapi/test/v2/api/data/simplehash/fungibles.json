@@ -1,0 +1,85 @@
+{
+  "next_cursor": null,
+  "fungibles": [
+    {
+      "fungible_id": "bitcoin.840697:454",
+      "name": "ART•IS•THE•TICKER",
+      "symbol": "🎨",
+      "decimals": 0,
+      "chain": "bitcoin",
+      "prices": [
+        {
+          "marketplace_id": "magiceden",
+          "marketplace_name": "Magic Eden",
+          "value_usd_cents": 1,
+          "value_usd_string": "0.01330",
+          "value_usd_string_high_precision": "0.01330088630",
+          "liquidity_usd_string": null,
+          "bonding_curve_progress_percent": null,
+          "dex_contract": null,
+          "factory_contract": null
+        }
+      ],
+      "fungible_details": {
+        "fungible_id": "bitcoin.840697:454",
+        "name": "ART•IS•THE•TICKER",
+        "symbol": "🎨",
+        "decimals": 0,
+        "chain": "bitcoin",
+        "previews": {
+          "image_small_url": null,
+          "image_medium_url": null,
+          "image_large_url": null,
+          "image_opengraph_url": null,
+          "blurhash": null,
+          "predominant_color": null
+        },
+        "image_url": null,
+        "image_properties": null,
+        "created_date": "2024-04-24T19:05:31Z",
+        "created_by": "bc1p6s2wf9f26nqkqjf3n4vd8j4hkgj6rsqsc2hwqzuhrkqm4n0t2fvqtfv7fx",
+        "supply": "21000000",
+        "holder_count": 4370,
+        "extra_metadata": {
+          "terms": {
+            "amount": 1000,
+            "cap": 19320,
+            "height": {
+              "start": null,
+              "end": null
+            },
+            "offset": {
+              "start": null,
+              "end": null
+            }
+          },
+          "burned": 0,
+          "premine": 1680000,
+          "mints": 19320
+        }
+      },
+      "total_quantity": 250,
+      "total_quantity_string": "250",
+      "total_value_usd_cents": 333,
+      "total_value_usd_string": "3.33",
+      "queried_wallet_balances": [
+        {
+          "address": "bc1pve69ahm9k62yqpxdzfhgsnj3f5zyy5v80fzk5epfwcuhgy9fmv6qgt3e6p",
+          "quantity": 250,
+          "quantity_string": "250",
+          "value_usd_cents": 333,
+          "value_usd_string": "3.33",
+          "first_transferred_date": "2025-01-17T19:33:40Z",
+          "last_transferred_date": "2025-01-17T19:33:40Z",
+          "subaccounts": [
+            {
+              "account": "355098474785b7edf28a9de55237a20c725b4290efee9eded1e5ec666d6c6225:406",
+              "quantity": 250,
+              "quantity_string": "250"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

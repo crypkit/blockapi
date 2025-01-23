@@ -21,12 +21,17 @@ def test_parse_nfts(requests_mock, api, nfts_response):
         text=nfts_response,
     )
 
+    requests_mock.get(
+        f'https://api.simplehash.com/api/v0/fungibles/balances?chains=bitcoin&wallet_addresses={nfts_test_address}&include_fungible_details=1',
+        text="[]",
+    )
+
     nfts = api.fetch_nfts(nfts_test_address)
     parsed = api.parse_nfts(nfts)
 
     assert not nfts.errors
     assert parsed.cursor == (
-        'YnRjLW0uODc5MGYyYmMyZmU0YmQ5ZWNmZGIxMzVmNmEwYzFjZmZkYzRiY2RhZGMzN'
+        'token:YnRjLW0uODc5MGYyYmMyZmU0YmQ5ZWNmZGIxMzVmNmEwYzFjZmZkYzRiY2RhZGMzN'
         'jE2MjYxZjcwNDQwNGViMmY2NzVlNmkwLjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMD'
         'AwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA'
         'wMDAwMF8yMDIzLTA1LTI2IDE3OjE0OjQ5KzAwOjAwX19uZXh0'
@@ -89,6 +94,32 @@ def test_parse_listed_nfts(
     assert len(parsed.data) == 2
     assert parsed.data[0].ident == 'solana.8zRjJ82rg3iiKgV41zvSLe82nGm4eqV9DGVhLQbCtx76'
     assert parsed.data[1].ident == 'solana.7bwsNfaSWurdCTpWv5idrt4FgeJYbPCffGUY7FsUQzSV'
+
+
+def test_parse_fungible_nfts(requests_mock, api, fungibles_response):
+    requests_mock.get(
+        f'https://api.simplehash.com/api/v0/fungibles/balances?chains=bitcoin&wallet_addresses={nfts_test_address}&include_fungible_details=1',
+        text=fungibles_response,
+    )
+
+    requests_mock.get(
+        f'https://api.simplehash.com/api/v0/nfts/owners?chains=bitcoin&wallet_addresses={nfts_test_address}',
+        text="[]",
+    )
+
+    nfts = api.fetch_nfts(nfts_test_address)
+    parsed = api.parse_nfts(nfts)
+
+    assert not nfts.errors
+    assert not parsed.cursor
+
+    assert len(parsed.data) == 1
+    item = parsed.data[0]
+    assert item.ident == 'bitcoin.840697.454'
+    assert item.name == 'ART•IS•THE•TICKER'
+    assert item.collection == 'runes'
+    assert item.collection_name == 'Runes'
+    assert item.amount == 250
 
 
 def test_parse_collection(
@@ -295,6 +326,11 @@ def offers_response():
 @pytest.fixture
 def solana_nfts_response():
     return read_file('data/simplehash/solana-nfts.json')
+
+
+@pytest.fixture
+def fungibles_response():
+    return read_file('data/simplehash/fungibles.json')
 
 
 @pytest.fixture
