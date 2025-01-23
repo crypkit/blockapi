@@ -1,6 +1,18 @@
 # CHANGELOG
 
 
+## v0.52.0 (2025-01-23)
+
+### Features
+
+- Add Rune support ([#216](https://github.com/crypkit/blockapi/pull/216),
+  [`6ea7cac`](https://github.com/crypkit/blockapi/commit/6ea7cacdd18e11b9471ed7129a2c6b42a35b9806))
+
+* feat: Add Rune support
+
+* fix test
+
+
 ## v0.51.3 (2024-12-18)
 
 ### Bug Fixes
