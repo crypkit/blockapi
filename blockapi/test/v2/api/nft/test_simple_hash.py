@@ -21,12 +21,17 @@ def test_parse_nfts(requests_mock, api, nfts_response):
         text=nfts_response,
     )
 
+    requests_mock.get(
+        f'https://api.simplehash.com/api/v0/fungibles/balances?chains=bitcoin&wallet_addresses={nfts_test_address}&include_fungible_details=1',
+        text="[]",
+    )
+
     nfts = api.fetch_nfts(nfts_test_address)
     parsed = api.parse_nfts(nfts)
 
     assert not nfts.errors
     assert parsed.cursor == (
-        'YnRjLW0uODc5MGYyYmMyZmU0YmQ5ZWNmZGIxMzVmNmEwYzFjZmZkYzRiY2RhZGMzN'
+        'token:YnRjLW0uODc5MGYyYmMyZmU0YmQ5ZWNmZGIxMzVmNmEwYzFjZmZkYzRiY2RhZGMzN'
         'jE2MjYxZjcwNDQwNGViMmY2NzVlNmkwLjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMD'
         'AwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA'
         'wMDAwMF8yMDIzLTA1LTI2IDE3OjE0OjQ5KzAwOjAwX19uZXh0'
