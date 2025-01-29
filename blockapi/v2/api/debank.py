@@ -78,6 +78,7 @@ class DebankModelPoolItem(BaseModel):
 class DebankModelPortfolioItem(BaseModel):
     name: str
     detail: DebankModelPoolItemDetail
+    asset_token_list: Optional[list[dict]] = None
     pool_id: Optional[str] = None
     pool: Optional[DebankModelPoolItem] = None
     position_index: Optional[str] = None
@@ -500,6 +501,10 @@ class DebankPortfolioParser:
 
         yield from self._parse_token_list(
             detail.token_list, asset_type, pool_info=pool_info
+        )
+
+        yield from self._parse_token_list(
+            item.asset_token_list, asset_type, pool_info=pool_info
         )
 
     def _get_tokens(self, raw_balances: list[dict]):
