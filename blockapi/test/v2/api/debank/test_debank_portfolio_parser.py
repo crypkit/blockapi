@@ -4,6 +4,7 @@ from decimal import Decimal
 
 import pytest
 
+from blockapi.test.v2.api.conftest import read_json_file
 from blockapi.v2.api.debank import DebankModelPoolItemDetail, DebankModelPortfolioItem
 from blockapi.v2.models import AssetType, FetchResult
 
@@ -149,3 +150,16 @@ def test_parse_no_error(debank_api):
     debank_api._protocol_cache.update({})
     parsed = debank_api.parse_pools(FetchResult(data={}))
     assert not parsed.errors
+
+
+@pytest.fixture
+def bio_polls():
+    return read_json_file("debank/data/bio_pools.json")
+
+
+def test_parse_pools(debank_api, bio_polls):
+    debank_api._protocol_cache.update({})
+    parsed = debank_api.parse_pools(FetchResult(data=[bio_polls]))
+    assert parsed
+    for data_item in parsed.data:
+        assert data_item.items
