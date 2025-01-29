@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.53.0 (2025-01-29)
+
+### Features
+
+- Set project homepage
+  ([`f962d23`](https://github.com/crypkit/blockapi/commit/f962d2395a2222e8712d2c1e8c1f0fc2362f1598))
+
+
 ## v0.52.1 (2025-01-29)
 
 ### Bug Fixes
