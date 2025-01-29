@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.52.1 (2025-01-29)
+
+### Bug Fixes
+
+- Bio: fix bio pools parsing
+  ([`02f81a5`](https://github.com/crypkit/blockapi/commit/02f81a50591c6877abb6416f213f999017277ba2))
+
+
 ## v0.52.0 (2025-01-23)
 
 ### Features
