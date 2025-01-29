@@ -36,4 +36,5 @@ setuptools.setup(
         'attrs>=17.4.0,<=22.1.0',
         'solders==0.22.0',
     ],
+    url="https://github.com/crypkit/blockapi",
 )
