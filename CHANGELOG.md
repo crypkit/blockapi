@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.54.0 (2025-01-30)
+
+### Features
+
+- Solana: checking tokenmap responses + added ENVs for override
+  ([`d2b905e`](https://github.com/crypkit/blockapi/commit/d2b905eaaaf288efd0ece4825d80d8cb8e6be8bb))
+
+
 ## v0.53.0 (2025-01-29)
 
 ### Features
