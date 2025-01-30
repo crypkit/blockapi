@@ -1,11 +1,12 @@
 import base64
 import json
 import logging
+import os
 from typing import Dict, Iterable, Optional, Set
 
 import requests
 from cytoolz import reduceby
-from requests import Response
+from requests import HTTPError, Response
 from solders.pubkey import Pubkey
 
 from blockapi.utils.user_agent import get_random_user_agent
@@ -31,14 +32,20 @@ from blockapi.v2.models import (
 
 logger = logging.getLogger(__name__)
 
-SOL_TOKEN_LIST_URL = 'https://token-list-api.solana.cloud/v1/list'
-JUP_AG_TOKEN_LIST_URL = (
-    'https://raw.githubusercontent.com/jup-ag/token-list/main/validated-tokens.csv'
+SOL_TOKEN_LIST_URL = os.getenv(
+    'BLOCKAPI_SOL_TOKEN_LIST_URL', 'https://token-list-api.solana.cloud/v1/list'
 )
-JUP_AG_BAN_LIST_URL = (
-    'https://raw.githubusercontent.com/jup-ag/token-list/main/banned-tokens.csv'
+JUP_AG_TOKEN_LIST_URL = os.getenv(
+    'BLOCKAPI_JUP_AG_TOKEN_LIST_URL',
+    'https://raw.githubusercontent.com/jup-ag/token-list/main/validated-tokens.csv',
 )
-SONAR_TOKEN_LIST_URL = 'https://lively-pine-1ccc.swob.workers.dev/solana'
+JUP_AG_BAN_LIST_URL = os.getenv(
+    'BLOCKAPI_JUP_AG_BAN_LIST_URL',
+    'https://raw.githubusercontent.com/jup-ag/token-list/main/banned-tokens.csv',
+)
+SONAR_TOKEN_LIST_URL = os.getenv(
+    'BLOCKAPI_SONAR_TOKEN_LIST_URL', 'https://lively-pine-1ccc.swob.workers.dev/solana'
+)
 
 
 class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
@@ -81,13 +88,28 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
         return self._tokens_map
 
+    def _get_from_url(self, url: str):
+        try:
+            response = self._session.get(url)
+            response.raise_for_status()
+        except HTTPError as e:
+            logger.error(e)
+            return
+
+        return response
+
     def _get_token_map_solana(self) -> Dict[str, Dict]:
-        response = self._session.get(SOL_TOKEN_LIST_URL)
+        response = self._get_from_url(SOL_TOKEN_LIST_URL)
+        if not response:
+            return {}
+
         token_list = response.json()
         return {t['address']: t for t in token_list['content'] if t['chainId'] == 101}
 
     def _get_token_map_jup_ag(self) -> Dict[str, Dict]:
-        response = self._session.get(JUP_AG_TOKEN_LIST_URL)
+        response = self._get_from_url(JUP_AG_TOKEN_LIST_URL)
+        if not response:
+            return {}
 
         csv_rows = response.text.split('\n')
         header = csv_rows[0].split(',')
@@ -112,14 +134,21 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         }
 
     def _get_token_map_sonar(self) -> Dict[str, Dict]:
-        response = self._session.get(SONAR_TOKEN_LIST_URL)
+        response = self._get_from_url(SONAR_TOKEN_LIST_URL)
+        if not response:
+            return {}
+
         token_list = response.json()
         return {t['address']: t for t in token_list['tokens'] if t['chainId'] == 101}
 
     @property
     def ban_list(self) -> set[str]:
         if self._ban_list is None:
-            response = self._session.get(JUP_AG_BAN_LIST_URL)
+            response = self._get_from_url(JUP_AG_BAN_LIST_URL)
+            if not response:
+                self._ban_list = set()
+                return self.ban_list
+
             ban_list = response.text.strip().split('\n')
             self._ban_list = set(i.split(',')[0] for i in ban_list[1:])
         return self._ban_list
