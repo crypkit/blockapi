@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.54.1 (2025-01-30)
+
+### Bug Fixes
+
+- Removed solana main
+  ([`e527122`](https://github.com/crypkit/blockapi/commit/e527122dfef051536a7382324883aecdf214f6f0))
+
+
 ## v0.54.0 (2025-01-30)
 
 ### Features
