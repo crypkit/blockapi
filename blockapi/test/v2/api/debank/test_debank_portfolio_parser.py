@@ -163,3 +163,7 @@ def test_parse_pools(debank_api, bio_polls):
     assert parsed
     for data_item in parsed.data:
         assert data_item.items
+
+    for data_item in parsed.data:
+        for item in data_item.items:
+            assert item.balance > Decimal('0')
