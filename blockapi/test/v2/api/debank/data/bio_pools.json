@@ -218,7 +218,7 @@
          },
          "asset_token_list":[
             {
-               "amount":988622.9649515124,
+               "amount":-988622.9649515124,
                "chain":"eth",
                "claimable_amount":4902.29790749049,
                "decimals":18,

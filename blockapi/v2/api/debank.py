@@ -323,6 +323,10 @@ class DebankBalanceParser:
             asset_type = AssetType.DEBT
             amount = -amount
 
+        if amount < 0:
+            logger.info(f'Fixing negative item asset_type={asset_type}')
+            amount = -amount
+
         if raw_amount == 0 and amount != 0:
             raw_amount = decimals_to_raw(amount, coin.decimals)
 
