@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.54.2 (2025-02-03)
+
+### Bug Fixes
+
+- Don't import negative balances ([#221](https://github.com/crypkit/blockapi/pull/221),
+  [`26f68ad`](https://github.com/crypkit/blockapi/commit/26f68ade139dd79c4198be06bdcbbc71cf674573))
+
+
 ## v0.54.1 (2025-01-30)
 
 ### Bug Fixes
