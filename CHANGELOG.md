@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v0.54.3 (2025-02-04)
+
+### Bug Fixes
+
+- **debank**: Ignore duplicate symbols in asset import list
+  ([#222](https://github.com/crypkit/blockapi/pull/222),
+  [`8969ad6`](https://github.com/crypkit/blockapi/commit/8969ad63551523f547b101a0dadd011784e97261))
+
+
 ## v0.54.2 (2025-02-03)
 
 ### Bug Fixes
