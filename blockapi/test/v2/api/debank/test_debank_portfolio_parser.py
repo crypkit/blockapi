@@ -167,3 +167,15 @@ def test_parse_pools(debank_api, bio_polls):
     for data_item in parsed.data:
         for item in data_item.items:
             assert item.balance > Decimal('0')
+
+
+def test_skip_duplicate_assets(portfolio_parser, duplicates):
+    parsed_items = portfolio_parser.parse(duplicates)
+    assert len(parsed_items) == 3
+    for item in parsed_items:
+        assert len(item.items) == 1
+
+
+@pytest.fixture
+def duplicates():
+    return read_json_file("debank/data/duplicates.json")
