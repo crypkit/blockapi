@@ -1,0 +1,203 @@
+[
+  {
+    "id": "avax_traderjoexyz_lending",
+    "chain": "avax",
+    "name": "Trader Joe Lending",
+    "site_url": "https://www.traderjoexyz.com",
+    "logo_url": "https://static.debank.com/image/project/logo_url/avax_traderjoexyz_lending/eab9fd6fb47852d3b7766515bfefe366.png",
+    "has_supported_portfolio": true,
+    "tvl": 162476998.75607753,
+    "portfolio_item_list": [
+      {
+        "stats": {
+          "asset_usd_value": 547045.4515305705,
+          "debt_usd_value": 0,
+          "net_usd_value": 547045.4515305705
+        },
+        "update_at": 1650963061.376993,
+        "name": "Lending",
+        "pool_id": "0xdc13687554205e5b89ac783db14bb5bba4a1edac",
+        "detail_types": [
+          "lending"
+        ],
+        "asset_token_list": [
+          {
+            "id": "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7",
+            "chain": "avax",
+            "name": "Wrapped AVAX",
+            "symbol": "WAVAX",
+            "display_symbol": "WAVAX",
+            "optimized_symbol": "WAVAX",
+            "decimals": 18,
+            "logo_url": "https://static.debank.com/image/avax_token/logo_url/0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7/753d82f0137617110f8dec56309b4065.png",
+            "protocol_id": "avax_gmx",
+            "price": 72.17,
+            "is_verified": true,
+            "is_core": true,
+            "is_wallet": true,
+            "time_at": 1607728259,
+            "amount": 7579.956374263135,
+            "is_collateral": false
+          }
+        ],
+        "detail": {
+          "supply_token_list": [
+            {
+              "id": "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7",
+              "chain": "avax",
+              "name": "Wrapped AVAX",
+              "symbol": "WAVAX",
+              "display_symbol": "WAVAX",
+              "optimized_symbol": "WAVAX",
+              "decimals": 18,
+              "logo_url": "https://static.debank.com/image/avax_token/logo_url/0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7/753d82f0137617110f8dec56309b4065.png",
+              "protocol_id": "avax_gmx",
+              "price": 72.17,
+              "is_verified": true,
+              "is_core": true,
+              "is_wallet": true,
+              "time_at": 1607728259,
+              "amount": 7579.956374263135,
+              "is_collateral": false
+            }
+          ],
+          "borrow_token_list": [],
+          "health_rate": null
+        },
+        "proxy_detail": {}
+      }
+    ]
+  },
+  {
+    "id": "badger",
+    "chain": "eth",
+    "name": "Badger DAO",
+    "site_url": "https://app.badger.com",
+    "logo_url": "https://static.debank.com/image/project/logo_url/badger/5c003a64968875b5a0fc9ad1d66f443e.png",
+    "has_supported_portfolio": true,
+    "tvl": 477772217.08888835,
+    "portfolio_item_list": [
+      {
+        "asset_token_list": [
+          {
+            "id": "0x3472a5a71965499acd81997a54bba8d852c6e53d",
+            "chain": "eth",
+            "name": "Badger",
+            "symbol": "BADGER",
+            "display_symbol": null,
+            "optimized_symbol": "BADGER",
+            "decimals": 18,
+            "logo_url": "https://static.debank.com/image/eth_token/logo_url/0x3472a5a71965499acd81997a54bba8d852c6e53d/0e7643dba053739569d5b9f82225f4e5.png",
+            "protocol_id": "badger",
+            "price": 9.293940818278347,
+            "is_verified": true,
+            "is_core": true,
+            "is_wallet": true,
+            "time_at": 1606584722,
+            "amount": 0.10983732849125298
+          }
+        ],
+        "stats": {
+          "asset_usd_value": 1.0208216306355034,
+          "debt_usd_value": 0,
+          "net_usd_value": 1.0208216306355034
+        },
+        "update_at": 1650963062.2987647,
+        "name": "Rewards",
+        "pool_id": null,
+        "detail_types": [
+          "reward"
+        ],
+        "detail": {
+          "borrow_token_list": [
+            {
+              "id": "0x3472a5a71965499acd81997a54bba8d852c6e53d",
+              "chain": "eth",
+              "name": "Badger",
+              "symbol": "BADGER",
+              "display_symbol": null,
+              "optimized_symbol": "BADGER",
+              "decimals": 18,
+              "logo_url": "https://static.debank.com/image/eth_token/logo_url/0x3472a5a71965499acd81997a54bba8d852c6e53d/0e7643dba053739569d5b9f82225f4e5.png",
+              "protocol_id": "badger",
+              "price": 9.293940818278347,
+              "is_verified": true,
+              "is_core": true,
+              "is_wallet": true,
+              "time_at": 1606584722,
+              "amount": 0.10983732849125298
+            }
+          ]
+        },
+        "proxy_detail": {}
+      }
+    ]
+  },
+  {
+    "id": "bao",
+    "chain": "eth",
+    "name": "Bao.Finance",
+    "site_url": "https://www.bao.finance",
+    "logo_url": "https://static.debank.com/image/project/logo_url/bao/d59cfe86c635a69450f6c589374d13bb.png",
+    "has_supported_portfolio": true,
+    "tvl": 109387995.87917314,
+    "portfolio_item_list": [
+      {
+        "asset_token_list": [
+          {
+            "id": "0x374cb8c27130e2c9e04f44303f3c8351b9de61c1",
+            "chain": "eth",
+            "name": "BaoToken",
+            "symbol": "BAO",
+            "display_symbol": null,
+            "optimized_symbol": "BAO",
+            "decimals": 18,
+            "logo_url": "https://static.debank.com/image/eth_token/logo_url/0x374cb8c27130e2c9e04f44303f3c8351b9de61c1/31e006c2a222e974dcef3636beb8e662.png",
+            "protocol_id": "bao",
+            "price": 0.00013897526158318586,
+            "is_verified": true,
+            "is_core": true,
+            "is_wallet": true,
+            "time_at": 1606850780,
+            "amount": 211938652.94628933
+          }
+        ],
+        "stats": {
+          "asset_usd_value": 29454.229732798605,
+          "debt_usd_value": 0,
+          "net_usd_value": 29454.229732798605
+        },
+        "update_at": 1650963063.251515,
+        "name": "Locked",
+        "pool_id": "0x374cb8c27130e2c9e04f44303f3c8351b9de61c1",
+        "detail_types": [
+          "common",
+          "locked"
+        ],
+        "detail": {
+          "reward_token_list": [
+            {
+              "id": "0x374cb8c27130e2c9e04f44303f3c8351b9de61c1",
+              "chain": "eth",
+              "name": "BaoToken",
+              "symbol": "BAO",
+              "display_symbol": null,
+              "optimized_symbol": "BAO",
+              "decimals": 18,
+              "logo_url": "https://static.debank.com/image/eth_token/logo_url/0x374cb8c27130e2c9e04f44303f3c8351b9de61c1/31e006c2a222e974dcef3636beb8e662.png",
+              "protocol_id": "bao",
+              "price": 0.00013897526158318586,
+              "is_verified": true,
+              "is_core": true,
+              "is_wallet": true,
+              "time_at": 1606850780,
+              "amount": 211938652.94628933
+            }
+          ],
+          "unlock_at": 2715656008.36
+        },
+        "proxy_detail": {}
+      }
+    ]
+  }
+]
