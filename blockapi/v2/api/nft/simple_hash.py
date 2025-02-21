@@ -1,6 +1,6 @@
 import logging
 from functools import cached_property
-from typing import Iterable, Optional
+from typing import Iterable, Literal, Optional
 
 from blockapi.v2.base import BlockchainApi, INftParser, INftProvider, ISleepProvider
 from blockapi.v2.coins import COIN_BTC, COIN_ETH, COIN_SOL
@@ -27,6 +27,13 @@ SIMPLE_HASH_COINS = {
     'solana.native': COIN_SOL,
     'ethereum.native': COIN_ETH,
 }
+
+BidOrderBy = Literal[
+    'bid_timestamp__asc', 'bid_timestamp__desc', 'bid_price__asc', 'bid_price__desc'
+]
+ListingOrderBy = Literal[
+    'listing_timestamp_asc', 'listing_timestamp_desc', 'price_asc', 'price_desc'
+]
 
 
 class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
@@ -358,22 +365,36 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
         )
 
     def fetch_offers(
-        self, collection: str, cursor: Optional[str] = None
+        self,
+        collection: str,
+        cursor: Optional[str] = None,
+        order_by: BidOrderBy = 'bid_price__desc',
     ) -> FetchResult:
+        params = {'order_by': order_by}
+        if cursor:
+            params['cursor'] = cursor
+
         return self.get_data(
             'get_bids',
             headers=self.headers,
-            params=dict(cursor=cursor) if cursor else None,
+            params=params,
             slug=collection,
         )
 
     def fetch_wallet_offers(
-        self, address: str, cursor: Optional[str] = None
+        self,
+        address: str,
+        cursor: Optional[str] = None,
+        order_by: BidOrderBy = 'bid_price__desc',
     ) -> FetchResult:
+        params = {'order_by': order_by}
+        if cursor:
+            params['cursor'] = cursor
+
         return self.get_data(
             'get_wallet_bids',
             headers=self.headers,
-            params=dict(cursor=cursor) if cursor else None,
+            params=params,
             chain=self.simplehash_blockchains,
             address=address,
         )
@@ -421,22 +442,36 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
                 )
 
     def fetch_listings(
-        self, collection: str, cursor: Optional[str] = None
+        self,
+        collection: str,
+        cursor: Optional[str] = None,
+        order_by: ListingOrderBy = 'price_desc',
     ) -> FetchResult:
+        params = {'order_by': order_by}
+        if cursor:
+            params['cursor'] = cursor
+
         return self.get_data(
             'get_listings',
             headers=self.headers,
-            params=dict(cursor=cursor) if cursor else None,
+            params=params,
             slug=collection,
         )
 
     def fetch_wallet_listings(
-        self, address: str, cursor: Optional[str] = None
+        self,
+        address: str,
+        cursor: Optional[str] = None,
+        order_by: ListingOrderBy = 'price_desc',
     ) -> FetchResult:
+        params = {'order_by': order_by}
+        if cursor:
+            params['cursor'] = cursor
+
         return self.get_data(
             'get_wallet_listings',
             headers=self.headers,
-            params=dict(cursor=cursor) if cursor else None,
+            params=params,
             chain=self.simplehash_blockchains,
             include_nft_details=0,
             address=address,
