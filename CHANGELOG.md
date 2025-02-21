@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.55.0 (2025-02-21)
+
+### Bug Fixes
+
+- Fix Enum to (str, Enum)
+  ([`c794fc3`](https://github.com/crypkit/blockapi/commit/c794fc3eb2e29ad8709bf057a233de21e8dcd23a))
+
+### Features
+
+- Add order_by arg to offers and listings endpoints
+  ([`e4210a6`](https://github.com/crypkit/blockapi/commit/e4210a6b818179299d35c5bda423b3fee1ea31f7))
+
+
 ## v0.54.3 (2025-02-04)
 
 ### Bug Fixes
@@ -280,9 +293,7 @@
   ([#188](https://github.com/crypkit/blockapi/pull/188),
   [`13b1fc4`](https://github.com/crypkit/blockapi/commit/13b1fc444e6505d679b2a65bb0189c799c4da131))
 
-updated-dependencies: - dependency-name: requests dependency-type: direct:production
-
-...
+updated-dependencies: - dependency-name: requests dependency-type: direct:production ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -719,9 +730,7 @@ Bumps [requests](https://github.com/psf/requests) from 2.28.1 to 2.31.0. - [Rele
   [Changelog](https://github.com/psf/requests/blob/main/HISTORY.md) -
   [Commits](https://github.com/psf/requests/compare/v2.28.1...v2.31.0)
 
---- updated-dependencies: - dependency-name: requests dependency-type: direct:production
-
-...
+--- updated-dependencies: - dependency-name: requests dependency-type: direct:production ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
