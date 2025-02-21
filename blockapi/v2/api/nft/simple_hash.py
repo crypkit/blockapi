@@ -1,6 +1,7 @@
 import logging
+from enum import Enum
 from functools import cached_property
-from typing import Iterable, Literal, Optional
+from typing import Iterable, Optional
 
 from blockapi.v2.base import BlockchainApi, INftParser, INftProvider, ISleepProvider
 from blockapi.v2.coins import COIN_BTC, COIN_ETH, COIN_SOL
@@ -28,12 +29,19 @@ SIMPLE_HASH_COINS = {
     'ethereum.native': COIN_ETH,
 }
 
-BidOrderBy = Literal[
-    'bid_timestamp__asc', 'bid_timestamp__desc', 'bid_price__asc', 'bid_price__desc'
-]
-ListingOrderBy = Literal[
-    'listing_timestamp_asc', 'listing_timestamp_desc', 'price_asc', 'price_desc'
-]
+
+class BidOrderBy(str, Enum):
+    BID_TIMESTAMP_ASC = 'bid_timestamp__asc'
+    BID_TIMESTAMP_DESC = 'bid_timestamp__desc'
+    BID_PRICE_ASC = 'bid_price__asc'
+    BID_PRICE_DESC = 'bid_price__desc'
+
+
+class ListingOrderBy(str, Enum):
+    LISTING_TIMESTAMP_ASC = 'listing_timestamp_asc'
+    LISTING_TIMESTAMP_DESC = 'listing_timestamp_desc'
+    PRICE_ASC = 'price_asc'
+    PRICE_DESC = 'price_desc'
 
 
 class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
@@ -368,7 +376,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
         self,
         collection: str,
         cursor: Optional[str] = None,
-        order_by: BidOrderBy = 'bid_price__desc',
+        order_by: BidOrderBy = BidOrderBy.BID_PRICE_DESC,
     ) -> FetchResult:
         params = {'order_by': order_by}
         if cursor:
@@ -385,7 +393,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
         self,
         address: str,
         cursor: Optional[str] = None,
-        order_by: BidOrderBy = 'bid_price__desc',
+        order_by: BidOrderBy = BidOrderBy.BID_PRICE_DESC,
     ) -> FetchResult:
         params = {'order_by': order_by}
         if cursor:
@@ -445,7 +453,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
         self,
         collection: str,
         cursor: Optional[str] = None,
-        order_by: ListingOrderBy = 'price_desc',
+        order_by: ListingOrderBy = ListingOrderBy.PRICE_DESC,
     ) -> FetchResult:
         params = {'order_by': order_by}
         if cursor:
@@ -462,7 +470,7 @@ class SimpleHashApi(BlockchainApi, INftProvider, INftParser):
         self,
         address: str,
         cursor: Optional[str] = None,
-        order_by: ListingOrderBy = 'price_desc',
+        order_by: ListingOrderBy = ListingOrderBy.PRICE_DESC,
     ) -> FetchResult:
         params = {'order_by': order_by}
         if cursor:
