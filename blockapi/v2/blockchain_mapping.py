@@ -7,6 +7,7 @@ logger = logging.getLogger(__name__)
 
 DEBANK_BLOCKCHAINS_MAP = {
     'a8': Blockchain.ANCIENT8,
+    'abs': Blockchain.ABSTRACT,
     'ace': Blockchain.ENDURANCE,
     'ailayer': Blockchain.AI_LAYER,
     'alot': Blockchain.DEX_ALOT,
@@ -15,6 +16,7 @@ DEBANK_BLOCKCHAINS_MAP = {
     'avax': Blockchain.AVALANCHE,
     'aze': Blockchain.ASTAR_ZKEVM,
     'bb': Blockchain.BOUNCE_BIT,
+    'bera': Blockchain.BERACHAIN,
     'bfc': Blockchain.BIFROST,
     'boba': Blockchain.BOBA,
     'brise': Blockchain.BITGERT,
@@ -84,6 +86,7 @@ DEBANK_BLOCKCHAINS_MAP = {
     'tlos': Blockchain.TELOS,
     'tomb': Blockchain.TOMBCHAIN,
     'ulx': Blockchain.ULTRON,
+    'uni': Blockchain.UNICHAIN,
     'wan': Blockchain.WANCHAIN,
     'wemix': Blockchain.WEMIX_NETWORK,
     'world': Blockchain.WORLD_CHAIN,
@@ -179,6 +182,7 @@ CHAIN_ID_BLOCKCHAINS_MAP = {
     '106': Blockchain.VELAS,
     '122': Blockchain.FUSE,
     '128': Blockchain.HUOBI_TOKEN,
+    '130': Blockchain.UNICHAIN,
     '137': Blockchain.POLYGON,
     '250': Blockchain.FANTOM,
     '256': None,  # testnet
@@ -192,9 +196,11 @@ CHAIN_ID_BLOCKCHAINS_MAP = {
     '1088': Blockchain.METIS_ANDROMEDA,
     '1284': Blockchain.MOONBEAM,
     '1285': Blockchain.MOONRIVER,
+    '1514': Blockchain.STORY,
     '2000': Blockchain.DOGECHAIN,
     '2001': Blockchain.MILKOMEDA_C1,
     '2222': Blockchain.KAVA,
+    '2741': Blockchain.ABSTRACT,
     '4689': Blockchain.IOTEX,
     '8217': Blockchain.KLAYTN_CYPRESS,
     '9001': Blockchain.EVMOS,
@@ -209,6 +215,7 @@ CHAIN_ID_BLOCKCHAINS_MAP = {
     '53935': Blockchain.DFK_CHAIN,
     '71402': Blockchain.GODWOKEN,
     # "73772":None, #TODO: not found
+    '80094': Blockchain.BERACHAIN,
     '210425': Blockchain.PLAT_ON,
     '256256': Blockchain.CMP,
     # "12340001": None, #TODO: not found

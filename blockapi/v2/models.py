@@ -13,6 +13,7 @@ UNKNOWN = 'unknown'
 
 
 class Blockchain(str, Enum):
+    ABSTRACT = 'abstract'
     ACALA = 'acala'
     AELF = 'aelf'
     AI_LAYER = 'ai-layer'
@@ -43,6 +44,7 @@ class Blockchain(str, Enum):
     BAHAMUT = 'bahamut'
     BASE = 'base'
     BEAM = 'beam'
+    BERACHAIN = 'berachain'
     BEVM = 'bevm'
     BIFROST = 'bifrost'
     BINANCECOIN = 'binancecoin'
@@ -304,6 +306,7 @@ class Blockchain(str, Enum):
     STARKNET = 'starknet'
     STELLAR = 'stellar'
     STEP_NETWORK = 'step-network'
+    STORY = 'story'
     STRATIS = 'stratis'
     SUI = 'sui'
     SUPER_LUMIO = 'super-lumio'
@@ -330,6 +333,7 @@ class Blockchain(str, Enum):
     TRUSTLESS_COMPUTER = 'trustless-computer'
     UBIQ = 'ubiq'
     ULTRON = 'ultron'
+    UNICHAIN = 'unichain'
     VALOBIT = 'valobit'
     VALORBIT = 'valorbit'
     VECHAIN = 'vechain'
