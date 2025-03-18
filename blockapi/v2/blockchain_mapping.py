@@ -272,7 +272,7 @@ def get_blockchain_from_coingecko_chain(chain: Optional[str]) -> Optional[Blockc
 
 
 def get_blockchain_from_chain_id(
-    chain: Optional[Union[str, int]]
+    chain: Optional[Union[str, int]],
 ) -> Optional[Blockchain]:
     return _get_chain_mapping(chain, 'Chain ID', CHAIN_ID_BLOCKCHAINS_MAP)
 
