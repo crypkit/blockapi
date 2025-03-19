@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.56.0 (2025-03-19)
+
+### Features
+
+- Add new blockchain mappings and enum definitions (Abstract, Berachain, Story and Unichain)
+  ([`d0284a2`](https://github.com/crypkit/blockapi/commit/d0284a2fccc20b5c532ade128f3e9db979fc0b6a))
+
+- Formatting?
+  ([`f9a5b72`](https://github.com/crypkit/blockapi/commit/f9a5b72db74dbf8373880e480663a5764dad9a11))
+
+
 ## v0.55.0 (2025-02-21)
 
 ### Bug Fixes
