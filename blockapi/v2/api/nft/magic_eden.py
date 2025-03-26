@@ -46,10 +46,11 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
 
     coin_map = NotImplemented
 
-    def __init__(self, sleep_provider):
+    def __init__(self, sleep_provider, max_listings=15000, max_offers=15000):
         super().__init__()
-
         self._sleep_provider = sleep_provider
+        self.max_listings = max_listings
+        self.max_offers = max_offers
 
     def fetch_nfts(self, address: str) -> FetchResult:
         offset = 0
@@ -192,7 +193,12 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
                 data_len = len(results)
                 offset += limit
 
-            if data.errors or not data.data or data_len < limit or offset > 15000:
+            if (
+                data.errors
+                or not data.data
+                or data_len < limit
+                or offset > self.max_offers
+            ):
                 return FetchResult(
                     status_code=data.status_code,
                     headers=data.headers,
@@ -257,7 +263,11 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
         return str(spot_price * (1 - seller_fee - takers_fee - lp_fee))
 
     def fetch_listings(
-        self, collection: str, cursor: Optional[str] = None
+        self,
+        collection: str,
+        cursor: Optional[str] = None,
+        sort="updatedAt",
+        sort_direction="desc",
     ) -> FetchResult:
         offset = 0
         limit = 100
@@ -266,7 +276,12 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
         while True:
             self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
             data = self.get_data(
-                'get_listings', slug=collection, offset=offset, limit=limit
+                'get_listings',
+                slug=collection,
+                offset=offset,
+                limit=limit,
+                sort=sort,
+                sort_direction=sort_direction,
             )
 
             if self._should_retry(data):
@@ -277,7 +292,12 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
                 offset += limit
 
             # note: if offset is greater than 15000, causes response "offset should be non-negative integer"
-            if data.errors or not data.data or len(data.data) < limit or offset > 15000:
+            if (
+                data.errors
+                or not data.data
+                or len(data.data) < limit
+                or offset > self.max_listings
+            ):
                 return FetchResult(
                     status_code=data.status_code,
                     headers=data.headers,
