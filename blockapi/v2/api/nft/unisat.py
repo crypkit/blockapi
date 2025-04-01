@@ -12,6 +12,9 @@ from blockapi.v2.models import (
     FetchResult,
     NftToken,
     ParseResult,
+    NftCollection,
+    NftCollectionTotalStats,
+    NftVolumes,
 )
 
 logger = logging.getLogger(__name__)
@@ -39,6 +42,9 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
 
     supported_requests = {
         'get_nfts': '/address/{address}/inscription-data',
+        'get_collection': '/collection-indexer/collection/{collectionId}/info',
+        'get_collection_items': '/collection-indexer/collection/{collectionId}/items',
+        'get_collection_stats': '/v3/market/collection/auction/collection_statistic',
     }
 
     def __init__(self, api_key: str):
@@ -166,3 +172,103 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             except Exception as e:
                 logger.error(f"Error parsing inscription {inscription.get('inscriptionId', 'unknown')}: {str(e)}")
                 continue 
+
+    def fetch_collection(self, collection: str) -> FetchResult:
+        """
+        Fetch collection information and items
+        
+        Args:
+            collection: Collection ID to fetch
+            
+        Returns:
+            FetchResult containing collection data and items
+        """
+        if not collection:
+            raise ValueError("Collection ID is required")
+
+        try:
+            # Get collection info
+            info = self.get_data(
+                'get_collection',
+                headers=self.headers,
+                collectionId=collection,
+            )
+
+            # Get collection items
+            items = self.get_data(
+                'get_collection_items',
+                headers=self.headers,
+                collectionId=collection,
+            )
+
+            # Get collection marketplace stats
+            stats = self.post_data(
+                'get_collection_stats',
+                headers=self.headers,
+                json={'collectionId': collection},
+            )
+
+            # Combine results
+            return FetchResult.from_fetch_results(
+                info=info,
+                items=items,
+                stats=stats
+            )
+        except Exception as e:
+            logger.error(f"Error fetching collection {collection}: {str(e)}")
+            return FetchResult(errors=[str(e)])
+
+    def parse_collection(self, fetch_result: FetchResult) -> ParseResult:
+        """
+        Parse collection data from the API response
+        
+        Args:
+            fetch_result: Raw API response data
+            
+        Returns:
+            ParseResult containing parsed collection data
+        """
+        if not fetch_result or not fetch_result.data:
+            return ParseResult(errors=fetch_result.errors if fetch_result else None)
+
+        try:
+            info = fetch_result.data.get('info', {}).get('data', {})
+            items = fetch_result.data.get('items', {}).get('data', {}).get('list', [])
+            stats = fetch_result.data.get('stats', {}).get('data', {})
+
+            # Create collection stats using available data
+            total_stats = NftCollectionTotalStats.from_api(
+                volume='',  # Not available in API
+                sales_count='',  # Not available in API
+                owners_count=str(info.get('holders', '')),  # Use empty string if not available
+                market_cap='',  # Not available in API
+                floor_price=str(stats.get('floorPrice', '')),  # From marketplace stats
+                average_price='',  # Not available in API
+                coin=self.coin,
+            )
+
+            # Create collection with available data
+            collection = NftCollection.from_api(
+                ident=collection,
+                name=stats.get('name', f"Collection {collection}"),  # Use marketplace name if available
+                contracts=[ContractInfo.from_api(
+                    blockchain=Blockchain.BITCOIN,
+                    address=collection
+                )],
+                image=stats.get('icon'),  # From marketplace stats
+                is_disabled=False,
+                is_nsfw=False,
+                blockchain=Blockchain.BITCOIN,
+                total_stats=total_stats,
+                volumes=NftVolumes.from_api(
+                    coin=self.coin,
+                ),
+            )
+
+            return ParseResult(
+                data=[collection] if collection else None,
+                errors=fetch_result.errors,
+            )
+        except Exception as e:
+            logger.error(f"Error parsing collection data: {str(e)}")
+            return ParseResult(errors=[str(e)])
