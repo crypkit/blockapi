@@ -22,29 +22,22 @@ logger = logging.getLogger(__name__)
 
 class UnisatApi(BlockchainApi, INftParser, INftProvider):
     """
-    Bitcoin Ordinals
     API docs: https://docs.unisat.io/
-    
-    This API requires an API key from Unisat. You can get one by:
-    1. Going to https://developer.unisat.io/account/login
-    2. Creating an account
-    3. Going to the API section
-    4. Generating an API key
     """
 
     coin = COIN_BTC
 
     api_options = ApiOptions(
         blockchain=Blockchain.BITCOIN,
-        base_url='https://open-api.unisat.io/v1/indexer',
+        base_url='https://open-api.unisat.io/v1/indexer/',
         rate_limit=0.2,  # 5 calls per second for free tier
     )
 
     supported_requests = {
-        'get_nfts': '/address/{address}/inscription-data',
-        'get_collection': '/collection-indexer/collection/{collectionId}/info',
-        'get_collection_items': '/collection-indexer/collection/{collectionId}/items',
-        'get_collection_stats': '/v3/market/collection/auction/collection_statistic',
+        'get_nfts': 'address/{address}/inscription-data',
+        'get_collection': 'collection-indexer/collection/{collectionId}/info',
+        'get_collection_items': 'collection-indexer/collection/{collectionId}/items',
+        'get_collection_stats': 'v3/market/collection/auction/collection_statistic',
     }
 
     def __init__(self, api_key: str):
@@ -98,15 +91,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             return FetchResult(errors=[str(e)])
 
     def parse_nfts(self, fetch_result: FetchResult) -> ParseResult:
-        """
-        Parse NFT data from the API response
-        
-        Args:
-            fetch_result: Raw API response data
-            
-        Returns:
-            ParseResult containing parsed NFT tokens
-        """
         if not fetch_result or not fetch_result.data:
             return ParseResult(errors=fetch_result.errors if fetch_result else None)
 
@@ -122,25 +106,18 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             return ParseResult(errors=[str(e)])
 
     def _yield_parsed_nfts(self, data: dict):
-        """
-        Yield parsed NFT tokens from the API response
-        
-        Args:
-            data: API response data containing inscription list
-        """
         inscriptions = data.get('inscription', [])
+        
         if not inscriptions:
             return
 
         for inscription in inscriptions:
             try:
-                # Get required fields from the actual API response
                 inscription_id = inscription.get('inscriptionId')
                 inscription_number = inscription.get('inscriptionNumber')
                 utxo = inscription.get('utxo', {})
                 txid = utxo.get('txid')
                 
-                # Check required fields that must be present
                 if not all([inscription_id, inscription_number, txid]):
                     logger.warning(
                         f"Skipping inscription with missing required fields. "
@@ -149,29 +126,28 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                         f"txid: {txid}"
                     )
                     continue
-
-                # Create NFT token with only the fields we actually have
+                
                 yield NftToken.from_api(
                     ident=inscription_id,
                     collection='ordinals',
                     collection_name='Bitcoin Ordinals',
                     contract=txid,
                     standard='ordinals',
-                    name=f"Ordinal #{inscription_number}",  # Using inscription number as name
-                    description=None,  # Not in API response
+                    name=f"Ordinal #{inscription_number}",
+                    description='',
                     amount=1,
-                    image_url='',  # Required but not in API response
-                    metadata_url=None,  # Not in API response
+                    image_url='',
+                    metadata_url=None,
                     updated_time=inscription.get('timestamp'),
                     is_disabled=False,
                     is_nsfw=False,
                     blockchain=Blockchain.BITCOIN,
                     asset_type=AssetType.AVAILABLE,
-                    market_url=None,  # Not in API response
+                    market_url=None,
                 )
             except Exception as e:
                 logger.error(f"Error parsing inscription {inscription.get('inscriptionId', 'unknown')}: {str(e)}")
-                continue 
+                continue
 
     def fetch_collection(self, collection: str) -> FetchResult:
         """
@@ -187,28 +163,24 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             raise ValueError("Collection ID is required")
 
         try:
-            # Get collection info
             info = self.get_data(
                 'get_collection',
                 headers=self.headers,
                 collectionId=collection,
             )
 
-            # Get collection items
             items = self.get_data(
                 'get_collection_items',
                 headers=self.headers,
                 collectionId=collection,
             )
 
-            # Get collection marketplace stats
             stats = self.post_data(
                 'get_collection_stats',
                 headers=self.headers,
                 json={'collectionId': collection},
             )
 
-            # Combine results
             return FetchResult.from_fetch_results(
                 info=info,
                 items=items,
@@ -236,26 +208,24 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             items = fetch_result.data.get('items', {}).get('data', {}).get('list', [])
             stats = fetch_result.data.get('stats', {}).get('data', {})
 
-            # Create collection stats using available data
             total_stats = NftCollectionTotalStats.from_api(
-                volume='',  # Not available in API
-                sales_count='',  # Not available in API
-                owners_count=str(info.get('holders', '')),  # Use empty string if not available
-                market_cap='',  # Not available in API
-                floor_price=str(stats.get('floorPrice', '')),  # From marketplace stats
-                average_price='',  # Not available in API
+                volume='',
+                sales_count='',
+                owners_count=str(info.get('holders', '')),
+                market_cap='',
+                floor_price=str(stats.get('floorPrice', '')),
+                average_price='',
                 coin=self.coin,
             )
 
-            # Create collection with available data
             collection = NftCollection.from_api(
                 ident=collection,
-                name=stats.get('name', f"Collection {collection}"),  # Use marketplace name if available
+                name=stats.get('name', f"Collection {collection}"),
                 contracts=[ContractInfo.from_api(
                     blockchain=Blockchain.BITCOIN,
                     address=collection
                 )],
-                image=stats.get('icon'),  # From marketplace stats
+                image=stats.get('icon'),
                 is_disabled=False,
                 is_nsfw=False,
                 blockchain=Blockchain.BITCOIN,
