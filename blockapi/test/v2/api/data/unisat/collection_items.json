@@ -1,0 +1,37 @@
+{
+  "code": 0,
+  "msg": "OK",
+  "data": {
+    "total": 2,
+    "list": [
+      {
+        "inscriptionId": "6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0",
+        "collectionId": "ordinal-punks",
+        "collectionItemName": "Ordinal Punk #1",
+        "inscriptionIndex": 1,
+        "inscriptionNumber": 12345,
+        "inscriptionName": "Ordinal Punk #1",
+        "contentBody": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...",
+        "contentLength": 1024,
+        "contentType": "image/png",
+        "height": 800000,
+        "holders": 1,
+        "totalItems": 1000
+      },
+      {
+        "inscriptionId": "7fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0",
+        "collectionId": "ordinal-punks",
+        "collectionItemName": "Ordinal Punk #2",
+        "inscriptionIndex": 2,
+        "inscriptionNumber": 12346,
+        "inscriptionName": "Ordinal Punk #2",
+        "contentBody": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...",
+        "contentLength": 1024,
+        "contentType": "image/png",
+        "height": 800001,
+        "holders": 1,
+        "totalItems": 1000
+      }
+    ]
+  }
+} 
