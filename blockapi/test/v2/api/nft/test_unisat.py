@@ -11,14 +11,16 @@ from blockapi.v2.models import NftToken, NftCollection
 from blockapi.v2.models import Blockchain, AssetType
 
 nfts_test_address = 'bc1p3rwga6xsfal6f5d085scecg8lu4gsjl8drk5e07uqzk3cg9dq43s734vje'
-test_collection_id = '6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0'
+test_collection_id = (
+    '6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0'
+)
 
 
 def test_parse_nfts(unisat_client, inscription_data, requests_mock):
     """Test basic NFT parsing with valid data"""
     requests_mock.get(
         f"{unisat_client.api_options.base_url}address/{nfts_test_address}/inscription-data",
-        text=inscription_data
+        text=inscription_data,
     )
 
     result = unisat_client.fetch_nfts(nfts_test_address)
@@ -29,7 +31,10 @@ def test_parse_nfts(unisat_client, inscription_data, requests_mock):
     assert len(parsed.data) == 2
 
     nft = parsed.data[0]
-    assert nft.ident == "6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
+    assert (
+        nft.ident
+        == "6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
+    )
     assert nft.collection == "ordinals"
     assert nft.collection_name == "Bitcoin Ordinals"
     assert nft.contract == "txid1"
@@ -40,11 +45,14 @@ def test_parse_nfts(unisat_client, inscription_data, requests_mock):
     assert nft.blockchain == Blockchain.BITCOIN
     assert nft.asset_type == AssetType.AVAILABLE
 
-def test_parse_nfts_edge_cases(unisat_client, inscription_data_edge_cases, requests_mock):
+
+def test_parse_nfts_edge_cases(
+    unisat_client, inscription_data_edge_cases, requests_mock
+):
     """Test NFT parsing with various edge cases"""
     requests_mock.get(
         f"{unisat_client.api_options.base_url}address/{nfts_test_address}/inscription-data",
-        text=inscription_data_edge_cases
+        text=inscription_data_edge_cases,
     )
 
     result = unisat_client.fetch_nfts(nfts_test_address)
@@ -56,7 +64,10 @@ def test_parse_nfts_edge_cases(unisat_client, inscription_data_edge_cases, reque
     assert len(parsed.data) == 1
 
     nft = parsed.data[0]
-    assert nft.ident == "8fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
+    assert (
+        nft.ident
+        == "8fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
+    )
     assert nft.collection == "ordinals"
     assert nft.collection_name == "Bitcoin Ordinals"
     assert nft.contract == "txid4"
@@ -65,10 +76,12 @@ def test_parse_nfts_edge_cases(unisat_client, inscription_data_edge_cases, reque
     assert nft.amount == 1
     assert nft.updated_time == 1234567890
     assert nft.blockchain == Blockchain.BITCOIN
-    assert nft.asset_type == AssetType.AVAILABLE 
+    assert nft.asset_type == AssetType.AVAILABLE
 
 
-def test_fetch_collection(requests_mock, api, collection_info, collection_items, collection_stats):
+def test_fetch_collection(
+    requests_mock, api, collection_info, collection_items, collection_stats
+):
     requests_mock.get(
         f'https://open-api-fractal.unisat.io/v1/collection-indexer/collection/{test_collection_id}/info',
         text=collection_info,
@@ -92,25 +105,31 @@ def test_fetch_collection(requests_mock, api, collection_info, collection_items,
     assert isinstance(collection, NftCollection)
     assert collection.ident == test_collection_id
     assert collection.name == "Ordinal Punks"
-    assert collection.image == "https://ordinals.com/content/6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
+    assert (
+        collection.image
+        == "https://ordinals.com/content/6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
+    )
     assert not collection.is_disabled
     assert not collection.is_nsfw
     assert collection.total_stats.owners_count == "150"
     assert collection.total_stats.floor_price == "0.1"
 
-def test_parse_collection_edge_cases(unisat_client, collection_edge_cases, requests_mock):
+
+def test_parse_collection_edge_cases(
+    unisat_client, collection_edge_cases, requests_mock
+):
     """Test collection parsing with various edge cases"""
     requests_mock.get(
         f"{unisat_client.api_options.base_url}collection-indexer/collection/{test_collection_id}/info",
-        text=collection_edge_cases
+        text=collection_edge_cases,
     )
     requests_mock.get(
         f"{unisat_client.api_options.base_url}collection-indexer/collection/{test_collection_id}/items",
-        text=collection_edge_cases
+        text=collection_edge_cases,
     )
     requests_mock.post(
         f"{unisat_client.api_options.base_url}v3/market/collection/auction/collection_statistic",
-        text=collection_edge_cases
+        text=collection_edge_cases,
     )
 
     result = unisat_client.fetch_collection(test_collection_id)
@@ -125,7 +144,10 @@ def test_parse_collection_edge_cases(unisat_client, collection_edge_cases, reque
     assert collection.ident == test_collection_id
     # Should use collection ID as name when name is empty
     assert collection.name == f"Collection {test_collection_id}"
-    assert collection.image == "https://ordinals.com/content/6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
+    assert (
+        collection.image
+        == "https://ordinals.com/content/6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
+    )
     assert not collection.is_disabled
     assert not collection.is_nsfw
     # Invalid holders count should be handled gracefully
@@ -133,6 +155,7 @@ def test_parse_collection_edge_cases(unisat_client, collection_edge_cases, reque
     # Invalid floor price should be handled gracefully
     assert collection.total_stats.floor_price == ""
     assert collection.blockchain == Blockchain.BITCOIN
+
 
 @pytest.fixture
 def fake_sleep_provider():

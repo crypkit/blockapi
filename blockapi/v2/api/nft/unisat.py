@@ -85,7 +85,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 headers=self.headers,
                 params=params,
                 address=address,
-                extra=dict(address=address),
             )
         except Exception as e:
             logger.error(f"Error fetching NFTs for address {address}: {str(e)}")
