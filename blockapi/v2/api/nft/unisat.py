@@ -242,3 +242,20 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         except Exception as e:
             logger.error(f"Error parsing collection data: {str(e)}")
             return ParseResult(errors=[str(e)])
+
+    # Empty implementations for required interface methods
+    def fetch_offers(self, collection: str) -> FetchResult:
+        """Not implemented yet"""
+        return FetchResult()
+
+    def parse_offers(self, fetch_result: FetchResult) -> ParseResult:
+        """Not implemented yet"""
+        return ParseResult()
+
+    def fetch_listings(self, collection: str) -> FetchResult:
+        """Not implemented yet"""
+        return FetchResult()
+
+    def parse_listings(self, fetch_result: FetchResult) -> ParseResult:
+        """Not implemented yet"""
+        return ParseResult()
