@@ -1,7 +1,7 @@
 import logging
 from typing import Optional
 
-from blockapi.v2.base import BlockchainApi, INftParser, INftProvider
+from blockapi.v2.base import BlockchainApi, INftParser, INftProvider, ISleepProvider
 from blockapi.v2.coins import COIN_BTC
 from blockapi.v2.models import (
     ApiOptions,
@@ -40,17 +40,18 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         'get_collection_stats': 'v3/market/collection/auction/collection_statistic',
     }
 
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: str, sleep_provider: Optional[ISleepProvider] = None):
         """
         Initialize the Unisat API client
         
         Args:
             api_key: Your Unisat API key. Required for all API calls.
+            sleep_provider: Optional sleep provider for rate limiting
         """
         if not api_key:
             raise ValueError("API key is required for Unisat API")
             
-        super().__init__()
+        super().__init__(sleep_provider=sleep_provider)
         self.headers = {
             'Authorization': f'Bearer {api_key}',
             'Content-Type': 'application/json'
