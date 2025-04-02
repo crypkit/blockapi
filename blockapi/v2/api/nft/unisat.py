@@ -43,38 +43,40 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
     def __init__(self, api_key: str, sleep_provider: Optional[ISleepProvider] = None):
         """
         Initialize the Unisat API client
-        
+
         Args:
             api_key: Your Unisat API key. Required for all API calls.
             sleep_provider: Optional sleep provider for rate limiting
         """
         if not api_key:
             raise ValueError("API key is required for Unisat API")
-            
+
         super().__init__(sleep_provider=sleep_provider)
         self.headers = {
             'Authorization': f'Bearer {api_key}',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         }
 
-    def fetch_nfts(self, address: str, cursor: Optional[int] = None, size: int = 16) -> FetchResult:
+    def fetch_nfts(
+        self, address: str, cursor: Optional[int] = None, size: int = 16
+    ) -> FetchResult:
         """
         Fetch NFTs (inscriptions) owned by the address
-        
+
         Args:
             address: BTC address to fetch NFTs for
             cursor: Pagination cursor (offset)
             size: Number of items to return per page (default: 16)
-            
+
         Returns:
             FetchResult containing the NFT data
-            
+
         Raises:
             ValueError: If address is empty or invalid
         """
         if not address:
             raise ValueError("Address is required")
-            
+
         params = {'size': size}
         if cursor is not None:
             params['cursor'] = cursor
@@ -107,7 +109,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
 
     def _yield_parsed_nfts(self, data: dict):
         inscriptions = data.get('inscription', [])
-        
+
         if not inscriptions:
             return
 
@@ -117,7 +119,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 inscription_number = inscription.get('inscriptionNumber')
                 utxo = inscription.get('utxo', {})
                 txid = utxo.get('txid')
-                
+
                 if not all([inscription_id, inscription_number, txid]):
                     logger.warning(
                         f"Skipping inscription with missing required fields. "
@@ -126,7 +128,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                         f"txid: {txid}"
                     )
                     continue
-                
+
                 yield NftToken.from_api(
                     ident=inscription_id,
                     collection='ordinals',
@@ -146,16 +148,18 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                     market_url=None,
                 )
             except Exception as e:
-                logger.error(f"Error parsing inscription {inscription.get('inscriptionId', 'unknown')}: {str(e)}")
+                logger.error(
+                    f"Error parsing inscription {inscription.get('inscriptionId', 'unknown')}: {str(e)}"
+                )
                 continue
 
     def fetch_collection(self, collection: str) -> FetchResult:
         """
         Fetch collection information and items
-        
+
         Args:
             collection: Collection ID to fetch
-            
+
         Returns:
             FetchResult containing collection data and items
         """
@@ -181,11 +185,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 json={'collectionId': collection},
             )
 
-            return FetchResult.from_fetch_results(
-                info=info,
-                items=items,
-                stats=stats
-            )
+            return FetchResult.from_fetch_results(info=info, items=items, stats=stats)
         except Exception as e:
             logger.error(f"Error fetching collection {collection}: {str(e)}")
             return FetchResult(errors=[str(e)])
@@ -193,10 +193,10 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
     def parse_collection(self, fetch_result: FetchResult) -> ParseResult:
         """
         Parse collection data from the API response
-        
+
         Args:
             fetch_result: Raw API response data
-            
+
         Returns:
             ParseResult containing parsed collection data
         """
@@ -221,10 +221,11 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             collection = NftCollection.from_api(
                 ident=collection,
                 name=stats.get('name', f"Collection {collection}"),
-                contracts=[ContractInfo.from_api(
-                    blockchain=Blockchain.BITCOIN,
-                    address=collection
-                )],
+                contracts=[
+                    ContractInfo.from_api(
+                        blockchain=Blockchain.BITCOIN, address=collection
+                    )
+                ],
                 image=stats.get('icon'),
                 is_disabled=False,
                 is_nsfw=False,
