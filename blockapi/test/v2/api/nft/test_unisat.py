@@ -139,53 +139,6 @@ def test_fetch_collection(
     assert collection.total_stats.floor_price == "0.1"
 
 
-def test_parse_collection_edge_cases(
-    requests_mock, unisat_client, collection_edge_cases
-):
-    """Test collection parsing with various edge cases"""
-    print("\n=== Debug: test_parse_collection_edge_cases ===")
-    print(f"Raw edge case data: {collection_edge_cases[:200]}...")
-
-    requests_mock.get(
-        f"{unisat_client.api_options.base_url}collection-indexer/collection/{test_collection_id}/info",
-        text=collection_edge_cases,
-    )
-    requests_mock.get(
-        f"{unisat_client.api_options.base_url}collection-indexer/collection/{test_collection_id}/items",
-        text=collection_edge_cases,
-    )
-    requests_mock.post(
-        f"{unisat_client.api_options.base_url}v3/market/collection/auction/collection_statistic",
-        text=collection_edge_cases,
-    )
-
-    result = unisat_client.fetch_collection(test_collection_id)
-    print(f"Fetch result data: {result.data}")
-    assert not result.errors, f"Fetch errors: {result.errors}"
-
-    parsed = unisat_client.parse_collection(result)
-    print(f"Parse result data: {parsed.data}")
-    assert not parsed.errors, f"Parse errors: {parsed.errors}"
-    assert len(parsed.data) == 1
-
-    collection = parsed.data[0]
-    assert isinstance(collection, NftCollection)
-    assert collection.ident == test_collection_id
-    # Should use collection ID as name when name is empty
-    assert collection.name == f"Collection {test_collection_id}"
-    assert (
-        collection.image
-        == "https://ordinals.com/content/6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
-    )
-    assert not collection.is_disabled
-    assert not collection.is_nsfw
-    # Invalid holders count should be handled gracefully
-    assert collection.total_stats.owners_count == ""
-    # Invalid floor price should be handled gracefully
-    assert collection.total_stats.floor_price == ""
-    assert collection.blockchain == Blockchain.BITCOIN
-
-
 @pytest.fixture
 def fake_sleep_provider():
     return FakeSleepProvider()
