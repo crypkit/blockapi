@@ -184,43 +184,25 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 continue
 
     def fetch_collection(self, collection: str) -> FetchResult:
-        """
-        Fetch collection information and items
+        """Fetch collection data from Unisat API."""
+        info_response = self.get_data(
+            'get_collection_info',
+            headers=self.headers,
+            params={'collectionId': collection},
+        )
+        items_response = self.get_data(
+            'get_collection_items',
+            headers=self.headers,
+            params={'collectionId': collection},
+        )
+        stats_response = self.get_data(
+            'get_collection_stats',
+            method='post',
+            headers=self.headers,
+            json={'collectionId': collection},
+        )
 
-        Args:
-            collection: Collection ID to fetch
-
-        Returns:
-            FetchResult containing collection data and items
-        """
-        if not collection:
-            raise ValueError("Collection ID is required")
-
-        try:
-            info_response = self.get_data(
-                'get_collection',
-                headers=self.headers,
-                collectionId=collection,
-            )
-            items_response = self.get_data(
-                'get_collection_items',
-                headers=self.headers,
-                collectionId=collection,
-            )
-            stats_response = self.get_data(
-                'get_collection_stats',
-                headers=self.headers,
-                json={'collectionId': collection},
-            )
-
-            return FetchResult.from_fetch_results(
-                info=info_response,
-                items=items_response,
-                stats=stats_response,
-            )
-        except (HTTPError, ValueError, TypeError, AttributeError) as e:
-            logger.error(f"Error fetching collection {collection}: {str(e)}")
-            return FetchResult(errors=[str(e)])
+        return FetchResult.from_fetch_results([info_response, items_response, stats_response])
 
     def parse_collection(self, fetch_result: FetchResult) -> ParseResult:
         """
