@@ -167,10 +167,17 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                     contract=utxo["txid"],
                     standard="ordinals",
                     name=f"Ordinal #{inscription_number}",
+                    description="",
                     amount=1,
+                    image_url="",
+                    metadata_url=None,
+                    metadata={},
                     updated_time=int(timestamp),
+                    is_disabled=False,
+                    is_nsfw=False,
                     blockchain=Blockchain.BITCOIN,
                     asset_type=AssetType.AVAILABLE,
+                    market_url=None,
                 )
             except Exception as e:
                 logger.warning(f"Error parsing NFT item {item}: {e}")
