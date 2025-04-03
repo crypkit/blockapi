@@ -136,7 +136,7 @@ def test_fetch_collection(
     assert not collection.is_disabled
     assert not collection.is_nsfw
     assert str(collection.total_stats.owners_count) == "150"
-    assert collection.total_stats.floor_price == "0.1"
+    assert str(collection.total_stats.floor_price) == "0.1"
 
 
 @pytest.fixture
