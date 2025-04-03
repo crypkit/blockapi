@@ -18,16 +18,21 @@ test_collection_id = (
 
 def test_parse_nfts(requests_mock, unisat_client, inscription_data):
     """Test basic NFT parsing with valid data"""
+    print("\n=== Debug: test_parse_nfts ===")
+    print(f"Raw inscription data: {inscription_data[:200]}...")  # Print first 200 chars
+
     requests_mock.get(
         f"{unisat_client.api_options.base_url}address/{nfts_test_address}/inscription-data",
         text=inscription_data,
     )
 
     result = unisat_client.fetch_nfts(nfts_test_address)
-    assert not result.errors
+    print(f"Fetch result data: {result.data}")
+    assert not result.errors, f"Fetch errors: {result.errors}"
 
     parsed = unisat_client.parse_nfts(result)
-    assert not parsed.errors
+    print(f"Parse result data: {parsed.data}")
+    assert not parsed.errors, f"Parse errors: {parsed.errors}"
     assert len(parsed.data) == 2
 
     nft = parsed.data[0]
@@ -50,16 +55,21 @@ def test_parse_nfts_edge_cases(
     requests_mock, unisat_client, inscription_data_edge_cases
 ):
     """Test NFT parsing with various edge cases"""
+    print("\n=== Debug: test_parse_nfts_edge_cases ===")
+    print(f"Raw edge case data: {inscription_data_edge_cases[:200]}...")
+
     requests_mock.get(
         f"{unisat_client.api_options.base_url}address/{nfts_test_address}/inscription-data",
         text=inscription_data_edge_cases,
     )
 
     result = unisat_client.fetch_nfts(nfts_test_address)
-    assert not result.errors
+    print(f"Fetch result data: {result.data}")
+    assert not result.errors, f"Fetch errors: {result.errors}"
 
     parsed = unisat_client.parse_nfts(result)
-    assert not parsed.errors
+    print(f"Parse result data: {parsed.data}")
+    assert not parsed.errors, f"Parse errors: {parsed.errors}"
     # Should only parse the last inscription as it's the only one with all required fields
     assert len(parsed.data) == 1
 
@@ -82,6 +92,11 @@ def test_parse_nfts_edge_cases(
 def test_fetch_collection(
     requests_mock, unisat_client, collection_info, collection_items, collection_stats
 ):
+    print("\n=== Debug: test_fetch_collection ===")
+    print(f"Collection info: {collection_info[:200]}...")
+    print(f"Collection items: {collection_items[:200]}...")
+    print(f"Collection stats: {collection_stats[:200]}...")
+
     requests_mock.get(
         f"{unisat_client.api_options.base_url}collection-indexer/collection/{test_collection_id}/info",
         text=collection_info,
@@ -96,9 +111,12 @@ def test_fetch_collection(
     )
 
     fetch_result = unisat_client.fetch_collection(test_collection_id)
-    parse_result = unisat_client.parse_collection(fetch_result)
+    print(f"Fetch result data: {fetch_result.data}")
+    assert not fetch_result.errors, f"Fetch errors: {fetch_result.errors}"
 
-    assert not parse_result.errors
+    parse_result = unisat_client.parse_collection(fetch_result)
+    print(f"Parse result data: {parse_result.data}")
+    assert not parse_result.errors, f"Parse errors: {parse_result.errors}"
     assert len(parse_result.data) == 1
 
     collection = parse_result.data[0]
@@ -119,6 +137,9 @@ def test_parse_collection_edge_cases(
     requests_mock, unisat_client, collection_edge_cases
 ):
     """Test collection parsing with various edge cases"""
+    print("\n=== Debug: test_parse_collection_edge_cases ===")
+    print(f"Raw edge case data: {collection_edge_cases[:200]}...")
+
     requests_mock.get(
         f"{unisat_client.api_options.base_url}collection-indexer/collection/{test_collection_id}/info",
         text=collection_edge_cases,
@@ -133,10 +154,12 @@ def test_parse_collection_edge_cases(
     )
 
     result = unisat_client.fetch_collection(test_collection_id)
-    assert not result.errors
+    print(f"Fetch result data: {result.data}")
+    assert not result.errors, f"Fetch errors: {result.errors}"
 
     parsed = unisat_client.parse_collection(result)
-    assert not parsed.errors
+    print(f"Parse result data: {parsed.data}")
+    assert not parsed.errors, f"Parse errors: {parsed.errors}"
     assert len(parsed.data) == 1
 
     collection = parsed.data[0]

@@ -104,11 +104,13 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             return ParseResult(errors=fetch_result.errors if fetch_result else None)
 
         try:
-            parsed = list(self._yield_parsed_nfts(fetch_result.data))
+            # Access the nested data structure
+            data = fetch_result.data.get('data', {})
+            parsed = list(self._yield_parsed_nfts(data))
             return ParseResult(
                 data=parsed,
                 errors=fetch_result.errors,
-                cursor=fetch_result.data.get('cursor'),
+                cursor=data.get('cursor'),
             )
         except (ValueError, TypeError, AttributeError) as e:
             logger.error(f"Error parsing NFT data: {str(e)}")
@@ -127,10 +129,10 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         Yields:
             NftToken objects parsed from the data
         """
-        if not data or not data.get('data'):
+        if not data:
             return
 
-        inscriptions = data['data'].get('inscriptions', [])
+        inscriptions = data.get('inscription', [])
         if not inscriptions:
             return
 
@@ -221,6 +223,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             return ParseResult(errors=fetch_result.errors if fetch_result else None)
 
         try:
+            # Access the nested data structure for each response
             info = fetch_result.data.get('info', {}).get('data', {})
             items = fetch_result.data.get('items', {}).get('data', {})
             stats = fetch_result.data.get('stats', {}).get('data', {})
@@ -254,7 +257,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             )
 
             return ParseResult(
-                data=[collection] if collection else None,
+                data=[collection] if collection else [],
                 errors=fetch_result.errors,
             )
         except (ValueError, TypeError, AttributeError) as e:
