@@ -195,12 +195,13 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             headers=self.headers,
             collectionId=collection,
         )
-        stats_response = self.get_data(
+
+        stats_data = self.post(
             'get_collection_stats',
-            method='post',
-            headers=self.headers,
             json={'collectionId': collection},
+            headers=self.headers,
         )
+        stats_response = FetchResult(data=stats_data)
 
         return FetchResult.from_fetch_results(
             info=info_response, items=items_response, stats=stats_response

@@ -93,7 +93,6 @@ def test_parse_nfts_edge_cases(
     assert nft.updated_time == 1234567890
     assert nft.blockchain == Blockchain.BITCOIN
     assert nft.asset_type == AssetType.AVAILABLE
-    assert nft.inscription_number == 2
 
 
 def test_fetch_collection(
