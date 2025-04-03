@@ -16,6 +16,7 @@ from blockapi.v2.models import (
     NftCollectionTotalStats,
     NftVolumes,
 )
+from requests import HTTPException
 
 logger = logging.getLogger(__name__)
 
@@ -114,44 +115,38 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             return
 
         for inscription in inscriptions:
-            try:
-                inscription_id = inscription.get('inscriptionId')
-                inscription_number = inscription.get('inscriptionNumber')
-                utxo = inscription.get('utxo', {})
-                txid = utxo.get('txid')
+            inscription_id = inscription.get('inscriptionId')
+            inscription_number = inscription.get('inscriptionNumber')
+            utxo = inscription.get('utxo', {})
+            txid = utxo.get('txid')
 
-                if not all([inscription_id, inscription_number, txid]):
-                    logger.warning(
-                        f"Skipping inscription with missing required fields. "
-                        f"inscription_id: {inscription_id}, "
-                        f"inscription_number: {inscription_number}, "
-                        f"txid: {txid}"
-                    )
-                    continue
-
-                yield NftToken.from_api(
-                    ident=inscription_id,
-                    collection='ordinals',
-                    collection_name='Bitcoin Ordinals',
-                    contract=txid,
-                    standard='ordinals',
-                    name=f"Ordinal #{inscription_number}",
-                    description='',
-                    amount=1,
-                    image_url='',
-                    metadata_url=None,
-                    updated_time=inscription.get('timestamp'),
-                    is_disabled=False,
-                    is_nsfw=False,
-                    blockchain=Blockchain.BITCOIN,
-                    asset_type=AssetType.AVAILABLE,
-                    market_url=None,
-                )
-            except Exception as e:
-                logger.error(
-                    f"Error parsing inscription {inscription.get('inscriptionId', 'unknown')}: {str(e)}"
+            if not all([inscription_id, inscription_number, txid]):
+                logger.warning(
+                    f"Skipping inscription with missing required fields. "
+                    f"inscription_id: {inscription_id}, "
+                    f"inscription_number: {inscription_number}, "
+                    f"txid: {txid}"
                 )
                 continue
+
+            yield NftToken.from_api(
+                ident=inscription_id,
+                collection='ordinals',
+                collection_name='Bitcoin Ordinals',
+                contract=txid,
+                standard='ordinals',
+                name=f"Ordinal #{inscription_number}",
+                description='',
+                amount=1,
+                image_url='',
+                metadata_url=None,
+                updated_time=inscription.get('timestamp'),
+                is_disabled=False,
+                is_nsfw=False,
+                blockchain=Blockchain.BITCOIN,
+                asset_type=AssetType.AVAILABLE,
+                market_url=None,
+            )
 
     def fetch_collection(self, collection: str) -> FetchResult:
         """
@@ -179,14 +174,14 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 collectionId=collection,
             )
 
-            stats = self.post_data(
+            stats = self.post(
                 'get_collection_stats',
                 headers=self.headers,
                 json={'collectionId': collection},
             )
 
             return FetchResult.from_fetch_results(info=info, items=items, stats=stats)
-        except Exception as e:
+        except (HTTPException, ValueError, TypeError, AttributeError) as e:
             logger.error(f"Error fetching collection {collection}: {str(e)}")
             return FetchResult(errors=[str(e)])
 

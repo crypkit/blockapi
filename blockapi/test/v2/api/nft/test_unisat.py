@@ -16,7 +16,7 @@ test_collection_id = (
 )
 
 
-def test_parse_nfts(unisat_client, inscription_data, requests_mock):
+def test_parse_nfts(requests_mock, unisat_client, inscription_data):
     """Test basic NFT parsing with valid data"""
     requests_mock.get(
         f"{unisat_client.api_options.base_url}address/{nfts_test_address}/inscription-data",
@@ -47,7 +47,7 @@ def test_parse_nfts(unisat_client, inscription_data, requests_mock):
 
 
 def test_parse_nfts_edge_cases(
-    unisat_client, inscription_data_edge_cases, requests_mock
+    requests_mock, unisat_client, inscription_data_edge_cases
 ):
     """Test NFT parsing with various edge cases"""
     requests_mock.get(
@@ -80,23 +80,23 @@ def test_parse_nfts_edge_cases(
 
 
 def test_fetch_collection(
-    requests_mock, api, collection_info, collection_items, collection_stats
+    requests_mock, unisat_client, collection_info, collection_items, collection_stats
 ):
     requests_mock.get(
-        f'https://open-api-fractal.unisat.io/v1/collection-indexer/collection/{test_collection_id}/info',
+        f"{unisat_client.api_options.base_url}collection-indexer/collection/{test_collection_id}/info",
         text=collection_info,
     )
     requests_mock.get(
-        f'https://open-api-fractal.unisat.io/v1/collection-indexer/collection/{test_collection_id}/items',
+        f"{unisat_client.api_options.base_url}collection-indexer/collection/{test_collection_id}/items",
         text=collection_items,
     )
     requests_mock.post(
-        'https://open-api.unisat.io/v3/market/collection/auction/collection_statistic',
+        f"{unisat_client.api_options.base_url}v3/market/collection/auction/collection_statistic",
         text=collection_stats,
     )
 
-    fetch_result = api.fetch_collection(test_collection_id)
-    parse_result = api.parse_collection(fetch_result)
+    fetch_result = unisat_client.fetch_collection(test_collection_id)
+    parse_result = unisat_client.parse_collection(fetch_result)
 
     assert not parse_result.errors
     assert len(parse_result.data) == 1
@@ -116,7 +116,7 @@ def test_fetch_collection(
 
 
 def test_parse_collection_edge_cases(
-    unisat_client, collection_edge_cases, requests_mock
+    requests_mock, unisat_client, collection_edge_cases
 ):
     """Test collection parsing with various edge cases"""
     requests_mock.get(
@@ -163,7 +163,7 @@ def fake_sleep_provider():
 
 
 @pytest.fixture
-def api(fake_sleep_provider):
+def unisat_client(fake_sleep_provider):
     return UnisatApi(api_key="test_key", sleep_provider=fake_sleep_provider)
 
 
