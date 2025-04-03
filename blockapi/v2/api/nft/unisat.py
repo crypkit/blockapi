@@ -170,23 +170,26 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             raise ValueError("Collection ID is required")
 
         try:
-            info = self.get_data(
+            info_response = self.get_data(
                 'get_collection',
                 headers=self.headers,
                 collectionId=collection,
             )
+            info = info_response.get('data', {}) if info_response else {}
 
-            items = self.get_data(
+            items_response = self.get_data(
                 'get_collection_items',
                 headers=self.headers,
                 collectionId=collection,
             )
+            items = items_response.get('data', {}) if items_response else {}
 
-            stats = self.post(
+            stats_response = self.post(
                 'get_collection_stats',
                 headers=self.headers,
                 json={'collectionId': collection},
             )
+            stats = stats_response.get('data', {}) if stats_response else {}
 
             return FetchResult.from_fetch_results(info=info, items=items, stats=stats)
         except (HTTPError, ValueError, TypeError, AttributeError) as e:

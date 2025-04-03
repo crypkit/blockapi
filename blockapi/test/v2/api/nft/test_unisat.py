@@ -189,9 +189,9 @@ def collection_stats():
 
 @pytest.fixture
 def inscription_data_edge_cases():
-    return read_file('unisat/inscription_data_edge_cases.json')
+    return read_file('data/unisat/inscription_data_edge_cases.json')
 
 
 @pytest.fixture
 def collection_edge_cases():
-    return read_file('unisat/collection_edge_cases.json')
+    return read_file('data/unisat/collection_edge_cases.json')
