@@ -186,14 +186,14 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
     def fetch_collection(self, collection: str) -> FetchResult:
         """Fetch collection data from Unisat API."""
         info_response = self.get_data(
-            'get_collection_info',
+            'get_collection',
             headers=self.headers,
-            params={'collectionId': collection},
+            collectionId=collection,
         )
         items_response = self.get_data(
             'get_collection_items',
             headers=self.headers,
-            params={'collectionId': collection},
+            collectionId=collection,
         )
         stats_response = self.get_data(
             'get_collection_stats',
@@ -203,7 +203,9 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         )
 
         return FetchResult.from_fetch_results(
-            info=info_response, items=items_response, stats=stats_response
+            info=info_response,
+            items=items_response,
+            stats=stats_response
         )
 
     def parse_collection(self, fetch_result: FetchResult) -> ParseResult:
