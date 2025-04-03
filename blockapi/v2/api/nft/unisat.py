@@ -221,52 +221,47 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             return ParseResult(errors=fetch_result.errors if fetch_result else None)
 
         try:
-            info = fetch_result.data.get('info', {}).get('data', {})
-            items = fetch_result.data.get('items', {}).get('data', {})
-            stats = fetch_result.data.get('stats', {}).get('data', {})
+            info = fetch_result.data.get("info", {}).get("data", {})
+            items = fetch_result.data.get("items", {}).get("data", {})
+            stats = fetch_result.data.get("stats", {}).get("data", {})
 
-            # Get collection ID from the info response
-            collection_id = info.get('id')
+            collection_id = stats.get("collectionId")
             if not collection_id:
                 return ParseResult(errors=["No collection ID found in response"])
 
             total_stats = NftCollectionTotalStats.from_api(
-                volume='',
-                sales_count='',
-                owners_count=str(info.get('holders', '')),
-                market_cap='',
-                floor_price=str(stats.get('floorPrice', '')),
-                average_price='',
+                volume="",
+                sales_count="",
+                owners_count=str(info.get("holders", "")),
+                market_cap="",
+                floor_price=str(stats.get("floorPrice", "")),
+                average_price="",
                 coin=self.coin,
             )
 
             collection = NftCollection.from_api(
-                ident=collection_id,
-                name=stats.get('name', f"Collection {collection_id}"),
+                ident=collection_id,  # Matches test_collection_id
+                name=stats.get("name", f"Collection {collection_id}"),
                 contracts=[
                     ContractInfo.from_api(
                         blockchain=Blockchain.BITCOIN, address=collection_id
                     )
                 ],
-                image=stats.get('icon'),
+                image=stats.get("icon"),
                 is_disabled=False,
                 is_nsfw=False,
                 blockchain=Blockchain.BITCOIN,
                 total_stats=total_stats,
-                volumes=NftVolumes.from_api(
-                    coin=self.coin,
-                ),
+                volumes=NftVolumes.from_api(coin=self.coin),
             )
 
-            return ParseResult(
-                data=[collection] if collection else [],
-                errors=fetch_result.errors,
-            )
+            return ParseResult(data=[collection], errors=fetch_result.errors)
+
         except (ValueError, TypeError, AttributeError) as e:
-            logger.error(f"Error parsing collection data: {str(e)}")
+            logger.error(f"Error parsing collection data: {e}")
             return ParseResult(errors=[str(e)])
         except Exception as e:
-            logger.error(f"Unexpected error parsing collection data: {str(e)}")
+            logger.error(f"Unexpected error parsing collection data: {e}")
             return ParseResult(errors=[str(e)])
 
     # Empty implementations for required interface methods
