@@ -16,7 +16,7 @@ from blockapi.v2.models import (
     NftCollectionTotalStats,
     NftVolumes,
 )
-from requests.exceptions import HTTPException
+from requests import HTTPError
 
 logger = logging.getLogger(__name__)
 
@@ -89,8 +89,13 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 params=params,
                 address=address,
             )
-        except Exception as e:
+        except (HTTPError, ValueError, TypeError) as e:
             logger.error(f"Error fetching NFTs for address {address}: {str(e)}")
+            return FetchResult(errors=[str(e)])
+        except Exception as e:
+            logger.error(
+                f"Unexpected error fetching NFTs for address {address}: {str(e)}"
+            )
             return FetchResult(errors=[str(e)])
 
     def parse_nfts(self, fetch_result: FetchResult) -> ParseResult:
@@ -104,8 +109,11 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 errors=fetch_result.errors,
                 cursor=fetch_result.data.get('cursor'),
             )
-        except Exception as e:
+        except (ValueError, TypeError, AttributeError) as e:
             logger.error(f"Error parsing NFT data: {str(e)}")
+            return ParseResult(errors=[str(e)])
+        except Exception as e:
+            logger.error(f"Unexpected error parsing NFT data: {str(e)}")
             return ParseResult(errors=[str(e)])
 
     def _yield_parsed_nfts(self, data: dict):
@@ -181,7 +189,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             )
 
             return FetchResult.from_fetch_results(info=info, items=items, stats=stats)
-        except (HTTPException, ValueError, TypeError, AttributeError) as e:
+        except (HTTPError, ValueError, TypeError, AttributeError) as e:
             logger.error(f"Error fetching collection {collection}: {str(e)}")
             return FetchResult(errors=[str(e)])
 
@@ -235,8 +243,11 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 data=[collection] if collection else None,
                 errors=fetch_result.errors,
             )
-        except Exception as e:
+        except (ValueError, TypeError, AttributeError) as e:
             logger.error(f"Error parsing collection data: {str(e)}")
+            return ParseResult(errors=[str(e)])
+        except Exception as e:
+            logger.error(f"Unexpected error parsing collection data: {str(e)}")
             return ParseResult(errors=[str(e)])
 
     # Empty implementations for required interface methods
