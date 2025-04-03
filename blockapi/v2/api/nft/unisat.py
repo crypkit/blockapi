@@ -225,6 +225,11 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             items = fetch_result.data.get('items', {}).get('data', {})
             stats = fetch_result.data.get('stats', {}).get('data', {})
 
+            # Get collection ID from the info response
+            collection_id = info.get('id')
+            if not collection_id:
+                return ParseResult(errors=["No collection ID found in response"])
+
             total_stats = NftCollectionTotalStats.from_api(
                 volume='',
                 sales_count='',
@@ -236,11 +241,11 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             )
 
             collection = NftCollection.from_api(
-                ident=collection,
-                name=stats.get('name', f"Collection {collection}"),
+                ident=collection_id,
+                name=stats.get('name', f"Collection {collection_id}"),
                 contracts=[
                     ContractInfo.from_api(
-                        blockchain=Blockchain.BITCOIN, address=collection
+                        blockchain=Blockchain.BITCOIN, address=collection_id
                     )
                 ],
                 image=stats.get('icon'),
