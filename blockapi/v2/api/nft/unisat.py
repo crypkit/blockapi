@@ -88,6 +88,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 headers=self.headers,
                 params=params,
                 address=address,
+                extra=dict(address=address),
             )
         except (HTTPError, ValueError, TypeError) as e:
             logger.error(f"Error fetching NFTs for address {address}: {str(e)}")
@@ -175,29 +176,22 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 headers=self.headers,
                 collectionId=collection,
             )
-            info = FetchResult(
-                data=info_response.get('data', {}) if info_response else {}
-            )
-
             items_response = self.get_data(
                 'get_collection_items',
                 headers=self.headers,
                 collectionId=collection,
             )
-            items = FetchResult(
-                data=items_response.get('data', {}) if items_response else {}
-            )
-
             stats_response = self.post(
                 'get_collection_stats',
                 headers=self.headers,
                 json={'collectionId': collection},
             )
-            stats = FetchResult(
-                data=stats_response.get('data', {}) if stats_response else {}
-            )
 
-            return FetchResult.from_fetch_results(info=info, items=items, stats=stats)
+            return FetchResult.from_fetch_results(
+                info=info_response,
+                items=items_response,
+                stats=stats_response,
+            )
         except (HTTPError, ValueError, TypeError, AttributeError) as e:
             logger.error(f"Error fetching collection {collection}: {str(e)}")
             return FetchResult(errors=[str(e)])
@@ -216,9 +210,9 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             return ParseResult(errors=fetch_result.errors if fetch_result else None)
 
         try:
-            info = fetch_result.data.get('info', {})
-            items = fetch_result.data.get('items', {})
-            stats = fetch_result.data.get('stats', {})
+            info = fetch_result.data.get('info', {}).get('data', {})
+            items = fetch_result.data.get('items', {}).get('data', {})
+            stats = fetch_result.data.get('stats', {}).get('data', {})
 
             total_stats = NftCollectionTotalStats.from_api(
                 volume='',
