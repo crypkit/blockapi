@@ -118,8 +118,19 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             return ParseResult(errors=[str(e)])
 
     def _yield_parsed_nfts(self, data: dict):
-        inscriptions = data.get('inscription', [])
+        """
+        Yield parsed NFT tokens from the API response data
 
+        Args:
+            data: Raw API response data containing NFT information
+
+        Yields:
+            NftToken objects parsed from the data
+        """
+        if not data or not data.get('data'):
+            return
+
+        inscriptions = data['data'].get('inscriptions', [])
         if not inscriptions:
             return
 
