@@ -1,5 +1,6 @@
 import logging
-from typing import Optional
+from typing import Optional, Dict, Generator
+from datetime import datetime
 
 from blockapi.v2.base import BlockchainApi, INftParser, INftProvider, ISleepProvider
 from blockapi.v2.coins import COIN_BTC
@@ -17,6 +18,7 @@ from blockapi.v2.models import (
     NftVolumes,
 )
 from requests import HTTPError
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -100,75 +102,79 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             return FetchResult(errors=[str(e)])
 
     def parse_nfts(self, fetch_result: FetchResult) -> ParseResult:
-        if not fetch_result or not fetch_result.data:
-            return ParseResult(errors=fetch_result.errors if fetch_result else None)
+        """Parse NFT data from API response"""
+        errors = []
+        data = []
+        cursor = None
 
         try:
-            # Access the nested data structure
-            data = fetch_result.data.get('data', {})
-            parsed = list(self._yield_parsed_nfts(data))
-            return ParseResult(
-                data=parsed,
-                errors=fetch_result.errors,
-                cursor=data.get('cursor'),
+            if not fetch_result.data:
+                errors.append("No data in fetch result")
+                return ParseResult(data=[], errors=errors)
+
+            inner_data = fetch_result.data.get("data", {})
+            if not inner_data:
+                errors.append("No data in API response")
+                return ParseResult(data=[], errors=errors)
+
+            cursor = (
+                str(inner_data.get("cursor"))
+                if inner_data.get("cursor") is not None
+                else None
             )
-        except (ValueError, TypeError, AttributeError) as e:
-            logger.error(f"Error parsing NFT data: {str(e)}")
-            return ParseResult(errors=[str(e)])
+
+            for nft in self._yield_parsed_nfts(inner_data):
+                data.append(nft)
+
+            return ParseResult(data=data, errors=errors, cursor=cursor)
+
         except Exception as e:
-            logger.error(f"Unexpected error parsing NFT data: {str(e)}")
-            return ParseResult(errors=[str(e)])
+            errors.append(str(e))
+            logger.error(f"Error parsing NFTs: {e}")
+            return ParseResult(data=[], errors=errors)
 
-    def _yield_parsed_nfts(self, data: dict):
-        """
-        Yield parsed NFT tokens from the API response data
-
-        Args:
-            data: Raw API response data containing NFT information
-
-        Yields:
-            NftToken objects parsed from the data
-        """
-        if not data:
+    def _yield_parsed_nfts(self, data: Dict) -> Generator[NftToken, None, None]:
+        """Yield parsed NFT tokens from API response data"""
+        if not data or "inscription" not in data:
             return
 
-        inscriptions = data.get('inscription', [])
-        if not inscriptions:
-            return
+        for item in data["inscription"]:
+            try:
+                if not all(
+                    k in item
+                    for k in [
+                        "inscriptionId",
+                        "inscriptionNumber",
+                        "timestamp",
+                        "utxo",
+                    ]
+                ):
+                    logger.warning(f"Missing required fields in NFT data: {item}")
+                    continue
 
-        for inscription in inscriptions:
-            inscription_id = inscription.get('inscriptionId')
-            inscription_number = inscription.get('inscriptionNumber')
-            utxo = inscription.get('utxo', {})
-            txid = utxo.get('txid')
+                utxo = item["utxo"]
+                if not all(k in utxo for k in ["txid", "address"]):
+                    logger.warning(f"Missing required fields in UTXO data: {utxo}")
+                    continue
 
-            if not all([inscription_id, inscription_number, txid]):
-                logger.warning(
-                    f"Skipping inscription with missing required fields. "
-                    f"inscription_id: {inscription_id}, "
-                    f"inscription_number: {inscription_number}, "
-                    f"txid: {txid}"
+                inscription_number = str(item["inscriptionNumber"])
+                timestamp = str(item["timestamp"])
+
+                yield NftToken(
+                    ident=item["inscriptionId"],
+                    collection="ordinals",
+                    collection_name="Bitcoin Ordinals",
+                    contract=utxo["txid"],
+                    standard="ordinals",
+                    name=f"Ordinal #{inscription_number}",
+                    amount=1,
+                    updated_time=int(timestamp),
+                    blockchain=Blockchain.BITCOIN,
+                    asset_type=AssetType.AVAILABLE,
                 )
+            except Exception as e:
+                logger.warning(f"Error parsing NFT item {item}: {e}")
                 continue
-
-            yield NftToken.from_api(
-                ident=inscription_id,
-                collection='ordinals',
-                collection_name='Bitcoin Ordinals',
-                contract=txid,
-                standard='ordinals',
-                name=f"Ordinal #{inscription_number}",
-                description='',
-                amount=1,
-                image_url='',
-                metadata_url=None,
-                updated_time=inscription.get('timestamp'),
-                is_disabled=False,
-                is_nsfw=False,
-                blockchain=Blockchain.BITCOIN,
-                asset_type=AssetType.AVAILABLE,
-                market_url=None,
-            )
 
     def fetch_collection(self, collection: str) -> FetchResult:
         """
@@ -223,7 +229,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             return ParseResult(errors=fetch_result.errors if fetch_result else None)
 
         try:
-            # Access the nested data structure for each response
             info = fetch_result.data.get('info', {}).get('data', {})
             items = fetch_result.data.get('items', {}).get('data', {})
             stats = fetch_result.data.get('stats', {}).get('data', {})
