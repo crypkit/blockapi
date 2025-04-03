@@ -16,7 +16,7 @@ from blockapi.v2.models import (
     NftCollectionTotalStats,
     NftVolumes,
 )
-from requests import HTTPException
+from requests.exceptions import HTTPException
 
 logger = logging.getLogger(__name__)
 
