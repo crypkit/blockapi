@@ -15,6 +15,7 @@
                 "offset": 0,
                 "timestamp": 1234567890,
                 "utxo": {
+                    "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
                     "txid": "txid1",
                     "vout": 0,
                     "satoshi": 10000
@@ -28,6 +29,7 @@
                 "offset": 0,
                 "timestamp": 1234567890,
                 "utxo": {
+                    "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
                     "txid": "txid2",
                     "vout": 0,
                     "satoshi": 10000
@@ -42,6 +44,7 @@
                 "offset": 0,
                 "timestamp": 1234567890,
                 "utxo": {
+                    "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
                     "txid": "txid3",
                     "vout": 0,
                     "satoshi": 10000
@@ -56,6 +59,7 @@
                 "offset": 0,
                 "timestamp": 1234567890,
                 "utxo": {
+                    "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
                     "txid": "txid4",
                     "vout": 0,
                     "satoshi": 10000

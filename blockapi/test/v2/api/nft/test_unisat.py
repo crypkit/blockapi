@@ -19,7 +19,7 @@ test_collection_id = (
 def test_parse_nfts(requests_mock, unisat_client, inscription_data):
     """Test basic NFT parsing with valid data"""
     print("\n=== Debug: test_parse_nfts ===")
-    print(f"Raw inscription data: {inscription_data[:200]}...")  # Print first 200 chars
+    print(f"Raw inscription data: {inscription_data[:200]}...")
 
     requests_mock.get(
         f"{unisat_client.api_options.base_url}address/{nfts_test_address}/inscription-data",
@@ -42,13 +42,17 @@ def test_parse_nfts(requests_mock, unisat_client, inscription_data):
     )
     assert nft.collection == "ordinals"
     assert nft.collection_name == "Bitcoin Ordinals"
-    assert nft.contract == "txid1"
+    assert (
+        nft.contract
+        == "6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5"
+    )
     assert nft.standard == "ordinals"
-    assert nft.name == "Ordinal #1"
+    assert nft.name == "Ordinal #12345"
     assert nft.amount == 1
-    assert nft.updated_time == 1234567890
+    assert nft.updated_time == 1672531200
     assert nft.blockchain == Blockchain.BITCOIN
     assert nft.asset_type == AssetType.AVAILABLE
+    assert nft.address == "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"
 
 
 def test_parse_nfts_edge_cases(
@@ -80,13 +84,17 @@ def test_parse_nfts_edge_cases(
     )
     assert nft.collection == "ordinals"
     assert nft.collection_name == "Bitcoin Ordinals"
-    assert nft.contract == "txid4"
+    assert (
+        nft.contract
+        == "8fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5"
+    )
     assert nft.standard == "ordinals"
     assert nft.name == "Ordinal #2"
     assert nft.amount == 1
     assert nft.updated_time == 1234567890
     assert nft.blockchain == Blockchain.BITCOIN
     assert nft.asset_type == AssetType.AVAILABLE
+    assert nft.address == "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"
 
 
 def test_fetch_collection(
