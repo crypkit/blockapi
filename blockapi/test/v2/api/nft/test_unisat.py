@@ -18,60 +18,70 @@ test_collection_id = (
 
 def test_parse_nfts(requests_mock, unisat_client, inscription_data):
     """Test basic NFT parsing with valid data"""
-    print("\n=== Debug: test_parse_nfts ===")
-    print(f"Raw inscription data: {inscription_data[:200]}...")
-
     requests_mock.get(
         f"{unisat_client.api_options.base_url}address/{nfts_test_address}/inscription-data",
         text=inscription_data,
     )
 
     result = unisat_client.fetch_nfts(nfts_test_address)
-    print(f"Fetch result data: {result.data}")
     assert not result.errors, f"Fetch errors: {result.errors}"
 
     parsed = unisat_client.parse_nfts(result)
-    print(f"Parse result data: {parsed.data}")
     assert not parsed.errors, f"Parse errors: {parsed.errors}"
     assert len(parsed.data) == 2
 
-    nft = parsed.data[0]
+    # Test first NFT
+    nft1 = parsed.data[0]
     assert (
-        nft.ident
+        nft1.ident
         == "6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
     )
-    assert nft.collection == "ordinals"
-    assert nft.collection_name == "Bitcoin Ordinals"
+    assert nft1.collection == "ordinals"
+    assert nft1.collection_name == "Bitcoin Ordinals"
     assert (
-        nft.contract
+        nft1.contract
         == "6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5"
     )
-    assert nft.standard == "ordinals"
-    assert nft.name == "Ordinal #12345"
-    assert nft.amount == 1
-    assert nft.updated_time == 1672531200
-    assert nft.blockchain == Blockchain.BITCOIN
-    assert nft.asset_type == AssetType.AVAILABLE
+    assert nft1.standard == "ordinals"
+    assert nft1.name == "Ordinal #12345"
+    assert nft1.amount == 1
+    assert nft1.updated_time == 1672531200
+    assert nft1.blockchain == Blockchain.BITCOIN
+    assert nft1.asset_type == AssetType.AVAILABLE
+
+    # Test second NFT
+    nft2 = parsed.data[1]
+    assert (
+        nft2.ident
+        == "7fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
+    )
+    assert nft2.collection == "ordinals"
+    assert nft2.collection_name == "Bitcoin Ordinals"
+    assert (
+        nft2.contract
+        == "7fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5"
+    )
+    assert nft2.standard == "ordinals"
+    assert nft2.name == "Ordinal #12346"
+    assert nft2.amount == 1
+    assert nft2.updated_time == 1672531300
+    assert nft2.blockchain == Blockchain.BITCOIN
+    assert nft2.asset_type == AssetType.AVAILABLE
 
 
 def test_parse_nfts_edge_cases(
     requests_mock, unisat_client, inscription_data_edge_cases
 ):
     """Test NFT parsing with various edge cases"""
-    print("\n=== Debug: test_parse_nfts_edge_cases ===")
-    print(f"Raw edge case data: {inscription_data_edge_cases[:200]}...")
-
     requests_mock.get(
         f"{unisat_client.api_options.base_url}address/{nfts_test_address}/inscription-data",
         text=inscription_data_edge_cases,
     )
 
     result = unisat_client.fetch_nfts(nfts_test_address)
-    print(f"Fetch result data: {result.data}")
     assert not result.errors, f"Fetch errors: {result.errors}"
 
     parsed = unisat_client.parse_nfts(result)
-    print(f"Parse result data: {parsed.data}")
     assert not parsed.errors, f"Parse errors: {parsed.errors}"
     # Should only parse the last inscription as it's the only one with all required fields
     assert len(parsed.data) == 1
@@ -98,11 +108,6 @@ def test_parse_nfts_edge_cases(
 def test_fetch_collection(
     requests_mock, unisat_client, collection_info, collection_items, collection_stats
 ):
-    print("\n=== Debug: test_fetch_collection ===")
-    print(f"Collection info: {collection_info[:200]}...")
-    print(f"Collection items: {collection_items[:200]}...")
-    print(f"Collection stats: {collection_stats[:200]}...")
-
     requests_mock.get(
         f"{unisat_client.api_options.base_url}collection-indexer/collection/{test_collection_id}/info",
         text=collection_info,
@@ -117,11 +122,9 @@ def test_fetch_collection(
     )
 
     fetch_result = unisat_client.fetch_collection(test_collection_id)
-    print(f"Fetch result data: {fetch_result.data}")
     assert not fetch_result.errors, f"Fetch errors: {fetch_result.errors}"
 
     parse_result = unisat_client.parse_collection(fetch_result)
-    print(f"Parse result data: {parse_result.data}")
     assert not parse_result.errors, f"Parse errors: {parse_result.errors}"
     assert len(parse_result.data) == 1
 
