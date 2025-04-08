@@ -1,0 +1,23 @@
+{
+    "code": 0,
+    "msg": "ok",
+    "data": {
+        "collectionId": "pixel-pepes",
+        "name": "Pixel Pepes",
+        "desc": "The first ever airdrop on the Bitcoin network. 1563 rare Pixel Pepes airdropped to users who had made a transaction on ordinalswallet.com before block 777888.",
+        "icon": "47c1d21c508f6d49dfde64d958f14acd041244e1bb616f9b78114b8d9dc7b945i0",
+        "iconContentType": "image/png",
+        "btcValue": 39900000,
+        "btcValuePercent": 1,
+        "floorPrice": 990000,
+        "listed": 20,
+        "total": 1563,
+        "supply": null,
+        "attrs": [],
+        "twitter": "https://twitter.com/PepesPixel",
+        "discord": "https://discord.gg/ordinalswallet",
+        "website": "",
+        "pricePercent": 1,
+        "verification": false
+    }
+} 

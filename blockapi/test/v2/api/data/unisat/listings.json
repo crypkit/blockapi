@@ -1,0 +1,60 @@
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "list": [
+      {
+        "auctionId": "ye0io3o6x1wcoc9kbwe1xs5wue5ue4tw",
+        "amount": null,
+        "collectionId": "test-collection",
+        "collectionItemName": "Test 07",
+        "contentType": "image/png",
+        "domain": null,
+        "domainHex": null,
+        "domainType": null,
+        "inscriptionId": "3822c34e230b423f7092b4bf96b63cd3377fd02ac40fb025f5153461fe0a4b02i0",
+        "inscriptionNumber": 15388288,
+        "marketType": "fixedPrice",
+        "nftType": "collection",
+        "unitPrice": null,
+        "price": 50000,
+        "address": "bc1prx76vq7rv9cyhn2jrd5ygdsxwznsvpv58ccpfschl9zsp8vh4lws7qenhh"
+      },
+      {
+        "auctionId": "5s7doqj4up5xb2ek5s0rhrwviav2cp0e",
+        "amount": null,
+        "collectionId": "test-collection",
+        "collectionItemName": "Test 08",
+        "contentType": "image/png",
+        "domain": null,
+        "domainHex": null,
+        "domainType": null,
+        "inscriptionId": "d5fe1825a1d6240442c67ddf0a312d6b2092a4d526b252935759c236c0bfd057i0",
+        "inscriptionNumber": 15388559,
+        "marketType": "fixedPrice",
+        "nftType": "collection",
+        "unitPrice": null,
+        "price": 50000,
+        "address": "bc1p7qsamzcjffpvg8ej9dqkf7gp2ygs0xdth3tn4f2a3xvl0jg43f7q25kx3a"
+      },
+      {
+        "auctionId": "iegj06ozdwo01swy8u6dvesov7hbp60y",
+        "amount": null,
+        "collectionId": "unisat-og-pass",
+        "collectionItemName": "OG PASS #10010",
+        "contentType": "image/svg+xml",
+        "domain": null,
+        "domainHex": null,
+        "domainType": null,
+        "inscriptionId": "c4d40b8b09a92cc9272cb144c17d128bb0fbb63834c715f2b0a842d2b689cef7i0",
+        "inscriptionNumber": 837794,
+        "marketType": "fixedPrice",
+        "nftType": "collection",
+        "unitPrice": null,
+        "price": 50000000,
+        "address": "bc1pu7p5nk2ky6gfus5qjt9fguyxq5xsg7ehg4738k3fez07jdv42umqdxj9pr"
+      }
+    ],
+    "total": 87254
+  }
+} 
