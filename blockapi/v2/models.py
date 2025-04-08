@@ -477,6 +477,16 @@ class OfferItemType(str, Enum):
     ERC1155_WITH_CRITERIA = 'erc-1155-limited'
 
 
+class BtcNftType(str, Enum):
+    """Type of NFT of BTC chain"""
+
+    BRC20 = "brc20"
+    DOMAIN = "domain"
+    COLLECTION = "collection"
+    ARC20 = "arc20"
+    RUNES = "runes"
+
+
 @attr.s(auto_attribs=True, slots=True)
 class ApiOptions:
     blockchain: Blockchain

@@ -1,0 +1,73 @@
+{
+  "code": 0,
+  "msg": "OK",
+  "data": {
+    "cursor": 1,
+    "total": 2,
+    "totalConfirmed": 2,
+    "totalUnconfirmed": 0,
+    "totalUnconfirmedSpend": 0,
+    "inscription": [
+      {
+        "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "inscriptionId": "6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0",
+        "inscriptionNumber": 12345,
+        "contentType": "image/png",
+        "contentLength": 1024,
+        "offset": 0,
+        "timestamp": 1672531200,
+        "utxo": {
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "codeType": 0,
+          "height": 800000,
+          "idx": 0,
+          "inscriptions": [
+            {
+              "inscriptionId": "6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0",
+              "inscriptionNumber": 12345,
+              "isBRC20": false,
+              "moved": false,
+              "offset": 0
+            }
+          ],
+          "isOpInRBF": false,
+          "satoshi": 10000,
+          "scriptPk": "0014a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2d4",
+          "scriptType": "p2wpkh",
+          "txid": "6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5",
+          "vout": 0
+        }
+      },
+      {
+        "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "inscriptionId": "7fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0",
+        "inscriptionNumber": 12346,
+        "contentType": "text/plain",
+        "contentLength": 512,
+        "offset": 0,
+        "timestamp": 1672531300,
+        "utxo": {
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "codeType": 0,
+          "height": 800001,
+          "idx": 0,
+          "inscriptions": [
+            {
+              "inscriptionId": "7fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0",
+              "inscriptionNumber": 12346,
+              "isBRC20": false,
+              "moved": false,
+              "offset": 0
+            }
+          ],
+          "isOpInRBF": false,
+          "satoshi": 10000,
+          "scriptPk": "0014a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2d4",
+          "scriptType": "p2wpkh",
+          "txid": "7fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5",
+          "vout": 0
+        }
+      }
+    ]
+  }
+} 

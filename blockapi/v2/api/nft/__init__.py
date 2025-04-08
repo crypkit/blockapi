@@ -5,3 +5,4 @@ from blockapi.v2.api.nft.simple_hash import (
     SimpleHashEthereumApi,
     SimpleHashSolanaApi,
 )
+from blockapi.v2.api.nft.unisat import UnisatApi
