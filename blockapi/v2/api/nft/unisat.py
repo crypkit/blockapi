@@ -51,7 +51,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         'get_nfts': 'v1/indexer/address/{address}/inscription-data',
         'get_listings': 'v3/market/collection/auction/list',
         'get_offers': 'v3/market/collection/auction/actions',
-        'get_collection_stats': 'market-v4/collection/auction/collection_statistic',
+        'get_collection_stats': 'v3/market/collection/auction/collection_statistic',
     }
 
     def __init__(self, api_key: str, sleep_provider: Optional[ISleepProvider] = None):

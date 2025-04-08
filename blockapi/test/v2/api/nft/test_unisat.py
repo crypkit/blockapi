@@ -113,10 +113,10 @@ def test_parse_nfts_edge_cases(
     assert nft.asset_type == AssetType.AVAILABLE
 
 
-def test_fetch_collection(requests_mock, unisat_client, collection_stats_v4):
+def test_fetch_collection(requests_mock, unisat_client, collection_stats):
     requests_mock.post(
-        f"{unisat_client.api_options.base_url}market-v4/collection/auction/collection_statistic",
-        text=collection_stats_v4,
+        f"{unisat_client.api_options.base_url}v3/market/collection/auction/collection_statistic",
+        text=collection_stats,
     )
 
     test_collection = "pixel-pepes"
@@ -268,5 +268,5 @@ def offers_data():
 
 
 @pytest.fixture
-def collection_stats_v4():
-    return read_file('data/unisat/collection_stats_v4.json')
+def collection_stats():
+    return read_file('data/unisat/collection_stats.json')
