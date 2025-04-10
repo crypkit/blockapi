@@ -1,0 +1,21 @@
+{
+  "code": 0,
+  "msg": "OK",
+  "data": {
+    "collectionId": "6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0",
+    "name": "Ordinal Punks",
+    "desc": "The first 10,000 Punks inscribed on Bitcoin",
+    "icon": "https://ordinals.com/content/6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0",
+    "iconContentType": "image/png",
+    "btcValue": 1.5,
+    "floorPrice": 0.1,
+    "pricePercent": 10.5,
+    "listed": 50,
+    "total": 1000,
+    "supply": 10000,
+    "twitter": "https://twitter.com/ordinalpunks",
+    "discord": "https://discord.gg/ordinalpunks",
+    "website": "https://ordinalpunks.com",
+    "verification": true
+  }
+} 
