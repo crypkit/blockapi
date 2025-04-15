@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.59.0 (2025-04-15)
+
+### Features
+
+- Implement Unisat API for BTC NFTs; fetch NFTs, collections, offers, listings
+  ([`b5a5684`](https://github.com/crypkit/blockapi/commit/b5a56848250a28033c3325dc491e547d58814c4e))
+
+
 ## v0.58.0 (2025-04-15)
 
 
