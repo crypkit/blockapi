@@ -49,11 +49,9 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
 
     supported_requests = {
         'get_nfts': 'v1/indexer/address/{address}/inscription-data',
-        'get_collection': 'v1/collection-indexer/collection/{collectionId}/info',
-        'get_collection_items': 'v1/collection-indexer/collection/{collectionId}/items',
-        'get_collection_stats': 'v3/market/collection/auction/collection_statistic',
         'get_listings': 'v3/market/collection/auction/list',
         'get_offers': 'v3/market/collection/auction/actions',
+        'get_collection_stats': 'market-v4/collection/auction/collection_statistic',
     }
 
     def __init__(self, api_key: str, sleep_provider: Optional[ISleepProvider] = None):
@@ -192,27 +190,19 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
 
     def fetch_collection(self, collection: str) -> FetchResult:
         """Fetch collection data from Unisat API."""
-        info_response = self.get_data(
-            'get_collection',
-            headers=self.headers,
-            collectionId=collection,
-        )
-        items_response = self.get_data(
-            'get_collection_items',
-            headers=self.headers,
-            collectionId=collection,
-        )
-
-        stats_data = self.post(
-            'get_collection_stats',
-            json={'collectionId': collection},
-            headers=self.headers,
-        )
-        stats_response = FetchResult(data=stats_data)
-
-        return FetchResult.from_fetch_results(
-            info=info_response, items=items_response, stats=stats_response
-        )
+        try:
+            stats_data = self.post(
+                'get_collection_stats',
+                json={'collectionId': collection},
+                headers=self.headers,
+            )
+            return FetchResult(data=stats_data)
+        except (HTTPError, ValueError, TypeError) as e:
+            logger.error(f"Error fetching collection {collection}: {str(e)}")
+            return FetchResult(errors=[str(e)])
+        except Exception as e:
+            logger.error(f"Unexpected error fetching collection {collection}: {str(e)}")
+            return FetchResult(errors=[str(e)])
 
     def parse_collection(self, fetch_result: FetchResult) -> ParseResult:
         """
@@ -227,33 +217,45 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         if not fetch_result or not fetch_result.data:
             return ParseResult(errors=fetch_result.errors if fetch_result else None)
 
-        info = fetch_result.data.get("info", {}).get("data", {})
-        items = fetch_result.data.get("items", {}).get("data", {})
-        stats = fetch_result.data.get("stats", {}).get("data", {})
+        stats = fetch_result.data.get("data", {})
+        if not stats:
+            return ParseResult(errors=["No collection data found in response"])
 
         collection_id = stats.get("collectionId")
         if not collection_id:
             return ParseResult(errors=["No collection ID found in response"])
 
+        # Format the icon URL
+        icon = stats.get("icon")
+        icon_url = None
+        if icon:
+            icon_url = f"https://static.unisat.io/content/{icon}"
+
+        # Create NftCollectionTotalStats
+        floor_price = stats.get("floorPrice", 0)
+        total_nfts = stats.get("total", 0)
+        # Calculate market cap as floor price × total supply
+        market_cap = floor_price * total_nfts if floor_price and total_nfts else 0
+
         total_stats = NftCollectionTotalStats.from_api(
-            volume="",
-            sales_count="",
-            owners_count=str(info.get("holders", "")),
-            market_cap="",
-            floor_price=str(stats.get("floorPrice", "")),
-            average_price="",
+            volume=str(stats.get("btcValue", 0)),
+            sales_count=str(stats.get("listed", 0)),
+            owners_count=str(total_nfts),
+            market_cap=str(market_cap),
+            floor_price=str(floor_price),
+            average_price="0",
             coin=self.coin,
         )
 
         collection = NftCollection.from_api(
-            ident=collection_id,  # Matches test_collection_id
+            ident=collection_id,
             name=stats.get("name", f"Collection {collection_id}"),
             contracts=[
                 ContractInfo.from_api(
                     blockchain=Blockchain.BITCOIN, address=collection_id
                 )
             ],
-            image=stats.get("icon"),
+            image=icon_url,
             is_disabled=False,
             is_nsfw=False,
             blockchain=Blockchain.BITCOIN,
@@ -574,8 +576,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             formatted_time = None
             if timestamp:
                 try:
-                    from datetime import datetime
-
                     timestamp_seconds = timestamp / 1000
                     formatted_time = datetime.fromtimestamp(
                         timestamp_seconds

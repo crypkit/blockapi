@@ -113,23 +113,14 @@ def test_parse_nfts_edge_cases(
     assert nft.asset_type == AssetType.AVAILABLE
 
 
-def test_fetch_collection(
-    requests_mock, unisat_client, collection_info, collection_items, collection_stats
-):
-    requests_mock.get(
-        f"{unisat_client.api_options.base_url}v1/collection-indexer/collection/{test_collection_id}/info",
-        text=collection_info,
-    )
-    requests_mock.get(
-        f"{unisat_client.api_options.base_url}v1/collection-indexer/collection/{test_collection_id}/items",
-        text=collection_items,
-    )
+def test_fetch_collection(requests_mock, unisat_client, collection_stats_v4):
     requests_mock.post(
-        f"{unisat_client.api_options.base_url}v3/market/collection/auction/collection_statistic",
-        text=collection_stats,
+        f"{unisat_client.api_options.base_url}market-v4/collection/auction/collection_statistic",
+        text=collection_stats_v4,
     )
 
-    fetch_result = unisat_client.fetch_collection(test_collection_id)
+    test_collection = "pixel-pepes"
+    fetch_result = unisat_client.fetch_collection(test_collection)
     assert not fetch_result.errors, f"Fetch errors: {fetch_result.errors}"
 
     parse_result = unisat_client.parse_collection(fetch_result)
@@ -138,16 +129,20 @@ def test_fetch_collection(
 
     collection = parse_result.data[0]
     assert isinstance(collection, NftCollection)
-    assert collection.ident == test_collection_id
-    assert collection.name == "Ordinal Punks"
+    assert collection.ident == "pixel-pepes"
+    assert collection.name == "Pixel Pepes"
     assert (
         collection.image
-        == "https://ordinals.com/content/6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
+        == "https://static.unisat.io/content/47c1d21c508f6d49dfde64d958f14acd041244e1bb616f9b78114b8d9dc7b945i0"
     )
     assert not collection.is_disabled
     assert not collection.is_nsfw
-    assert str(collection.total_stats.owners_count) == "150"
-    assert str(collection.total_stats.floor_price) == "0.1"
+    assert collection.blockchain == Blockchain.BITCOIN
+    assert str(collection.total_stats.floor_price) == "990000"
+    assert str(collection.total_stats.owners_count) == "1563"
+    assert str(collection.total_stats.sales_count) == "20"
+    assert str(collection.total_stats.volume) == "39900000"
+    assert str(collection.total_stats.market_cap) == str(990000 * 1563)
 
 
 def test_fetch_listings(requests_mock, unisat_client, listings_data):
@@ -253,21 +248,6 @@ def inscription_data():
 
 
 @pytest.fixture
-def collection_info():
-    return read_file('data/unisat/collection_info.json')
-
-
-@pytest.fixture
-def collection_items():
-    return read_file('data/unisat/collection_items.json')
-
-
-@pytest.fixture
-def collection_stats():
-    return read_file('data/unisat/collection_stats.json')
-
-
-@pytest.fixture
 def inscription_data_edge_cases():
     return read_file('data/unisat/inscription_data_edge_cases.json')
 
@@ -285,3 +265,8 @@ def listings_data():
 @pytest.fixture
 def offers_data():
     return read_file('data/unisat/offers.json')
+
+
+@pytest.fixture
+def collection_stats_v4():
+    return read_file('data/unisat/collection_stats_v4.json')

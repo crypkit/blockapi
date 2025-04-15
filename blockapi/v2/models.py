@@ -839,7 +839,7 @@ class NftOffer:
             contract=contract,
             blockchain=blockchain,
             offerer=offerer,
-            start_time=parse_dt(start_time) if start_time else None,
+            start_time=parse_dt(start_time) if start_time else datetime.utcnow(),
             end_time=parse_dt(end_time) if end_time else None,
             offer_coin=offer_coin,
             offer_contract=offer_contract.lower() if offer_contract else None,
