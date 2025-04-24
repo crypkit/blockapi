@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.59.2 (2025-04-24)
+
+### Bug Fixes
+
+- **unisat**: Nft_type has default value if not provided
+  ([`fa81b72`](https://github.com/crypkit/blockapi/commit/fa81b721f1d77968566cdf08e3fb3b70a7f4b354))
+
+
 ## v0.59.1 (2025-04-24)
 
 ### Bug Fixes
