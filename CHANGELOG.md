@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.59.1 (2025-04-24)
+
+### Bug Fixes
+
+- **unisat**: Offers collection_id rename to collection
+  ([`e10a944`](https://github.com/crypkit/blockapi/commit/e10a944592dcad505f8b8f689568d104edba9d27))
+
+
 ## v0.59.0 (2025-04-15)
 
 ### Features
