@@ -459,7 +459,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         event: Optional[str] = None,
         tick: Optional[str] = None,
         domain_type: Optional[str] = None,
-        collection_id: Optional[str] = None,
+        collection: Optional[str] = None,
         cursor: Optional[str] = None,
         limit: int = 100,
     ) -> FetchResult:
@@ -473,7 +473,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             event: Filter by event type (Listed, Cancel, Buy)
             tick: Filter by tick (for BRC20)
             domain_type: Filter by domain type
-            collection_id: Collection ID to filter by
+            collection: Collection ID to filter by
             cursor: Pagination cursor (offset, 'start' parameter)
             limit: Number of items per page
 
@@ -500,8 +500,8 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             filter_dict["tick"] = tick
         if domain_type:
             filter_dict["domainType"] = domain_type
-        if collection_id:
-            filter_dict["collectionId"] = collection_id
+        if collection:
+            filter_dict["collectionId"] = collection
 
         request_body = {
             "filter": filter_dict,
