@@ -267,7 +267,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
 
     def fetch_listings(
         self,
-        nft_type: BtcNftType,
+        nft_type: BtcNftType = BtcNftType.COLLECTION,
         collection: Optional[str] = None,
         cursor: Optional[str] = None,
         limit: int = 100,
@@ -314,9 +314,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         Returns:
             FetchResult containing listing data
         """
-        if not nft_type:
-            raise ValueError("NFT type is required")
-
         # Ensure we get the string value if an enum is passed
         nft_type_str = (
             nft_type.value if isinstance(nft_type, BtcNftType) else str(nft_type)
@@ -453,7 +450,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
 
     def fetch_offers(
         self,
-        nft_type: Optional[BtcNftType] = None,
+        nft_type: BtcNftType = BtcNftType.COLLECTION,
         address: Optional[str] = None,
         inscription_id: Optional[str] = None,
         event: Optional[str] = None,
@@ -482,7 +479,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         """
         # Ensure we get the string value if an enum is passed
         nft_type_str = (
-            nft_type.value if isinstance(nft_type, BtcNftType) and nft_type else None
+            nft_type.value if isinstance(nft_type, BtcNftType) else str(nft_type)
         )
 
         start = int(cursor) if cursor else 0
