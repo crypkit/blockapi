@@ -79,9 +79,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         }
         self.limit = limit
 
-    def fetch_nfts(
-        self, address: str, cursor: Optional[str] = None, size: Optional[int] = None
-    ) -> FetchResult:
+    def fetch_nfts(self, address: str) -> FetchResult:
         """
         Fetch NFTs (inscriptions) owned by the address
 
@@ -99,13 +97,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         if not address:
             raise ValueError("Address is required")
 
-        # set size to self.limit based on the following heuristic:
-        # Bottom line  1–2 NFTs per wallet is the norm.  Hundreds (100–999) is rare but possible for active collectors.  Low-thousands (1 000–1 999) exist only among the most hardcore or institutional actors.  10 000+ in a single non-contract wallet? Essentially never for an individual.
-        # for simplicity, we will always set size to self.limit
-        size = self.limit
-
-        # allow pagination cursor as string or int, convert to int, and set to 0 to avoid skipping any NFTS
-        params = {'size': size, 'cursor': 0}
+        params = {'size': self.limit, 'cursor': 0}
 
         try:
             return self.get_data(
@@ -148,11 +140,12 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         for nft in self._yield_parsed_nfts(inner_data):
             data.append(nft)
 
-        return ParseResult(data=data, errors=errors, cursor=None)
+        return ParseResult(data=data, errors=errors)
 
     def _yield_parsed_nfts(self, data: Dict) -> Generator[NftToken, None, None]:
         """Yield parsed NFT tokens from Unisat API response"""
         if not data or "inscription" not in data:
+            logger.warning("No NFT data found in response")
             return
 
         for item in data["inscription"]:
@@ -166,12 +159,12 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                         "utxo",
                     )
                 ):
-                    logger.warning("Missing required fields in NFT data: %s", item)
+                    logger.warning(f"Missing required fields in NFT data: {item}")
                     continue
 
                 utxo = item["utxo"]
                 if not all(k in utxo for k in ("txid", "address")):
-                    logger.warning("Missing required fields in UTXO data: %s", utxo)
+                    logger.warning(f"Missing required fields in UTXO data: {utxo}")
                     continue
 
                 yield NftToken.from_api(
@@ -194,7 +187,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 )
 
             except Exception as e:
-                logger.warning("Error parsing NFT item %s: %s", item, e)
+                logger.warning(f"Error parsing NFT item {item}: {str(e)}")
                 continue
 
     def fetch_collection(self, collection: str) -> FetchResult:
@@ -278,7 +271,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         self,
         nft_type: BtcNftType = BtcNftType.COLLECTION,
         collection: Optional[str] = None,
-        cursor: Optional[str] = 0,
         limit: int = 499,
         address: Optional[str] = None,
         tick: Optional[str] = None,
@@ -410,7 +402,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
 
         return ParseResult(
             data=list(self._yield_parsed_listings(items)),
-            cursor=None,
             errors=fetch_result.errors,
         )
 
@@ -468,7 +459,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         tick: Optional[str] = None,
         domain_type: Optional[str] = None,
         collection: Optional[str] = None,
-        cursor: Optional[str] = 0,
         limit: int = 499,
     ) -> FetchResult:
         """
