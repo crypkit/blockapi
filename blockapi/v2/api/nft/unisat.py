@@ -56,7 +56,12 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         'get_collection_stats': 'v3/market/collection/auction/collection_statistic',
     }
 
-    def __init__(self, api_key: str, sleep_provider: Optional[ISleepProvider] = None, limit: Optional[int] = 10000):
+    def __init__(
+        self,
+        api_key: str,
+        sleep_provider: Optional[ISleepProvider] = None,
+        limit: Optional[int] = 10000,
+    ):
         """
         Initialize the Unisat API client
 
@@ -93,12 +98,12 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         """
         if not address:
             raise ValueError("Address is required")
-        
+
         # set size to self.limit based on the following heuristic:
         # Bottom line  1–2 NFTs per wallet is the norm.  Hundreds (100–999) is rare but possible for active collectors.  Low-thousands (1 000–1 999) exist only among the most hardcore or institutional actors.  10 000+ in a single non-contract wallet? Essentially never for an individual.
         # for simplicity, we will always set size to self.limit
         size = self.limit
-        
+
         # allow pagination cursor as string or int, convert to int, and set to 0 to avoid skipping any NFTS
         params = {'size': size, 'cursor': 0}
 
@@ -509,7 +514,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 f"Unisat API limit is 500. You tried to fetch {limit} items. Truncating to 499."
             )
             limit = 499
-        
+
         request_body = {
             "filter": filter_dict,
             "start": 0,
