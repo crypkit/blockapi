@@ -2,8 +2,6 @@ import logging
 from typing import Optional, Dict, Generator
 from enum import Enum
 from datetime import datetime
-from attr import asdict
-import json
 
 from blockapi.v2.base import BlockchainApi, INftParser, INftProvider, ISleepProvider
 from blockapi.v2.coins import COIN_BTC
@@ -85,8 +83,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
 
         Args:
             address: BTC address to fetch NFTs for
-            cursor: Pagination cursor (offset)
-            size: Number of items to return per request (default: 100)
 
         Returns:
             FetchResult containing the NFT data
@@ -294,7 +290,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         Args:
             nft_type: Type of NFT (brc20, domain, collection, arc20, runes)
             collection: Collection ID (slug), optional
-            cursor: Pagination cursor (offset, 'start' parameter)
             limit: Number of items per page
             address: Filter by address
             tick: Filter by tick (for BRC20)
@@ -472,7 +467,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             tick: Filter by tick (for BRC20)
             domain_type: Filter by domain type
             collection: Collection ID to filter by
-            cursor: Pagination cursor (offset, 'start' parameter)
             limit: Number of items
 
         Returns:
