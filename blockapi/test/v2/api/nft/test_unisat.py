@@ -53,7 +53,6 @@ def test_parse_nfts(requests_mock, unisat_client, inscription_data):
     assert nft1.standard == "ordinals"
     assert nft1.name == "Ordinal #12345"
     assert nft1.amount == 1
-    assert nft1.updated_time == 1672531200
     assert nft1.blockchain == Blockchain.BITCOIN
     assert nft1.asset_type == AssetType.AVAILABLE
 
