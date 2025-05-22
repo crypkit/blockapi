@@ -1,6 +1,16 @@
 # CHANGELOG
 
 
+## v0.59.3 (2025-05-22)
+
+### Bug Fixes
+
+- **unisat**: Cursor fix
+  ([`4405348`](https://github.com/crypkit/blockapi/commit/44053483887c38e72144abf3cb92ff60521dfcc5))
+
+* fix(unisat): cursor fix
+
+
 ## v0.59.2 (2025-04-24)
 
 ### Bug Fixes
