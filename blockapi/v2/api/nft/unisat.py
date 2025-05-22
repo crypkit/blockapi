@@ -2,6 +2,8 @@ import logging
 from typing import Optional, Dict, Generator
 from enum import Enum
 from datetime import datetime
+from attr import asdict
+import json
 
 from blockapi.v2.base import BlockchainApi, INftParser, INftProvider, ISleepProvider
 from blockapi.v2.coins import COIN_BTC
@@ -54,7 +56,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         'get_collection_stats': 'v3/market/collection/auction/collection_statistic',
     }
 
-    def __init__(self, api_key: str, sleep_provider: Optional[ISleepProvider] = None):
+    def __init__(self, api_key: str, sleep_provider: Optional[ISleepProvider] = None, limit: Optional[int] = 10000):
         """
         Initialize the Unisat API client
 
@@ -70,9 +72,10 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             'Authorization': f'Bearer {api_key}',
             'Content-Type': 'application/json',
         }
+        self.limit = limit
 
     def fetch_nfts(
-        self, address: str, cursor: Optional[int] = None, size: int = 16
+        self, address: str, cursor: Optional[str] = None, size: Optional[int] = None
     ) -> FetchResult:
         """
         Fetch NFTs (inscriptions) owned by the address
@@ -80,7 +83,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         Args:
             address: BTC address to fetch NFTs for
             cursor: Pagination cursor (offset)
-            size: Number of items to return per page (default: 16)
+            size: Number of items to return per request (default: 100)
 
         Returns:
             FetchResult containing the NFT data
@@ -90,10 +93,14 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         """
         if not address:
             raise ValueError("Address is required")
-
-        params = {'size': size}
-        if cursor is not None:
-            params['cursor'] = cursor
+        
+        # set size to self.limit based on the following heuristic:
+        # Bottom line  1–2 NFTs per wallet is the norm.  Hundreds (100–999) is rare but possible for active collectors.  Low-thousands (1 000–1 999) exist only among the most hardcore or institutional actors.  10 000+ in a single non-contract wallet? Essentially never for an individual.
+        # for simplicity, we will always set size to self.limit
+        size = self.limit
+        
+        # allow pagination cursor as string or int, convert to int, and set to 0 to avoid skipping any NFTS
+        params = {'size': size, 'cursor': 0}
 
         try:
             return self.get_data(
@@ -116,30 +123,30 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         """Parse NFT data from API response"""
         errors = []
         data = []
-        cursor = None
 
         if not fetch_result.data:
             errors.append("No data in fetch result")
             return ParseResult(data=[], errors=errors)
+
+        if isinstance(fetch_result.data, dict) and "code" in fetch_result.data:
+            api_code = fetch_result.data["code"]
+            if api_code != 0:
+                api_msg = fetch_result.data.get("msg", "Unknown error")
+                errors.append(f"Unisat error {api_code}: {api_msg}")
+                return ParseResult(data=[], errors=errors)
 
         inner_data = fetch_result.data.get("data", {})
         if not inner_data:
             errors.append("No data in API response")
             return ParseResult(data=[], errors=errors)
 
-        cursor = (
-            str(inner_data.get("cursor"))
-            if inner_data.get("cursor") is not None
-            else None
-        )
-
         for nft in self._yield_parsed_nfts(inner_data):
             data.append(nft)
 
-        return ParseResult(data=data, errors=errors, cursor=cursor)
+        return ParseResult(data=data, errors=errors, cursor=None)
 
     def _yield_parsed_nfts(self, data: Dict) -> Generator[NftToken, None, None]:
-        """Yield parsed NFT tokens from API response data"""
+        """Yield parsed NFT tokens from Unisat API response"""
         if not data or "inscription" not in data:
             return
 
@@ -147,45 +154,42 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             try:
                 if not all(
                     k in item
-                    for k in [
+                    for k in (
                         "inscriptionId",
                         "inscriptionNumber",
                         "timestamp",
                         "utxo",
-                    ]
+                    )
                 ):
-                    logger.warning(f"Missing required fields in NFT data: {item}")
+                    logger.warning("Missing required fields in NFT data: %s", item)
                     continue
 
                 utxo = item["utxo"]
-                if not all(k in utxo for k in ["txid", "address"]):
-                    logger.warning(f"Missing required fields in UTXO data: {utxo}")
+                if not all(k in utxo for k in ("txid", "address")):
+                    logger.warning("Missing required fields in UTXO data: %s", utxo)
                     continue
 
-                inscription_number = str(item["inscriptionNumber"])
-                timestamp = str(item["timestamp"])
-
-                yield NftToken(
+                yield NftToken.from_api(
                     ident=item["inscriptionId"],
                     collection="ordinals",
                     collection_name="Bitcoin Ordinals",
                     contract=utxo["txid"],
                     standard="ordinals",
-                    name=f"Ordinal #{inscription_number}",
+                    name=f"Ordinal #{item['inscriptionNumber']}",
                     description="",
                     amount=1,
                     image_url="",
                     metadata_url=None,
-                    metadata={},
-                    updated_time=int(timestamp),
+                    updated_time=str(item["timestamp"]),
                     is_disabled=False,
                     is_nsfw=False,
                     blockchain=Blockchain.BITCOIN,
                     asset_type=AssetType.AVAILABLE,
                     market_url=None,
                 )
+
             except Exception as e:
-                logger.warning(f"Error parsing NFT item {item}: {e}")
+                logger.warning("Error parsing NFT item %s: %s", item, e)
                 continue
 
     def fetch_collection(self, collection: str) -> FetchResult:
@@ -269,8 +273,8 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         self,
         nft_type: BtcNftType = BtcNftType.COLLECTION,
         collection: Optional[str] = None,
-        cursor: Optional[str] = None,
-        limit: int = 100,
+        cursor: Optional[str] = 0,
+        limit: int = 499,
         address: Optional[str] = None,
         tick: Optional[str] = None,
         min_price: Optional[int] = None,
@@ -319,8 +323,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             nft_type.value if isinstance(nft_type, BtcNftType) else str(nft_type)
         )
 
-        start = int(cursor) if cursor else 0
-
         filter_dict = {"nftType": nft_type_str}
 
         if collection:
@@ -355,10 +357,16 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         sort_dict = {}
         sort_dict[sort_by] = sort_order
 
+        if limit >= 500:
+            logger.warning(
+                f"Unisat API limit is 500. You tried to fetch {limit} items. Truncating to 499."
+            )
+            limit = 499
+
         request_body = {
             "filter": filter_dict,
             "sort": sort_dict,
-            "start": start,
+            "start": 0,
             "limit": limit,
         }
 
@@ -394,12 +402,10 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             return ParseResult(errors=fetch_result.errors)
 
         items = inner_data.get("list", [])
-        timestamp = inner_data.get("timestamp")
-        cursor = str(timestamp) if timestamp else None
 
         return ParseResult(
             data=list(self._yield_parsed_listings(items)),
-            cursor=cursor,
+            cursor=None,
             errors=fetch_result.errors,
         )
 
@@ -457,8 +463,8 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         tick: Optional[str] = None,
         domain_type: Optional[str] = None,
         collection: Optional[str] = None,
-        cursor: Optional[str] = None,
-        limit: int = 100,
+        cursor: Optional[str] = 0,
+        limit: int = 499,
     ) -> FetchResult:
         """
         Fetch listing events (historical or recent) in a collection.
@@ -472,7 +478,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             domain_type: Filter by domain type
             collection: Collection ID to filter by
             cursor: Pagination cursor (offset, 'start' parameter)
-            limit: Number of items per page
+            limit: Number of items
 
         Returns:
             FetchResult containing the listing action data
@@ -481,8 +487,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         nft_type_str = (
             nft_type.value if isinstance(nft_type, BtcNftType) else str(nft_type)
         )
-
-        start = int(cursor) if cursor else 0
 
         filter_dict = {}
         if nft_type_str:
@@ -500,9 +504,15 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         if collection:
             filter_dict["collectionId"] = collection
 
+        if limit >= 500:
+            logger.warning(
+                f"Unisat API limit is 500. You tried to fetch {limit} items. Truncating to 499."
+            )
+            limit = 499
+        
         request_body = {
             "filter": filter_dict,
-            "start": start,
+            "start": 0,
             "limit": limit,
         }
 
