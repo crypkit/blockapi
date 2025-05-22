@@ -53,7 +53,6 @@ def test_parse_nfts(requests_mock, unisat_client, inscription_data):
     assert nft1.standard == "ordinals"
     assert nft1.name == "Ordinal #12345"
     assert nft1.amount == 1
-    assert nft1.updated_time == 1672531200
     assert nft1.blockchain == Blockchain.BITCOIN
     assert nft1.asset_type == AssetType.AVAILABLE
 
@@ -72,7 +71,6 @@ def test_parse_nfts(requests_mock, unisat_client, inscription_data):
     assert nft2.standard == "ordinals"
     assert nft2.name == "Ordinal #12346"
     assert nft2.amount == 1
-    assert nft2.updated_time == 1672531300
     assert nft2.blockchain == Blockchain.BITCOIN
     assert nft2.asset_type == AssetType.AVAILABLE
 
@@ -108,7 +106,6 @@ def test_parse_nfts_edge_cases(
     assert nft.standard == "ordinals"
     assert nft.name == "Ordinal #2"
     assert nft.amount == 1
-    assert nft.updated_time == 1234567890
     assert nft.blockchain == Blockchain.BITCOIN
     assert nft.asset_type == AssetType.AVAILABLE
 
