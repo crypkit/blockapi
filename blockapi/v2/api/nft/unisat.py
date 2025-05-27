@@ -134,7 +134,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             errors.append("No data in API response")
             return ParseResult(data=[], errors=errors)
 
-        address = None
+        address: str | None = None
         if hasattr(fetch_result, "extra") and isinstance(fetch_result.extra, dict):
             address = fetch_result.extra.get("address")
 
@@ -145,16 +145,15 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 address = first_item.get("address") or first_item.get("utxo", {}).get(
                     "address"
                 )
-            except Exception:
+            except (IndexError, AttributeError, TypeError):
                 address = None
 
         collection_map: Dict[str, Tuple[str, str]] = {}
-        if address:
-            try:
-                collection_map = self._build_collection_map(address)
-            except ValueError as exc:
-                errors.append(str(exc))
-                return ParseResult(errors=errors)
+        try:
+            collection_map = self._build_collection_map(address)
+        except ValueError as exc:
+            errors.append(str(exc))
+            return ParseResult(errors=errors)
 
         for nft in self._yield_parsed_nfts(inner_data, collection_map):
             data.append(nft)
@@ -224,11 +223,14 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         ValueError
             If UniSat returns a non‑zero `code` (e.g. -119 = address invalid).
         """
-        resp = self.post(
-            "get_collection_summary",
-            json={"address": address},
-            headers=self.headers,
-        )
+        try:
+            resp = self.post(
+                "get_collection_summary",
+                json={"address": address},
+                headers=self.headers,
+            )
+        except Exception as exc:
+            raise ValueError(f"UniSat request failed: {exc}") from exc
 
         if not isinstance(resp, dict):
             raise ValueError("Unexpected response object from UniSat")
