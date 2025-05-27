@@ -41,6 +41,9 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
 
     coin = COIN_BTC
 
+    DEFAULT_CID = "uncategorized-ordinals"
+    DEFAULT_CNAME = "Uncategorized Ordinals"
+
     api_options = ApiOptions(
         blockchain=Blockchain.BITCOIN,
         base_url='https://open-api.unisat.io/',
@@ -78,6 +81,8 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         }
         self.limit = limit
 
+        self._collection_map: Dict[str, Tuple[str, str]] | None = None
+
     def fetch_nfts(self, address: str) -> FetchResult:
         """
         Fetch NFTs (inscriptions) owned by the address
@@ -97,13 +102,18 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         params = {'size': self.limit, 'cursor': 0}
 
         try:
-            return self.get_data(
+            result = self.get_data(
                 'get_nfts',
                 headers=self.headers,
                 params=params,
                 address=address,
                 extra=dict(address=address),
             )
+
+            if self._collection_map is None:
+                self._collection_map = self._build_collection_map(address)
+
+            return result
         except (HTTPError, ValueError, TypeError) as e:
             logger.error(f"Error fetching NFTs for address {address}: {str(e)}")
             return FetchResult(errors=[str(e)])
@@ -134,42 +144,20 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             errors.append("No data in API response")
             return ParseResult(data=[], errors=errors)
 
-        address: str | None = None
-        if hasattr(fetch_result, "extra") and isinstance(fetch_result.extra, dict):
-            address = fetch_result.extra.get("address")
+        if self._collection_map is None:
+            errors.append("Collection map is not initialized.")
+            return ParseResult(errors=[errors])
 
-        # fallback: lift the address from the first inscription object in the payload
-        if not address:
-            try:
-                first_item = inner_data.get("inscription", [])[0]
-                address = first_item.get("address") or first_item.get("utxo", {}).get(
-                    "address"
-                )
-            except (IndexError, AttributeError, TypeError):
-                logger.warning("No address found in response of the first NFT item")
-                address = None
-
-        collection_map: Dict[str, Tuple[str, str]] = {}
-        try:
-            collection_map = self._build_collection_map(address)
-        except ValueError as exc:
-            errors.append(str(exc))
-            return ParseResult(errors=errors)
-
-        for nft in self._yield_parsed_nfts(inner_data, collection_map):
+        for nft in self._yield_parsed_nfts(inner_data):
             data.append(nft)
 
         return ParseResult(data=data, errors=errors)
 
-    def _yield_parsed_nfts(
-        self, data: Dict, collection_map: Dict[str, Tuple[str, str]]
-    ) -> Generator[NftToken, None, None]:
+    def _yield_parsed_nfts(self, data: Dict) -> Generator[NftToken, None, None]:
         """Yield parsed NFT tokens from Unisat API response"""
         if not data or "inscription" not in data:
             logger.warning("No NFT data found in response")
             return
-
-        default_cid, default_cname = "uncategorized-ordinals", "Uncategorized Ordinals"
 
         for item in data["inscription"]:
             try:
@@ -191,7 +179,9 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                     continue
 
                 iid = item["inscriptionId"]
-                cid, cname = collection_map.get(iid, (default_cid, default_cname))
+                cid, cname = self._collection_map.get(
+                    iid, (self.DEFAULT_CID, self.DEFAULT_CNAME)
+                )
 
                 yield NftToken.from_api(
                     ident=iid,
@@ -241,8 +231,8 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
 
         mapping: Dict[str, Tuple[str, str]] = {}
         for col in resp.get("data", {}).get("list", []):
-            cid = col.get("collectionId", "uncategorized-ordinals")
-            name = col.get("name", "Uncategorized Ordinals")
+            cid = col.get("collectionId", self.DEFAULT_CID)
+            name = col.get("name", self.DEFAULT_CNAME)
             for iid in col.get("ids", []):
                 mapping[iid] = (cid, name)
         return mapping
@@ -273,9 +263,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         Returns:
             ParseResult containing parsed collection data
         """
-        DEFAULT_CID = "uncategorized-ordinals"
-        DEFAULT_CNAME = "Uncategorized Ordinals"
-
         if not fetch_result:
             return ParseResult(errors=["Empty response from UniSat"])
 
@@ -288,7 +275,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             and unisat_response.get("msg") == "Internal Server Error"
             and unisat_response.get("data") is None
         ):
-            return self._dummy_result(DEFAULT_CID, DEFAULT_CNAME)
+            return self._dummy_result()
 
         # ----- any other UniSat error ------------------------------------------
         if code != 0:
@@ -342,7 +329,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
 
         return ParseResult(data=[collection], errors=fetch_result.errors)
 
-    def _dummy_result(self, cid: str, cname: str) -> ParseResult:
+    def _dummy_result(self) -> ParseResult:
         dummy_stats = NftCollectionTotalStats.from_api(
             volume="0",
             sales_count="0",
@@ -353,10 +340,12 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             coin=self.coin,
         )
         dummy_col = NftCollection.from_api(
-            ident=cid,
-            name=cname,
+            ident=self.DEFAULT_CID,
+            name=self.DEFAULT_CNAME,
             contracts=[
-                ContractInfo.from_api(blockchain=Blockchain.BITCOIN, address=cid)
+                ContractInfo.from_api(
+                    blockchain=Blockchain.BITCOIN, address=self.DEFAULT_CID
+                )
             ],
             image=None,
             is_disabled=False,
