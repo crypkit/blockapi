@@ -1,12 +1,52 @@
 # CHANGELOG
 
 
+## v0.59.3 (2025-05-22)
+
+### Bug Fixes
+
+- **unisat**: Cursor fix
+  ([`4405348`](https://github.com/crypkit/blockapi/commit/44053483887c38e72144abf3cb92ff60521dfcc5))
+
+* fix(unisat): cursor fix
+
+
+## v0.59.2 (2025-04-24)
+
+### Bug Fixes
+
+- **unisat**: Nft_type has default value if not provided
+  ([`fa81b72`](https://github.com/crypkit/blockapi/commit/fa81b721f1d77968566cdf08e3fb3b70a7f4b354))
+
+
+## v0.59.1 (2025-04-24)
+
+### Bug Fixes
+
+- **unisat**: Offers collection_id rename to collection
+  ([`e10a944`](https://github.com/crypkit/blockapi/commit/e10a944592dcad505f8b8f689568d104edba9d27))
+
+
+## v0.59.0 (2025-04-15)
+
+### Features
+
+- Implement Unisat API for BTC NFTs; fetch NFTs, collections, offers, listings
+  ([`b5a5684`](https://github.com/crypkit/blockapi/commit/b5a56848250a28033c3325dc491e547d58814c4e))
+
+
+## v0.58.0 (2025-04-15)
+
+
 ## v0.57.0 (2025-04-10)
 
 ### Features
 
 - Implement Unisat API for BTC NFTs; fetch NFTs, collections, offers, listings
   ([`afc76a8`](https://github.com/crypkit/blockapi/commit/afc76a85b98e3e2219d827b497bc23a00528453c))
+
+- Implement Unisat API for BTC NFTs; fetch NFTs, collections, offers, listings
+  ([`6c0b63a`](https://github.com/crypkit/blockapi/commit/6c0b63a82c02e07fd620a954bd547f01ecc4dd51))
 
 
 ## v0.56.0 (2025-03-19)
