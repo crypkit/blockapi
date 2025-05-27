@@ -146,6 +146,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                     "address"
                 )
             except (IndexError, AttributeError, TypeError):
+                logger.warning("No address found in response of the first NFT item")
                 address = None
 
         collection_map: Dict[str, Tuple[str, str]] = {}
