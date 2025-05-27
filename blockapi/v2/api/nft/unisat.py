@@ -1,5 +1,5 @@
 import logging
-from typing import Optional, Dict, Generator
+from typing import Optional, Dict, Generator, Tuple
 from enum import Enum
 from datetime import datetime
 
@@ -52,6 +52,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         'get_listings': 'v3/market/collection/auction/list',
         'get_offers': 'v3/market/collection/auction/actions',
         'get_collection_stats': 'v3/market/collection/auction/collection_statistic',
+        'get_collection_summary': '/v3/market/collection/auction/collection_summary',
     }
 
     def __init__(
@@ -133,16 +134,42 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             errors.append("No data in API response")
             return ParseResult(data=[], errors=errors)
 
-        for nft in self._yield_parsed_nfts(inner_data):
+        address = None
+        if hasattr(fetch_result, "extra") and isinstance(fetch_result.extra, dict):
+            address = fetch_result.extra.get("address")
+
+        # fallback: lift the address from the first inscription object in the payload
+        if not address:
+            try:
+                first_item = inner_data.get("inscription", [])[0]
+                address = first_item.get("address") or first_item.get("utxo", {}).get(
+                    "address"
+                )
+            except Exception:
+                address = None
+
+        collection_map: Dict[str, Tuple[str, str]] = {}
+        if address:
+            try:
+                collection_map = self._build_collection_map(address)
+            except ValueError as exc:
+                errors.append(str(exc))
+                return ParseResult(errors=errors)
+
+        for nft in self._yield_parsed_nfts(inner_data, collection_map):
             data.append(nft)
 
         return ParseResult(data=data, errors=errors)
 
-    def _yield_parsed_nfts(self, data: Dict) -> Generator[NftToken, None, None]:
+    def _yield_parsed_nfts(
+        self, data: Dict, collection_map: Dict[str, Tuple[str, str]]
+    ) -> Generator[NftToken, None, None]:
         """Yield parsed NFT tokens from Unisat API response"""
         if not data or "inscription" not in data:
             logger.warning("No NFT data found in response")
             return
+
+        default_cid, default_cname = "uncategorized-ordinals", "Uncategorized Ordinals"
 
         for item in data["inscription"]:
             try:
@@ -163,10 +190,13 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                     logger.warning(f"Missing required fields in UTXO data: {utxo}")
                     continue
 
+                iid = item["inscriptionId"]
+                cid, cname = collection_map.get(iid, (default_cid, default_cname))
+
                 yield NftToken.from_api(
-                    ident=item["inscriptionId"],
-                    collection="ordinals",
-                    collection_name="Bitcoin Ordinals",
+                    ident=iid,
+                    collection=cid,
+                    collection_name=cname,
                     contract=utxo["txid"],
                     standard="ordinals",
                     name=f"Ordinal #{item['inscriptionNumber']}",
@@ -185,6 +215,34 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             except Exception as e:
                 logger.warning(f"Error parsing NFT item {item}: {str(e)}")
                 continue
+
+    def _build_collection_map(self, address: str) -> Dict[str, Tuple[str, str]]:
+        """Return a mapping using a single collection_summary call.
+
+        Raises
+        ------
+        ValueError
+            If UniSat returns a non‑zero `code` (e.g. -119 = address invalid).
+        """
+        resp = self.post(
+            "get_collection_summary",
+            json={"address": address},
+            headers=self.headers,
+        )
+
+        if not isinstance(resp, dict):
+            raise ValueError("Unexpected response object from UniSat")
+
+        if resp.get("code", -1) != 0:
+            raise ValueError(f"Unisat error {resp.get('code')}: {resp.get('msg')}")
+
+        mapping: Dict[str, Tuple[str, str]] = {}
+        for col in resp.get("data", {}).get("list", []):
+            cid = col.get("collectionId", "uncategorized-ordinals")
+            name = col.get("name", "Uncategorized Ordinals")
+            for iid in col.get("ids", []):
+                mapping[iid] = (cid, name)
+        return mapping
 
     def fetch_collection(self, collection: str) -> FetchResult:
         """Fetch collection data from Unisat API."""
@@ -212,8 +270,26 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         Returns:
             ParseResult containing parsed collection data
         """
-        if not fetch_result or not fetch_result.data:
-            return ParseResult(errors=fetch_result.errors if fetch_result else None)
+        DEFAULT_CID = "uncategorized-ordinals"
+        DEFAULT_CNAME = "Uncategorized Ordinals"
+
+        if not fetch_result:
+            return ParseResult(errors=["Empty response from UniSat"])
+
+        unisat_response = fetch_result.data
+        code = unisat_response.get("code", 0)
+
+        # ----- dummy-result case ---------------------------------------
+        if (
+            code == -1
+            and unisat_response.get("msg") == "Internal Server Error"
+            and unisat_response.get("data") is None
+        ):
+            return self._dummy_result(DEFAULT_CID, DEFAULT_CNAME)
+
+        # ----- any other UniSat error ------------------------------------------
+        if code != 0:
+            return ParseResult(errors=fetch_result.errors)
 
         stats = fetch_result.data.get("data", {})
         if not stats:
@@ -262,6 +338,31 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         )
 
         return ParseResult(data=[collection], errors=fetch_result.errors)
+
+    def _dummy_result(self, cid: str, cname: str) -> ParseResult:
+        dummy_stats = NftCollectionTotalStats.from_api(
+            volume="0",
+            sales_count="0",
+            owners_count="0",
+            market_cap="0",
+            floor_price="0",
+            average_price="0",
+            coin=self.coin,
+        )
+        dummy_col = NftCollection.from_api(
+            ident=cid,
+            name=cname,
+            contracts=[
+                ContractInfo.from_api(blockchain=Blockchain.BITCOIN, address=cid)
+            ],
+            image=None,
+            is_disabled=False,
+            is_nsfw=False,
+            blockchain=Blockchain.BITCOIN,
+            total_stats=dummy_stats,
+            volumes=NftVolumes.from_api(coin=self.coin),
+        )
+        return ParseResult(data=[dummy_col])
 
     def fetch_listings(
         self,

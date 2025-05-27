@@ -44,8 +44,6 @@ def test_parse_nfts(requests_mock, unisat_client, inscription_data):
         nft1.ident
         == "6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
     )
-    assert nft1.collection == "ordinals"
-    assert nft1.collection_name == "Bitcoin Ordinals"
     assert (
         nft1.contract
         == "6fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5"
@@ -62,8 +60,6 @@ def test_parse_nfts(requests_mock, unisat_client, inscription_data):
         nft2.ident
         == "7fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
     )
-    assert nft2.collection == "ordinals"
-    assert nft2.collection_name == "Bitcoin Ordinals"
     assert (
         nft2.contract
         == "7fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5"
@@ -97,8 +93,6 @@ def test_parse_nfts_edge_cases(
         nft.ident
         == "8fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5i0"
     )
-    assert nft.collection == "ordinals"
-    assert nft.collection_name == "Bitcoin Ordinals"
     assert (
         nft.contract
         == "8fb976ab49dcec017f1e2015b625126c5c4d6b71174f5bc5af4f39b274a4b6b5"
