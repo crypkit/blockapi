@@ -8,9 +8,6 @@ import requests
 
 import blockapi
 
-cfscrape.DEFAULT_CIPHERS += ':!SHA'
-
-
 class Service(ABC):
     """General class for handling blockchain API services."""
 

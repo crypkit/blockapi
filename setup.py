@@ -4,9 +4,16 @@ from setuptools import find_packages
 with open("README.md", "r") as f:
     long_description = f.read()
 
-PACKAGES = find_packages(where='.')
+# Exclude test fixtures with invalid syntax from installation
+PACKAGES = find_packages(
+    where='.',
+    exclude=[
+        'App.tests', 'App.tests.*',
+        'App/tests', 'App/tests.*'
+    ]
+)
 
-__version__ = "0.59.3"
+__version__ = "0.59.2"
 
 setuptools.setup(
     name='blockapi',
@@ -18,7 +25,8 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     packages=PACKAGES,
     install_requires=[
-        'requests==2.32.0',
+        'requests==2.31.0',
+        'urllib3<2',
         'pytz>=2019.2',
         'python-dateutil>=2.8.0',
         'coinaddrng==1.1.1',
@@ -30,11 +38,13 @@ setuptools.setup(
         'pydantic>=1.10.2',
         'marko==1.3.0',
         'fake_useragent>=1.1.3',
-        'pytest',
-        'pytest-vcr',
         'requests_mock>=1.9.3',
         'attrs>=17.4.0,<=22.1.0',
         'solders==0.22.0',
+        'opentelemetry-distro',
+        'opentelemetry-exporter-otlp-proto-grpc',
+        'opentelemetry-instrumentation-flask',
+        'gunicorn'
     ],
     url="https://github.com/crypkit/blockapi",
 )
