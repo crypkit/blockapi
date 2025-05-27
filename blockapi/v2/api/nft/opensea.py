@@ -1,13 +1,7 @@
-from enum import Enum
 import functools
 import logging
 from decimal import Decimal
 from typing import Callable, Iterable, Optional, Tuple
-import json
-from datetime import datetime
-from decimal import Decimal
-import attr
-from typing import Any
 
 from blockapi.utils.num import raw_to_decimals
 from blockapi.v2.base import (
@@ -642,53 +636,3 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             return True
 
         return False
-
-
-
-def to_primitive(value: Any):
-    """Convert non‑JSON types to serialisable primitives."""
-    if isinstance(value, datetime):
-        return value.isoformat()           # e.g. "2025-05-02T13:47:36.210Z"
-    if isinstance(value, Decimal):
-        return str(value)                  # keep full precision
-    if isinstance(value, Enum):
-        return value.value                 # enum -> raw value
-    return value                           # leave JSON primitives & nested dicts
-
-def token_to_dict(token):
-    """attrs model -> plain dict with all values JSON‑safe."""
-    return attr.asdict(
-        token,
-        recurse=True,
-        value_serializer=lambda inst, field, val: to_primitive(val),
-    )
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Main entry
-# ──────────────────────────────────────────────────────────────────────────────
-def main():
-    api_key       = "6c0e52527b124aeeb0bebbcfbaf2e7b6"
-    owner_address = "0x0C5a2C72C009252f0E7312f5a1Ab87de02be6FBE"
-
-    logger.info("Starting OpenSea fetch", extra={"address": owner_address})
-
-    api   = OpenSeaApi(api_key, Blockchain.ETHEREUM)
-    fetch = api.fetch_nfts(owner_address)
-    if fetch.errors:
-        logger.error("Fetch errors", extra={"errors": fetch.errors})
-        return
-
-    parsed = api.parse_nfts(fetch)
-    if parsed.errors:
-        logger.error("Parse errors", extra={"errors": parsed.errors})
-        return
-
-    logger.info("Parse succeeded", extra={"count": len(parsed.data)})
-
-    # ── Serialise every token safely ──────────────────────────────────────────
-    nfts_json = json.dumps(
-        [token_to_dict(token) for token in parsed.data],
-        ensure_ascii=False,    # keep Unicode readable
-    )
-
-    logger.info("Fetched all OpenSea NFTs", extra={"nfts": nfts_json})

@@ -133,7 +133,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         if not inner_data:
             errors.append("No data in API response")
             return ParseResult(data=[], errors=errors)
-
+         
         address = None
         if hasattr(fetch_result, "extra") and isinstance(fetch_result.extra, dict):
             address = fetch_result.extra.get("address")
@@ -189,7 +189,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 if not all(k in utxo for k in ("txid", "address")):
                     logger.warning(f"Missing required fields in UTXO data: {utxo}")
                     continue
-
+                    
                 iid = item["inscriptionId"]
                 cid, cname = collection_map.get(iid, (default_cid, default_cname))
 
