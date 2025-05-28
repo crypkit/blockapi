@@ -191,6 +191,7 @@ class Blockchain(str, Enum):
     KUJIRA = 'kujira'
     KUSAMA = 'kusama'
     LAIKACHAIN = 'laikachain'
+    LENS = 'lens'
     LIGHTLINK = 'lightlink'
     LINEA = 'linea'
     LISK = 'lisk'
