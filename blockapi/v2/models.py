@@ -163,6 +163,7 @@ class Blockchain(str, Enum):
     HUMANODE = 'humanode'
     HUOBI_TOKEN = 'huobi-token'
     HYDRA = 'hydra'
+    HYPEREVM = 'hyperevm'
     HYPERLIQUID = 'hyperliquid'
     HYPRA_NETWORK = 'hypra-network'
     ICON = 'icon'
