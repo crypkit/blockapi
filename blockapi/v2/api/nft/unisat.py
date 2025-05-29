@@ -43,7 +43,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
 
     DEFAULT_CID = "uncategorized-ordinals"
     DEFAULT_CNAME = "Uncategorized Ordinals"
-    SATOSHI = 100_000_000 
+    SATOSHI = 100_000_000
 
     api_options = ApiOptions(
         blockchain=Blockchain.BITCOIN,
@@ -297,7 +297,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             icon_url = f"https://static.unisat.io/content/{icon}"
 
         floor_price_sat = stats.get("floorPrice", 0) or 0
-        floor_price = floor_price_sat / self.SATOSHI 
+        floor_price = floor_price_sat / self.SATOSHI
 
         btc_value_sat = stats.get("btcValue", 0) or 0
         volume_btc = btc_value_sat / self.SATOSHI
@@ -309,8 +309,8 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             volume=str(volume_btc),
             sales_count=str(stats.get("listed", 0)),
             owners_count=str(total_nfts),
-            market_cap=str(market_cap),  
-            floor_price=str(floor_price), 
+            market_cap=str(market_cap),
+            floor_price=str(floor_price),
             average_price="0",
             coin=self.coin,
         )
@@ -520,7 +520,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 amount = 1
 
             price_sat = item.get('price') or 0
-            price_btc = price_sat / self.SATOSHI 
+            price_btc = price_sat / self.SATOSHI
 
             yield NftOffer.from_api(
                 offer_key=item["auctionId"],
@@ -678,7 +678,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                     )
 
             price_sat = item.get('price') or 0
-            price_btc = price_sat / self.SATOSHI 
+            price_btc = price_sat / self.SATOSHI
 
             yield NftOffer.from_api(
                 offer_key=item["auctionId"],
