@@ -1,5 +1,3 @@
-import json
-from attr import asdict
 import logging
 from typing import Optional, Dict, Generator, Tuple
 from enum import Enum
@@ -698,54 +696,3 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 pay_amount=price,
                 pay_coin=self.coin,
             )
-
-
-def main() -> None:
-    api_key = "31e8af60db328aa14673f0f6c6f7329201e89ce47dd70783a8f0011aa477c474"
-    owner = "bc1pve69ahm9k62yqpxdzfhgsnj3f5zyy5v80fzk5epfwcuhgy9fmv6qgt3e6p"
-    collection = "test-collection"  # ← slug you said works for stats
-
-    api = UnisatApi(api_key)  # don't pass Blockchain.BITCOIN here
-    logger.info("▶ starting Unisat smoke-test", extra={"owner": owner})
-
-    # -------------------- generic helpers ----------------------------------
-    def _fetch(label: str, fn):
-        """Run fn() → FetchResult, log HTTP-level problems or API codes."""
-        return fn()
-
-    def _parse(label: str, fr, parse_fn):
-        """Parse and log either a success sample or why it failed."""
-        pr = parse_fn(fr)
-        if pr.errors or not pr.data:
-            logger.warning(
-                f"{label} unavailable",
-                extra={"errors": pr.errors, "has_data": bool(pr.data)},
-            )
-        else:
-            sample = [asdict(x) for x in pr.data[:2]]
-            logger.info(
-                f"✓ {label}",
-                extra={
-                    "total": len(pr.data),
-                    "sample": json.dumps(sample, default=str),
-                },
-            )
-        return pr
-
-    # -------------------- NFTs ---------------------------------------------
-    fr = _fetch("NFTs", lambda: api.fetch_nfts(owner))
-    _parse("NFTs", fr, api.parse_nfts)
-
-    # -------------------- collection stats ---------------------------------
-    fr = _fetch("collection stats", lambda: api.fetch_collection(collection))
-    _parse("collection stats", fr, api.parse_collection)
-
-    # -------------------- listings -----------------------------------------
-    fr = _fetch(
-        "listings", lambda: api.fetch_listings(collection=collection, limit=100)
-    )
-    _parse("listings", fr, api.parse_listings)
-
-    # -------------------- offers -------------------------------------------
-    fr = _fetch("offers", lambda: api.fetch_offers(collection=collection, limit=100))
-    _parse("offers", fr, api.parse_offers)
