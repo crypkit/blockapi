@@ -21,6 +21,7 @@ from blockapi.v2.models import (
     NftOfferDirection,
     BtcNftType,
 )
+from blockapi.utils.num import raw_to_decimals
 from requests import HTTPError
 import requests
 
@@ -43,7 +44,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
 
     DEFAULT_CID = "uncategorized-ordinals"
     DEFAULT_CNAME = "Uncategorized Ordinals"
-    SATOSHI = 100_000_000
 
     api_options = ApiOptions(
         blockchain=Blockchain.BITCOIN,
@@ -82,7 +82,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         }
         self.limit = limit
 
-        self._collection_map: Dict[str, Tuple[str, str]] | None = None
+        self._collection_map = None
 
     def fetch_nfts(self, address: str) -> FetchResult:
         """
@@ -296,11 +296,9 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         if icon:
             icon_url = f"https://static.unisat.io/content/{icon}"
 
-        floor_price_sat = stats.get("floorPrice", 0) or 0
-        floor_price = floor_price_sat / self.SATOSHI
+        floor_price = raw_to_decimals(stats.get("floorPrice", 0), self.coin.decimals)
 
-        btc_value_sat = stats.get("btcValue", 0) or 0
-        volume_btc = btc_value_sat / self.SATOSHI
+        volume_btc = raw_to_decimals(stats.get("btcValue", 0), self.coin.decimals)
 
         total_nfts = stats.get("total", 0)
         market_cap = floor_price * total_nfts if total_nfts else 0
