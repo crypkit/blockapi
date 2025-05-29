@@ -520,7 +520,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 amount = 1
 
             price_sat = item.get('price') or 0
-            price_btc = price_sat / self.SATOSHI
 
             yield NftOffer.from_api(
                 offer_key=item["auctionId"],
@@ -537,7 +536,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 offer_ident=item["inscriptionId"],
                 pay_contract=None,
                 pay_ident=None,
-                pay_amount=price_btc,
+                pay_amount=price_sat,
                 pay_coin=self.coin,
             )
 
@@ -678,7 +677,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                     )
 
             price_sat = item.get('price') or 0
-            price_btc = price_sat / self.SATOSHI
 
             yield NftOffer.from_api(
                 offer_key=item["auctionId"],
@@ -695,6 +693,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 offer_ident=item["inscriptionId"],
                 pay_contract=None,
                 pay_ident=None,
-                pay_amount=price_btc,
+                pay_amount=price_sat,
                 pay_coin=self.coin,
             )
