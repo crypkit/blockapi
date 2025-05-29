@@ -187,7 +187,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                     ident=iid,
                     collection=cid,
                     collection_name=cname,
-                    contract=utxo["txid"],
+                    contract=cid,
                     standard="ordinals",
                     name=f"Ordinal #{item['inscriptionNumber']}",
                     description="",
