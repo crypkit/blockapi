@@ -49,11 +49,11 @@ def test_fetch_collection(requests_mock, unisat_client, collection_stats):
     assert not collection.is_disabled
     assert not collection.is_nsfw
     assert collection.blockchain == Blockchain.BITCOIN
-    assert str(collection.total_stats.floor_price) == "990000"
+    assert str(collection.total_stats.floor_price) == "0.0099"
     assert str(collection.total_stats.owners_count) == "1563"
     assert str(collection.total_stats.sales_count) == "20"
-    assert str(collection.total_stats.volume) == "39900000"
-    assert str(collection.total_stats.market_cap) == str(990000 * 1563)
+    assert str(collection.total_stats.volume) == "0.399"
+    assert str(collection.total_stats.market_cap) == "15.4737"
 
 
 def test_fetch_listings(requests_mock, unisat_client, listings_data):

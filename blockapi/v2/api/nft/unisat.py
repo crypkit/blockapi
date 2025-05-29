@@ -21,6 +21,7 @@ from blockapi.v2.models import (
     NftOfferDirection,
     BtcNftType,
 )
+from blockapi.utils.num import raw_to_decimals
 from requests import HTTPError
 import requests
 
@@ -81,7 +82,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         }
         self.limit = limit
 
-        self._collection_map: Dict[str, Tuple[str, str]] | None = None
+        self._collection_map = None
 
     def fetch_nfts(self, address: str) -> FetchResult:
         """
@@ -192,7 +193,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                     name=f"Ordinal #{item['inscriptionNumber']}",
                     description="",
                     amount=1,
-                    image_url="",
+                    image_url=f"https://open-api.unisat.io/v1/indexer/inscription/content/{iid}",
                     metadata_url=None,
                     updated_time=str(item["timestamp"]),
                     is_disabled=False,
@@ -295,14 +296,15 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         if icon:
             icon_url = f"https://static.unisat.io/content/{icon}"
 
-        # Create NftCollectionTotalStats
-        floor_price = stats.get("floorPrice", 0)
+        floor_price = raw_to_decimals(stats.get("floorPrice", 0), self.coin.decimals)
+
+        volume = raw_to_decimals(stats.get("btcValue", 0), self.coin.decimals)
+
         total_nfts = stats.get("total", 0)
-        # Calculate market cap as floor price × total supply
-        market_cap = floor_price * total_nfts if floor_price and total_nfts else 0
+        market_cap = floor_price * total_nfts if total_nfts else 0
 
         total_stats = NftCollectionTotalStats.from_api(
-            volume=str(stats.get("btcValue", 0)),
+            volume=str(volume),
             sales_count=str(stats.get("listed", 0)),
             owners_count=str(total_nfts),
             market_cap=str(market_cap),
@@ -515,9 +517,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
             if amount is None:
                 amount = 1
 
-            price = item.get('price')
-            if price is None:
-                price = 0
+            price_sat = item.get('price') or 0
 
             yield NftOffer.from_api(
                 offer_key=item["auctionId"],
@@ -534,7 +534,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 offer_ident=item["inscriptionId"],
                 pay_contract=None,
                 pay_ident=None,
-                pay_amount=price,
+                pay_amount=price_sat,
                 pay_coin=self.coin,
             )
 
@@ -674,9 +674,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                         f"Could not parse timestamp {timestamp} for item {item.get('auctionId')}"
                     )
 
-            price = item.get('price')
-            if price is None:
-                price = 0
+            price_sat = item.get('price') or 0
 
             yield NftOffer.from_api(
                 offer_key=item["auctionId"],
@@ -693,6 +691,6 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 offer_ident=item["inscriptionId"],
                 pay_contract=None,
                 pay_ident=None,
-                pay_amount=price,
+                pay_amount=price_sat,
                 pay_coin=self.coin,
             )
