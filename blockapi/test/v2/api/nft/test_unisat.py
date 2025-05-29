@@ -53,7 +53,7 @@ def test_fetch_collection(requests_mock, unisat_client, collection_stats):
     assert str(collection.total_stats.owners_count) == "1563"
     assert str(collection.total_stats.sales_count) == "20"
     assert str(collection.total_stats.volume) == "0.399"
-    assert str(collection.total_stats.market_cap) == str(0.0099 * 1563)
+    assert str(collection.total_stats.market_cap) == "15.473700000000001"
 
 
 def test_fetch_listings(requests_mock, unisat_client, listings_data):
