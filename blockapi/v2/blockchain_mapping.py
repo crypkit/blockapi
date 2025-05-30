@@ -116,7 +116,6 @@ COINGECKO_BLOCKCHAINS_MAP = {
     'galachain': Blockchain.GALA,
     'genesys-network': Blockchain.GENESYS,
     'harmony-shard-0': Blockchain.HARMONY,
-    'hyperevm': Blockchain.HYPEREVM,
     'hoo': Blockchain.HOO_SMART_CHAIN,
     'kucoin-community-chain': Blockchain.KUCOIN,
     'oasis': Blockchain.OASIS_CHAIN,
