@@ -38,7 +38,7 @@ DEBANK_BLOCKCHAINS_MAP = {
     'eth': Blockchain.ETHEREUM,
     'ethlink': Blockchain.ETHERLINK,
     'evmos': Blockchain.COSMOS,
-    'hype': Blockchain.HYPEREVM,
+    'hyper': Blockchain.HYPEREVM,
     'flr': Blockchain.FLARE,
     'fon': Blockchain.FON_CHAIN,
     'frax': Blockchain.FRAXTAL,
