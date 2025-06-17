@@ -378,6 +378,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         all_items: Optional[bool] = None,
         sort_by: NftSortBy = NftSortBy.UNIT_PRICE,
         sort_order: int = -1,
+        cursor: Optional[str] = None,
     ) -> FetchResult:
         """
         Fetch all current listings (sell offers) for a specific collection.
@@ -548,6 +549,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         domain_type: Optional[str] = None,
         collection: Optional[str] = None,
         limit: int = 499,
+        cursor: Optional[str] = None,
     ) -> FetchResult:
         """
         Fetch listing events (historical or recent) in a collection.
