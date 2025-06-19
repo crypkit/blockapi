@@ -293,8 +293,12 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
         # Format the icon URL
         icon = stats.get("icon")
         icon_url = None
+
         if icon:
-            icon_url = f"https://static.unisat.io/content/{icon}"
+            if icon.startswith(("http://", "https://")):
+                icon_url = icon
+            else:
+                icon_url = f"https://static.unisat.io/content/{icon.lstrip('/')}"
 
         floor_price = raw_to_decimals(stats.get("floorPrice", 0), self.coin.decimals)
 
