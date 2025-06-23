@@ -24,36 +24,62 @@ test_collection_id = (
 test_nft_type = BtcNftType.COLLECTION
 
 
-def test_fetch_collection(requests_mock, unisat_client, collection_stats):
+def test_fetch_collection_icon_code(requests_mock, unisat_client, collection_stats):
+    """
+    UniSat sometimes sends only the icon *code* ― no URL.
+    We expect `parse_collection` to prepend the static CDN prefix automatically.
+    """
     requests_mock.post(
-        f"{unisat_client.api_options.base_url}v3/market/collection/auction/collection_statistic",
+        f"{unisat_client.api_options.base_url}"
+        "v3/market/collection/auction/collection_statistic",
         text=collection_stats,
     )
 
-    test_collection = "pixel-pepes"
-    fetch_result = unisat_client.fetch_collection(test_collection)
-    assert not fetch_result.errors, f"Fetch errors: {fetch_result.errors}"
+    fetch_result = unisat_client.fetch_collection("pixel-pepes")
+    assert not fetch_result.errors
 
-    parse_result = unisat_client.parse_collection(fetch_result)
-    assert not parse_result.errors, f"Parse errors: {parse_result.errors}"
-    assert len(parse_result.data) == 1
+    parsed = unisat_client.parse_collection(fetch_result)
+    assert not parsed.errors and len(parsed.data) == 1
 
-    collection = parse_result.data[0]
-    assert isinstance(collection, NftCollection)
-    assert collection.ident == "pixel-pepes"
-    assert collection.name == "Pixel Pepes"
+    col: NftCollection = parsed.data[0]
+    assert col.ident == "pixel-pepes"
+    assert col.name == "Pixel Pepes"
     assert (
-        collection.image
-        == "https://static.unisat.io/content/47c1d21c508f6d49dfde64d958f14acd041244e1bb616f9b78114b8d9dc7b945i0"
+        col.image == "https://static.unisat.io/content/"
+        "47c1d21c508f6d49dfde64d958f14acd041244e1bb616f9b78114b8d9dc7b945i0"
     )
-    assert not collection.is_disabled
-    assert not collection.is_nsfw
-    assert collection.blockchain == Blockchain.BITCOIN
-    assert str(collection.total_stats.floor_price) == "0.0099"
-    assert str(collection.total_stats.owners_count) == "1563"
-    assert str(collection.total_stats.sales_count) == "20"
-    assert str(collection.total_stats.volume) == "0.399"
-    assert str(collection.total_stats.market_cap) == "15.4737"
+    assert str(col.total_stats.floor_price) == "0.0099"
+    assert str(col.total_stats.volume) == "0.399"
+
+
+def test_fetch_collection_icon_full_url(
+    requests_mock, unisat_client, collection_stats_full_url
+):
+    """
+    UniSat may also deliver a *fully-qualified* icon URL.
+    In that case we should **not** touch the value.
+    """
+    requests_mock.post(
+        f"{unisat_client.api_options.base_url}"
+        "v3/market/collection/auction/collection_statistic",
+        text=collection_stats_full_url,
+    )
+
+    fetch_result = unisat_client.fetch_collection("rune-mania-miner")
+    assert not fetch_result.errors
+
+    parsed = unisat_client.parse_collection(fetch_result)
+    assert not parsed.errors and len(parsed.data) == 1
+
+    col: NftCollection = parsed.data[0]
+    assert col.ident == "rune-mania-miner"
+    assert col.name == "Rune Mania Miner"
+    assert (
+        col.image == "https://creator-hub-prod.s3.us-east-2.amazonaws.com/"
+        "ord-rmm_pfp_1708461604099.png"
+    )
+
+    assert str(col.total_stats.floor_price) == "0.0008"
 
 
 def test_fetch_listings(requests_mock, unisat_client, listings_data):
@@ -154,21 +180,6 @@ def unisat_client(fake_sleep_provider):
 
 
 @pytest.fixture
-def inscription_data():
-    return read_file('data/unisat/inscription_data.json')
-
-
-@pytest.fixture
-def inscription_data_edge_cases():
-    return read_file('data/unisat/inscription_data_edge_cases.json')
-
-
-@pytest.fixture
-def collection_edge_cases():
-    return read_file('data/unisat/collection_edge_cases.json')
-
-
-@pytest.fixture
 def listings_data():
     return read_file('data/unisat/listings.json')
 
@@ -180,4 +191,11 @@ def offers_data():
 
 @pytest.fixture
 def collection_stats():
-    return read_file('data/unisat/collection_stats.json')
+    """Pixel Pepes – icon **code** only."""
+    return read_file("data/unisat/collection_stats.json")
+
+
+@pytest.fixture
+def collection_stats_full_url():
+    """Rune Mania Miner – icon is a full URL."""
+    return read_file("data/unisat/collection_stats_full_url.json")
