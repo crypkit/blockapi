@@ -1,0 +1,22 @@
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "collectionId": "rune-mania-miner",
+    "name": "Rune Mania Miner",
+    "desc": "Rune Mania: Utilize your RMM to mine Runes using:⛏️ Mining Boosts🧱 Block Boosts🧪 Mana Boosts🗿 Stone Boosts ✨ Rune Boosts",
+    "icon": "https://creator-hub-prod.s3.us-east-2.amazonaws.com/ord-rmm_pfp_1708461604099.png",
+    "btcValue": 0,
+    "btcValuePercent": 0,
+    "floorPrice": 80000,
+    "listed": 9,
+    "total": 3800,
+    "supply": null,
+    "attrs": [],
+    "twitter": "https://twitter.com/RuneManiaMiner",
+    "discord": null,
+    "website": "https://www.ord.io/61549984",
+    "pricePercent": 0,
+    "verification": false
+  }
+}

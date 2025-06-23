@@ -304,16 +304,13 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
 
         volume = raw_to_decimals(stats.get("btcValue", 0), self.coin.decimals)
 
-        total_nfts = stats.get("total", 0)
-        market_cap = floor_price * total_nfts if total_nfts else 0
-
         total_stats = NftCollectionTotalStats.from_api(
             volume=str(volume),
-            sales_count=str(stats.get("listed", 0)),
-            owners_count=str(total_nfts),
-            market_cap=str(market_cap),
+            sales_count=None,
+            owners_count=None,
+            market_cap=None,
             floor_price=str(floor_price),
-            average_price="0",
+            average_price=None,
             coin=self.coin,
         )
 
