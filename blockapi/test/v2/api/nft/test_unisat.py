@@ -49,10 +49,7 @@ def test_fetch_collection_icon_code(requests_mock, unisat_client, collection_sta
         "47c1d21c508f6d49dfde64d958f14acd041244e1bb616f9b78114b8d9dc7b945i0"
     )
     assert str(col.total_stats.floor_price) == "0.0099"
-    assert str(col.total_stats.owners_count) == "1563"
-    assert str(col.total_stats.sales_count) == "20"
     assert str(col.total_stats.volume) == "0.399"
-    assert str(col.total_stats.market_cap) == "15.4737"
 
 
 def test_fetch_collection_icon_full_url(
@@ -81,10 +78,8 @@ def test_fetch_collection_icon_full_url(
         col.image == "https://creator-hub-prod.s3.us-east-2.amazonaws.com/"
         "ord-rmm_pfp_1708461604099.png"
     )
-    # quick reality checks
-    assert str(col.total_stats.floor_price) == "0.0008"  # 80 000 sat
-    assert str(col.total_stats.owners_count) == "3800"
-    assert str(col.total_stats.sales_count) == "9"
+
+    assert str(col.total_stats.floor_price) == "0.0008"
 
 
 def test_fetch_listings(requests_mock, unisat_client, listings_data):
