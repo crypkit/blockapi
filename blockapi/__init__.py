@@ -3,7 +3,6 @@ import random
 
 import coinaddrng
 
-import blockapi.api
 import blockapi.utils
 
 from .services import APIError
@@ -118,7 +117,8 @@ def _get_subclasses(class_name):
 def _get_all_inheritors():
     all_inheritors = []
 
-    tridy = _get_subclasses(blockapi.api)
+    # tridy = _get_subclasses(blockapi.api)  # Commented out - api directory removed
+    tridy = []
 
     for trida in tridy:
         tridy_sub = _get_subclasses(trida)
