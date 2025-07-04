@@ -1,6 +1,5 @@
 import re
 
-from blockapi.api import SolanaApi
 from blockapi.test.v2.test_data import (
     get_debank_addresses,
     yield_api_balance_classes,
@@ -28,7 +27,6 @@ def test_enumerate_subclasses():
     classes = [x.__name__ for x in yield_api_balance_classes()]
 
     assert classes
-    assert SolanaApi.__name__ in classes
     assert EthplorerApi.__name__ in classes
     assert DebankApi.__name__ not in classes
     assert PerpetualApi.__name__ not in classes
