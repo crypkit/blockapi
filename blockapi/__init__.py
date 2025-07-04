@@ -110,8 +110,6 @@ def _inheritors(klass):
     return subclasses
 
 
-
-
 def get_working_apis_for_coin(symbol, debug=False):
     coin_classes = get_api_classes_for_coin(symbol)
 
