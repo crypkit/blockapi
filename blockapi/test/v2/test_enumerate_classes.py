@@ -27,7 +27,6 @@ def test_enumerate_subclasses():
     classes = [x.__name__ for x in yield_api_balance_classes()]
 
     assert classes
-    # assert SolanaApi.__name__ in classes  # Commented out - SolanaApi removed with api directory
     assert EthplorerApi.__name__ in classes
     assert DebankApi.__name__ not in classes
     assert PerpetualApi.__name__ not in classes

@@ -110,29 +110,6 @@ def _inheritors(klass):
     return subclasses
 
 
-def _get_subclasses(class_name):
-    return [getattr(class_name, x) for x in dir(class_name) if not x.startswith('__')]
-
-
-def _get_all_inheritors():
-    all_inheritors = []
-
-    # tridy = _get_subclasses(blockapi.api)  # Commented out - api directory removed
-    tridy = []
-
-    for trida in tridy:
-        tridy_sub = _get_subclasses(trida)
-        for trida_sub in tridy_sub:
-            if (
-                inspect.isclass(trida_sub)
-                and blockapi.services.BlockchainAPI in trida_sub.__bases__
-            ):
-                all_inheritors.append(trida_sub)
-                grandchildren = _inheritors(trida_sub)
-                if len(grandchildren) > 0:
-                    all_inheritors += _inheritors(trida_sub)
-
-    return all_inheritors
 
 
 def get_working_apis_for_coin(symbol, debug=False):
