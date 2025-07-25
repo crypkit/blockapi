@@ -43,7 +43,7 @@ class SubscanApi(BlockchainApi, BalanceMixin, ABC):
         return FetchResult(data=response)
 
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
-        balances = list(self._yield_native_balances(fetch_result.data))
+        balances = list(self._yield_native_balances_zero_zum(fetch_result.data))
 
         # add staking rewards (and slashes) too? it's a lot of requests
         # per single address
@@ -52,34 +52,15 @@ class SubscanApi(BlockchainApi, BalanceMixin, ABC):
 
         return ParseResult(data=balances)
 
-    def _yield_native_balances(self, response: dict) -> Iterable[BalanceItem]:
+    def _yield_native_balances_zero_zum(self, response: dict) -> Iterable[BalanceItem]:
         data = response['data']['account']
         b_total = decimals_to_raw(data['balance'], self.coin.decimals)
         if b_total == 0:
             return []
 
-        b_total_locked = decimals_to_raw(data['balance_lock'], self.coin.decimals)
+        b_reserved = safe_opt_decimal(data.get('reserved'))
 
-        b_staked = Decimal(0)
-        if data['staking_info']:
-            b_staked = b_total_locked
-
-        # ignore data['unbonding'] - it's still staked
-
-        b_reserved = safe_opt_decimal(data['reserved'])
-        b_vesting = (
-            to_decimal(data['vesting']['total_locked'])
-            if data['vesting']
-            else Decimal(0)
-        )
-
-        # do we want to include these?
-        # b_democracy = safe_opt_decimal(data['democracy_lock'])
-        # b_election = safe_opt_decimal(data['election_lock'])
-
-        b_available = b_total - b_total_locked - b_reserved
-        b_locked = b_reserved
-
+        b_available = b_total - b_reserved
         if b_available:
             yield BalanceItem.from_api(
                 balance_raw=int(b_available),
@@ -88,28 +69,30 @@ class SubscanApi(BlockchainApi, BalanceMixin, ABC):
                 raw=data,
             )
 
-        if b_staked:
+        b_bonded = safe_opt_decimal(data.get('bonded'))
+        if b_bonded:
             yield BalanceItem.from_api(
-                balance_raw=int(b_staked),
+                balance_raw=int(b_bonded),
                 coin=self.coin,
                 asset_type=AssetType.STAKED,
-                raw=data,
+                raw=data['bonded'],
             )
 
-        if b_vesting:
+        b_unbonding = safe_opt_decimal(data.get('unbonding'))
+        if b_unbonding:
             yield BalanceItem.from_api(
-                balance_raw=int(b_vesting),
-                coin=self.coin,
-                asset_type=AssetType.VESTING,
-                raw=data['vesting'],
-            )
-
-        if b_locked:
-            yield BalanceItem.from_api(
-                balance_raw=int(b_locked),
+                balance_raw=int(b_unbonding),
                 coin=self.coin,
                 asset_type=AssetType.LOCKED,
-                raw=data,
+                raw=data['unbonding'],
+            )
+        elif b_reserved > 0:
+            # Fallback to reserved if not b_unbonding
+            yield BalanceItem.from_api(
+                balance_raw=int(b_reserved),
+                coin=self.coin,
+                asset_type=AssetType.LOCKED,
+                raw=data.get('reserved'),
             )
 
     def _get_staking_reward(self, address: str) -> Optional[BalanceItem]:
