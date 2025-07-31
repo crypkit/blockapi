@@ -1,0 +1,28 @@
+{
+    "code": 0,
+    "message": "Success",
+    "data": {
+        "account": {
+            "address": "1567zYrTN6G1YXoF47KyC5Lyto8MhJjzDB8dY8ZvudMAAEet",
+            "balance": "69.1806120067",
+            "lock": "64.5655723106",
+            "balance_lock": "64.5655723106",
+            "reserved": "645655723106",
+            "bonded": "0",
+            "unbonding": "645655723106",
+            "democracy_lock": "0",
+            "conviction_lock": "0",
+            "election_lock": "0",
+            "nonce": 21,
+            "role": "nominator",
+            "stash": "1567zYrTN6G1YXoF47KyC5Lyto8MhJjzDB8dY8ZvudMAAEet",
+            "is_council_member": false,
+            "is_techcomm_member": false,
+            "is_registrar": false,
+            "staking_info": {
+                "controller": "test"
+            },
+            "vesting": null
+        }
+    }
+} 

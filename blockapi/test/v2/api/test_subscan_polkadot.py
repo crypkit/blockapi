@@ -24,9 +24,7 @@ def api():
         (
             '15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK',
             'data/subscan_polkadot_response_DCK.json',
-            Decimal(
-                '17970261.4455871699'
-            ),  # TODO: this is not 100% accurate, the web shows 17,970,279.0085871699
+            Decimal('17970279.0085871699'),
         ),
     ],
 )

@@ -78,21 +78,14 @@ class SubscanApi(BlockchainApi, BalanceMixin, ABC):
                 raw=data['bonded'],
             )
 
-        b_unbonding = safe_opt_decimal(data.get('unbonding'))
-        if b_unbonding:
+        # Others: reserved - bonded (includes unbonding + other reserves)
+        b_others = b_reserved - b_bonded
+        if b_others > 0:
             yield BalanceItem.from_api(
-                balance_raw=int(b_unbonding),
+                balance_raw=int(b_others),
                 coin=self.coin,
                 asset_type=AssetType.LOCKED,
-                raw=data['unbonding'],
-            )
-        elif b_reserved > 0:
-            # Fallback to reserved if not b_unbonding
-            yield BalanceItem.from_api(
-                balance_raw=int(b_reserved),
-                coin=self.coin,
-                asset_type=AssetType.LOCKED,
-                raw=data.get('reserved'),
+                raw=data,
             )
 
     def _get_staking_reward(self, address: str) -> Optional[BalanceItem]:
