@@ -1,81 +1,292 @@
 {
-  "code": 0,
-  "message": "Success",
-  "generated_at": 1671178453,
-  "data": {
-    "account": {
-      "account_display": {
-        "account_index": "1126",
-        "address": "15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK"
-      },
-      "address": "15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
-      "balance": "45116543.9600000001",
-      "balance_lock": "44616243.6600000001",
-      "bonded": "320000000000000001",
-      "count_extrinsic": 0,
-      "democracy_lock": "0",
-      "derive_token": {},
-      "election_lock": "446000000000000000",
-      "is_council_member": false,
-      "is_erc20": false,
-      "is_evm_contract": false,
-      "is_registrar": false,
-      "is_techcomm_member": false,
-      "lock": "44616243.6600000001",
-      "multisig": {},
-      "nonce": 0,
-      "proxy": {
-        "proxy_account": [
-          {
-            "account_display": {
-              "address": "12LBVG5G1RGqKqHFXVodPR2Hpr9jNi5fZY13QYHnRPYwSjtD"
+   "code":0,
+   "message":"Success",
+   "generated_at":1753961490,
+   "data":{
+      "account":{
+         "address":"15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
+         "balance":"17970279.0085871699",
+         "lock":"17970165.9634489099",
+         "balance_lock":"17970165.9634489099",
+         "is_evm_contract":false,
+         "account_display":{
+            "address":"15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
+            "people":{
+
+            }
+         },
+         "substrate_account":null,
+         "evm_account":"",
+         "registrar_info":null,
+         "count_extrinsic":0,
+         "nft_amount":"0",
+         "extra":null,
+         "display":"",
+         "web":"",
+         "riot":"",
+         "email":"",
+         "legal":"",
+         "twitter":"",
+         "github":"",
+         "matrix":"",
+         "discord":"",
+         "judgements":null,
+         "reserved":"179701835264489099",
+         "bonded":"90000009634489099",
+         "unbonding":"89701650000000000",
+         "democracy_lock":"0",
+         "conviction_lock":"179000000000000000",
+         "election_lock":"0",
+         "staking_info":{
+            "controller":"15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
+            "reward_account":"13FzGLWoueKvUqFePiJgvFYWhH5KckHGtVBXvAX7SBtVZbXu",
+            "reward_display":{
+               "address":"13FzGLWoueKvUqFePiJgvFYWhH5KckHGtVBXvAX7SBtVZbXu",
+               "people":{
+
+               }
             },
-            "proxy_type": "Any"
-          },
-          {
-            "account_display": {
-              "address": "12easLRmTHY2AGmsYoxKsm967bdc5RfuqFFQt2LVG5Qvf6EP"
-            },
-            "proxy_type": "Governance"
-          },
-          {
-            "account_display": {
-              "address": "12iz6aJ75KdqVZLGyvFJmgc5k74Pdokgy9UGTgWtnt67RNTg"
-            },
-            "proxy_type": "Staking"
-          },
-          {
-            "account_display": {
-              "address": "13NGQYZ1WEgcHYNMtuzUAkU6M7ks6L93wZmsXSLxqhAQ1YUf"
-            },
-            "proxy_type": "Any"
-          }
-        ]
-      },
-      "registrar_info": null,
-      "reserved": "378820000000",
-      "role": "nominator",
-      "staking_info": {
-        "controller": "15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
-        "controller_display": {
-          "account_index": "1126",
-          "address": "15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK"
-        },
-        "reward_account": "stash"
-      },
-      "stash": "15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
-      "unbonding": "126162436600000000",
-      "vesting": {
-        "pallet_schedules": [
-          {
-            "locked": "43040000000000000",
-            "per_block": "4151234568",
-            "starting_block": 0
-          }
-        ],
-        "total_locked": "41797008287007464",
-        "type": "pallet_vesting"
+            "controller_display":{
+               "address":"15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
+               "people":{
+
+               }
+            }
+         },
+         "nonce":0,
+         "role":"nominator",
+         "stash":"15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
+         "is_council_member":false,
+         "is_techcomm_member":false,
+         "is_registrar":false,
+         "is_fellowship_member":false,
+         "is_module_account":false,
+         "assets_tag":[
+            "Whale"
+         ],
+         "is_erc20":false,
+         "is_erc721":false,
+         "vesting":{
+            "type":"pallet_vesting",
+            "total_locked":"41797008287007464",
+            "pallet_schedules":[
+               {
+                  "locked":"43040000000000000",
+                  "per_block":"4151234568",
+                  "starting_block":0
+               }
+            ]
+         },
+         "proxy":{
+            "proxy_account":[
+               {
+                  "account_display":{
+                     "address":"19bkaw1EC4BszyaLCpkztXxVzrxKsrpJaArpyJu5hBd1duJ",
+                     "people":{
+
+                     }
+                  },
+                  "proxy_type":"Staking"
+               },
+               {
+                  "account_display":{
+                     "address":"12easLRmTHY2AGmsYoxKsm967bdc5RfuqFFQt2LVG5Qvf6EP",
+                     "people":{
+
+                     }
+                  },
+                  "proxy_type":"Governance"
+               },
+               {
+                  "account_display":{
+                     "address":"12iz6aJ75KdqVZLGyvFJmgc5k74Pdokgy9UGTgWtnt67RNTg",
+                     "people":{
+
+                     }
+                  },
+                  "proxy_type":"Staking"
+               },
+               {
+                  "account_display":{
+                     "address":"14VwWF8udYH9R17mhiK7dNwV5TW83wH7Hd8EEnBvwPkvM9Qq",
+                     "people":{
+
+                     }
+                  },
+                  "proxy_type":"Any"
+               },
+               {
+                  "account_display":{
+                     "address":"135iyzsBL3KYrKhqFFhFsdt9CwxdqyWBX6DnME8WKesVsyXe",
+                     "people":{
+
+                     }
+                  },
+                  "proxy_type":"Any"
+               }
+            ]
+         },
+         "multisig":{
+
+         },
+         "delegate":{
+            "conviction_delegate":[
+               {
+                  "account":{
+                     "address":"15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
+                     "people":{
+
+                     }
+                  },
+                  "delegate_account":{
+                     "address":"14ZaBmSkr6JWf4fUDHbApqHBvbeeAEBSAARxgzXHcSruLELJ",
+                     "people":{
+                        "parent":{
+                           "address":"14rp4CvtyN3WSftrndyNxjJFi4cGXsgrE9gFr528QSYFvPTu",
+                           "display":"PERMANENCE DAO",
+                           "sub_symbol":"DV",
+                           "identity":true
+                        }
+                     }
+                  },
+                  "origins":33,
+                  "conviction":"6",
+                  "amount":"10000000000000000"
+               },
+               {
+                  "account":{
+                     "address":"15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
+                     "people":{
+
+                     }
+                  },
+                  "delegate_account":{
+                     "address":"14ZaBmSkr6JWf4fUDHbApqHBvbeeAEBSAARxgzXHcSruLELJ",
+                     "people":{
+                        "parent":{
+                           "address":"14rp4CvtyN3WSftrndyNxjJFi4cGXsgrE9gFr528QSYFvPTu",
+                           "display":"PERMANENCE DAO",
+                           "sub_symbol":"DV",
+                           "identity":true
+                        }
+                     }
+                  },
+                  "origins":32,
+                  "conviction":"6",
+                  "amount":"10000000000000000"
+               },
+               {
+                  "account":{
+                     "address":"15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
+                     "people":{
+
+                     }
+                  },
+                  "delegate_account":{
+                     "address":"14ZaBmSkr6JWf4fUDHbApqHBvbeeAEBSAARxgzXHcSruLELJ",
+                     "people":{
+                        "parent":{
+                           "address":"14rp4CvtyN3WSftrndyNxjJFi4cGXsgrE9gFr528QSYFvPTu",
+                           "display":"PERMANENCE DAO",
+                           "sub_symbol":"DV",
+                           "identity":true
+                        }
+                     }
+                  },
+                  "origins":31,
+                  "conviction":"6",
+                  "amount":"10000000000000000"
+               },
+               {
+                  "account":{
+                     "address":"15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
+                     "people":{
+
+                     }
+                  },
+                  "delegate_account":{
+                     "address":"14ZaBmSkr6JWf4fUDHbApqHBvbeeAEBSAARxgzXHcSruLELJ",
+                     "people":{
+                        "parent":{
+                           "address":"14rp4CvtyN3WSftrndyNxjJFi4cGXsgrE9gFr528QSYFvPTu",
+                           "display":"PERMANENCE DAO",
+                           "sub_symbol":"DV",
+                           "identity":true
+                        }
+                     }
+                  },
+                  "origins":2,
+                  "conviction":"6",
+                  "amount":"10000000000000000"
+               },
+               {
+                  "account":{
+                     "address":"15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
+                     "people":{
+
+                     }
+                  },
+                  "delegate_account":{
+                     "address":"14ZaBmSkr6JWf4fUDHbApqHBvbeeAEBSAARxgzXHcSruLELJ",
+                     "people":{
+                        "parent":{
+                           "address":"14rp4CvtyN3WSftrndyNxjJFi4cGXsgrE9gFr528QSYFvPTu",
+                           "display":"PERMANENCE DAO",
+                           "sub_symbol":"DV",
+                           "identity":true
+                        }
+                     }
+                  },
+                  "origins":30,
+                  "conviction":"6",
+                  "amount":"10000000000000000"
+               },
+               {
+                  "account":{
+                     "address":"15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
+                     "people":{
+
+                     }
+                  },
+                  "delegate_account":{
+                     "address":"14ZaBmSkr6JWf4fUDHbApqHBvbeeAEBSAARxgzXHcSruLELJ",
+                     "people":{
+                        "parent":{
+                           "address":"14rp4CvtyN3WSftrndyNxjJFi4cGXsgrE9gFr528QSYFvPTu",
+                           "display":"PERMANENCE DAO",
+                           "sub_symbol":"DV",
+                           "identity":true
+                        }
+                     }
+                  },
+                  "origins":11,
+                  "conviction":"6",
+                  "amount":"10000000000000000"
+               },
+               {
+                  "account":{
+                     "address":"15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK",
+                     "people":{
+
+                     }
+                  },
+                  "delegate_account":{
+                     "address":"14ZaBmSkr6JWf4fUDHbApqHBvbeeAEBSAARxgzXHcSruLELJ",
+                     "people":{
+                        "parent":{
+                           "address":"14rp4CvtyN3WSftrndyNxjJFi4cGXsgrE9gFr528QSYFvPTu",
+                           "display":"PERMANENCE DAO",
+                           "sub_symbol":"DV",
+                           "identity":true
+                        }
+                     }
+                  },
+                  "origins":34,
+                  "conviction":"6",
+                  "amount":"10000000000000000"
+               }
+            ]
+         }
       }
-    }
-  }
+   }
 }

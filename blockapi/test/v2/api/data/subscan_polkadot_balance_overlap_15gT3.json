@@ -1,0 +1,65 @@
+{
+    "code": 0,
+    "message": "Success",
+    "generated_at": 1753960428,
+    "data": {
+        "account": {
+            "address": "15gT3MY2oVDqi1WPFnpkhPKVNUXAUPscMagaJeW8dqmLzfJ6",
+            "balance": "162.4690395324",
+            "lock": "0",
+            "balance_lock": "0",
+            "is_evm_contract": false,
+            "account_display": {
+                "address": "15gT3MY2oVDqi1WPFnpkhPKVNUXAUPscMagaJeW8dqmLzfJ6",
+                "people": {}
+            },
+            "substrate_account": null,
+            "evm_account": "",
+            "registrar_info": null,
+            "count_extrinsic": 18,
+            "nft_amount": "0",
+            "extra": null,
+            "display": "",
+            "web": "",
+            "riot": "",
+            "email": "",
+            "legal": "",
+            "twitter": "",
+            "github": "",
+            "matrix": "",
+            "discord": "",
+            "judgements": null,
+            "reserved": "1543078601187",
+            "bonded": "0",
+            "unbonding": "0",
+            "democracy_lock": "0",
+            "conviction_lock": "0",
+            "election_lock": "0",
+            "staking_info": null,
+            "nonce": 18,
+            "role": "",
+            "stash": "",
+            "is_council_member": false,
+            "is_techcomm_member": false,
+            "is_registrar": false,
+            "is_fellowship_member": false,
+            "is_module_account": false,
+            "assets_tag": null,
+            "is_erc20": false,
+            "is_erc721": false,
+            "is_pool_member": true,
+            "vesting": null,
+            "proxy": {},
+            "multisig": {},
+            "delegate": null,
+            "nomination_pool_balance": [
+                {
+                    "pool_id": 3,
+                    "bonded": "0",
+                    "unbonding": "0",
+                    "claimable": "0"
+                }
+            ]
+        }
+    }
+} 
