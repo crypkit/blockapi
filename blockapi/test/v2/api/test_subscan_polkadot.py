@@ -36,6 +36,7 @@ def test_fetch_balances(requests_mock, address, response_path, expected_balance,
 
     balances = api.get_balance(address)
     assert sum(b.balance for b in balances) == expected_balance
+    assert all(isinstance(balance.raw, dict) for balance in balances)
 
 
 def test_real_problematic_address_overlap(requests_mock, api):
