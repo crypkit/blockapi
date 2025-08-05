@@ -75,7 +75,7 @@ class SubscanApi(BlockchainApi, BalanceMixin, ABC):
                 balance_raw=int(b_bonded),
                 coin=self.coin,
                 asset_type=AssetType.STAKED,
-                raw=data['bonded'],
+                raw=data,
             )
 
         # Others: reserved - bonded (includes unbonding + other reserves)
