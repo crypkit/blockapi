@@ -46,11 +46,18 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
 
     coin_map = NotImplemented
 
-    def __init__(self, sleep_provider, max_listings=15000, max_offers=15000):
+    def __init__(self, sleep_provider, max_listings=200, max_offers=200):
         super().__init__()
         self._sleep_provider = sleep_provider
-        self.max_listings = max_listings
+
         self.max_offers = max_offers
+        if max_listings > 15000:
+            logger.warning(
+                'Listings cap exceeding 15000 will cause an error. Setting maximum to 15000.'
+            )
+            self.max_listings = 15000
+        else:
+            self.max_listings = max_listings
 
     def fetch_nfts(self, address: str) -> FetchResult:
         offset = 0
@@ -197,7 +204,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
                 data.errors
                 or not data.data
                 or data_len < limit
-                or offset > self.max_offers
+                or len(items) >= self.max_offers
             ):
                 return FetchResult(
                     status_code=data.status_code,
@@ -296,7 +303,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
                 data.errors
                 or not data.data
                 or len(data.data) < limit
-                or offset > self.max_listings
+                or len(items) > self.max_listings
             ):
                 return FetchResult(
                     status_code=data.status_code,
