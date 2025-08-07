@@ -592,8 +592,8 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
 
         return OFFER_ITEM_TYPES.get(item_type)
 
-    def _coalesce(self, fetch_results: Iterable[Tuple[FetchResult, Optional[str]]]):
-        """Simple aggregator - no limiting logic needed here."""
+    @staticmethod
+    def _coalesce(fetch_results: Iterable[Tuple[FetchResult, Optional[str]]]):
         data = []
         errors = []
         last = None
