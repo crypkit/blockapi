@@ -3,7 +3,6 @@ import logging
 from decimal import Decimal
 from typing import Callable, Iterable, Optional, Tuple
 
-from blockapi.utils.num import raw_to_decimals
 from blockapi.v2.base import (
     ApiException,
     BlockchainApi,
@@ -98,6 +97,8 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         blockchain: Blockchain,
         sleep_provider: ISleepProvider = None,
         limit: Optional[int] = None,
+        max_listings=500,
+        max_offers=500,
     ):
         super().__init__(api_key)
 
@@ -109,6 +110,9 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         self._headers = {'accept': 'application/json', 'x-api-key': api_key}
         self._sleep_provider = sleep_provider or SleepProvider()
         self._limit = limit
+
+        self.max_listings = max_listings
+        self.max_offers = max_offers
 
     def fetch_nfts(self, address: str, cursor: Optional[str] = None) -> FetchResult:
         logger.info(f'Fetch nfts from {address}, cursor={cursor}')
@@ -256,16 +260,31 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         self, fetch_method: Callable, key: str, cursor: Optional[str] = None
     ) -> Iterable[Tuple[FetchResult, Optional[str]]]:
         cursors = set()
+        page_count = 0
+        item_count = 0
 
-        count = 0
         while True:
             self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
-            count += 1
-            logger.debug(f'Fetching page {count} of {key} from {cursor}')
+            page_count += 1
+            logger.debug(f'Fetching page {page_count} of {key} from {cursor}')
             fetched, next_cursor = fetch_method(key, cursor)
             if self._should_retry(fetched):
-                count -= 1
+                page_count -= 1
                 continue
+
+            # Count items for dynamic limiting
+            item_limit = None
+            if fetched.data:
+                current_items = 0
+                if 'offers' in fetched.data:
+                    current_items = len(fetched.data['offers'])
+                    item_limit = self.max_offers
+                elif 'listings' in fetched.data:
+                    current_items = len(fetched.data['listings'])
+                    item_limit = self.max_listings
+                # skip `'nfts' in fetched.data`, because it doesn't have a limit
+
+                item_count += current_items
 
             yield fetched, next_cursor
 
@@ -278,13 +297,19 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
 
             cursors.add(cursor)
 
-            if self._limit and count >= self._limit:
+            # Check both page and item limits
+            if self._limit and page_count >= self._limit:
+                break
+
+            if item_limit and item_count >= item_limit:
                 break
 
     def _fetch_offers_page(
         self, method: str, collection: str, cursor: Optional[str] = None
     ) -> tuple[FetchResult, Optional[str]]:
-        params = dict(next=cursor) if cursor else dict()
+        params = {'limit': 100}  # the max limit allowed is 100 items per page
+        if cursor:
+            params['next'] = cursor
 
         fetched = self.get_data(
             method,
@@ -567,15 +592,17 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
 
         return OFFER_ITEM_TYPES.get(item_type)
 
-    @staticmethod
-    def _coalesce(fetch_results: Iterable[Tuple[FetchResult, Optional[str]]]):
+    def _coalesce(self, fetch_results: Iterable[Tuple[FetchResult, Optional[str]]]):
+        """Simple aggregator - no limiting logic needed here."""
         data = []
         errors = []
         last = None
         last_cursor = None
+
         for item, cursor in fetch_results:
             last_cursor = cursor
             last = item
+
             if item.data:
                 data.append(item.data)
 
@@ -636,3 +663,14 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             return True
 
         return False
+
+
+if __name__ == '__main__':
+    col = 'ever-fragments-of-civitas'
+    o = OpenSeaApi(
+        '6c0e52527b124aeeb0bebbcfbaf2e7b6', Blockchain.ETHEREUM, max_listings=100
+    )
+    # offers = o.fetch_offers(col)
+    listings = o.fetch_listings(col)
+
+    assert True
