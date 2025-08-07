@@ -53,8 +53,9 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
         self.max_offers = max_offers
         if max_listings > 15000:
             logger.warning(
-                'Listings cap exceeding 15000 will cause an error.'
-                ' Setting maximum to 15000.'
+                'Listings cap exceeding 15000 will cause an error: '
+                '"offset should be non-negative integer". '
+                'Setting maximum to 15000.'
             )
             self.max_listings = 15000
         else:
