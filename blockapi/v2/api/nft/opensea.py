@@ -663,14 +663,3 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
             return True
 
         return False
-
-
-if __name__ == '__main__':
-    col = 'ever-fragments-of-civitas'
-    o = OpenSeaApi(
-        '6c0e52527b124aeeb0bebbcfbaf2e7b6', Blockchain.ETHEREUM, max_listings=100
-    )
-    # offers = o.fetch_offers(col)
-    listings = o.fetch_listings(col)
-
-    assert True
