@@ -9,29 +9,28 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.31.0
+      - python-requests/2.32.5
     method: GET
     uri: https://gateway.pinata.cloud/ipfs/QmVfMPCUPs5V1omaDvoni38w8aEJpFTjEZRNRmoVyexXWe
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAAwAAAP//RI9Ba8JAFITv/oohZzVYLAVvWjwI1dqq0FJ6eJs8s6vJ7rr7Qkyl/70k
-        Hnp8wzfzZm4DILFUcTJDMs8EK8yw14z5CtvgvOasTYYdFNtKubLHnvd3yVRU9EYt4uMsTQsSbqgd
-        e2NJaJyVrs5T448xfat202qaLU71uXj61Ka66OP7QT34w3KqFtsPFdR6oR71z3WjDvN7fM4xC8aL
-        cfa/nYlwluGOEM04cgMf3IkzieCrL10wtoB2DcSBbUEFozGiuz2KW2dzEDJX5iCbI6fKYzJydjRB
-        HTmkFKOJQlbgKVBuimoIVQsogmBZGhfO3W++1FTGe02+CttonI3JDLffXhMquutrAADJ7vVlvrmP
-        ApL1cr1MBsB3T2aBSVzorYPfPwAAAP//AwAE4qjcjwEAAA==
+      string: "{\n  \"name\": \"Act I : The AI Prophecy\",\n  \"symbol\": \"ACT\",\n
+        \ \"image\": \"https://gateway.pinata.cloud/ipfs/QmS4m4cBjukg7YhimqhfRUb2pUE4bBPXbrbMBb5hzxNbUA\",\n
+        \ \"description\": \"Act I is one of the few projects exploring how to engage
+        with AI beyond a cold and damp 1-on-1 user/assistant paradigm, but as a network
+        of equals\",\n  \"extensions\": {},\n  \"tags\": [\n    \"SOLANA\",\n    \"MEME\"\n
+        \ ],\n  \"creator\": {}\n}"
     headers:
       Access-Control-Allow-Origin:
       - '*'
       Age:
-      - '198388'
+      - '4776'
       CF-Cache-Status:
       - HIT
       CF-Ray:
-      - 8d688cb5c809cbf3-MAD
+      - 976409232f4f80e8-PRG
       Cache-Control:
-      - public, max-age=864000
+      - public, max-age=29030400
       Connection:
       - keep-alive
       Content-Encoding:
@@ -39,21 +38,22 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 22 Oct 2024 09:44:35 GMT
+      - Thu, 28 Aug 2025 13:08:13 GMT
       ETag:
       - W/"QmVfMPCUPs5V1omaDvoni38w8aEJpFTjEZRNRmoVyexXWe"
       Expires:
-      - Fri, 01 Nov 2024 09:44:35 GMT
+      - Thu, 30 Jul 2026 13:08:13 GMT
       Server:
       - cloudflare
+      Set-Cookie:
+      - _cfuvid=s8i55DXcFh0WBxtugckw0rwrB6ACUXr.ttgTn8ZQbvc-1756386493815-0.0.1.1-604800000;
+        path=/; domain=.pinata.cloud; HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
-      - max-age=15724800; includeSubDomains
+      - max-age=31536000; includeSubDomains
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding
-      Via:
-      - 1.1 3e64b4bceb49543044d7ca6510e86e3a.cloudfront.net (CloudFront)
       X-Robots-Tag:
       - noindex
       access-control-allow-headers:
@@ -75,18 +75,10 @@ interactions:
       content-security-policy:
       - 'default-src ''self''; img-src * data: blob: ''unsafe-inline''; style-src
         * ''unsafe-inline'''
-      x-amz-cf-id:
-      - Q2h-wBzIZXZ7r_fJ0O1vRsDizW7pZVa6jf0Ig2nKKR60zWRFmKpIow==
-      x-amz-cf-pop:
-      - MAD56-P1
-      x-cache:
-      - Hit from cloudfront
       x-ipfs-path:
       - /ipfs/QmVfMPCUPs5V1omaDvoni38w8aEJpFTjEZRNRmoVyexXWe
       x-ipfs-roots:
       - QmVfMPCUPs5V1omaDvoni38w8aEJpFTjEZRNRmoVyexXWe
-      x-request-id:
-      - 9d0047ad6bed38faa10f9dd5ae9de7b1
     status:
       code: 200
       message: OK

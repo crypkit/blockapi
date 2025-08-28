@@ -49,7 +49,7 @@ def perp_contract_address(contract_name: str) -> ChecksumAddress:
         raise ValueError('Invalid contract name.')
 
     contract_address = contract_map[contract_name]
-    return Web3.toChecksumAddress(contract_address)
+    return Web3.to_checksum_address(contract_address)
 
 
 @lru_cache()

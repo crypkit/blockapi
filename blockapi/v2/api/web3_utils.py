@@ -133,10 +133,10 @@ def to_checksum_address(func):
 
     @functools.wraps(func)
     def inner(self, address, *args, **kwargs):
-        return func(self, Web3.toChecksumAddress(address), *args, **kwargs)
+        return func(self, Web3.to_checksum_address(address), *args, **kwargs)
 
     return inner
 
 
 def ensure_checksum_address(address: Optional[str]) -> Optional[str]:
-    return Web3.toChecksumAddress(address) if address is not None else None
+    return Web3.to_checksum_address(address) if address is not None else None

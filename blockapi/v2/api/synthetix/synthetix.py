@@ -84,7 +84,7 @@ def snx_contract_address(
     # as last 42 characters
     try:
         contract_address = result.url[-42:]
-        return Web3.toChecksumAddress(contract_address)
+        return Web3.to_checksum_address(contract_address)
     except Exception:
         raise ValueError(f'Contract {contract_name} not found.')
 
@@ -118,7 +118,7 @@ def snx_optimism_contract_address(
 
         table = BeautifulSoup(html_tab_raw, 'lxml')
         row = table.find('td', text=contract_name).parent
-        return Web3.toChecksumAddress(row.contents[5].text.strip())
+        return Web3.to_checksum_address(row.contents[5].text.strip())
 
     except Exception:
         raise ValueError(f'Contract {contract_name} not found.')
@@ -341,7 +341,7 @@ class SynthetixApi(CustomizableBlockchainApi, IBalance, ABC):
         if symbol == 'SNX':
             synth_addr = easy_call(snx_contract, 'proxy')
         else:
-            synth_contract_addr = Web3.toChecksumAddress(
+            synth_contract_addr = Web3.to_checksum_address(
                 easy_call(snx_contract, 'synths', symbol.encode())
             )
             synth_contract = self.w3.eth.contract(synth_contract_addr, abi=erc20_abi)

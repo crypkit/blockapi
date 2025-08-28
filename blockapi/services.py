@@ -3,12 +3,9 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from time import sleep
 
-import cfscrape
 import requests
 
 import blockapi
-
-cfscrape.DEFAULT_CIPHERS += ':!SHA'
 
 
 class Service(ABC):
@@ -34,13 +31,7 @@ class Service(ABC):
         return self.base_url
 
     def request(
-        self,
-        request_method,
-        with_rate_limit=False,
-        with_cloudflare=False,
-        body=None,
-        headers=None,
-        **params
+        self, request_method, with_rate_limit=False, body=None, headers=None, **params
     ):
         request_url = self.build_request_url(request_method, **params)
 
@@ -53,10 +44,7 @@ class Service(ABC):
         if not headers:
             headers = {}
 
-        if with_cloudflare:
-            reqobj = cfscrape.create_scraper()
-        else:
-            reqobj = requests
+        reqobj = requests
 
         if with_rate_limit and self.rate_limit:
             self.wait_for_next_request()

@@ -14,22 +14,14 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - python-requests/2.31.0
+      - python-requests/2.32.5
     method: POST
     uri: https://api.mainnet-beta.solana.com/
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAEA6pWyirOzysqSFayUjLSM1DSUSpKLS7NKVGyqlZKzs8rSa0AMxMLMsNSi4oz8/OU
-        rJQM9Qwt9IxMlXSUinPyS5SsjCzNDYwsjU1ManWUyhJzSlNBmlMSSxKVrKKVnLxM87MjgvJKQl1T
-        y0vdM0sD/T19w0sstCOzy9zyIs31XfLTMwIqq0wLy/3yLcrDC6ryM3KSvQOywj1dnHOM89LT3YtL
-        jJ1T3cpCtQMMyx3NKv18M3It0h0dHR0Dw/0MPF2z0/0znUIT3UPTA0Oz00M9vMqS3TNyIo2zQUpg
-        2BvECAz1CwXRYOwLMsIpP8UjqDy5Kr/MxyglI8U9zDgyIrs02T2nNDIiKMMn1684yTgs28copzwq
-        z7csNNwwPCrbMDDQMCwwuSos3DfcsiQyNMgoyci0wLcqw9jf3c0tOM/JPcy9wC08x8s/NNewLCwv
-        JyfVLSMiKhBs6+An0kycHEFBM/hdOrxcGGhrq6SjlJRYnGpmohSro5RakZpcWpKYlJOqZJWWmFOc
-        qqOUk5hbkF9UUqxkZWhqaGhqZmCgo5RfnpdapGSllJtakliYVFERmlqUUmhkkZxlGJTkGJ4dGZhr
-        XJlUlZVklmiRVGJqaFFhWAzO5IDllbgW5CdnKFkZWpiYmJmbmBiYG5sbWJqaGpoZmuooFRckJqcq
-        WZkZmNfW6ihlpihZGdZyAQAzXeNRLQQAAA==
+      string: '{"jsonrpc":"2.0","result":{"context":{"apiVersion":"2.3.6","slot":363077074},"value":{"data":["BJ5okXRntUEewuGiuQOIMWt8+YkvFnY7/DoghPyz5qwNo8wWpzohlcKPjWIDCl3nggGst3CeFvU+P1wA6yNMhm8gAAAAQWN0IEkgOiBUaGUgQUkgUHJvcGhlY3kAAAAAAAAAAAAKAAAAQUNUAAAAAAAAAMgAAABodHRwczovL2dhdGV3YXkucGluYXRhLmNsb3VkL2lwZnMvUW1WZk1QQ1VQczVWMW9tYUR2b25pMzh3OGFFSnBGVGpFWlJOUm1vVnlleFhXZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf4BAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==","base64"],"executable":false,"lamports":5115600,"owner":"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s","rentEpoch":18446744073709551615,"space":607}},"id":1}
+
+        '
     headers:
       access-control-allow-headers:
       - authorization, *
@@ -46,7 +38,7 @@ interactions:
       content-type:
       - application/json; charset=utf-8
       date:
-      - Tue, 22 Oct 2024 09:44:34 GMT
+      - Thu, 28 Aug 2025 13:00:35 GMT
       transfer-encoding:
       - chunked
       vary:
@@ -62,11 +54,11 @@ interactions:
       x-ratelimit-endpoint-limit:
       - unlimited
       x-ratelimit-endpoint-remaining:
-      - '-778'
+      - '-2506'
       x-ratelimit-method-limit:
-      - '10'
+      - '30'
       x-ratelimit-method-remaining:
-      - '9'
+      - '29'
       x-ratelimit-pubsub-limit:
       - '5'
       x-ratelimit-pubsub-remaining:
@@ -78,7 +70,7 @@ interactions:
       x-ratelimit-tier:
       - free
       x-rpc-node:
-      - lon68
+      - fra113
     status:
       code: 200
       message: OK

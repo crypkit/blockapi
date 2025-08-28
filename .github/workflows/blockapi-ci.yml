@@ -14,10 +14,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python 3.9
+      - name: Set up Python 3.12.11
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.12.11'
+
+      - name: Verify Python
+        run: python --version
 
       - name: Restore cache
         uses: actions/cache@v3
