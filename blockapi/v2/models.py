@@ -255,6 +255,7 @@ class Blockchain(str, Enum):
     PERSISTENCE = 'persistence'
     PICASSO = 'picasso'
     PLAT_ON = 'plat-on'
+    PLASMA = 'plasma'
     POLIS_CHAIN = 'polis-chain'
     POLKADOT = 'polkadot'
     POLYGON = 'polygon'
