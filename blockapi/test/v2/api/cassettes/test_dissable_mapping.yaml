@@ -1,0 +1,186 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Referer:
+      - https://www.mintscan.io/
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/50.0.2661.102 Safari/537.36
+    method: GET
+    uri: https://lcd-dydx.cosmostation.io/cosmos/bank/v1beta1/balances/dydx1aff76avnwpnk02wxkc6n5xnwasjkgekarwznsh
+  response:
+    body:
+      string: '{"balances":[{"denom":"adydx","amount":"8342195962385344539"}],"pagination":{"next_key":null,"total":"1"}}'
+    headers:
+      Access-Control-Allow-Headers:
+      - DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Expose-Headers:
+      - Content-Length,Content-Range
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 28 Aug 2025 13:12:14 GMT
+      Grpc-Metadata-Content-Type:
+      - application/grpc+cosmos-sdk-grpc-codec
+      Grpc-Metadata-X-Cosmos-Block-Height:
+      - '53991912'
+      Server:
+      - nginx
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Server-Time:
+      - '1756386734'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Referer:
+      - https://www.mintscan.io/
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/50.0.2661.102 Safari/537.36
+    method: GET
+    uri: https://lcd-dydx.cosmostation.io/cosmos/staking/v1beta1/delegations/dydx1aff76avnwpnk02wxkc6n5xnwasjkgekarwznsh?pagination.limit=1000
+  response:
+    body:
+      string: '{"delegation_responses":[],"pagination":{"next_key":null,"total":"0"}}'
+    headers:
+      Access-Control-Allow-Headers:
+      - DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Expose-Headers:
+      - Content-Length,Content-Range
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '70'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 28 Aug 2025 13:12:15 GMT
+      Grpc-Metadata-Content-Type:
+      - application/grpc+cosmos-sdk-grpc-codec
+      Grpc-Metadata-X-Cosmos-Block-Height:
+      - '53991912'
+      Server:
+      - nginx
+      X-Server-Time:
+      - '1756386735'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Referer:
+      - https://www.mintscan.io/
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/50.0.2661.102 Safari/537.36
+    method: GET
+    uri: https://lcd-dydx.cosmostation.io/cosmos/staking/v1beta1/delegators/dydx1aff76avnwpnk02wxkc6n5xnwasjkgekarwznsh/unbonding_delegations
+  response:
+    body:
+      string: '{"unbonding_responses":[],"pagination":{"next_key":null,"total":"0"}}'
+    headers:
+      Access-Control-Allow-Headers:
+      - DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Expose-Headers:
+      - Content-Length,Content-Range
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '69'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 28 Aug 2025 13:12:16 GMT
+      Grpc-Metadata-Content-Type:
+      - application/grpc+cosmos-sdk-grpc-codec
+      Grpc-Metadata-X-Cosmos-Block-Height:
+      - '53991913'
+      Server:
+      - nginx
+      X-Server-Time:
+      - '1756386736'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Referer:
+      - https://www.mintscan.io/
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/50.0.2661.102 Safari/537.36
+    method: GET
+    uri: https://lcd-dydx.cosmostation.io/cosmos/distribution/v1beta1/delegators/dydx1aff76avnwpnk02wxkc6n5xnwasjkgekarwznsh/rewards
+  response:
+    body:
+      string: '{"rewards":[],"total":[]}'
+    headers:
+      Access-Control-Allow-Headers:
+      - DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Expose-Headers:
+      - Content-Length,Content-Range
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '25'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 28 Aug 2025 13:12:16 GMT
+      Grpc-Metadata-Content-Type:
+      - application/grpc+cosmos-sdk-grpc-codec
+      Grpc-Metadata-X-Cosmos-Block-Height:
+      - '53991914'
+      Server:
+      - nginx
+      X-Server-Time:
+      - '1756386736'
+    status:
+      code: 200
+      message: OK
+version: 1
