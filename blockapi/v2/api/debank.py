@@ -35,6 +35,13 @@ from blockapi.v2.models import (
     Pool,
     PoolInfo,
     Protocol,
+    DebankApp,
+    DebankAppDeposit,
+    DebankPrediction,
+    DebankModelAppPortfolioItem,
+    DebankModelApp,
+    DebankModelDepositDetail,
+    DebankModelPredictionDetail,
 )
 
 logger = logging.getLogger(__name__)
@@ -152,187 +159,6 @@ class DebankChain(BaseModel):
     community_id: int
     name: str
     logo_url: str
-
-
-# --- Debank App Models ---
-
-
-class DebankModelAppStats(BaseModel):
-    """Stats for a portfolio item."""
-
-    asset_usd_value: float
-    debt_usd_value: float
-    net_usd_value: float
-
-
-class DebankModelPredictionDetail(BaseModel):
-    """Detail for prediction type portfolio items."""
-
-    name: str
-    side: str
-    amount: float
-    price: float
-    claimable: bool
-    event_end_at: Optional[float] = None
-    is_market_closed: bool
-
-
-class DebankModelDepositDetail(BaseModel):
-    """Detail for deposit/common type portfolio items."""
-
-    supply_token_list: Optional[list[dict]] = None
-    borrow_token_list: Optional[list[dict]] = None
-    reward_token_list: Optional[list[dict]] = None
-
-
-class DebankModelAppPortfolioItem(BaseModel):
-    """Portfolio item within an app."""
-
-    stats: DebankModelAppStats
-    asset_dict: Optional[dict] = None
-    asset_token_list: Optional[list[dict]] = None
-    update_at: Optional[float] = None
-    name: str
-    detail_types: list[str]
-    detail: dict
-    proxy_detail: Optional[dict] = None
-    position_index: Optional[str] = None
-
-
-class DebankModelApp(BaseModel):
-    """Debank App model from complex_app_list endpoint."""
-
-    id: str
-    name: str
-    site_url: Optional[str] = None
-    logo_url: Optional[str] = None
-    has_supported_portfolio: bool = False
-    portfolio_item_list: list[DebankModelAppPortfolioItem]
-
-
-@attr.s(auto_attribs=True, slots=True, frozen=True)
-class DebankPrediction:
-    """Represents a prediction market position (e.g., Polymarket)."""
-
-    prediction_name: str
-    side: str
-    amount: Decimal
-    price: Decimal
-    usd_value: Decimal
-    claimable: bool
-    event_end_at: Optional[datetime]
-    is_market_closed: bool
-    position_index: Optional[str]
-    update_at: Optional[datetime]
-    raw: dict
-
-    @classmethod
-    def from_api(
-        cls,
-        *,
-        prediction_name: str,
-        side: str,
-        amount: Union[str, float, int],
-        price: Union[str, float, int],
-        usd_value: Union[str, float, int],
-        claimable: bool,
-        event_end_at: Optional[Union[int, float]] = None,
-        is_market_closed: bool,
-        position_index: Optional[str] = None,
-        update_at: Optional[Union[int, float]] = None,
-        raw: Optional[dict] = None,
-    ) -> 'DebankPrediction':
-        return cls(
-            prediction_name=prediction_name,
-            side=side,
-            amount=to_decimal(amount),
-            price=to_decimal(price),
-            usd_value=to_decimal(usd_value),
-            claimable=claimable,
-            event_end_at=parse_dt(event_end_at) if event_end_at else None,
-            is_market_closed=is_market_closed,
-            position_index=position_index,
-            update_at=parse_dt(update_at) if update_at else None,
-            raw=raw or {},
-        )
-
-
-@attr.s(auto_attribs=True, slots=True, frozen=True)
-class DebankAppDeposit:
-    """Represents a deposit/holding within a Debank App (e.g., Polymarket cash deposit)."""
-
-    name: str
-    asset_usd_value: Decimal
-    debt_usd_value: Decimal
-    net_usd_value: Decimal
-    tokens: list[dict]  # Raw token data for flexibility
-    position_index: Optional[str]
-    update_at: Optional[datetime]
-    raw: dict
-
-    @classmethod
-    def from_api(
-        cls,
-        *,
-        name: str,
-        asset_usd_value: Union[str, float, int],
-        debt_usd_value: Union[str, float, int],
-        net_usd_value: Union[str, float, int],
-        tokens: Optional[list[dict]] = None,
-        position_index: str,
-        update_at: Optional[Union[int, float]] = None,
-        raw: Optional[dict] = None,
-    ) -> 'DebankAppDeposit':
-        return cls(
-            name=name,
-            asset_usd_value=to_decimal(asset_usd_value),
-            debt_usd_value=to_decimal(debt_usd_value),
-            net_usd_value=to_decimal(net_usd_value),
-            tokens=tokens or [],
-            position_index=position_index,
-            update_at=parse_dt(update_at) if update_at else None,
-            raw=raw or {},
-        )
-
-    @property
-    def token_symbols(self) -> list[str]:
-        """Get list of token symbols in this deposit."""
-        return [t.get('symbol', t.get('name', '')) for t in self.tokens]
-
-
-@attr.s(auto_attribs=True, slots=True, frozen=True)
-class DebankApp:
-    """Represents a Debank App with its deposits and predictions."""
-
-    app_id: str
-    name: str
-    site_url: Optional[str]
-    logo_url: Optional[str]
-    has_supported_portfolio: bool
-    deposits: list[DebankAppDeposit]
-    predictions: list[DebankPrediction]
-
-    @classmethod
-    def from_api(
-        cls,
-        *,
-        app_id: str,
-        name: str,
-        site_url: Optional[str] = None,
-        logo_url: Optional[str] = None,
-        has_supported_portfolio: bool = False,
-        deposits: Optional[list[DebankAppDeposit]] = None,
-        predictions: Optional[list[DebankPrediction]] = None,
-    ) -> 'DebankApp':
-        return cls(
-            app_id=app_id,
-            name=name,
-            site_url=site_url,
-            logo_url=logo_url,
-            has_supported_portfolio=has_supported_portfolio,
-            deposits=deposits or [],
-            predictions=predictions or [],
-        )
 
 
 class DebankProtocolParser:
@@ -844,7 +670,6 @@ class DebankAppParser:
             is_market_closed=detail.is_market_closed,
             position_index=item.position_index,
             update_at=item.update_at,
-            raw=item.dict(),
         )
 
     def _parse_deposit(
@@ -874,7 +699,6 @@ class DebankAppParser:
             tokens=tokens,
             position_index=item.position_index,
             update_at=item.update_at,
-            raw=item.dict(),
         )
 
 
@@ -979,6 +803,13 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
             return {}
 
         return self._protocol_parser.parse(response)
+
+    def parse_debank_apps(self, fetch_result: FetchResult) -> ParseResult:
+        if error := self._get_error(fetch_result.data):
+            return ParseResult(errors=[error])
+
+        apps = self._app_parser.parse(fetch_result.data)
+        return ParseResult(data=apps)
 
     def get_chains(self) -> list[DebankChain]:
         response = self.get('get_chains', headers=self._headers)

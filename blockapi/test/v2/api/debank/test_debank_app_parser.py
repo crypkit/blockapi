@@ -177,16 +177,6 @@ def test_parse_polymarket_predictions(app_parser, polymarket_response):
     assert pred2.claimable is False
 
 
-def test_prediction_stores_raw(app_parser, polymarket_response):
-    """Predictions should store raw data for debugging."""
-    parsed_apps = app_parser.parse(polymarket_response)
-    pred = parsed_apps[0].predictions[0]
-
-    assert pred.raw is not None
-    assert "stats" in pred.raw
-    assert "detail" in pred.raw
-
-
 def test_parse_multiple_apps(app_parser):
     """Test parsing multiple apps."""
     response = [
@@ -211,6 +201,7 @@ def test_parse_multiple_apps(app_parser):
                         "claimable": False,
                         "is_market_closed": False,
                     },
+                    "position_index": "test_position_index",
                 }
             ],
         },
