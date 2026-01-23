@@ -6,6 +6,7 @@ import pytest
 from blockapi.test.v2.api.conftest import read_file, read_json_file
 from blockapi.v2.api.debank import (
     DebankApi,
+    DebankAppParser,
     DebankBalanceParser,
     DebankChain,
     DebankPortfolioParser,
@@ -56,6 +57,11 @@ def debank_api_all_off(protocol_cache):
 @pytest.fixture
 def portfolio_parser(protocol_parser, balance_parser):
     return DebankPortfolioParser(protocol_parser, balance_parser)
+
+
+@pytest.fixture
+def app_parser():
+    return DebankAppParser()
 
 
 @pytest.fixture

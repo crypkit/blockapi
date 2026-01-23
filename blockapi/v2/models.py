@@ -386,6 +386,7 @@ class AssetType(str, Enum):
     LOCKED = 'locked'
     NFT = 'nft'
     PENDING_TRANSACTION = 'pending_transaction'
+    PREDICTION = 'prediction'
     PRICED_VESTING = 'priced_vesting'
     REWARDS = 'rewards'
     STAKED = 'staked'
