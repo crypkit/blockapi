@@ -110,13 +110,13 @@ def polymarket_response():
     ]
 
 
-def test_empty_response(app_parser):
-    parsed_apps = app_parser.parse([])
+def test_empty_response(debank_app_parser):
+    parsed_apps = debank_app_parser.parse([])
     assert parsed_apps == []
 
 
-def test_parse_polymarket_app(app_parser, polymarket_response):
-    parsed_apps = app_parser.parse(polymarket_response)
+def test_parse_polymarket_app(debank_app_parser, polymarket_response):
+    parsed_apps = debank_app_parser.parse(polymarket_response)
     assert len(parsed_apps) == 1
 
     app = parsed_apps[0]
@@ -127,9 +127,9 @@ def test_parse_polymarket_app(app_parser, polymarket_response):
     assert app.has_supported_portfolio is True
 
 
-def test_parse_polymarket_deposits(app_parser, polymarket_response):
+def test_parse_polymarket_deposits(debank_app_parser, polymarket_response):
     """Deposits should be parsed as DebankAppDeposit objects."""
-    parsed_apps = app_parser.parse(polymarket_response)
+    parsed_apps = debank_app_parser.parse(polymarket_response)
     app = parsed_apps[0]
 
     # Should have 1 deposit
@@ -149,9 +149,9 @@ def test_parse_polymarket_deposits(app_parser, polymarket_response):
     assert deposit.token_symbols == ["USDC"]
 
 
-def test_parse_polymarket_predictions(app_parser, polymarket_response):
+def test_parse_polymarket_predictions(debank_app_parser, polymarket_response):
     """Predictions should be parsed as DebankPrediction objects."""
-    parsed_apps = app_parser.parse(polymarket_response)
+    parsed_apps = debank_app_parser.parse(polymarket_response)
     app = parsed_apps[0]
 
     # Should have 2 predictions
@@ -177,7 +177,7 @@ def test_parse_polymarket_predictions(app_parser, polymarket_response):
     assert pred2.claimable is False
 
 
-def test_parse_multiple_apps(app_parser):
+def test_parse_multiple_apps(debank_app_parser):
     """Test parsing multiple apps."""
     response = [
         {
@@ -213,7 +213,7 @@ def test_parse_multiple_apps(app_parser):
         },
     ]
 
-    parsed_apps = app_parser.parse(response)
+    parsed_apps = debank_app_parser.parse(response)
     assert len(parsed_apps) == 2
     assert parsed_apps[0].app_id == "app1"
     assert parsed_apps[1].app_id == "app2"

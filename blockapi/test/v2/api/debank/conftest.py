@@ -60,7 +60,7 @@ def portfolio_parser(protocol_parser, balance_parser):
 
 
 @pytest.fixture
-def app_parser():
+def debank_app_parser():
     return DebankAppParser()
 
 
