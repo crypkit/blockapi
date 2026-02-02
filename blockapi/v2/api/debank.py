@@ -9,7 +9,7 @@ from pydantic import BaseModel, validator
 
 from blockapi.utils.address import make_checksum_address
 from blockapi.utils.datetime import parse_dt
-from blockapi.utils.num import decimals_to_raw
+from blockapi.utils.num import decimals_to_raw, to_decimal
 from blockapi.v2.api.debank_maps import (
     COINGECKO_IDS_BY_CONTRACTS,
     DEBANK_ASSET_TYPES,
@@ -35,6 +35,13 @@ from blockapi.v2.models import (
     Pool,
     PoolInfo,
     Protocol,
+    DebankApp,
+    DebankAppDeposit,
+    DebankPrediction,
+    DebankModelAppPortfolioItem,
+    DebankModelApp,
+    DebankModelDepositDetail,
+    DebankModelPredictionDetail,
 )
 
 logger = logging.getLogger(__name__)
@@ -592,6 +599,109 @@ class DebankPortfolioParser:
         return REWARD_ASSET_TYPE_MAP.get(asset_type, asset_type)
 
 
+class DebankAppParser:
+    """Parser for Debank complex_app_list responses."""
+
+    def parse(self, response: list) -> list[DebankApp]:
+        """Parse the full response from get_complex_app_list."""
+        if not response:
+            return []
+
+        apps = []
+        for item in response:
+            app = self._parse_app(item)
+            if app:
+                apps.append(app)
+
+        return apps
+
+    def _parse_app(self, raw_app: dict) -> Optional[DebankApp]:
+        """Parse a single app from the response."""
+        try:
+            model = DebankModelApp(**raw_app)
+        except Exception as e:
+            logger.error(f'Failed to parse app: {e}')
+            return None
+
+        deposits = []
+        predictions = []
+
+        for portfolio_item in model.portfolio_item_list:
+            detail_types = portfolio_item.detail_types
+
+            if 'prediction' in detail_types:
+                prediction = self._parse_prediction(portfolio_item)
+                if prediction:
+                    predictions.append(prediction)
+            else:
+                # Parse as deposit (common, etc.)
+                deposit = self._parse_deposit(portfolio_item)
+                if deposit:
+                    deposits.append(deposit)
+
+        return DebankApp.from_api(
+            app_id=model.id,
+            name=model.name,
+            site_url=model.site_url,
+            logo_url=model.logo_url,
+            has_supported_portfolio=model.has_supported_portfolio,
+            deposits=deposits,
+            predictions=predictions,
+        )
+
+    def _parse_prediction(
+        self, item: DebankModelAppPortfolioItem
+    ) -> Optional[DebankPrediction]:
+        """Parse a prediction market position."""
+        try:
+            detail = DebankModelPredictionDetail(**item.detail)
+        except Exception as e:
+            logger.error(f'Failed to parse prediction detail: {e}')
+            return None
+
+        return DebankPrediction.from_api(
+            prediction_name=detail.name,
+            side=detail.side,
+            amount=detail.amount,
+            price=detail.price,
+            usd_value=item.stats.net_usd_value,
+            claimable=detail.claimable,
+            event_end_at=detail.event_end_at,
+            is_market_closed=detail.is_market_closed,
+            position_index=item.position_index,
+            update_at=item.update_at,
+        )
+
+    def _parse_deposit(
+        self, item: DebankModelAppPortfolioItem
+    ) -> Optional[DebankAppDeposit]:
+        """Parse a deposit/common type portfolio item."""
+        try:
+            detail = DebankModelDepositDetail(**item.detail)
+        except Exception as e:
+            logger.warning(f'Failed to parse deposit detail: {e}')
+            detail = DebankModelDepositDetail()
+
+        # Collect all tokens from supply, borrow, and reward lists
+        tokens = []
+        if detail.supply_token_list:
+            tokens.extend(detail.supply_token_list)
+        if detail.borrow_token_list:
+            tokens.extend(detail.borrow_token_list)
+        if detail.reward_token_list:
+            tokens.extend(detail.reward_token_list)
+
+        return DebankAppDeposit.from_api(
+            name=item.name,
+            asset_usd_value=item.stats.asset_usd_value,
+            debt_usd_value=item.stats.debt_usd_value,
+            net_usd_value=item.stats.net_usd_value,
+            tokens=tokens,
+            position_index=item.position_index,
+            update_at=item.update_at,
+        )
+
+
 class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
     """
     DeBank OpenApi: https://open.debank.com/
@@ -613,6 +723,7 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
         'get_portfolio': '/v1/user/all_complex_protocol_list?id={address}',
         'get_protocols': '/v1/protocol/all_list',
         'usage': '/v1/account/units',
+        'get_complex_app_list': '/v1/user/complex_app_list?id={address}',
     }
 
     default_protocol_cache = DebankProtocolCache()
@@ -636,6 +747,7 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
             self._protocol_parser, self._balance_parser
         )
         self._usage_parser = DebankUsageParser()
+        self._app_parser = DebankAppParser()
 
     def fetch_balances(self, address: str) -> FetchResult:
         return self.get_data(
@@ -648,6 +760,13 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
     def fetch_pools(self, address: str) -> FetchResult:
         return self.get_data(
             'get_portfolio',
+            headers=self._headers,
+            address=address,
+        )
+
+    def fetch_debank_apps(self, address: str) -> FetchResult:
+        return self.get_data(
+            'get_complex_app_list',
             headers=self._headers,
             address=address,
         )
@@ -684,6 +803,13 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
             return {}
 
         return self._protocol_parser.parse(response)
+
+    def parse_debank_apps(self, fetch_result: FetchResult) -> ParseResult:
+        if error := self._get_error(fetch_result.data):
+            return ParseResult(errors=[error])
+
+        apps = self._app_parser.parse(fetch_result.data)
+        return ParseResult(data=apps)
 
     def get_chains(self) -> list[DebankChain]:
         response = self.get('get_chains', headers=self._headers)
