@@ -12,6 +12,7 @@ from blockapi.utils.datetime import parse_dt
 from blockapi.utils.num import decimals_to_raw, to_decimal
 from blockapi.v2.api.debank_maps import (
     COINGECKO_IDS_BY_CONTRACTS,
+    DEBANK_APP_CHAIN_MAP,
     DEBANK_ASSET_TYPES,
     NATIVE_COIN_MAP,
     REWARD_ASSET_TYPE_MAP,
@@ -40,7 +41,6 @@ from blockapi.v2.models import (
     DebankPrediction,
     DebankModelAppPortfolioItem,
     DebankModelApp,
-    DebankModelDepositDetail,
     DebankModelPredictionDetail,
 )
 
@@ -626,16 +626,21 @@ class DebankAppParser:
         deposits = []
         predictions = []
 
+        chain = DEBANK_APP_CHAIN_MAP.get(model.id)
+        if not chain:
+            logger.warning(f'Unknown chain for app {model.id}, using default')
+            chain = Blockchain.ETHEREUM
+
         for portfolio_item in model.portfolio_item_list:
             detail_types = portfolio_item.detail_types
 
             if 'prediction' in detail_types:
-                prediction = self._parse_prediction(portfolio_item)
+                prediction = self._parse_prediction(portfolio_item, chain)
                 if prediction:
                     predictions.append(prediction)
             else:
                 # Parse as deposit (common, etc.)
-                deposit = self._parse_deposit(portfolio_item)
+                deposit = self._parse_deposit(portfolio_item, chain)
                 if deposit:
                     deposits.append(deposit)
 
@@ -650,7 +655,7 @@ class DebankAppParser:
         )
 
     def _parse_prediction(
-        self, item: DebankModelAppPortfolioItem
+        self, item: DebankModelAppPortfolioItem, chain: Blockchain
     ) -> Optional[DebankPrediction]:
         """Parse a prediction market position."""
         try:
@@ -668,35 +673,22 @@ class DebankAppParser:
             claimable=detail.claimable,
             event_end_at=detail.event_end_at,
             is_market_closed=detail.is_market_closed,
+            chain=chain,
             position_index=item.position_index,
             update_at=item.update_at,
         )
 
     def _parse_deposit(
-        self, item: DebankModelAppPortfolioItem
+        self, item: DebankModelAppPortfolioItem, chain: Blockchain
     ) -> Optional[DebankAppDeposit]:
         """Parse a deposit/common type portfolio item."""
-        try:
-            detail = DebankModelDepositDetail(**item.detail)
-        except Exception as e:
-            logger.warning(f'Failed to parse deposit detail: {e}')
-            detail = DebankModelDepositDetail()
-
-        # Collect all tokens from supply, borrow, and reward lists
-        tokens = []
-        if detail.supply_token_list:
-            tokens.extend(detail.supply_token_list)
-        if detail.borrow_token_list:
-            tokens.extend(detail.borrow_token_list)
-        if detail.reward_token_list:
-            tokens.extend(detail.reward_token_list)
-
         return DebankAppDeposit.from_api(
             name=item.name,
             asset_usd_value=item.stats.asset_usd_value,
             debt_usd_value=item.stats.debt_usd_value,
             net_usd_value=item.stats.net_usd_value,
-            tokens=tokens,
+            tokens=item.asset_token_list,
+            chain=chain,
             position_index=item.position_index,
             update_at=item.update_at,
         )

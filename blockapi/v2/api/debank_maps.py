@@ -35,6 +35,14 @@ NATIVE_COIN_MAP: dict[tuple[Blockchain, CoingeckoId], Coin] = {
     if coin.info and coin.info.coingecko_id
 }
 
+# From DeBank API /v1/app_protocol/list endpoint (docs.cloud.debank.com)
+DEBANK_APP_CHAIN_MAP: dict[str, Blockchain] = {
+    'hyperliquid': Blockchain.HYPERLIQUID,
+    'lighter': Blockchain.ARBITRUM,
+    'opinion': Blockchain.BINANCE_SMART_CHAIN,
+    'polymarket': Blockchain.POLYGON,
+}
+
 COINGECKO_IDS_BY_CONTRACTS: list[CoingeckoMapping] = [
     CoingeckoMapping(
         symbol='ETH',
