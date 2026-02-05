@@ -1246,7 +1246,7 @@ class DebankPrediction:
     claimable: bool
     event_end_at: Optional[datetime]
     is_market_closed: bool
-    chain: Blockchain
+    chain: Optional[Blockchain]
     position_index: Optional[str]
     update_at: Optional[datetime]
 
@@ -1261,7 +1261,7 @@ class DebankPrediction:
         usd_value: Union[str, float, int],
         claimable: bool,
         is_market_closed: bool,
-        chain: Blockchain,
+        chain: Optional[Blockchain] = None,
         event_end_at: Optional[Union[int, float]] = None,
         position_index: Optional[str] = None,
         update_at: Optional[Union[int, float]] = None,
@@ -1290,7 +1290,7 @@ class DebankAppDeposit:
     debt_usd_value: Decimal
     net_usd_value: Decimal
     tokens: list[DebankDepositToken]
-    chain: Blockchain
+    chain: Optional[Blockchain]
     position_index: Optional[str]
     update_at: Optional[datetime]
 
@@ -1304,7 +1304,7 @@ class DebankAppDeposit:
         net_usd_value: Union[str, float, int],
         position_index: str,
         tokens: Optional[list[DebankDepositToken]] = None,
-        chain: Blockchain,
+        chain: Optional[Blockchain] = None,
         update_at: Optional[Union[int, float]] = None,
     ) -> 'DebankAppDeposit':
         return cls(

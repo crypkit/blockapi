@@ -627,9 +627,6 @@ class DebankAppParser:
         predictions = []
 
         chain = DEBANK_APP_CHAIN_MAP.get(model.id)
-        if not chain:
-            logger.warning(f'Unknown chain for app {model.id}, using default')
-            chain = Blockchain.ETHEREUM
 
         for portfolio_item in model.portfolio_item_list:
             detail_types = portfolio_item.detail_types
@@ -655,7 +652,7 @@ class DebankAppParser:
         )
 
     def _parse_prediction(
-        self, item: DebankModelAppPortfolioItem, chain: Blockchain
+        self, item: DebankModelAppPortfolioItem, chain: Optional[Blockchain]
     ) -> Optional[DebankPrediction]:
         """Parse a prediction market position."""
         try:
@@ -679,7 +676,7 @@ class DebankAppParser:
         )
 
     def _parse_deposit(
-        self, item: DebankModelAppPortfolioItem, chain: Blockchain
+        self, item: DebankModelAppPortfolioItem, chain: Optional[Blockchain]
     ) -> Optional[DebankAppDeposit]:
         """Parse a deposit/common type portfolio item."""
         return DebankAppDeposit.from_api(
