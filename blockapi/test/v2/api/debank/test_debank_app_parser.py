@@ -7,6 +7,7 @@ from blockapi.v2.api.debank import (
     DebankAppDeposit,
     DebankPrediction,
 )
+from blockapi.v2.models import Blockchain
 
 
 @pytest.fixture
@@ -129,6 +130,7 @@ def test_parse_polymarket_app(debank_app_parser, polymarket_response):
 
 def test_parse_polymarket_deposits(debank_app_parser, polymarket_response):
     """Deposits should be parsed as DebankAppDeposit objects."""
+
     parsed_apps = debank_app_parser.parse(polymarket_response)
     app = parsed_apps[0]
 
@@ -142,10 +144,11 @@ def test_parse_polymarket_deposits(debank_app_parser, polymarket_response):
     assert deposit.debt_usd_value == Decimal("0")
     assert deposit.net_usd_value == Decimal("290915.13432776055")
     assert deposit.position_index == "cash_0x5c23dead9ecf271448411096f349133e0bb9c465"
+    assert deposit.chain == Blockchain.POLYGON
 
     # Should have 1 token (USDC)
     assert len(deposit.tokens) == 1
-    assert deposit.tokens[0]["symbol"] == "USDC"
+    assert deposit.tokens[0].symbol == "USDC"
     assert deposit.token_symbols == ["USDC"]
 
 
@@ -168,6 +171,7 @@ def test_parse_polymarket_predictions(debank_app_parser, polymarket_response):
     assert pred1.usd_value == Decimal("27068.1993")
     assert pred1.claimable is True
     assert pred1.is_market_closed is False
+    assert pred1.chain == Blockchain.POLYGON
 
     pred2 = app.predictions[1]
     assert pred2.prediction_name == "Gensyn FDV above $600M one day after launch?"
@@ -175,6 +179,7 @@ def test_parse_polymarket_predictions(debank_app_parser, polymarket_response):
     assert pred2.amount == Decimal("19999.9704")
     assert pred2.price == Decimal("0.255")
     assert pred2.claimable is False
+    assert pred2.chain == Blockchain.POLYGON
 
 
 def test_parse_multiple_apps(debank_app_parser):

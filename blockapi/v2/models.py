@@ -8,7 +8,7 @@ import attr
 
 from blockapi.utils.datetime import parse_dt
 from blockapi.utils.num import raw_to_decimals, to_decimal, to_int
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 UNKNOWN = 'unknown'
 
@@ -1197,12 +1197,16 @@ class DebankModelPredictionDetail(BaseModel):
     event_end_at: Optional[float] = None
 
 
-class DebankModelDepositDetail(BaseModel):
-    """Detail for deposit/common type portfolio items."""
+class DebankDepositToken(BaseModel):
+    """Token within deposit/common type portfolio items."""
 
-    supply_token_list: Optional[list[dict]] = None
-    borrow_token_list: Optional[list[dict]] = None
-    reward_token_list: Optional[list[dict]] = None
+    id: str
+    symbol: str
+    name: str
+    amount: float
+    app_id: str
+    price: float
+    logo_url: Optional[str] = None
 
 
 class DebankModelAppPortfolioItem(BaseModel):
@@ -1214,7 +1218,7 @@ class DebankModelAppPortfolioItem(BaseModel):
     detail: dict
     position_index: str
     asset_dict: Optional[dict] = None
-    asset_token_list: Optional[list[dict]] = None
+    asset_token_list: list[DebankDepositToken] = Field(default_factory=list)
     update_at: Optional[float] = None
     proxy_detail: Optional[dict] = None
 
@@ -1242,6 +1246,7 @@ class DebankPrediction:
     claimable: bool
     event_end_at: Optional[datetime]
     is_market_closed: bool
+    chain: Optional[Blockchain]
     position_index: Optional[str]
     update_at: Optional[datetime]
 
@@ -1256,6 +1261,7 @@ class DebankPrediction:
         usd_value: Union[str, float, int],
         claimable: bool,
         is_market_closed: bool,
+        chain: Optional[Blockchain] = None,
         event_end_at: Optional[Union[int, float]] = None,
         position_index: Optional[str] = None,
         update_at: Optional[Union[int, float]] = None,
@@ -1269,6 +1275,7 @@ class DebankPrediction:
             claimable=claimable,
             event_end_at=parse_dt(event_end_at) if event_end_at is not None else None,
             is_market_closed=is_market_closed,
+            chain=chain,
             position_index=position_index,
             update_at=parse_dt(update_at) if update_at is not None else None,
         )
@@ -1282,7 +1289,8 @@ class DebankAppDeposit:
     asset_usd_value: Decimal
     debt_usd_value: Decimal
     net_usd_value: Decimal
-    tokens: list[dict]  # Raw token data for flexibility
+    tokens: list[DebankDepositToken]
+    chain: Optional[Blockchain]
     position_index: Optional[str]
     update_at: Optional[datetime]
 
@@ -1295,7 +1303,8 @@ class DebankAppDeposit:
         debt_usd_value: Union[str, float, int],
         net_usd_value: Union[str, float, int],
         position_index: str,
-        tokens: Optional[list[dict]] = None,
+        tokens: Optional[list[DebankDepositToken]] = None,
+        chain: Optional[Blockchain] = None,
         update_at: Optional[Union[int, float]] = None,
     ) -> 'DebankAppDeposit':
         return cls(
@@ -1304,6 +1313,7 @@ class DebankAppDeposit:
             debt_usd_value=to_decimal(debt_usd_value),
             net_usd_value=to_decimal(net_usd_value),
             tokens=tokens or [],
+            chain=chain,
             position_index=position_index,
             update_at=parse_dt(update_at) if update_at else None,
         )
@@ -1311,7 +1321,7 @@ class DebankAppDeposit:
     @property
     def token_symbols(self) -> list[str]:
         """Get list of token symbols in this deposit."""
-        return [t.get('symbol', t.get('name', '')) for t in self.tokens]
+        return [t.symbol for t in self.tokens]
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)

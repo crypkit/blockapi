@@ -36,6 +36,14 @@ def test_fetch_usage():
     assert False
 
 
+@pytest.mark.integration
+def test_fetch_debank_apps(real_debank_api):
+    response = real_debank_api.fetch_debank_apps(
+        '0x807A2E2e469df84b299Da5f90f15DdA4380dAcA1'
+    )
+    _save('fetch-result-debank-apps', response)
+
+
 def _save(name: str, data: FetchResult):
     if not OPTION_SAVE_DATA:
         return
