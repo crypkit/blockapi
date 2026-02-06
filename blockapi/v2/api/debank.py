@@ -9,7 +9,7 @@ from pydantic import BaseModel, validator
 
 from blockapi.utils.address import make_checksum_address
 from blockapi.utils.datetime import parse_dt
-from blockapi.utils.num import decimals_to_raw, to_decimal
+from blockapi.utils.num import decimals_to_raw
 from blockapi.v2.api.debank_maps import (
     COINGECKO_IDS_BY_CONTRACTS,
     DEBANK_APP_CHAIN_MAP,
@@ -42,6 +42,7 @@ from blockapi.v2.models import (
     DebankModelAppPortfolioItem,
     DebankModelApp,
     DebankModelPredictionDetail,
+    DebankDepositToken,
 )
 
 logger = logging.getLogger(__name__)
@@ -609,7 +610,11 @@ class DebankAppParser:
 
         apps = []
         for item in response:
-            app = self._parse_app(item)
+            try:
+                app = self._parse_app(item)
+            except Exception as e:
+                logger.error(f'Failed to parse app: {e}')
+                continue
             if app:
                 apps.append(app)
 
@@ -617,11 +622,7 @@ class DebankAppParser:
 
     def _parse_app(self, raw_app: dict) -> Optional[DebankApp]:
         """Parse a single app from the response."""
-        try:
-            model = DebankModelApp(**raw_app)
-        except Exception as e:
-            logger.error(f'Failed to parse app: {e}')
-            return None
+        model = DebankModelApp(**raw_app)
 
         deposits = []
         predictions = []
@@ -679,16 +680,27 @@ class DebankAppParser:
         self, item: DebankModelAppPortfolioItem, chain: Optional[Blockchain]
     ) -> Optional[DebankAppDeposit]:
         """Parse a deposit/common type portfolio item."""
+        parsed_tokens = [
+            self._parse_token(t.model_dump()) for t in item.asset_token_list or []
+        ]
+
         return DebankAppDeposit.from_api(
             name=item.name,
             asset_usd_value=item.stats.asset_usd_value,
             debt_usd_value=item.stats.debt_usd_value,
             net_usd_value=item.stats.net_usd_value,
-            tokens=item.asset_token_list,
+            tokens=[t for t in parsed_tokens if t is not None],
             chain=chain,
             position_index=item.position_index,
             update_at=item.update_at,
         )
+
+    def _parse_token(self, raw_token: dict) -> Optional[DebankDepositToken]:
+        try:
+            return DebankDepositToken.from_api(**raw_token)
+        except Exception as e:
+            logger.error(f'Failed to parse deposit token: {e}')
+            return None
 
 
 class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
