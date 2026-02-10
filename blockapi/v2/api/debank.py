@@ -5,7 +5,7 @@ from functools import lru_cache
 from typing import Dict, Iterable, List, Optional, Union
 
 import attr
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, ValidationError, validator
 
 from blockapi.utils.address import make_checksum_address
 from blockapi.utils.datetime import parse_dt
@@ -610,11 +610,7 @@ class DebankAppParser:
 
         apps = []
         for item in response:
-            try:
-                app = self._parse_app(item)
-            except Exception as e:
-                logger.error(f'Failed to parse app: {e}')
-                continue
+            app = self._parse_app(item)
             if app:
                 apps.append(app)
 
@@ -656,11 +652,7 @@ class DebankAppParser:
         self, item: DebankModelAppPortfolioItem, chain: Optional[Blockchain]
     ) -> Optional[DebankPrediction]:
         """Parse a prediction market position."""
-        try:
-            detail = DebankModelPredictionDetail(**item.detail)
-        except Exception as e:
-            logger.error(f'Failed to parse prediction detail: {e}')
-            return None
+        detail = DebankModelPredictionDetail(**item.detail)
 
         return DebankPrediction.from_api(
             prediction_name=detail.name,
@@ -696,11 +688,7 @@ class DebankAppParser:
         )
 
     def _parse_token(self, raw_token: dict) -> Optional[DebankDepositToken]:
-        try:
-            return DebankDepositToken.from_api(**raw_token)
-        except Exception as e:
-            logger.error(f'Failed to parse deposit token: {e}')
-            return None
+        return DebankDepositToken.from_api(**raw_token)
 
 
 class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
