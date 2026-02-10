@@ -1197,7 +1197,7 @@ class DebankModelPredictionDetail(BaseModel):
     event_end_at: Optional[float] = None
 
 
-class DebankDepositToken(BaseModel):
+class DebankModelDepositToken(BaseModel):
     """Token within deposit/common type portfolio items."""
 
     id: str
@@ -1218,7 +1218,7 @@ class DebankModelAppPortfolioItem(BaseModel):
     detail: dict
     position_index: str
     asset_dict: Optional[dict] = None
-    asset_token_list: list[DebankDepositToken] = Field(default_factory=list)
+    asset_token_list: list[DebankModelDepositToken] = Field(default_factory=list)
     update_at: Optional[float] = None
     proxy_detail: Optional[dict] = None
 
@@ -1278,6 +1278,39 @@ class DebankPrediction:
             chain=chain,
             position_index=position_index,
             update_at=parse_dt(update_at) if update_at is not None else None,
+        )
+
+
+@attr.s(auto_attribs=True, slots=True, frozen=True)
+class DebankDepositToken:
+    id: str
+    symbol: str
+    name: str
+    amount: Decimal
+    app_id: str
+    price: Decimal
+    logo_url: Optional[str]
+
+    @classmethod
+    def from_api(
+        cls,
+        *,
+        id: str,
+        symbol: str,
+        name: str,
+        amount: Union[str, float, int],
+        app_id: str,
+        price: Union[str, float, int],
+        logo_url: Optional[str] = None,
+    ) -> 'DebankDepositToken':
+        return cls(
+            id=id,
+            symbol=symbol,
+            name=name,
+            amount=to_decimal(amount),
+            app_id=app_id,
+            price=to_decimal(price),
+            logo_url=logo_url,
         )
 
 
