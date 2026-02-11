@@ -1204,6 +1204,7 @@ class DebankModelDepositToken(BaseModel):
     symbol: str
     name: str
     amount: float
+    decimals: int
     app_id: str
     price: float
     logo_url: Optional[str] = None
@@ -1287,6 +1288,7 @@ class DebankDepositToken:
     symbol: str
     name: str
     amount: Decimal
+    decimals: int
     app_id: str
     price: Decimal
     logo_url: Optional[str]
@@ -1299,6 +1301,7 @@ class DebankDepositToken:
         symbol: str,
         name: str,
         amount: Union[str, float, int],
+        decimals: int,
         app_id: str,
         price: Union[str, float, int],
         logo_url: Optional[str] = None,
@@ -1306,6 +1309,7 @@ class DebankDepositToken:
         return cls(
             id=id,
             symbol=symbol,
+            decimals=decimals,
             name=name,
             amount=to_decimal(amount),
             app_id=app_id,
