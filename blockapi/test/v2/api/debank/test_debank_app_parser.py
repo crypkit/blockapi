@@ -7,6 +7,7 @@ from blockapi.v2.api.debank import (
     DebankAppDeposit,
     DebankPrediction,
 )
+from blockapi.v2.coins import COIN_USDC
 from blockapi.v2.models import Blockchain
 
 
@@ -148,8 +149,8 @@ def test_parse_polymarket_deposits(debank_app_parser, polymarket_response):
 
     # Should have 1 token (USDC)
     assert len(deposit.tokens) == 1
-    assert deposit.tokens[0].symbol == "USDC"
-    assert deposit.token_symbols == ["USDC"]
+    assert deposit.tokens[0].symbol == COIN_USDC.symbol
+    assert deposit.tokens[0].coingecko_id == COIN_USDC.info.coingecko_id
 
 
 def test_parse_polymarket_predictions(debank_app_parser, polymarket_response):

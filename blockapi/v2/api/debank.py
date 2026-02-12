@@ -5,7 +5,7 @@ from functools import lru_cache
 from typing import Dict, Iterable, List, Optional, Union
 
 import attr
-from pydantic import BaseModel, ValidationError, validator
+from pydantic import BaseModel, validator
 
 from blockapi.utils.address import make_checksum_address
 from blockapi.utils.datetime import parse_dt
@@ -42,8 +42,10 @@ from blockapi.v2.models import (
     DebankModelAppPortfolioItem,
     DebankModelApp,
     DebankModelPredictionDetail,
+    DebankModelDepositToken,
     DebankDepositToken,
 )
+from blockapi.v2.coin_mapping import symbol_to_coin_map
 
 logger = logging.getLogger(__name__)
 
@@ -672,9 +674,7 @@ class DebankAppParser:
         self, item: DebankModelAppPortfolioItem, chain: Optional[Blockchain]
     ) -> Optional[DebankAppDeposit]:
         """Parse a deposit/common type portfolio item."""
-        parsed_tokens = [
-            self._parse_token(t.model_dump()) for t in item.asset_token_list or []
-        ]
+        parsed_tokens = [self._parse_token(t) for t in item.asset_token_list or []]
 
         return DebankAppDeposit.from_api(
             name=item.name,
@@ -687,7 +687,14 @@ class DebankAppParser:
             update_at=item.update_at,
         )
 
-    def _parse_token(self, raw_token: dict) -> Optional[DebankDepositToken]:
+    def _parse_token(
+        self, token: DebankModelDepositToken
+    ) -> Optional[DebankDepositToken]:
+        raw_token = token.model_dump()
+        coin = symbol_to_coin_map.get(token.symbol)
+        if coin and coin.info:
+            raw_token['coingecko_id'] = coin.info.coingecko_id
+
         return DebankDepositToken.from_api(**raw_token)
 
 

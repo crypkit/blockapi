@@ -1292,6 +1292,7 @@ class DebankDepositToken:
     app_id: str
     price: Decimal
     logo_url: Optional[str]
+    coingecko_id: Optional[CoingeckoId] = None
 
     @classmethod
     def from_api(
@@ -1305,6 +1306,7 @@ class DebankDepositToken:
         app_id: str,
         price: Union[str, float, int],
         logo_url: Optional[str] = None,
+        coingecko_id: Optional[CoingeckoId] = None,
     ) -> 'DebankDepositToken':
         return cls(
             id=id,
@@ -1315,6 +1317,7 @@ class DebankDepositToken:
             app_id=app_id,
             price=to_decimal(price),
             logo_url=logo_url,
+            coingecko_id=coingecko_id,
         )
 
 
@@ -1354,11 +1357,6 @@ class DebankAppDeposit:
             position_index=position_index,
             update_at=parse_dt(update_at) if update_at else None,
         )
-
-    @property
-    def token_symbols(self) -> list[str]:
-        """Get list of token symbols in this deposit."""
-        return [t.symbol for t in self.tokens]
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)

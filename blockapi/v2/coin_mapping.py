@@ -1,3 +1,6 @@
+import inspect
+
+from blockapi.v2 import coins as _coins_module
 from blockapi.v2.coins import (
     COIN_DAI,
     COIN_ETH,
@@ -7,6 +10,15 @@ from blockapi.v2.coins import (
     COIN_WETH,
 )
 from blockapi.v2.models import Blockchain, Coin
+
+# Dynamically collect all COIN_* variables from coins module
+coins: list[Coin] = [
+    obj
+    for name, obj in inspect.getmembers(_coins_module)
+    if name.startswith('COIN_') and isinstance(obj, Coin)
+]
+
+symbol_to_coin_map: dict[str, Coin] = {coin.symbol: coin for coin in coins}
 
 OPENSEA_COINS: dict[str, Coin] = {
     'ETH': COIN_ETH,
