@@ -8,7 +8,6 @@ from blockapi.v2.api.blockchair import (
 from blockapi.v2.api.debank import (
     DebankApi,
     DebankApp,
-    DebankAppDeposit,
     DebankPrediction,
 )
 from blockapi.v2.api.ethplorer import EthplorerApi
