@@ -1283,83 +1283,6 @@ class DebankPrediction:
 
 
 @attr.s(auto_attribs=True, slots=True, frozen=True)
-class DebankDepositToken:
-    id: str
-    symbol: str
-    name: str
-    amount: Decimal
-    decimals: int
-    app_id: str
-    price: Decimal
-    logo_url: Optional[str]
-    coingecko_id: Optional[CoingeckoId] = None
-
-    @classmethod
-    def from_api(
-        cls,
-        *,
-        id: str,
-        symbol: str,
-        name: str,
-        amount: Union[str, float, int],
-        decimals: int,
-        app_id: str,
-        price: Union[str, float, int],
-        logo_url: Optional[str] = None,
-        coingecko_id: Optional[CoingeckoId] = None,
-    ) -> 'DebankDepositToken':
-        return cls(
-            id=id,
-            symbol=symbol,
-            decimals=decimals,
-            name=name,
-            amount=to_decimal(amount),
-            app_id=app_id,
-            price=to_decimal(price),
-            logo_url=logo_url,
-            coingecko_id=coingecko_id,
-        )
-
-
-@attr.s(auto_attribs=True, slots=True, frozen=True)
-class DebankAppDeposit:
-    """Represents a deposit/holding within a Debank App (e.g., Polymarket cash deposit)."""
-
-    name: str
-    asset_usd_value: Decimal
-    debt_usd_value: Decimal
-    net_usd_value: Decimal
-    tokens: list[DebankDepositToken]
-    chain: Optional[Blockchain]
-    position_index: Optional[str]
-    update_at: Optional[datetime]
-
-    @classmethod
-    def from_api(
-        cls,
-        *,
-        name: str,
-        asset_usd_value: Union[str, float, int],
-        debt_usd_value: Union[str, float, int],
-        net_usd_value: Union[str, float, int],
-        position_index: str,
-        tokens: Optional[list[DebankDepositToken]] = None,
-        chain: Optional[Blockchain] = None,
-        update_at: Optional[Union[int, float]] = None,
-    ) -> 'DebankAppDeposit':
-        return cls(
-            name=name,
-            asset_usd_value=to_decimal(asset_usd_value),
-            debt_usd_value=to_decimal(debt_usd_value),
-            net_usd_value=to_decimal(net_usd_value),
-            tokens=tokens or [],
-            chain=chain,
-            position_index=position_index,
-            update_at=parse_dt(update_at) if update_at else None,
-        )
-
-
-@attr.s(auto_attribs=True, slots=True, frozen=True)
 class DebankApp:
     """Represents a Debank App with its deposits and predictions."""
 
@@ -1368,7 +1291,7 @@ class DebankApp:
     site_url: Optional[str]
     logo_url: Optional[str]
     has_supported_portfolio: bool
-    deposits: list[DebankAppDeposit]
+    deposits: list[BalanceItem]
     predictions: list[DebankPrediction]
 
     @classmethod
@@ -1380,7 +1303,7 @@ class DebankApp:
         site_url: Optional[str] = None,
         logo_url: Optional[str] = None,
         has_supported_portfolio: bool = False,
-        deposits: Optional[list[DebankAppDeposit]] = None,
+        deposits: Optional[list[BalanceItem]] = None,
         predictions: Optional[list[DebankPrediction]] = None,
     ) -> 'DebankApp':
         return cls(

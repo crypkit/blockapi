@@ -4,9 +4,9 @@ import pytest
 
 from blockapi.v2.api.debank import (
     DebankApp,
-    DebankAppDeposit,
     DebankPrediction,
 )
+from blockapi.v2.models import BalanceItem, AssetType
 from blockapi.v2.coins import COIN_USDC
 from blockapi.v2.models import Blockchain
 
@@ -130,7 +130,7 @@ def test_parse_polymarket_app(debank_app_parser, polymarket_response):
 
 
 def test_parse_polymarket_deposits(debank_app_parser, polymarket_response):
-    """Deposits should be parsed as DebankAppDeposit objects."""
+    """Deposits should be parsed as BalanceItem objects."""
 
     parsed_apps = debank_app_parser.parse(polymarket_response)
     app = parsed_apps[0]
@@ -139,18 +139,11 @@ def test_parse_polymarket_deposits(debank_app_parser, polymarket_response):
     assert len(app.deposits) == 1
     deposit = app.deposits[0]
 
-    assert isinstance(deposit, DebankAppDeposit)
-    assert deposit.name == "Deposit"
-    assert deposit.asset_usd_value == Decimal("290915.13432776055")
-    assert deposit.debt_usd_value == Decimal("0")
-    assert deposit.net_usd_value == Decimal("290915.13432776055")
-    assert deposit.position_index == "cash_0x5c23dead9ecf271448411096f349133e0bb9c465"
-    assert deposit.chain == Blockchain.POLYGON
-
-    # Should have 1 token (USDC)
-    assert len(deposit.tokens) == 1
-    assert deposit.tokens[0].symbol == COIN_USDC.symbol
-    assert deposit.tokens[0].coingecko_id == COIN_USDC.info.coingecko_id
+    assert isinstance(deposit, BalanceItem)
+    assert deposit.asset_type == AssetType.DEPOSITED
+    assert deposit.balance_raw == Decimal("290595.12768")
+    assert deposit.coin.symbol == COIN_USDC.symbol
+    assert deposit.coin.info.coingecko_id == COIN_USDC.info.coingecko_id
 
 
 def test_parse_polymarket_predictions(debank_app_parser, polymarket_response):
@@ -187,8 +180,8 @@ def test_parse_multiple_apps(debank_app_parser):
     """Test parsing multiple apps."""
     response = [
         {
-            "id": "app1",
-            "name": "App 1",
+            "id": "polymarket",
+            "name": "Polymarket",
             "has_supported_portfolio": True,
             "portfolio_item_list": [
                 {
@@ -212,8 +205,8 @@ def test_parse_multiple_apps(debank_app_parser):
             ],
         },
         {
-            "id": "app2",
-            "name": "App 2",
+            "id": "hyperliquid",
+            "name": "Hyperliquid",
             "has_supported_portfolio": False,
             "portfolio_item_list": [],
         },
@@ -221,5 +214,5 @@ def test_parse_multiple_apps(debank_app_parser):
 
     parsed_apps = debank_app_parser.parse(response)
     assert len(parsed_apps) == 2
-    assert parsed_apps[0].app_id == "app1"
-    assert parsed_apps[1].app_id == "app2"
+    assert parsed_apps[0].app_id == "polymarket"
+    assert parsed_apps[1].app_id == "hyperliquid"
