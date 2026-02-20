@@ -144,6 +144,7 @@ def test_parse_polymarket_deposits(debank_app_parser, polymarket_response):
     assert deposit.balance_raw == Decimal("290595.12768")
     assert deposit.coin.symbol == COIN_USDC.symbol
     assert deposit.coin.info.coingecko_id == COIN_USDC.info.coingecko_id
+    assert deposit.coin.blockchain == Blockchain.POLYGON
 
 
 def test_parse_polymarket_predictions(debank_app_parser, polymarket_response):
