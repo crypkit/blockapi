@@ -680,11 +680,19 @@ class DebankAppParser:
                 )
                 continue
 
+            coin_with_app_chain = Coin.from_api(
+                blockchain=chain,
+                decimals=coin.decimals,
+                name=coin.name,
+                symbol=coin.symbol,
+                info=coin.info,
+            )
+
             balance = BalanceItem.from_api(
                 balance=Decimal(token.amount),
                 balance_raw=token.amount,
                 asset_type=AssetType.DEPOSITED,
-                coin=coin,
+                coin=coin_with_app_chain,
                 raw=token.model_dump(),
                 last_updated=int(item.update_at) if item.update_at else None,
             )
