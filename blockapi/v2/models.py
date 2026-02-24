@@ -366,6 +366,7 @@ class Blockchain(str, Enum):
     ZKLINK_NOVA = 'zklink-nova'
     ZKSYNC_ERA = 'zksync-era'
     ZORA = 'zora'
+    ZCASH = 'zcash'
 
 
 class AssetType(str, Enum):
@@ -465,6 +466,7 @@ class CoingeckoId(str, Enum):
     WANCHAIN = 'wanchain'
     WETH = 'weth'
     XDAI = 'xdai'
+    ZCASH = 'zcash'
 
 
 class NftOfferDirection(str, Enum):
