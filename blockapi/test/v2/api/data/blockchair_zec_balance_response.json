@@ -1,0 +1,56 @@
+{
+  "data": {
+    "t1VShHAhsQc5RVndQLyM1ZbQXLHKd35GkG1": {
+      "address": {
+        "type": "pubkeyhash",
+        "script_hex": "76a9147eeb8313a6c3829217d83a28acb0433a3d6a2bb088ac",
+        "balance": 0,
+        "balance_usd": 0,
+        "received": 86045575425699,
+        "received_usd": 63287653.1927,
+        "spent": 86045575425699,
+        "spent_usd": 71941179.8958,
+        "output_count": 39,
+        "unspent_output_count": 0,
+        "first_seen_receiving": "2020-01-16 15:52:02",
+        "last_seen_receiving": "2021-01-14 08:21:02",
+        "first_seen_spending": "2020-01-16 16:15:27",
+        "last_seen_spending": "2021-02-09 10:30:52",
+        "scripthash_type": null,
+        "transaction_count": 49
+      },
+      "transactions": [
+        "6a8e7c951e76c6c5978125d66681798918a52140d1fe59bf67a5a971898e2972"
+      ],
+      "utxo": []
+    }
+  },
+  "context": {
+    "code": 200,
+    "source": "D",
+    "limit": "1,0",
+    "offset": "0,0",
+    "results": 1,
+    "state": 3251325,
+    "market_price_usd": 232.85,
+    "cache": {
+      "live": true,
+      "duration": 60,
+      "since": "2026-02-24 08:33:07",
+      "until": "2026-02-24 08:34:07",
+      "time": null
+    },
+    "api": {
+      "version": "2.0.95-ie",
+      "last_major_update": "2022-11-07 02:00:00",
+      "next_major_update": "2023-11-12 02:00:00",
+      "documentation": "https://blockchair.com/api/docs",
+      "notice": "Try out our new API v.3: https://3xpl.com/data"
+    },
+    "servers": "API4,ZEC6",
+    "time": 0.1000368595123291,
+    "render_time": 0.002936124801635742,
+    "full_time": 0.10297298431396484,
+    "request_cost": 1
+  }
+}

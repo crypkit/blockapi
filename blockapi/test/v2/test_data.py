@@ -6,6 +6,7 @@ import pytest
 from blockapi.v2.api import (
     BlockchairApi,
     BlockchairBitcoinApi,
+    BlockchairZcashApi,
     DebankApi,
     EthplorerApi,
     KusamaSubscanApi,
@@ -66,6 +67,8 @@ btc_test_address = '35hK24tcLEWcgNA4JxpvbkNkoAcDGqQPsP'
 xpub_test_address = 'xpub6CUGRUonZSQ4TWtTMmzXdrXDtypWKiKrhko4egpiMZbpiaQL2jkwSB1icqYh2cfDfVxdx4df189oLKnC5fSwqPfgyP3hooxujYzAu3fDVmz'
 # noinspection SpellCheckingInspection
 ltc_test_address = 'M8T1B2Z97gVdvmfkQcAtYbEepune1tzGua'
+# noinspection SpellCheckingInspection
+zec_test_address = 't1VShHAhsQc5RVndQLyM1ZbQXLHKd35GkG1'
 
 
 API_CLASSES = [
@@ -94,6 +97,7 @@ API_CLASSES = [
     SynthetixApi,
     PerpetualApi,
     BlockchairBitcoinApi,
+    BlockchairZcashApi,
 ]
 
 NON_EMPTY_VALID_ADDRESSES_BY_SYMBOL = {

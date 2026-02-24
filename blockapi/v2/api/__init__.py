@@ -4,6 +4,7 @@ from blockapi.v2.api.blockchair import (
     BlockchairBitcoinApi,
     BlockchairDogecoinApi,
     BlockchairLitecoinApi,
+    BlockchairZcashApi,
 )
 from blockapi.v2.api.debank import (
     DebankApi,

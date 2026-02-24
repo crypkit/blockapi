@@ -2,7 +2,7 @@ from abc import ABC
 from typing import Iterable, List
 
 from blockapi.v2.base import BalanceMixin, BlockchainApi, ITransactions
-from blockapi.v2.coins import COIN_BTC, COIN_DOGE, COIN_LTC
+from blockapi.v2.coins import COIN_BTC, COIN_DOGE, COIN_LTC, COIN_ZEC
 from blockapi.v2.models import (
     ApiOptions,
     AssetType,
@@ -214,3 +214,11 @@ class BlockchairLitecoinApi(BlockchairApi):
     )
 
     coin = COIN_LTC
+
+
+class BlockchairZcashApi(BlockchairApi):
+    api_options = ApiOptions(
+        blockchain=Blockchain.ZCASH, base_url='https://api.blockchair.com/zcash/'
+    )
+
+    coin = COIN_ZEC

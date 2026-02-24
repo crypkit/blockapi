@@ -1,0 +1,122 @@
+{
+  "data": {
+    "6a8e7c951e76c6c5978125d66681798918a52140d1fe59bf67a5a971898e2972": {
+      "transaction": {
+        "block_id": 1141386,
+        "id": 7908246,
+        "hash": "6a8e7c951e76c6c5978125d66681798918a52140d1fe59bf67a5a971898e2972",
+        "date": "2021-02-09",
+        "time": "2021-02-09 10:30:52",
+        "size": 211,
+        "is_overwintered": true,
+        "version": 4,
+        "version_group_id": "892f2085",
+        "lock_time": 0,
+        "expiry_height": 0,
+        "is_coinbase": false,
+        "input_count": 1,
+        "output_count": 1,
+        "input_total": 24798858683800,
+        "input_total_usd": 24377278,
+        "output_total": 24798858681688,
+        "output_total_usd": 24377278,
+        "fee": 2112,
+        "fee_usd": 0.0020760961,
+        "fee_per_kb": 10009.479,
+        "fee_per_kb_usd": 0.009839318,
+        "cdd_total": 6470062.41393925,
+        "shielded_value_delta": 0,
+        "join_split_raw": [],
+        "shielded_input_raw": [],
+        "shielded_output_raw": [],
+        "binding_signature": null
+      },
+      "inputs": [
+        {
+          "block_id": 1111495,
+          "transaction_id": 7747234,
+          "index": 0,
+          "transaction_hash": "44a382c2bcb0c11f68f9d563e5dd0743c932609ac569f25c5f2b329af830d2db",
+          "date": "2021-01-14",
+          "time": "2021-01-14 08:21:02",
+          "value": 24798858683800,
+          "value_usd": 29252734,
+          "recipient": "t1VShHAhsQc5RVndQLyM1ZbQXLHKd35GkG1",
+          "type": "pubkeyhash",
+          "script_hex": "76a9147eeb8313a6c3829217d83a28acb0433a3d6a2bb088ac",
+          "is_from_coinbase": false,
+          "is_spendable": null,
+          "is_spent": true,
+          "spending_block_id": 1141386,
+          "spending_transaction_id": 7908246,
+          "spending_index": 0,
+          "spending_transaction_hash": "6a8e7c951e76c6c5978125d66681798918a52140d1fe59bf67a5a971898e2972",
+          "spending_date": "2021-02-09",
+          "spending_time": "2021-02-09 10:30:52",
+          "spending_value_usd": 24377278,
+          "spending_sequence": 0,
+          "spending_signature_hex": "4830450221009cca94c8f9c3a61dee8f39d5ecdf3ad9ef69077433ca802a1304bab90203e6de02203ba9d7f785aa2e2e811777a62d310ac97f6a10e4b578660907bf3dc3dce8bd9901210287af8d590dc70beb740ae397a82520aa43bc2402ddb2ae7bfb08bf7529dec59d",
+          "spending_witness": "",
+          "lifespan": 2254190,
+          "cdd": 6470047.1032407405
+        }
+      ],
+      "outputs": [
+        {
+          "block_id": 1141386,
+          "transaction_id": 7908246,
+          "index": 0,
+          "transaction_hash": "6a8e7c951e76c6c5978125d66681798918a52140d1fe59bf67a5a971898e2972",
+          "date": "2021-02-09",
+          "time": "2021-02-09 10:30:52",
+          "value": 24798858681688,
+          "value_usd": 24377278,
+          "recipient": "t1Mda6nGyo4RJCxYeyaUnKK9Pawn87tryZm",
+          "type": "pubkeyhash",
+          "script_hex": "76a914293916aa174a7ecb2937eea3a815a1848d54030d88ac",
+          "is_from_coinbase": false,
+          "is_spendable": null,
+          "is_spent": true,
+          "spending_block_id": 1147511,
+          "spending_transaction_id": 7952752,
+          "spending_index": 0,
+          "spending_transaction_hash": "95908e3f076586b6b078923fedabfbbf13ee883f8c36ca57d61e82e087ed5450",
+          "spending_date": "2021-02-14",
+          "spending_time": "2021-02-14 18:46:19",
+          "spending_value_usd": 43559192,
+          "spending_sequence": 0,
+          "spending_signature_hex": "483045022100d062b71d5d312dfaccb67ae716e59336cc99b1e3d9cabafe7be1a012b25f64cd022057f95d61aa89c0f01aa58091c4d6f7b794c04f1c76bb1d881323646fa0ffe912012102764e8daf92b61d83be7d2e5274d2b2737d2712b14f30c2d2a281a95b4e248e93",
+          "spending_witness": "",
+          "lifespan": 461727,
+          "cdd": 1325263.37125
+        }
+      ]
+    }
+  },
+  "context": {
+    "code": 200,
+    "source": "D",
+    "results": 1,
+    "state": 3251330,
+    "market_price_usd": 232.85,
+    "cache": {
+      "live": true,
+      "duration": 120,
+      "since": "2026-02-24 08:38:07",
+      "until": "2026-02-24 08:40:07",
+      "time": null
+    },
+    "api": {
+      "version": "2.0.95-ie",
+      "last_major_update": "2022-11-07 02:00:00",
+      "next_major_update": "2023-11-12 02:00:00",
+      "documentation": "https://blockchair.com/api/docs",
+      "notice": "Try out our new API v.3: https://3xpl.com/data"
+    },
+    "servers": "API4,ZEC6",
+    "time": 0.016633033752441406,
+    "render_time": 0.04509282112121582,
+    "full_time": 0.06172585487365723,
+    "request_cost": 1
+  }
+}
