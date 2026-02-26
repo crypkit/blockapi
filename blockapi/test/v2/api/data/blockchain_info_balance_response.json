@@ -1,0 +1,39 @@
+{
+  "wallet": {
+    "n_tx": 420,
+    "n_tx_filtered": 420,
+    "total_received": 27990552126396,
+    "total_sent": 27990552062033,
+    "final_balance": 64363
+  },
+  "addresses": [
+    {
+      "address": "35hK24tcLEWcgNA4JxpvbkNkoAcDGqQPsP",
+      "n_tx": 420,
+      "total_received": 27990552126396,
+      "total_sent": 27990552062033,
+      "final_balance": 64363
+    }
+  ],
+  "txs": [],
+  "info": {
+    "nconnected": 0,
+    "conversion": 100000000.00000000,
+    "symbol_local": {
+      "code": "USD",
+      "symbol": "$",
+      "name": "U.S. dollar",
+      "conversion": 67813.48,
+      "symbolAppearsAfter": false,
+      "local": true
+    },
+    "symbol_btc": {
+      "code": "BTC",
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "conversion": 100000000.00000000,
+      "symbolAppearsAfter": true,
+      "local": false
+    }
+  }
+}
