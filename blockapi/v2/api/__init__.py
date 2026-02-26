@@ -5,11 +5,7 @@ from blockapi.v2.api.blockchair import (
     BlockchairDogecoinApi,
     BlockchairLitecoinApi,
 )
-from blockapi.v2.api.debank import (
-    DebankApi,
-    DebankApp,
-    DebankPrediction,
-)
+from blockapi.v2.api.debank import DebankApi, DebankApp, DebankPrediction
 from blockapi.v2.api.ethplorer import EthplorerApi
 from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
 from blockapi.v2.api.perpetual import PerpetualApi, perp_contract_address
@@ -21,4 +17,5 @@ from blockapi.v2.api.trezor import (
     TrezorBitcoin1Api,
     TrezorBitcoin2Api,
     TrezorLitecoinApi,
+    TrezorZcashApi,
 )

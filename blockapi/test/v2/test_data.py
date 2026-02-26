@@ -66,6 +66,8 @@ btc_test_address = '35hK24tcLEWcgNA4JxpvbkNkoAcDGqQPsP'
 xpub_test_address = 'xpub6CUGRUonZSQ4TWtTMmzXdrXDtypWKiKrhko4egpiMZbpiaQL2jkwSB1icqYh2cfDfVxdx4df189oLKnC5fSwqPfgyP3hooxujYzAu3fDVmz'
 # noinspection SpellCheckingInspection
 ltc_test_address = 'M8T1B2Z97gVdvmfkQcAtYbEepune1tzGua'
+# noinspection SpellCheckingInspection
+zec_test_address = 't1KstBMLVrYoHN5jrq5hKNGgERC1NodvfnS'
 
 
 API_CLASSES = [
