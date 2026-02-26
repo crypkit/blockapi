@@ -45,9 +45,13 @@ class TrezorApi(BlockchainApi, ITransactions, BalanceMixin, ABC):
         if not fetch_result.data:
             return ParseResult()
 
+        balance_raw = fetch_result.data.get('balance')
+        if not balance_raw or balance_raw == '0':
+            return ParseResult()
+
         balances = [
             BalanceItem.from_api(
-                balance_raw=fetch_result.data.get('balance'),
+                balance_raw=balance_raw,
                 coin=self.coin,
                 asset_type=AssetType.AVAILABLE,
                 raw=fetch_result.data,
