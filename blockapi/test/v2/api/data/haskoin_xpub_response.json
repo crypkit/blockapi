@@ -1,0 +1,12 @@
+{
+  "balance": {
+    "confirmed": 12706308,
+    "unconfirmed": 0,
+    "received": 13049640,
+    "utxo": 24
+  },
+  "indices": {
+    "change": 1,
+    "external": 131
+  }
+}
