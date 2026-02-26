@@ -1,3 +1,4 @@
+from blockapi.v2.api.blockchain_info import BlockchainInfoApi
 from blockapi.v2.api.blockchainos import BlockchainosApi
 from blockapi.v2.api.blockchair import (
     BlockchairApi,
@@ -5,12 +6,9 @@ from blockapi.v2.api.blockchair import (
     BlockchairDogecoinApi,
     BlockchairLitecoinApi,
 )
-from blockapi.v2.api.debank import (
-    DebankApi,
-    DebankApp,
-    DebankPrediction,
-)
+from blockapi.v2.api.debank import DebankApi, DebankApp, DebankPrediction
 from blockapi.v2.api.ethplorer import EthplorerApi
+from blockapi.v2.api.haskoin import HaskoinApi
 from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
 from blockapi.v2.api.perpetual import PerpetualApi, perp_contract_address
 from blockapi.v2.api.solana import SolanaApi, SolscanApi
