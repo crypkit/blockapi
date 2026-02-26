@@ -1,3 +1,4 @@
+from blockapi.v2.api.blockchain_info import BlockchainInfoApi
 from blockapi.v2.api.blockchainos import BlockchainosApi
 from blockapi.v2.api.blockchair import (
     BlockchairApi,
