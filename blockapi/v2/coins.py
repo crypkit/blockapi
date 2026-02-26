@@ -505,3 +505,11 @@ COIN_SUI = Coin(
     address="0x2::sui::SUI",
     info=CoinInfo(coingecko_id=CoingeckoId.SUI),
 )
+
+COIN_ZEC = Coin(
+    symbol='ZEC',
+    name='Zcash',
+    decimals=8,
+    blockchain=Blockchain.ZCASH,
+    info=CoinInfo(coingecko_id=CoingeckoId.ZCASH),
+)

@@ -3,7 +3,7 @@ from typing import List
 
 from blockapi.utils.user_agent import get_random_user_agent
 from blockapi.v2.base import BalanceMixin, BlockchainApi, ITransactions
-from blockapi.v2.coins import COIN_BTC, COIN_LTC
+from blockapi.v2.coins import COIN_BTC, COIN_LTC, COIN_ZEC
 from blockapi.v2.models import (
     ApiOptions,
     AssetType,
@@ -21,7 +21,7 @@ from blockapi.v2.models import (
 
 class TrezorApi(BlockchainApi, ITransactions, BalanceMixin, ABC):
     """
-    Coins: Bitcoin, Litecoin
+    Coins: Bitcoin, Litecoin, Zcash
     API docs: https://github.com/trezor/blockbook/blob/master/docs/api.md
     Explorer:
     """
@@ -45,9 +45,13 @@ class TrezorApi(BlockchainApi, ITransactions, BalanceMixin, ABC):
         if not fetch_result.data:
             return ParseResult()
 
+        balance_raw = fetch_result.data.get('balance')
+        if not balance_raw or balance_raw == '0':
+            return ParseResult()
+
         balances = [
             BalanceItem.from_api(
-                balance_raw=fetch_result.data.get('balance'),
+                balance_raw=balance_raw,
                 coin=self.coin,
                 asset_type=AssetType.AVAILABLE,
                 raw=fetch_result.data,
@@ -127,4 +131,13 @@ class TrezorLitecoinApi(TrezorApi):
         blockchain=Blockchain.LITECOIN,
         base_url='https://ltc1.trezor.io',
         rate_limit=0,
+    )
+
+
+class TrezorZcashApi(TrezorApi):
+    coin = COIN_ZEC
+    api_options = ApiOptions(
+        blockchain=Blockchain.ZCASH,
+        base_url='https://blockbook.zec.zelcore.io',
+        rate_limit=1.0,
     )

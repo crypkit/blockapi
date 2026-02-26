@@ -5,10 +5,10 @@ from enum import Enum
 from typing import Dict, List, Literal, Optional, Union
 
 import attr
+from pydantic import BaseModel, Field
 
 from blockapi.utils.datetime import parse_dt
 from blockapi.utils.num import raw_to_decimals, to_decimal, to_int
-from pydantic import BaseModel, Field
 
 UNKNOWN = 'unknown'
 
@@ -359,6 +359,7 @@ class Blockchain(str, Enum):
     YOCOIN = 'yocoin'
     ZEDXION = 'zedxion'
     ZERO = 'zero'
+    ZCASH = 'zcash'
     ZETA_CHAIN = 'zetachain'
     ZILLIQA = 'zilliqa'
     ZIRCUIT = 'zircuit'
@@ -465,6 +466,7 @@ class CoingeckoId(str, Enum):
     WANCHAIN = 'wanchain'
     WETH = 'weth'
     XDAI = 'xdai'
+    ZCASH = 'zcash'
 
 
 class NftOfferDirection(str, Enum):
