@@ -1,13 +1,10 @@
-import base64
 import json
 import logging
 import os
-from typing import Dict, Iterable, Optional, Set
+from typing import Dict, List, Optional, Set
 
-import requests
 from cytoolz import reduceby
 from requests import HTTPError, Response
-from solders.pubkey import Pubkey
 
 from blockapi.utils.user_agent import get_random_user_agent
 from blockapi.v2.base import (
@@ -24,7 +21,6 @@ from blockapi.v2.models import (
     BalanceItem,
     Blockchain,
     Coin,
-    CoinContract,
     CoinInfo,
     FetchResult,
     ParseResult,
@@ -32,19 +28,9 @@ from blockapi.v2.models import (
 
 logger = logging.getLogger(__name__)
 
-SOL_TOKEN_LIST_URL = os.getenv(
-    'BLOCKAPI_SOL_TOKEN_LIST_URL', 'https://token-list-api.solana.cloud/v1/list'
-)
-JUP_AG_TOKEN_LIST_URL = os.getenv(
-    'BLOCKAPI_JUP_AG_TOKEN_LIST_URL',
-    'https://raw.githubusercontent.com/jup-ag/token-list/main/validated-tokens.csv',
-)
 JUP_AG_BAN_LIST_URL = os.getenv(
     'BLOCKAPI_JUP_AG_BAN_LIST_URL',
     'https://raw.githubusercontent.com/jup-ag/token-list/main/banned-tokens.csv',
-)
-SONAR_TOKEN_LIST_URL = os.getenv(
-    'BLOCKAPI_SONAR_TOKEN_LIST_URL', 'https://lively-pine-1ccc.swob.workers.dev/solana'
 )
 
 
@@ -68,25 +54,13 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
     token_program_id = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
     token2022_program_id = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
-    METADATA_PROGRAM_ID = Pubkey.from_string(
-        "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
-    )
 
-    _tokens_map: Optional[Dict[str, Dict]] = None
     _ban_list: Optional[Set[str]] = None
+    _das_cache: Dict[str, Optional[dict]] = {}
 
-    def __init__(self, base_url: Optional[str] = None, fetch_metaplex: bool = True):
+    def __init__(self, base_url: Optional[str] = None, include_nfts: bool = False):
         super().__init__(base_url)
-        self.fetch_metaplex = fetch_metaplex
-
-    @property
-    def tokens_map(self) -> Dict[str, Dict]:
-        if self._tokens_map is None:
-            map_jup_ag = self._get_token_map_jup_ag()
-            map_solana = self._get_token_map_solana()
-            self._tokens_map = {**map_jup_ag, **map_solana}
-
-        return self._tokens_map
+        self.include_nfts = include_nfts
 
     def _get_from_url(self, url: str):
         try:
@@ -97,49 +71,6 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             return
 
         return response
-
-    def _get_token_map_solana(self) -> Dict[str, Dict]:
-        response = self._get_from_url(SOL_TOKEN_LIST_URL)
-        if not response:
-            return {}
-
-        token_list = response.json()
-        return {t['address']: t for t in token_list['content'] if t['chainId'] == 101}
-
-    def _get_token_map_jup_ag(self) -> Dict[str, Dict]:
-        response = self._get_from_url(JUP_AG_TOKEN_LIST_URL)
-        if not response:
-            return {}
-
-        csv_rows = response.text.split('\n')
-        header = csv_rows[0].split(',')
-        rows = [
-            {header[i]: v for i, v in enumerate(row.split(','))} for row in csv_rows[1:]
-        ]
-
-        return {
-            r['Mint']: {
-                'address': r['Mint'],
-                'chainId': 101,
-                'name': r['Name'],
-                'symbol': r['Symbol'],
-                'verified': True,
-                'decimals': r['Decimals'],
-                'logoURI': r['LogoURI'],
-                'tags': [],
-                'extensions': {},
-            }
-            for r in rows
-            if 'Mint' in r
-        }
-
-    def _get_token_map_sonar(self) -> Dict[str, Dict]:
-        response = self._get_from_url(SONAR_TOKEN_LIST_URL)
-        if not response:
-            return {}
-
-        token_list = response.json()
-        return {t['address']: t for t in token_list['tokens'] if t['chainId'] == 101}
 
     @property
     def ban_list(self) -> set[str]:
@@ -152,6 +83,70 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             ban_list = response.text.strip().split('\n')
             self._ban_list = set(i.split(',')[0] for i in ban_list[1:])
         return self._ban_list
+
+    def _fetch_das_assets(self, mint_addresses: List[str]) -> None:
+        """Batch-fetch token metadata via DAS and populate cache."""
+        uncached = [m for m in mint_addresses if m not in self._das_cache]
+        if not uncached:
+            return
+
+        chunk_size = 1000
+        for i in range(0, len(uncached), chunk_size):
+            chunk = uncached[i : i + chunk_size]
+            try:
+                response = self._request(
+                    'getAssetBatch',
+                    {'ids': chunk, 'options': {'showFungible': True}},
+                )
+                results = response.get('result', [])
+                fetched_ids = set()
+                for asset in results:
+                    if not asset:
+                        continue
+
+                    mint = asset.get('id')
+                    if mint:
+                        self._das_cache[mint] = asset
+                        fetched_ids.add(mint)
+
+                # Mark unfound mints as None so we don't re-fetch
+                for mint in chunk:
+                    if mint not in fetched_ids:
+                        self._das_cache[mint] = None
+            except Exception as e:
+                logger.warning('DAS getAssetBatch failed: %s', e)
+
+    def _get_coin_from_das(self, address: str) -> Optional[Coin]:
+        asset = self._das_cache.get(address)
+        if not asset:
+            return None
+
+        content = asset.get('content', {})
+        metadata = content.get('metadata', {})
+        token_info = asset.get('token_info', {})
+        links = content.get('links', {})
+
+        symbol = metadata.get('symbol') or token_info.get('symbol')
+        if not symbol:
+            return None
+
+        standards = ['SPL']
+        interface = asset.get('interface', '')
+        if interface:
+            standards.append(interface)
+
+        return Coin(
+            symbol=symbol,
+            name=metadata.get('name', ''),
+            decimals=token_info.get('decimals', 0),
+            blockchain=Blockchain.SOLANA,
+            address=address,
+            standards=standards,
+            info=CoinInfo.from_api(
+                logo_url=links.get('image'),
+                tags=metadata.get('attributes'),
+            ),
+        )
 
     def fetch_balances(self, address: str) -> FetchResult:
         data = self._request(method='getBalance', params=[address])
@@ -186,10 +181,18 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
     def get_coin(self, fetch_params: tuple[str, int]) -> Coin:
         contract, decimals = fetch_params
-        if contract not in self.tokens_map:
-            self.update_token_from_metaplex(contract, decimals=decimals, force=True)
+        self._fetch_das_assets([contract])
 
-        return self.get_token_data(contract)
+        coin = self._get_coin_from_das(contract)
+        if not coin:
+            coin = Coin.from_api(
+                blockchain=Blockchain.SOLANA,
+                decimals=decimals,
+                address=contract,
+                standards=['SPL'],
+            )
+
+        return coin
 
     def _fetch_staked_sol(self, address: str) -> dict:
         return self._request(
@@ -240,8 +243,11 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             )
             balances.append(rent_reserve_balance)
 
-        token_balances = list(self._yield_token_balances(raw_token_balances))
-        token_balances.extend(self._yield_token_balances(raw_token2022_balances))
+        all_raw = (
+            raw_token_balances['result']['value']
+            + raw_token2022_balances['result']['value']
+        )
+        token_balances = self._parse_token_balances(all_raw)
 
         if token_balances:
             merged_token_balances = self.merge_balances_with_same_coin(token_balances)
@@ -304,11 +310,27 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             raw=responses,
         )
 
-    def _yield_token_balances(self, response: dict) -> Iterable[BalanceItem]:
-        for raw_balance in response['result']['value']:
-            balance = self._parse_token_balance(raw_balance)
+    def _parse_token_balances(self, raw_balances: List[Dict]) -> List[BalanceItem]:
+        # Batch-fetch all token metadata via DAS
+        mint_addresses = list(
+            {
+                raw['account']['data']['parsed']['info']['mint']
+                for raw in raw_balances
+                if int(
+                    raw['account']['data']['parsed']['info']['tokenAmount']['amount']
+                )
+                > 0
+            }
+        )
+        if mint_addresses:
+            self._fetch_das_assets(mint_addresses)
+
+        balances = []
+        for raw in raw_balances:
+            balance = self._parse_token_balance(raw)
             if balance is not None:
-                yield balance
+                balances.append(balance)
+        return balances
 
     def _parse_token_balance(self, raw: Dict) -> Optional[BalanceItem]:
         info = raw['account']['data']['parsed']['info']
@@ -321,141 +343,25 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         if address in self.ban_list:
             return
 
-        # TODO unknown token is for 99% NFT, add loading NFT metadata using metaplex
-        #  token account
-        # TODO move fetching tokens_map to fetch
-        if address not in self.tokens_map:
-            self.update_token_from_metaplex(
-                address, decimals=info['tokenAmount']['decimals']
+        coin = self._get_coin_from_das(address)
+        if not coin:
+            coin = Coin.from_api(
+                blockchain=Blockchain.SOLANA,
+                decimals=info['tokenAmount']['decimals'],
+                address=address,
+                standards=['SPL'],
             )
 
-        coin = self.get_token_data(address)
-        contract = None
-        if not coin:
-            contract = CoinContract.from_api(
-                blockchain=Blockchain.SOLANA,
-                contract=address,
-                decimals=int(info['tokenAmount']['decimals']),
-            )
+        if coin.is_nft and not self.include_nfts:
+            return
+
+        asset_type = AssetType.NFT if coin.is_nft else AssetType.AVAILABLE
 
         return BalanceItem.from_api(
             balance_raw=info['tokenAmount']['amount'],
             coin=coin,
-            coin_contract=contract,
+            asset_type=asset_type,
             raw=raw,
-        )
-
-    def get_token_data(self, address: str) -> Optional[Coin]:
-        raw_token = self.tokens_map.get(address)
-        if not raw_token:
-            return None
-
-        extensions = raw_token.get('extensions', {})
-
-        return Coin(
-            symbol=raw_token['symbol'],
-            name=raw_token['name'],
-            decimals=raw_token['decimals'],
-            blockchain=Blockchain.SOLANA if raw_token['chainId'] == 101 else None,
-            address=address,
-            standards=['SPL'],
-            info=CoinInfo.from_api(
-                tags=raw_token.get('tags'),
-                logo_url=raw_token.get('logoURI'),
-                # TODO sometimes coingeckoId is not mapped correctly
-                # coingecko_id=extensions.get('coingeckoId'),
-                website=extensions.get('website'),
-            ),
-        )
-
-    def update_token_from_metaplex(
-        self, address: str, decimals: int, force: bool = False
-    ) -> bool:
-        if not self.fetch_metaplex and not force:
-            return False
-
-        pda = self.get_metadata_pda(address)
-        content = self.fetch_metaplex_account(pda)
-        token = self.parse_metaplex_account(content, decimals)
-        if not token or not token.get('symbol'):
-            return False
-
-        self.tokens_map[address] = token
-        return True
-
-    def get_metadata_pda(self, mint_address: str) -> str:
-        """
-        Derives Metaplex metadata address from mint address
-
-        :param mint_address: Token mint to get metadata for, e.g. `8ZperFA2cciv2rN2YC1QC3YjkuGcTQYiq9vc9aKmdoWM`
-        :return: Token metadata account
-        """
-        return str(
-            Pubkey.find_program_address(
-                [
-                    b"metadata",
-                    bytes(self.METADATA_PROGRAM_ID),
-                    bytes(Pubkey.from_string(mint_address)),
-                ],
-                self.METADATA_PROGRAM_ID,
-            )[0]
-        )
-
-    def fetch_metaplex_account(self, metadata_pda: str) -> Optional[str]:
-        """
-        Fetch and validate metaplex account content
-        :param metadata_pda: address of metadata account
-        :return: base64 encoded account content
-        """
-        response = self._request(
-            'getAccountInfo', [metadata_pda, {"encoding": "base64"}]
-        )
-        value = response['result']['value']
-        if value:
-            data = value['data'][0]
-            if value['data'][1] != 'base64':
-                return None
-
-            if value['owner'] != 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s':
-                return None
-
-            return data
-
-        return None
-
-    def parse_metaplex_account(self, content: str, decimals: int) -> Optional[dict]:
-        if not content:
-            return None
-
-        raw = base64.b64decode(content)
-
-        url = raw[119:255].decode('utf-8').rstrip('\x00')
-        try:
-            data = requests.get(url)
-        except Exception as e:
-            logger.exception(e)
-            data = None
-
-        if data:
-            try:
-                data.raise_for_status()
-                parsed = data.json()
-                return dict(
-                    name=parsed.get('name'),
-                    symbol=parsed.get('symbol'),
-                    tags=parsed.get('tags'),
-                    logoURI=parsed.get('image'),
-                    decimals=decimals,
-                    chainId=101,
-                )
-            except Exception as e:
-                logger.exception(e)
-
-        return dict(
-            name=raw[69:101].decode('utf-8').rstrip('\x00'),
-            symbol=raw[105:115].decode('utf-8').rstrip('\x00'),
-            decimals=decimals,
-            chainId=101,
         )
 
     def _request(self, method, params):

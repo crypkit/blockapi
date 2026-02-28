@@ -5,12 +5,23 @@ from enum import Enum
 from typing import Dict, List, Literal, Optional, Union
 
 import attr
+from pydantic import BaseModel, Field
 
 from blockapi.utils.datetime import parse_dt
 from blockapi.utils.num import raw_to_decimals, to_decimal, to_int
-from pydantic import BaseModel, Field
 
 UNKNOWN = 'unknown'
+
+NFT_STANDARDS = frozenset(
+    {
+        'NFT',
+        'V1_NFT',
+        'V2_NFT',
+        'ProgrammableNFT',
+        'MplCoreAsset',
+        'MplCoreCollection',
+    }
+)
 
 
 class Blockchain(str, Enum):
@@ -552,6 +563,12 @@ class Coin:
     standards: Optional[List[str]] = attr.ib(default=None)
     protocol_id: Optional[str] = attr.ib(default=None)
     info: Optional[CoinInfo] = attr.ib(default=None)
+
+    @property
+    def is_nft(self) -> bool:
+        if not self.standards:
+            return False
+        return bool(set(self.standards) & NFT_STANDARDS)
 
     @classmethod
     def from_api(
