@@ -1,4 +1,3 @@
-import json
 from decimal import Decimal
 from unittest.mock import patch
 
@@ -77,8 +76,7 @@ def test_use_base_url():
 
 
 def test_use_base_url_in_post(
-    solana_value_response,
-    solana_response,
+    das_assets_by_owner_response,
     staked_solana_response,
     rent_reserve_solana_response,
     ban_list_jup_ag_response,
@@ -87,13 +85,9 @@ def test_use_base_url_in_post(
 
     iterator = iter(
         [
-            solana_value_response,
-            solana_response,
-            '{"result": {"value": []}}',
+            das_assets_by_owner_response,
             staked_solana_response,
             rent_reserve_solana_response,
-            # DAS getAssetBatch response
-            '{"result": []}',
         ]
     )
 
@@ -109,9 +103,9 @@ def test_use_base_url_in_post(
         api.get_balance(test_addr)
 
 
-def test_get_coin_from_das():
+def test_build_coin_from_das_asset():
     api = SolanaApi()
-    api._das_cache['J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn'] = {
+    asset = {
         'id': 'J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn',
         'interface': 'FungibleToken',
         'content': {
@@ -129,7 +123,7 @@ def test_get_coin_from_das():
         },
     }
 
-    coin = api._get_coin_from_das('J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn')
+    coin = api._build_coin_from_das_asset(asset)
     assert coin.symbol == 'JITOSOL'
     assert coin.name == 'Jito Staked SOL'
     assert coin.decimals == 9
@@ -142,7 +136,7 @@ def test_get_coin_from_das():
 
 def test_nft_skipped_when_include_nfts_false():
     api = SolanaApi(include_nfts=False)
-    api._das_cache['NFTmint123'] = {
+    asset = {
         'id': 'NFTmint123',
         'interface': 'V1_NFT',
         'content': {
@@ -157,14 +151,14 @@ def test_nft_skipped_when_include_nfts_false():
         },
     }
 
-    coin = api._get_coin_from_das('NFTmint123')
+    coin = api._build_coin_from_das_asset(asset)
     assert coin is not None
     assert coin.is_nft is True
 
 
 def test_nft_included_when_include_nfts_true():
     api = SolanaApi(include_nfts=True)
-    api._das_cache['NFTmint123'] = {
+    asset = {
         'id': 'NFTmint123',
         'interface': 'V1_NFT',
         'content': {
@@ -181,7 +175,7 @@ def test_nft_included_when_include_nfts_true():
         },
     }
 
-    coin = api._get_coin_from_das('NFTmint123')
+    coin = api._build_coin_from_das_asset(asset)
     assert coin is not None
     assert coin.symbol == 'CNFT'
     assert coin.name == 'Cool NFT'
@@ -364,13 +358,8 @@ def balances_with_mixed_coins():
 
 
 @pytest.fixture
-def solana_response():
-    return read_file('data/solana/solana_response.json')
-
-
-@pytest.fixture
-def solana_value_response():
-    return json.dumps(dict(result=dict(value=0)))
+def das_assets_by_owner_response():
+    return read_file('data/solana/das_get_assets_by_owner_response.json')
 
 
 @pytest.fixture
