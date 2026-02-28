@@ -1,18 +1,13 @@
 import json
 from decimal import Decimal
+from unittest.mock import patch
 
 import pytest
 from requests_mock import ANY, Mocker
-from solders.pubkey import Pubkey
 
 from blockapi.test.v2.api.conftest import read_file
 from blockapi.v2.api import SolanaApi, SolscanApi
-from blockapi.v2.api.solana import (
-    JUP_AG_BAN_LIST_URL,
-    JUP_AG_TOKEN_LIST_URL,
-    SOL_TOKEN_LIST_URL,
-    SONAR_TOKEN_LIST_URL,
-)
+from blockapi.v2.api.solana import JUP_AG_BAN_LIST_URL
 from blockapi.v2.models import (
     AssetType,
     BalanceItem,
@@ -21,6 +16,13 @@ from blockapi.v2.models import (
     CoinContract,
     CoinInfo,
 )
+
+
+@pytest.fixture(autouse=True)
+def _reset_das_cache():
+    SolanaApi._das_cache = {}
+    yield
+    SolanaApi._das_cache = {}
 
 
 def test_merge_balances_with_different_coins(solana_api, balances_with_different_coins):
@@ -79,9 +81,6 @@ def test_use_base_url_in_post(
     solana_response,
     staked_solana_response,
     rent_reserve_solana_response,
-    token_list_sol_response,
-    token_list_jup_ag_response,
-    token_list_sonar_response,
     ban_list_jup_ag_response,
 ):
     test_addr = '5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu'
@@ -93,6 +92,8 @@ def test_use_base_url_in_post(
             '{"result": {"value": []}}',
             staked_solana_response,
             rent_reserve_solana_response,
+            # DAS getAssetBatch response
+            '{"result": []}',
         ]
     )
 
@@ -102,52 +103,107 @@ def test_use_base_url_in_post(
         return data
 
     with Mocker() as m:
-        m.get(SOL_TOKEN_LIST_URL, text=token_list_sol_response)
-        m.get(JUP_AG_TOKEN_LIST_URL, text=token_list_jup_ag_response)
-        m.get(SONAR_TOKEN_LIST_URL, text=token_list_sonar_response)
         m.get(JUP_AG_BAN_LIST_URL, text=ban_list_jup_ag_response)
         m.post(ANY, text=get_text),
-        api = SolanaApi(base_url='https://proxy/solana/', fetch_metaplex=False)
+        api = SolanaApi(base_url='https://proxy/solana/')
         api.get_balance(test_addr)
 
 
-def test_create_token(
-    requests_mock,
-    token_list_sol_response,
-    token_list_jup_ag_response,
-    token_list_sonar_response,
-    ban_list_jup_ag_response,
-):
-    requests_mock.get(SOL_TOKEN_LIST_URL, text=token_list_sol_response)
-    requests_mock.get(JUP_AG_TOKEN_LIST_URL, text=token_list_jup_ag_response)
-    requests_mock.get(SONAR_TOKEN_LIST_URL, text=token_list_sonar_response)
-    requests_mock.get(JUP_AG_BAN_LIST_URL, text=ban_list_jup_ag_response)
+def test_get_coin_from_das():
+    api = SolanaApi()
+    api._das_cache['J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn'] = {
+        'id': 'J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn',
+        'interface': 'FungibleToken',
+        'content': {
+            'metadata': {
+                'name': 'Jito Staked SOL',
+                'symbol': 'JITOSOL',
+            },
+            'links': {
+                'image': 'https://example.com/jitosol.png',
+            },
+        },
+        'token_info': {
+            'decimals': 9,
+            'symbol': 'JITOSOL',
+        },
+    }
 
-    coin = SolanaApi().get_token_data('J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn')
+    coin = api._get_coin_from_das('J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn')
     assert coin.symbol == 'JITOSOL'
     assert coin.name == 'Jito Staked SOL'
     assert coin.decimals == 9
     assert coin.blockchain == Blockchain.SOLANA
     assert coin.address == 'J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn'
+    assert coin.info.logo_url == 'https://example.com/jitosol.png'
+    assert coin.is_nft is False
+    assert 'FungibleToken' in coin.standards
 
 
-def test_map_mplx_token(
-    requests_mock,
-    token_list_sol_response,
-    token_list_jup_ag_response,
-    token_list_sonar_response,
-    ban_list_jup_ag_response,
-):
-    requests_mock.get(SOL_TOKEN_LIST_URL, text=token_list_sol_response)
-    requests_mock.get(JUP_AG_TOKEN_LIST_URL, text=token_list_jup_ag_response)
-    requests_mock.get(SONAR_TOKEN_LIST_URL, text=token_list_sonar_response)
-    requests_mock.get(JUP_AG_BAN_LIST_URL, text=ban_list_jup_ag_response)
+def test_nft_skipped_when_include_nfts_false():
+    api = SolanaApi(include_nfts=False)
+    api._das_cache['NFTmint123'] = {
+        'id': 'NFTmint123',
+        'interface': 'V1_NFT',
+        'content': {
+            'metadata': {
+                'name': 'Cool NFT',
+                'symbol': 'CNFT',
+            },
+            'links': {},
+        },
+        'token_info': {
+            'decimals': 0,
+        },
+    }
 
-    coin = SolanaApi().get_token_data('METAewgxyPbgwsseH8T16a39CQ5VyVxZi9zXiDPY18m')
-    assert coin.symbol == 'MPLX'
-    assert coin.decimals == 6
-    assert coin.blockchain == Blockchain.SOLANA
-    assert coin.address == 'METAewgxyPbgwsseH8T16a39CQ5VyVxZi9zXiDPY18m'
+    coin = api._get_coin_from_das('NFTmint123')
+    assert coin is not None
+    assert coin.is_nft is True
+
+
+def test_nft_included_when_include_nfts_true():
+    api = SolanaApi(include_nfts=True)
+    api._das_cache['NFTmint123'] = {
+        'id': 'NFTmint123',
+        'interface': 'V1_NFT',
+        'content': {
+            'metadata': {
+                'name': 'Cool NFT',
+                'symbol': 'CNFT',
+            },
+            'links': {
+                'image': 'https://example.com/nft.png',
+            },
+        },
+        'token_info': {
+            'decimals': 0,
+        },
+    }
+
+    coin = api._get_coin_from_das('NFTmint123')
+    assert coin is not None
+    assert coin.symbol == 'CNFT'
+    assert coin.name == 'Cool NFT'
+    assert coin.is_nft is True
+    assert 'V1_NFT' in coin.standards
+
+
+def test_das_cache_prevents_refetch():
+    api = SolanaApi()
+    # Pre-populate cache
+    api._das_cache['mint1'] = {
+        'id': 'mint1',
+        'interface': 'FungibleToken',
+        'content': {'metadata': {'name': 'Token1', 'symbol': 'TK1'}, 'links': {}},
+        'token_info': {'decimals': 6},
+    }
+    api._das_cache['mint2'] = None  # Already looked up, not found
+
+    # _fetch_das_assets should skip both cached mints
+    with patch.object(api, '_request') as mock_request:
+        api._fetch_das_assets(['mint1', 'mint2'])
+        mock_request.assert_not_called()
 
 
 def test_solscan_get_staked_balance(requests_mock, solscan_staked_response):
@@ -328,21 +384,6 @@ def rent_reserve_solana_response():
 
 
 @pytest.fixture
-def token_list_sol_response():
-    return read_file('data/solana/token-list-solana.json')
-
-
-@pytest.fixture
-def token_list_jup_ag_response():
-    return read_file('data/solana/token-list-jup-ag.csv')
-
-
-@pytest.fixture
-def token_list_sonar_response():
-    return read_file('data/solana/token-list-sonar.json')
-
-
-@pytest.fixture
 def ban_list_jup_ag_response():
     return read_file('data/solana/ban-list-jup-ag.csv')
 
@@ -504,53 +545,6 @@ def balances_with_different_coins():
             is_wallet=True,
         ),
     ]
-
-
-def test_derive_metaplex_account_address_from_mint(solana_api):
-    mint = 'C2PxCHLeDkp1BsG1uueu7aGEfXQkKoXxzTgMPQ5DA6QW'
-    metadata = solana_api.get_metadata_pda(mint)
-
-    assert metadata == '3G5bT5bgpdwiUbYHfoBSe6SDAwiQaTKc3TFGks7bA3Qw'
-
-
-@pytest.mark.vcr()
-def test_fetch_metaplex_account(solana_api, metaplex_content):
-    data = solana_api.fetch_metaplex_account(
-        '3G5bT5bgpdwiUbYHfoBSe6SDAwiQaTKc3TFGks7bA3Qw'
-    )
-    assert data == metaplex_content
-
-
-@pytest.mark.vcr()
-def test_parse_metaplex_account(solana_api, metaplex_content):
-    token = solana_api.parse_metaplex_account(metaplex_content, decimals=9)
-    assert token['symbol'] == 'ACT'
-    assert token['name'] == 'Act I : The AI Prophecy'
-    assert token['decimals'] == 9
-    assert token['chainId'] == 101
-    assert token['tags'] == ['SOLANA', 'MEME']
-    assert (
-        token['logoURI']
-        == 'https://gateway.pinata.cloud/ipfs/QmS4m4cBjukg7YhimqhfRUb2pUE4bBPXbrbMBb5hzxNbUA'
-    )
-
-
-@pytest.fixture
-def metaplex_content():
-    return (
-        'BJ5okXRntUEewuGiuQOIMWt8+YkvFnY7/DoghPyz5qwNo8wWpzohlcKPjWIDCl3nggGst3'
-        'CeFvU+P1wA6yNMhm8gAAAAQWN0IEkgOiBUaGUgQUkgUHJvcGhlY3kAAAAAAAAAAAAKAAAA'
-        'QUNUAAAAAAAAAMgAAABodHRwczovL2dhdGV3YXkucGluYXRhLmNsb3VkL2lwZnMvUW1WZk'
-        '1QQ1VQczVWMW9tYUR2b25pMzh3OGFFSnBGVGpFWlJOUm1vVnlleFhXZQAAAAAAAAAAAAAA'
-        'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
-        'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
-        'AAAAAAAAAAAAAf4BAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
-        'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
-        'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
-        'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
-        'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
-        'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=='
-    )
 
 
 def test_merge_balances_contract_merge(solana_api):
