@@ -1,10 +1,12 @@
 import json
 import logging
 import os
-from typing import Dict, List, Optional, Set
+import time
+from typing import Optional
 
 from cytoolz import reduceby
-from requests import HTTPError, Response
+from requests import Response
+from requests.exceptions import RequestException
 
 from blockapi.utils.user_agent import get_random_user_agent
 from blockapi.v2.base import (
@@ -35,12 +37,23 @@ JUP_AG_BAN_LIST_URL = os.getenv(
 
 
 class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
-    """
-    Solana RPC
+    """Solana JSON-RPC client with DAS metadata integration.
+
     API docs: https://docs.solana.com/apps/jsonrpc-api
+
+    Caching architecture
+    --------------------
+    ``_das_cache`` and ``_ban_list`` are **class-level** attributes shared
+    across all instances.  This is intentional: DAS metadata and the Jupiter
+    ban list are global, rarely change, and expensive to re-fetch.  Sharing
+    them avoids redundant RPC/HTTP calls when multiple ``SolanaApi`` instances
+    coexist (e.g. one per user request in a web service).
+
+    ``_ban_list`` is additionally governed by a TTL (``BAN_LIST_TTL_SECONDS``)
+    so that stale data is periodically refreshed.
     """
 
-    # ── Class configuration ───────────────────────────────────────
+    # ── Configuration ──────────────────────────────────────────
 
     coin = COIN_SOL
     api_options = ApiOptions(
@@ -54,223 +67,179 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     # API uses post requests
     supported_requests = {}
 
-    _ban_list: Optional[Set[str]] = None
-    _das_cache: Dict[str, Optional[dict]] = {}
+    _JSONRPC_INVALID_PARAMS = -32602
 
-    # ── Initialization ────────────────────────────────────────────
+    TOKEN_PROGRAM_ID = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
+    TOKEN_2022_PROGRAM_ID = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
+
+    DAS_BATCH_SIZE = 1000
+    STAKE_PROGRAM_ID = 'Stake11111111111111111111111111111111111111'
+    STAKE_AUTHORITY_OFFSET = 44
+
+    # Class-level cache: shared across instances to avoid redundant DAS RPCs.
+    _das_cache: dict[str, dict] = {}
+
+    # Class-level ban list: shared across instances, refreshed via TTL.
+    _ban_list: Optional[set[str]] = None
+    _ban_list_fetched_at: float = 0.0
+    BAN_LIST_TTL_SECONDS: int = 3600
+
+    # ── Initialization ─────────────────────────────────────────
 
     def __init__(self, base_url: Optional[str] = None, include_nfts: bool = False):
         super().__init__(base_url)
         self.include_nfts = include_nfts
+        self._request_id = 0
 
-    # ── Public interface (BalanceMixin contract) ──────────────────
+    # ── Balance API ────────────────────────────────────────────
 
     def fetch_balances(self, address: str) -> FetchResult:
-        das_response = self._fetch_das_assets_by_owner(address)
+        """Fetch native SOL, token accounts, DAS metadata, and staking data."""
+        sol_response = self._request('getBalance', [address])
+
+        raw_token_balances = self._request(
+            'getTokenAccountsByOwner',
+            [
+                address,
+                {'programId': self.TOKEN_PROGRAM_ID},
+                {'encoding': 'jsonParsed'},
+            ],
+        )
+        raw_token2022_balances = self._request(
+            'getTokenAccountsByOwner',
+            [
+                address,
+                {'programId': self.TOKEN_2022_PROGRAM_ID},
+                {'encoding': 'jsonParsed'},
+            ],
+        )
+
+        mint_addresses = self._collect_mint_addresses(
+            raw_token_balances, raw_token2022_balances
+        )
+        self._fetch_das_assets(mint_addresses)
+
         raw_staked_sol = self._fetch_staked_sol(address)
-        raw_rent_reserve = self._fetch_stake_rent_reserve(raw_staked_sol)
+        raw_rent_reserve = self._fetch_stake_account_balances(raw_staked_sol)
 
         return FetchResult(
-            data=das_response,
+            data=sol_response,
             extra=dict(
+                raw_token_balances=raw_token_balances,
+                raw_token2022_balances=raw_token2022_balances,
                 raw_staked_sol=raw_staked_sol,
                 raw_rent_reserve=raw_rent_reserve,
             ),
         )
 
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
+        """Parse fetched data into a list of BalanceItems."""
         raw_staked_sol = fetch_result.extra['raw_staked_sol']
         raw_rent_reserve = fetch_result.extra['raw_rent_reserve']
 
-        das_result = fetch_result.data.get('result', {})
-        das_items = das_result.get('items', [])
-        native_balance_info = das_result.get('nativeBalance', {})
-
         balances = []
-        if sol_balance := self._get_sol_balance_from_das(native_balance_info):
+
+        if sol_balance := self._parse_sol_balance(fetch_result.data):
             balances.append(sol_balance)
 
-        if staked_sol_balance := self._get_staked_sol_balance(raw_staked_sol):
+        if staked_sol_balance := self._parse_staked_balance(raw_staked_sol):
             balances.append(staked_sol_balance)
             balances.append(
-                self._get_stake_rent_reserve(staked_sol_balance, raw_rent_reserve)
+                self._parse_rent_reserve(staked_sol_balance, raw_rent_reserve)
             )
 
+        all_raw_tokens = fetch_result.extra['raw_token_balances'].get('result', {}).get(
+            'value', []
+        ) + fetch_result.extra['raw_token2022_balances'].get('result', {}).get(
+            'value', []
+        )
         token_balances = [
             b
-            for item in das_items
-            if (b := self._parse_das_token_balance(item)) is not None
+            for raw in all_raw_tokens
+            if (b := self._parse_token_balance(raw)) is not None
         ]
+
         if token_balances:
             balances.extend(self.merge_balances_with_same_coin(token_balances))
 
         return ParseResult(data=balances)
 
-    # ── Other public methods ──────────────────────────────────────
-
     def get_coin(self, fetch_params: tuple[str, int]) -> Coin:
+        """Fetch and build a Coin for a given contract address and decimals."""
         contract, decimals = fetch_params
         self._fetch_das_assets([contract])
-
-        asset = self._das_cache.get(contract)
-        coin = self._build_coin_from_das_asset(asset) if asset else None
-        if not coin:
-            coin = Coin.from_api(
-                blockchain=Blockchain.SOLANA,
-                decimals=decimals,
-                address=contract,
-                standards=['SPL'],
-            )
-
-        return coin
-
-    # ── Properties ────────────────────────────────────────────────
+        return self._resolve_coin(contract, decimals)
 
     @property
     def ban_list(self) -> set[str]:
-        if self._ban_list is None:
+        """Return the set of banned token mints from Jupiter."""
+        now = time.monotonic()
+        if (
+            self._ban_list is None
+            or now >= self._ban_list_fetched_at + self.BAN_LIST_TTL_SECONDS
+        ):
             response = self._get_from_url(JUP_AG_BAN_LIST_URL)
             if not response:
                 self._ban_list = set()
-                return self.ban_list
-
-            ban_list = response.text.strip().split('\n')
-            self._ban_list = set(i.split(',')[0] for i in ban_list[1:])
+            else:
+                ban_list = response.text.strip().split('\n')
+                self._ban_list = set(i.split(',')[0] for i in ban_list[1:])
+            SolanaApi._ban_list_fetched_at = now
         return self._ban_list
 
-    # ── Private: DAS fetching ─────────────────────────────────────
-
-    def _fetch_das_assets_by_owner(self, address: str) -> dict:
-        all_items = []
-        native_balance = None
-        page = 1
-        while True:
-            response = self._request(
-                'getAssetsByOwner',
-                {
-                    'ownerAddress': address,
-                    'page': page,
-                    'limit': 1000,
-                    'displayOptions': {
-                        'showFungible': True,
-                        'showNativeBalance': True,
-                    },
-                },
-            )
-            result = response.get('result', {})
-            items = result.get('items', [])
-
-            all_items.extend(items)
-            if native_balance is None:
-                native_balance = result.get('nativeBalance', {})
-
-            if len(items) < 1000:
-                break
-            page += 1
-
-        return {'result': {'items': all_items, 'nativeBalance': native_balance or {}}}
-
-    def _fetch_das_assets(self, mint_addresses: List[str]) -> None:
-        """Batch-fetch token metadata via DAS and populate cache."""
-        uncached = [m for m in mint_addresses if m not in self._das_cache]
-        if not uncached:
-            return
-
-        chunk_size = 1000
-        for i in range(0, len(uncached), chunk_size):
-            chunk = uncached[i : i + chunk_size]
-            try:
-                response = self._request(
-                    'getAssetBatch',
-                    {'ids': chunk, 'options': {'showFungible': True}},
-                )
-                results = response.get('result', [])
-                fetched_ids = set()
-                for asset in results:
-                    if not asset:
-                        continue
-
-                    mint = asset.get('id')
-                    if mint:
-                        self._das_cache[mint] = asset
-                        fetched_ids.add(mint)
-
-                # Mark unfound mints as None so we don't re-fetch
-                for mint in chunk:
-                    if mint not in fetched_ids:
-                        self._das_cache[mint] = None
-            except Exception as e:
-                logger.warning('DAS getAssetBatch failed: %s', e)
-
-    # ── Private: Staking fetching ─────────────────────────────────
-
-    def _fetch_staked_sol(self, address: str) -> dict:
-        return self._request(
-            method='getProgramAccounts',
-            params=[
-                'Stake11111111111111111111111111111111111111',
-                {
-                    'filters': [
-                        {
-                            'memcmp': {
-                                'offset': 44,
-                                'bytes': address,
-                                "encoding": 'base58',
-                            }
-                        }
-                    ],
-                    'encoding': 'jsonParsed',
-                    'dataSlice': None,
-                    'commitment': 'finalized',
-                    'minContextSlot': None,
-                    'withContext': None,
-                },
-            ],
+    @staticmethod
+    def merge_balances_with_same_coin(
+        token_balances: list[BalanceItem],
+    ) -> list[BalanceItem]:
+        """Merge token balances that share the same coin address."""
+        return list(
+            reduceby(
+                key=lambda b: b.coin.address if b.coin else b.coin_contract.contract,
+                binop=lambda v1, v2: v1 + v2,
+                seq=token_balances,
+            ).values()
         )
 
-    def _fetch_stake_rent_reserve(self, raw_staked_sol: dict) -> list[dict]:
-        stake_accounts = [r['pubkey'] for r in raw_staked_sol['result']]
-        results = []
-        for a in stake_accounts:
-            results.append(self._request(method='getBalance', params=[a]))
+    # ── Token processing ───────────────────────────────────────
 
-        return results
+    def _collect_mint_addresses(self, *token_responses: dict) -> list[str]:
+        """Collect mint addresses from token account responses, filtering banned tokens."""
+        mints = []
+        ban = self.ban_list
+        for response in token_responses:
+            for account in response.get('result', {}).get('value', []):
+                info = self._extract_token_info(account)
+                amount = int(info.get('tokenAmount', {}).get('amount', 0))
+                mint = info.get('mint', '')
+                if amount > 0 and mint and mint not in ban:
+                    mints.append(mint)
+        return mints
 
-    # ── Private: Parsing & coin building ──────────────────────────
+    def _resolve_coin(self, mint: str, decimals: int) -> Coin:
+        """Resolve a Coin for a mint address, trying DAS cache first."""
+        if das_asset := self._das_cache.get(mint):
+            return self._build_coin_from_das_asset(das_asset)
 
-    def _get_sol_balance_from_das(
-        self,
-        native_balance_info: dict,
-    ) -> Optional[BalanceItem]:
-        lamports = native_balance_info.get('lamports', 0)
-        if int(lamports) == 0:
-            return None
-
-        return BalanceItem.from_api(
-            balance_raw=lamports,
-            coin=self.coin,
-            last_updated=None,
-            raw={'nativeBalance': native_balance_info},
+        return Coin.from_api(
+            blockchain=Blockchain.SOLANA,
+            decimals=decimals,
+            address=mint,
+            standards=['SPL'],
         )
 
-    def _parse_das_token_balance(self, item: dict) -> Optional[BalanceItem]:
-        token_info = item.get('token_info', {})
-        balance_raw = token_info.get('balance', 0)
-        if int(balance_raw) == 0:
+    def _parse_token_balance(self, raw: dict) -> Optional[BalanceItem]:
+        """Parse a single token account into a BalanceItem."""
+        info = self._extract_token_info(raw)
+        token_amount = info.get('tokenAmount', {})
+        balance_raw = int(token_amount.get('amount', 0))
+        if balance_raw == 0:
             return None
 
-        mint_address = item.get('id', '')
-        if mint_address in self.ban_list:
+        mint = info.get('mint', '')
+        if mint in self.ban_list:
             return None
 
-        coin = self._build_coin_from_das_asset(item)
-        if not coin:
-            coin = Coin.from_api(
-                blockchain=Blockchain.SOLANA,
-                decimals=token_info.get('decimals', 0),
-                address=mint_address,
-                standards=['SPL'],
-            )
+        coin = self._resolve_coin(mint, int(token_amount.get('decimals', 0)))
 
         if coin.is_nft and not self.include_nfts:
             return None
@@ -281,10 +250,42 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             balance_raw=balance_raw,
             coin=coin,
             asset_type=asset_type,
-            raw=item,
+            raw=raw,
         )
 
+    @staticmethod
+    def _extract_token_info(account: dict) -> dict:
+        """Extract parsed token info from an account response."""
+        return (
+            account.get('account', {}).get('data', {}).get('parsed', {}).get('info', {})
+        )
+
+    # ── DAS integration ────────────────────────────────────────
+
+    def _fetch_das_assets(self, mint_addresses: list[str]) -> None:
+        """Batch-fetch token metadata via DAS and populate cache."""
+        uncached = [m for m in mint_addresses if m not in self._das_cache]
+        if not uncached:
+            return
+
+        for i in range(0, len(uncached), self.DAS_BATCH_SIZE):
+            chunk = uncached[i : i + self.DAS_BATCH_SIZE]
+            try:
+                response = self._request(
+                    'getAssetBatch',
+                    {'ids': chunk, 'options': {'showFungible': True}},
+                )
+            except (ApiException, RequestException) as e:
+                logger.warning('DAS getAssetBatch failed: %s', e)
+                continue
+
+            results = response.get('result', [])
+            for asset in results:
+                if mint := asset.get('id'):
+                    self._das_cache[mint] = asset
+
     def _build_coin_from_das_asset(self, asset: dict) -> Optional[Coin]:
+        """Build a Coin from a DAS asset response."""
         content = asset.get('content', {})
         metadata = content.get('metadata', {})
         token_info = asset.get('token_info', {})
@@ -301,10 +302,10 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
         return Coin(
             symbol=symbol,
-            name=metadata.get('name', ''),
+            name=metadata.get('name') or 'unknown',
             decimals=token_info.get('decimals', 0),
             blockchain=Blockchain.SOLANA,
-            address=asset.get('id', ''),
+            address=asset.get('id'),
             standards=standards,
             info=CoinInfo.from_api(
                 logo_url=links.get('image'),
@@ -312,9 +313,59 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             ),
         )
 
-    def _get_staked_sol_balance(self, response: dict) -> Optional[BalanceItem]:
-        if not response['result']:
-            return
+    # ── Staking ────────────────────────────────────────────────
+
+    def _fetch_staked_sol(self, address: str) -> dict:
+        """Fetch staked SOL accounts for a given address."""
+        return self._request(
+            method='getProgramAccounts',
+            params=[
+                self.STAKE_PROGRAM_ID,
+                {
+                    'filters': [
+                        {
+                            'memcmp': {
+                                'offset': self.STAKE_AUTHORITY_OFFSET,
+                                'bytes': address,
+                                'encoding': 'base58',
+                            }
+                        }
+                    ],
+                    'encoding': 'jsonParsed',
+                    'commitment': 'finalized',
+                },
+            ],
+        )
+
+    def _fetch_stake_account_balances(self, raw_staked_sol: dict) -> dict:
+        """Fetch balances for all stake accounts in a single RPC call."""
+        stake_accounts = [r['pubkey'] for r in raw_staked_sol.get('result', [])]
+        if not stake_accounts:
+            return {'result': {'value': []}}
+        return self._request(
+            method='getMultipleAccounts',
+            params=[stake_accounts],
+        )
+
+    # ── Balance parsing ────────────────────────────────────────
+
+    def _parse_sol_balance(self, response: dict) -> Optional[BalanceItem]:
+        """Parse native SOL balance from an RPC response."""
+        lamports = response.get('result', {}).get('value', 0)
+        if int(lamports) == 0:
+            return None
+
+        return BalanceItem.from_api(
+            balance_raw=lamports,
+            coin=self.coin,
+            last_updated=None,
+            raw=response,
+        )
+
+    def _parse_staked_balance(self, response: dict) -> Optional[BalanceItem]:
+        """Parse total staked SOL balance from stake accounts."""
+        if not response.get('result'):
+            return None
 
         balance_raw = sum(
             int(r['account']['data']['parsed']['info']['stake']['delegation']['stake'])
@@ -328,62 +379,63 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             raw=response['result'],
         )
 
-    def _get_stake_rent_reserve(
-        self, staked_sol: BalanceItem, responses: list[dict]
+    def _parse_rent_reserve(
+        self, staked_sol: BalanceItem, response: dict
     ) -> BalanceItem:
-        total_raw = sum(r['result']['value'] for r in responses)
+        """Parse rent reserve balance from getMultipleAccounts response."""
+        accounts = response.get('result', {}).get('value', [])
+        total_raw = sum(a.get('lamports', 0) for a in accounts if a is not None)
         available_raw = total_raw - int(staked_sol.balance_raw)
 
         return BalanceItem.from_api(
             balance_raw=available_raw,
             coin=self.coin,
             asset_type=AssetType.LOCKED,
-            raw=responses,
+            raw=response,
         )
 
-    # ── Static methods ────────────────────────────────────────────
-
-    @staticmethod
-    def merge_balances_with_same_coin(
-        token_balances: list[BalanceItem],
-    ) -> list[BalanceItem]:
-        return list(
-            reduceby(
-                key=lambda b: b.coin.address if b.coin else b.coin_contract.contract,
-                binop=lambda v1, v2: v1 + v2,
-                seq=token_balances,
-            ).values()
-        )
-
-    # ── Infrastructure ────────────────────────────────────────────
+    # ── Infrastructure ─────────────────────────────────────────
 
     def _request(self, method, params):
+        """Send a JSON-RPC request to the Solana RPC endpoint."""
+        self._request_id += 1
         body = json.dumps(
-            {'jsonrpc': '2.0', 'id': 1, 'method': method, 'params': params}
+            {
+                'jsonrpc': '2.0',
+                'id': self._request_id,
+                'method': method,
+                'params': params,
+            }
         )
         return self.post(body=body, headers={'Content-Type': 'application/json'})
 
-    def _get_from_url(self, url: str):
+    def _get_from_url(self, url: str) -> Optional[Response]:
+        """Perform a GET request to an external URL."""
         try:
             response = self._session.get(url)
             response.raise_for_status()
-        except HTTPError as e:
+        except RequestException as e:
             logger.error(e)
-            return
+            return None
 
         return response
 
-    # ── Base class overrides ──────────────────────────────────────
-
     def _opt_raise_on_other_error(self, response: Response) -> None:
+        """Raise ApiException or InvalidAddressException on RPC errors."""
         json_response = response.json()
         if 'error' not in json_response:
             return
 
-        if 'Invalid param' in json_response['error']['message']:
-            raise InvalidAddressException(f'Invalid address format.')
+        error = json_response['error']
+        message = error.get('message', '')
+
+        if (
+            error.get('code') == self._JSONRPC_INVALID_PARAMS
+            or 'Invalid param' in message
+        ):
+            raise InvalidAddressException('Invalid address format.')
         else:
-            raise ApiException(json_response['error']['message'])
+            raise ApiException(message)
 
 
 class SolscanApi(BlockchainApi):
@@ -407,7 +459,6 @@ class SolscanApi(BlockchainApi):
         if not response['data']:
             return
 
-        # return only delegated or all types?
         balance_raw = sum(int(i['amount']) for i in response['data'].values())
 
         return BalanceItem.from_api(

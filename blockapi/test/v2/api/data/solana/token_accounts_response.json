@@ -1,0 +1,249 @@
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "context": { "apiVersion": "1.17.34", "slot": 268207149 },
+    "value": [
+      {
+        "account": {
+          "data": {
+            "parsed": {
+              "info": {
+                "isNative": false,
+                "mint": "uJGFtU8ovkZxRKF6mAepPZAPAdWc1hqH5eVqv51VJgW",
+                "owner": "5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu",
+                "state": "initialized",
+                "tokenAmount": { "amount": "35", "decimals": 0, "uiAmount": 35.0, "uiAmountString": "35" }
+              },
+              "type": "account"
+            },
+            "program": "spl-token",
+            "space": 165
+          },
+          "executable": false,
+          "lamports": 2039280,
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "rentEpoch": 332,
+          "space": 165
+        },
+        "pubkey": "ATA1111111111111111111111111111111111111111"
+      },
+      {
+        "account": {
+          "data": {
+            "parsed": {
+              "info": {
+                "isNative": false,
+                "mint": "8JkkqifBHyVhcT3QVKjXqLMc44tf37Xhf5D2LjPk1BUA",
+                "owner": "5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu",
+                "state": "initialized",
+                "tokenAmount": { "amount": "1", "decimals": 0, "uiAmount": 1.0, "uiAmountString": "1" }
+              },
+              "type": "account"
+            },
+            "program": "spl-token",
+            "space": 165
+          },
+          "executable": false,
+          "lamports": 2039280,
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "rentEpoch": 332,
+          "space": 165
+        },
+        "pubkey": "ATA2222222222222222222222222222222222222222"
+      },
+      {
+        "account": {
+          "data": {
+            "parsed": {
+              "info": {
+                "isNative": false,
+                "mint": "96LDaaK9Kkif8NYAAGTDSuhabJNLz1825gG59VUXFx7r",
+                "owner": "5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu",
+                "state": "initialized",
+                "tokenAmount": { "amount": "27585", "decimals": 0, "uiAmount": 27585.0, "uiAmountString": "27585" }
+              },
+              "type": "account"
+            },
+            "program": "spl-token",
+            "space": 165
+          },
+          "executable": false,
+          "lamports": 2039280,
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "rentEpoch": 332,
+          "space": 165
+        },
+        "pubkey": "ATA3333333333333333333333333333333333333333"
+      },
+      {
+        "account": {
+          "data": {
+            "parsed": {
+              "info": {
+                "isNative": false,
+                "mint": "bYKsXoAnXzSNVoEQvtdVDY8t64bRSDKFtZV1wj8ZtcG",
+                "owner": "5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu",
+                "state": "initialized",
+                "tokenAmount": { "amount": "1", "decimals": 0, "uiAmount": 1.0, "uiAmountString": "1" }
+              },
+              "type": "account"
+            },
+            "program": "spl-token",
+            "space": 165
+          },
+          "executable": false,
+          "lamports": 2039280,
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "rentEpoch": 332,
+          "space": 165
+        },
+        "pubkey": "ATA4444444444444444444444444444444444444444"
+      },
+      {
+        "account": {
+          "data": {
+            "parsed": {
+              "info": {
+                "isNative": false,
+                "mint": "AsvEpga8NW8ce6EqRi3LvS2QYwZPVGJ6vhiW7jcqhRyq",
+                "owner": "5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu",
+                "state": "initialized",
+                "tokenAmount": { "amount": "23545", "decimals": 0, "uiAmount": 23545.0, "uiAmountString": "23545" }
+              },
+              "type": "account"
+            },
+            "program": "spl-token",
+            "space": 165
+          },
+          "executable": false,
+          "lamports": 2039280,
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "rentEpoch": 332,
+          "space": 165
+        },
+        "pubkey": "ATA5555555555555555555555555555555555555555"
+      },
+      {
+        "account": {
+          "data": {
+            "parsed": {
+              "info": {
+                "isNative": false,
+                "mint": "53W6Fj721wuNRf9SjW7idTo7qSWJGNB3MJdtYvjYktbR",
+                "owner": "5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu",
+                "state": "initialized",
+                "tokenAmount": { "amount": "100000000", "decimals": 8, "uiAmount": 1.0, "uiAmountString": "1" }
+              },
+              "type": "account"
+            },
+            "program": "spl-token",
+            "space": 165
+          },
+          "executable": false,
+          "lamports": 2039280,
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "rentEpoch": 332,
+          "space": 165
+        },
+        "pubkey": "ATA6666666666666666666666666666666666666666"
+      },
+      {
+        "account": {
+          "data": {
+            "parsed": {
+              "info": {
+                "isNative": false,
+                "mint": "EdeEUKCB2Xf9mz6GnQ7VnvXyPdMQrSMrip1y4cE4ARkz",
+                "owner": "5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu",
+                "state": "initialized",
+                "tokenAmount": { "amount": "28204", "decimals": 0, "uiAmount": 28204.0, "uiAmountString": "28204" }
+              },
+              "type": "account"
+            },
+            "program": "spl-token",
+            "space": 165
+          },
+          "executable": false,
+          "lamports": 2039280,
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "rentEpoch": 332,
+          "space": 165
+        },
+        "pubkey": "ATA7777777777777777777777777777777777777777"
+      },
+      {
+        "account": {
+          "data": {
+            "parsed": {
+              "info": {
+                "isNative": false,
+                "mint": "dC8LqZvMntwaL1AiaxL5MSycMnoLuDqN8ou7tmDxtdH",
+                "owner": "5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu",
+                "state": "initialized",
+                "tokenAmount": { "amount": "25184", "decimals": 0, "uiAmount": 25184.0, "uiAmountString": "25184" }
+              },
+              "type": "account"
+            },
+            "program": "spl-token",
+            "space": 165
+          },
+          "executable": false,
+          "lamports": 2039280,
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "rentEpoch": 332,
+          "space": 165
+        },
+        "pubkey": "ATA8888888888888888888888888888888888888888"
+      },
+      {
+        "account": {
+          "data": {
+            "parsed": {
+              "info": {
+                "isNative": false,
+                "mint": "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE",
+                "owner": "5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu",
+                "state": "initialized",
+                "tokenAmount": { "amount": "133333350000", "decimals": 6, "uiAmount": 133333.35, "uiAmountString": "133333.35" }
+              },
+              "type": "account"
+            },
+            "program": "spl-token",
+            "space": 165
+          },
+          "executable": false,
+          "lamports": 2039280,
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "rentEpoch": 332,
+          "space": 165
+        },
+        "pubkey": "ATA9999999999999999999999999999999999999999"
+      },
+      {
+        "account": {
+          "data": {
+            "parsed": {
+              "info": {
+                "isNative": false,
+                "mint": "PhiLR4JDZB9z92rYT5xBXKCxmq4pGB1LYjtybii7aiS",
+                "owner": "5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu",
+                "state": "initialized",
+                "tokenAmount": { "amount": "10000000", "decimals": 5, "uiAmount": 100.0, "uiAmountString": "100" }
+              },
+              "type": "account"
+            },
+            "program": "spl-token",
+            "space": 165
+          },
+          "executable": false,
+          "lamports": 2039280,
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "rentEpoch": 332,
+          "space": 165
+        },
+        "pubkey": "ATA0000000000000000000000000000000000000000"
+      }
+    ]
+  },
+  "id": 1
+}

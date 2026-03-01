@@ -18,10 +18,14 @@ from blockapi.v2.models import (
 
 
 @pytest.fixture(autouse=True)
-def _reset_das_cache():
+def _reset_caches():
     SolanaApi._das_cache = {}
+    SolanaApi._ban_list = None
+    SolanaApi._ban_list_fetched_at = 0.0
     yield
     SolanaApi._das_cache = {}
+    SolanaApi._ban_list = None
+    SolanaApi._ban_list_fetched_at = 0.0
 
 
 def test_merge_balances_with_different_coins(solana_api, balances_with_different_coins):
@@ -76,16 +80,22 @@ def test_use_base_url():
 
 
 def test_use_base_url_in_post(
-    das_assets_by_owner_response,
+    sol_balance_response,
+    token_accounts_response,
+    das_asset_batch_response,
     staked_solana_response,
     rent_reserve_solana_response,
     ban_list_jup_ag_response,
 ):
     test_addr = '5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu'
+    empty_token_accounts = '{"jsonrpc":"2.0","result":{"context":{"apiVersion":"1.17.34","slot":268207149},"value":[]},"id":1}'
 
     iterator = iter(
         [
-            das_assets_by_owner_response,
+            sol_balance_response,
+            token_accounts_response,
+            empty_token_accounts,
+            das_asset_batch_response,
             staked_solana_response,
             rent_reserve_solana_response,
         ]
@@ -192,11 +202,9 @@ def test_das_cache_prevents_refetch():
         'content': {'metadata': {'name': 'Token1', 'symbol': 'TK1'}, 'links': {}},
         'token_info': {'decimals': 6},
     }
-    api._das_cache['mint2'] = None  # Already looked up, not found
-
-    # _fetch_das_assets should skip both cached mints
+    # _fetch_das_assets should skip cached mint
     with patch.object(api, '_request') as mock_request:
-        api._fetch_das_assets(['mint1', 'mint2'])
+        api._fetch_das_assets(['mint1'])
         mock_request.assert_not_called()
 
 
@@ -358,8 +366,18 @@ def balances_with_mixed_coins():
 
 
 @pytest.fixture
-def das_assets_by_owner_response():
-    return read_file('data/solana/das_get_assets_by_owner_response.json')
+def sol_balance_response():
+    return '{"jsonrpc":"2.0","result":{"context":{"apiVersion":"1.17.34","slot":268207149},"value":0},"id":1}'
+
+
+@pytest.fixture
+def token_accounts_response():
+    return read_file('data/solana/token_accounts_response.json')
+
+
+@pytest.fixture
+def das_asset_batch_response():
+    return read_file('data/solana/das_get_asset_batch_response.json')
 
 
 @pytest.fixture
