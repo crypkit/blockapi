@@ -20,12 +20,10 @@ from blockapi.v2.models import (
 @pytest.fixture(autouse=True)
 def _reset_caches():
     SolanaApi._das_cache = {}
-    SolanaApi._ban_list = None
-    SolanaApi._ban_list_fetched_at = 0.0
+    SolanaApi._ban_list = set()
     yield
     SolanaApi._das_cache = {}
-    SolanaApi._ban_list = None
-    SolanaApi._ban_list_fetched_at = 0.0
+    SolanaApi._ban_list = set()
 
 
 def test_merge_balances_with_different_coins(solana_api, balances_with_different_coins):
