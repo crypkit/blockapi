@@ -1,0 +1,96 @@
+{
+  "jsonrpc": "2.0",
+  "result": [
+    {
+      "id": "uJGFtU8ovkZxRKF6mAepPZAPAdWc1hqH5eVqv51VJgW",
+      "interface": "FungibleToken",
+      "content": {
+        "metadata": { "name": "Token uJGF", "symbol": "UJGF" },
+        "links": {}
+      },
+      "token_info": { "balance": 35, "decimals": 0, "symbol": "UJGF" }
+    },
+    {
+      "id": "8JkkqifBHyVhcT3QVKjXqLMc44tf37Xhf5D2LjPk1BUA",
+      "interface": "FungibleToken",
+      "content": {
+        "metadata": { "name": "Token 8Jkk", "symbol": "8JKK" },
+        "links": {}
+      },
+      "token_info": { "balance": 1, "decimals": 0, "symbol": "8JKK" }
+    },
+    {
+      "id": "96LDaaK9Kkif8NYAAGTDSuhabJNLz1825gG59VUXFx7r",
+      "interface": "FungibleToken",
+      "content": {
+        "metadata": { "name": "Token 96LD", "symbol": "96LD" },
+        "links": {}
+      },
+      "token_info": { "balance": 27585, "decimals": 0, "symbol": "96LD" }
+    },
+    {
+      "id": "bYKsXoAnXzSNVoEQvtdVDY8t64bRSDKFtZV1wj8ZtcG",
+      "interface": "FungibleToken",
+      "content": {
+        "metadata": { "name": "Token bYKs", "symbol": "BYKS" },
+        "links": {}
+      },
+      "token_info": { "balance": 1, "decimals": 0, "symbol": "BYKS" }
+    },
+    {
+      "id": "AsvEpga8NW8ce6EqRi3LvS2QYwZPVGJ6vhiW7jcqhRyq",
+      "interface": "FungibleToken",
+      "content": {
+        "metadata": { "name": "Token AsvE", "symbol": "ASVE" },
+        "links": {}
+      },
+      "token_info": { "balance": 23545, "decimals": 0, "symbol": "ASVE" }
+    },
+    {
+      "id": "53W6Fj721wuNRf9SjW7idTo7qSWJGNB3MJdtYvjYktbR",
+      "interface": "FungibleToken",
+      "content": {
+        "metadata": { "name": "Token 53W6", "symbol": "53W6" },
+        "links": {}
+      },
+      "token_info": { "balance": 100000000, "decimals": 8, "symbol": "53W6" }
+    },
+    {
+      "id": "EdeEUKCB2Xf9mz6GnQ7VnvXyPdMQrSMrip1y4cE4ARkz",
+      "interface": "FungibleToken",
+      "content": {
+        "metadata": { "name": "Token EdeE", "symbol": "EDEE" },
+        "links": {}
+      },
+      "token_info": { "balance": 28204, "decimals": 0, "symbol": "EDEE" }
+    },
+    {
+      "id": "dC8LqZvMntwaL1AiaxL5MSycMnoLuDqN8ou7tmDxtdH",
+      "interface": "FungibleToken",
+      "content": {
+        "metadata": { "name": "Token dC8L", "symbol": "DC8L" },
+        "links": {}
+      },
+      "token_info": { "balance": 25184, "decimals": 0, "symbol": "DC8L" }
+    },
+    {
+      "id": "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE",
+      "interface": "FungibleToken",
+      "content": {
+        "metadata": { "name": "Orca", "symbol": "ORCA" },
+        "links": {}
+      },
+      "token_info": { "balance": 133333350000, "decimals": 6, "symbol": "ORCA" }
+    },
+    {
+      "id": "PhiLR4JDZB9z92rYT5xBXKCxmq4pGB1LYjtybii7aiS",
+      "interface": "FungibleToken",
+      "content": {
+        "metadata": { "name": "Token PhiL", "symbol": "PHIL" },
+        "links": {}
+      },
+      "token_info": { "balance": 10000000, "decimals": 5, "symbol": "PHIL" }
+    }
+  ],
+  "id": 1
+}
