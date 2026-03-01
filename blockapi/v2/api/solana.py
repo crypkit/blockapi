@@ -1,8 +1,7 @@
 import json
 import logging
 import os
-import time
-from typing import Optional
+from typing import Optional, Union
 
 from cytoolz import reduceby
 from requests import Response
@@ -19,6 +18,7 @@ from blockapi.v2.base import (
 )
 from blockapi.v2.coins import COIN_SOL
 from blockapi.v2.models import (
+    NFT_STANDARDS,
     AssetType,
     BalanceItem,
     Blockchain,
@@ -45,12 +45,9 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     --------------------
     ``_das_cache`` and ``_ban_list`` are **class-level** attributes shared
     across all instances.  This is intentional: DAS metadata and the Jupiter
-    ban list are global, rarely change, and expensive to re-fetch.  Sharing
-    them avoids redundant RPC/HTTP calls when multiple ``SolanaApi`` instances
-    coexist (e.g. one per user request in a web service).
-
-    ``_ban_list`` is additionally governed by a TTL (``BAN_LIST_TTL_SECONDS``)
-    so that stale data is periodically refreshed.
+    ban list are global and rarely change. Sharing them avoids redundant RPC/HTTP calls
+    when multiple ``SolanaApi`` instances coexist (e.g. one per user request
+    in a web service).
     """
 
     # ── Configuration ──────────────────────────────────────────
@@ -67,22 +64,18 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     # API uses post requests
     supported_requests = {}
 
-    _JSONRPC_INVALID_PARAMS = -32602
-
     TOKEN_PROGRAM_ID = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
     TOKEN_2022_PROGRAM_ID = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
-
-    DAS_BATCH_SIZE = 1000
     STAKE_PROGRAM_ID = 'Stake11111111111111111111111111111111111111'
     STAKE_AUTHORITY_OFFSET = 44
+    DAS_BATCH_SIZE = 1000
+    _JSONRPC_INVALID_PARAMS = -32602
 
     # Class-level cache: shared across instances to avoid redundant DAS RPCs.
     _das_cache: dict[str, dict] = {}
 
-    # Class-level ban list: shared across instances, refreshed via TTL.
-    _ban_list: Optional[set[str]] = None
-    _ban_list_fetched_at: float = 0.0
-    BAN_LIST_TTL_SECONDS: int = 3600
+    # Class-level ban list: shared across instances
+    _ban_list: set = set()
 
     # ── Initialization ─────────────────────────────────────────
 
@@ -148,10 +141,9 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
                 self._parse_rent_reserve(staked_sol_balance, raw_rent_reserve)
             )
 
-        all_raw_tokens = fetch_result.extra['raw_token_balances'].get('result', {}).get(
-            'value', []
-        ) + fetch_result.extra['raw_token2022_balances'].get('result', {}).get(
-            'value', []
+        all_raw_tokens = (
+            fetch_result.extra['raw_token_balances']['result']['value']
+            + fetch_result.extra['raw_token2022_balances']['result']['value']
         )
         token_balances = [
             b
@@ -173,18 +165,10 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     @property
     def ban_list(self) -> set[str]:
         """Return the set of banned token mints from Jupiter."""
-        now = time.monotonic()
-        if (
-            self._ban_list is None
-            or now >= self._ban_list_fetched_at + self.BAN_LIST_TTL_SECONDS
-        ):
-            response = self._get_from_url(JUP_AG_BAN_LIST_URL)
-            if not response:
-                self._ban_list = set()
-            else:
+        if not self._ban_list:
+            if response := self._get_from_url(JUP_AG_BAN_LIST_URL):
                 ban_list = response.text.strip().split('\n')
-                self._ban_list = set(i.split(',')[0] for i in ban_list[1:])
-            SolanaApi._ban_list_fetched_at = now
+                SolanaApi._ban_list = set(i.split(',')[0] for i in ban_list[1:])
         return self._ban_list
 
     @staticmethod
@@ -203,22 +187,22 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     # ── Token processing ───────────────────────────────────────
 
     def _collect_mint_addresses(self, *token_responses: dict) -> list[str]:
-        """Collect mint addresses from token account responses, filtering banned tokens."""
+        """Collect mint addresses from token account responses."""
         mints = []
-        ban = self.ban_list
         for response in token_responses:
             for account in response.get('result', {}).get('value', []):
                 info = self._extract_token_info(account)
                 amount = int(info.get('tokenAmount', {}).get('amount', 0))
-                mint = info.get('mint', '')
-                if amount > 0 and mint and mint not in ban:
+                mint = info.get('mint')
+                if amount > 0 and mint:
                     mints.append(mint)
         return mints
 
     def _resolve_coin(self, mint: str, decimals: int) -> Coin:
         """Resolve a Coin for a mint address, trying DAS cache first."""
         if das_asset := self._das_cache.get(mint):
-            return self._build_coin_from_das_asset(das_asset)
+            if coin := self._build_coin_from_das_asset(das_asset):
+                return coin
 
         return Coin.from_api(
             blockchain=Blockchain.SOLANA,
@@ -235,11 +219,12 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         if balance_raw == 0:
             return None
 
-        mint = info.get('mint', '')
+        mint = info.get('mint')
         if mint in self.ban_list:
             return None
 
-        coin = self._resolve_coin(mint, int(token_amount.get('decimals', 0)))
+        decimals = int(token_amount.get('decimals', 0))
+        coin = self._resolve_coin(mint, decimals)
 
         if coin.is_nft and not self.include_nfts:
             return None
@@ -281,6 +266,8 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
             results = response.get('result', [])
             for asset in results:
+                if asset is None:
+                    continue
                 if mint := asset.get('id'):
                     self._das_cache[mint] = asset
 
@@ -292,17 +279,22 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         links = content.get('links', {})
 
         symbol = metadata.get('symbol') or token_info.get('symbol')
-        if not symbol:
-            return None
 
         standards = ['SPL']
-        interface = asset.get('interface', '')
-        if interface:
+        if interface := asset.get('interface'):
             standards.append(interface)
+
+        # Detect NFTs with non-standard DAS interface (e.g. "Custom"):
+        # decimals=0 + supply=1 is the universal Solana NFT signature.
+        if interface not in NFT_STANDARDS:
+            supply = token_info.get('supply')
+            decimals = token_info.get('decimals')
+            if decimals == 0 and supply == 1:
+                standards.append('V1_NFT')
 
         return Coin(
             symbol=symbol,
-            name=metadata.get('name') or 'unknown',
+            name=metadata.get('name') or 'Unknown',
             decimals=token_info.get('decimals', 0),
             blockchain=Blockchain.SOLANA,
             address=asset.get('id'),
@@ -396,7 +388,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
     # ── Infrastructure ─────────────────────────────────────────
 
-    def _request(self, method, params):
+    def _request(self, method: str, params: Union[list, dict]) -> dict:
         """Send a JSON-RPC request to the Solana RPC endpoint."""
         self._request_id += 1
         body = json.dumps(
