@@ -292,9 +292,9 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             if decimals == 0 and supply == 1:
                 standards.append('V1_NFT')
 
-        return Coin(
+        return Coin.from_api(
             symbol=symbol,
-            name=metadata.get('name') or 'Unknown',
+            name=metadata.get('name'),
             decimals=token_info.get('decimals', 0),
             blockchain=Blockchain.SOLANA,
             address=asset.get('id'),
