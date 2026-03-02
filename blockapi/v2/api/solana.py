@@ -129,7 +129,6 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         self._fetch_das_assets(mint_addresses)
 
         raw_staked_sol = self._fetch_staked_sol(address)
-        raw_rent_reserve = self._fetch_stake_account_balances(raw_staked_sol)
 
         return FetchResult(
             data=sol_response,
@@ -137,14 +136,12 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
                 raw_token_balances=raw_token_balances,
                 raw_token2022_balances=raw_token2022_balances,
                 raw_staked_sol=raw_staked_sol,
-                raw_rent_reserve=raw_rent_reserve,
             ),
         )
 
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
         """Parse fetched data into a list of BalanceItems."""
         raw_staked_sol = fetch_result.extra['raw_staked_sol']
-        raw_rent_reserve = fetch_result.extra['raw_rent_reserve']
 
         balances = []
 
@@ -154,7 +151,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         if staked_sol_balance := self._parse_staked_balance(raw_staked_sol):
             balances.append(staked_sol_balance)
             balances.append(
-                self._parse_rent_reserve(staked_sol_balance, raw_rent_reserve)
+                self._parse_rent_reserve(staked_sol_balance, raw_staked_sol)
             )
 
         all_raw_tokens = (
@@ -273,7 +270,8 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             chunk = uncached[i : i + self.DAS_BATCH_SIZE]
             try:
                 response = self._request(
-                    'getAssetBatch',
+                    # 'getAssetBatch',
+                    'getAssets',
                     {'ids': chunk, 'options': {'showFungible': True}},
                 )
             except (ApiException, RequestException) as e:
@@ -345,16 +343,6 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             ],
         )
 
-    def _fetch_stake_account_balances(self, raw_staked_sol: dict) -> dict:
-        """Fetch balances for all stake accounts in a single RPC call."""
-        stake_accounts = [r['pubkey'] for r in raw_staked_sol.get('result', [])]
-        if not stake_accounts:
-            return {'result': {'value': []}}
-        return self._request(
-            method='getMultipleAccounts',
-            params=[stake_accounts],
-        )
-
     # ── Balance parsing ────────────────────────────────────────
 
     def _parse_sol_balance(self, response: dict) -> Optional[BalanceItem]:
@@ -388,18 +376,21 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         )
 
     def _parse_rent_reserve(
-        self, staked_sol: BalanceItem, response: dict
+        self, staked_sol: BalanceItem, raw_staked_sol: dict
     ) -> BalanceItem:
-        """Parse rent reserve balance from getMultipleAccounts response."""
-        accounts = response.get('result', {}).get('value', [])
-        total_raw = sum(a.get('lamports', 0) for a in accounts if a is not None)
-        available_raw = total_raw - int(staked_sol.balance_raw)
+        """Parse rent reserve from getProgramAccounts response.
 
+        Uses result[].account.lamports already returned by _fetch_staked_sol,
+        avoiding a separate getMultipleAccounts call.
+        """
+        accounts = raw_staked_sol.get('result', [])
+        total_raw = sum(r['account']['lamports'] for r in accounts)
+        available_raw = total_raw - int(staked_sol.balance_raw)
         return BalanceItem.from_api(
             balance_raw=available_raw,
             coin=self.coin,
             asset_type=AssetType.LOCKED,
-            raw=response,
+            raw=raw_staked_sol,
         )
 
     # ── Infrastructure ─────────────────────────────────────────
