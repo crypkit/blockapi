@@ -32,6 +32,7 @@ setuptools.setup(
         'requests_mock>=1.9.3',
         'attrs>=17.4.0,<23.0.0',
         'solders>=0.22.0',
+        'base58>=2.1.0',
     ],
     url="https://github.com/crypkit/blockapi",
 )
