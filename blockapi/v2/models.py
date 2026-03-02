@@ -583,9 +583,9 @@ class Coin:
         info: Optional[CoinInfo] = None,
     ) -> 'Coin':
         return cls(
-            symbol=symbol if symbol is not None else UNKNOWN,
-            name=name if name is not None else UNKNOWN,
-            decimals=to_int(decimals) if decimals is not None else 0,
+            symbol=symbol if symbol else UNKNOWN,
+            name=name if name else UNKNOWN,
+            decimals=to_int(decimals) if decimals else 0,
             blockchain=blockchain,
             address=address,
             standards=standards,
