@@ -82,7 +82,6 @@ def test_use_base_url_in_post(
     token_accounts_response,
     das_asset_batch_response,
     staked_solana_response,
-    rent_reserve_solana_response,
     ban_list_jup_ag_response,
 ):
     test_addr = '5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu'
@@ -95,7 +94,6 @@ def test_use_base_url_in_post(
             empty_token_accounts,
             das_asset_batch_response,
             staked_solana_response,
-            rent_reserve_solana_response,
         ]
     )
 
@@ -381,11 +379,6 @@ def das_asset_batch_response():
 @pytest.fixture
 def staked_solana_response():
     return read_file('data/solana/staked_solana_response.json')
-
-
-@pytest.fixture
-def rent_reserve_solana_response():
-    return read_file('data/solana/rent_reserve_solana_response.json')
 
 
 @pytest.fixture
