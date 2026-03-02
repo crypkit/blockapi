@@ -41,6 +41,22 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
     API docs: https://docs.solana.com/apps/jsonrpc-api
 
+    NFT coverage
+    ------------
+    This API discovers tokens via ``getTokenAccountsByOwner`` (SPL and
+    Token-2022 programs).  NFTs that use these programs (e.g. Metaplex
+    legacy, pNFT, Token-2022 NFTs) **are** returned when
+    ``include_nfts=True``.
+
+    However, **Metaplex Core assets (MplCoreAsset)** are NOT SPL tokens —
+    they have no mint or token account.  They won't appear in
+    ``getTokenAccountsByOwner`` results, so this API cannot see them.
+    They *are* reachable via the DAS RPC method ``getAssetsByOwner``,
+    but this API does not use that method (it uses ``getAssetBatch``
+    only to enrich metadata for tokens already found on-chain).
+    To get full NFT coverage, use a dedicated NFT provider such as
+    ``MagicEdenSolanaApi`` alongside this API.
+
     Caching architecture
     --------------------
     ``_das_cache`` and ``_ban_list`` are **class-level** attributes shared
