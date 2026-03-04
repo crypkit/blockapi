@@ -6,7 +6,6 @@ from requests_mock import ANY, Mocker
 
 from blockapi.test.v2.api.conftest import read_file
 from blockapi.v2.api import SolanaApi, SolscanApi
-from blockapi.v2.api.solana import JUP_AG_BAN_LIST_URL
 from blockapi.v2.models import (
     AssetType,
     BalanceItem,
@@ -20,10 +19,8 @@ from blockapi.v2.models import (
 @pytest.fixture(autouse=True)
 def _reset_caches():
     SolanaApi._das_cache = {}
-    SolanaApi._ban_list = set()
     yield
     SolanaApi._das_cache = {}
-    SolanaApi._ban_list = set()
 
 
 def test_merge_balances_with_different_coins(solana_api, balances_with_different_coins):
@@ -82,7 +79,6 @@ def test_use_base_url_in_post(
     token_accounts_response,
     das_asset_batch_response,
     staked_solana_response,
-    ban_list_jup_ag_response,
 ):
     test_addr = '5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu'
     empty_token_accounts = '{"jsonrpc":"2.0","result":{"context":{"apiVersion":"1.17.34","slot":268207149},"value":[]},"id":1}'
@@ -103,7 +99,6 @@ def test_use_base_url_in_post(
         return data
 
     with Mocker() as m:
-        m.get(JUP_AG_BAN_LIST_URL, text=ban_list_jup_ag_response)
         m.post(ANY, text=get_text),
         api = SolanaApi(base_url='https://proxy/solana/')
         api.get_balance(test_addr)
@@ -187,6 +182,74 @@ def test_nft_included_when_include_nfts_true():
     assert coin.name == 'Cool NFT'
     assert coin.is_nft is True
     assert 'V1_NFT' in coin.standards
+
+
+def test_parse_staked_balance_skips_undelegated():
+    api = SolanaApi()
+    response = {
+        'result': [
+            # Delegated account with stake
+            {
+                'account': {
+                    'lamports': 2282880,
+                    'data': {
+                        'parsed': {
+                            'info': {
+                                'stake': {
+                                    'delegation': {
+                                        'stake': '1000000000',
+                                    }
+                                }
+                            }
+                        }
+                    },
+                }
+            },
+            # Undelegated account: stake key is null
+            {
+                'account': {
+                    'lamports': 2282880,
+                    'data': {
+                        'parsed': {
+                            'info': {
+                                'stake': None,
+                            }
+                        }
+                    },
+                }
+            },
+            # Undelegated account: stake key absent
+            {
+                'account': {
+                    'lamports': 2282880,
+                    'data': {
+                        'parsed': {
+                            'info': {},
+                        }
+                    },
+                }
+            },
+        ]
+    }
+    result = api._parse_staked_balance(response)
+    assert result is not None
+    assert result.balance_raw == 1000000000
+    assert result.asset_type == AssetType.STAKED
+
+
+def test_das_cache_stores_sentinel_for_unknown_mint():
+    api = SolanaApi()
+    unknown_mint = 'UnknownMint111111111111111111111111111111111'
+
+    with patch.object(
+        api,
+        '_request',
+        return_value={'result': []},
+    ):
+        api._fetch_das_assets([unknown_mint])
+
+    assert unknown_mint in api._das_cache
+    assert api._das_cache[unknown_mint] == {}
 
 
 def test_das_cache_prevents_refetch():
@@ -379,11 +442,6 @@ def das_asset_batch_response():
 @pytest.fixture
 def staked_solana_response():
     return read_file('data/solana/staked_solana_response.json')
-
-
-@pytest.fixture
-def ban_list_jup_ag_response():
-    return read_file('data/solana/ban-list-jup-ag.csv')
 
 
 @pytest.fixture

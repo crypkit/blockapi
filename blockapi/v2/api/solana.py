@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 from typing import Optional, Union
 
 from cytoolz import reduceby
@@ -30,11 +29,6 @@ from blockapi.v2.models import (
 
 logger = logging.getLogger(__name__)
 
-JUP_AG_BAN_LIST_URL = os.getenv(
-    'BLOCKAPI_JUP_AG_BAN_LIST_URL',
-    'https://raw.githubusercontent.com/jup-ag/token-list/main/banned-tokens.csv',
-)
-
 
 class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     """Solana JSON-RPC client with DAS metadata integration.
@@ -59,11 +53,10 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
     Caching architecture
     --------------------
-    ``_das_cache`` and ``_ban_list`` are **class-level** attributes shared
-    across all instances.  This is intentional: DAS metadata and the Jupiter
-    ban list are global and rarely change. Sharing them avoids redundant RPC/HTTP calls
-    when multiple ``SolanaApi`` instances coexist (e.g. one per user request
-    in a web service).
+    ``_das_cache`` is a **class-level** attribute shared across all instances.
+    This is intentional: DAS metadata is global and rarely changes. Sharing it
+    avoids redundant RPC calls when multiple ``SolanaApi`` instances coexist
+    (e.g. one per user request in a web service).
     """
 
     # ── Configuration ──────────────────────────────────────────
@@ -89,9 +82,6 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
     # Class-level cache: shared across instances to avoid redundant DAS RPCs.
     _das_cache: dict[str, dict] = {}
-
-    # Class-level ban list: shared across instances
-    _ban_list: set = set()
 
     # ── Initialization ─────────────────────────────────────────
 
@@ -175,15 +165,6 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
         self._fetch_das_assets([contract])
         return self._resolve_coin(contract, decimals)
 
-    @property
-    def ban_list(self) -> set[str]:
-        """Return the set of banned token mints from Jupiter."""
-        if not self._ban_list:
-            if response := self._get_from_url(JUP_AG_BAN_LIST_URL):
-                ban_list = response.text.strip().split('\n')
-                SolanaApi._ban_list = set(i.split(',')[0] for i in ban_list[1:])
-        return self._ban_list
-
     @staticmethod
     def merge_balances_with_same_coin(
         token_balances: list[BalanceItem],
@@ -233,9 +214,6 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             return None
 
         mint = info.get('mint')
-        if mint in self.ban_list:
-            return None
-
         decimals = int(token_amount.get('decimals', 0))
         coin = self._resolve_coin(mint, decimals)
 
@@ -262,7 +240,9 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
     def _fetch_das_assets(self, mint_addresses: list[str]) -> None:
         """Batch-fetch token metadata via DAS and populate cache."""
-        uncached = [m for m in mint_addresses if m not in self._das_cache]
+        uncached = list(
+            dict.fromkeys(m for m in mint_addresses if m not in self._das_cache)
+        )
         if not uncached:
             return
 
@@ -270,8 +250,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             chunk = uncached[i : i + self.DAS_BATCH_SIZE]
             try:
                 response = self._request(
-                    # 'getAssetBatch',
-                    'getAssets',
+                    'getAssetBatch',
                     {'ids': chunk, 'options': {'showFungible': True}},
                 )
             except (ApiException, RequestException) as e:
@@ -284,6 +263,11 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
                     continue
                 if mint := asset.get('id'):
                     self._das_cache[mint] = asset
+
+            returned = {asset['id'] for asset in results if asset and asset.get('id')}
+            for mint in chunk:
+                if mint not in self._das_cache:
+                    self._das_cache[mint] = {}
 
     def _build_coin_from_das_asset(self, asset: dict) -> Optional[Coin]:
         """Build a Coin from a DAS asset response."""
@@ -364,7 +348,11 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             return None
 
         balance_raw = sum(
-            int(r['account']['data']['parsed']['info']['stake']['delegation']['stake'])
+            int(
+                (r['account']['data']['parsed']['info'].get('stake') or {})
+                .get('delegation', {})
+                .get('stake', 0)
+            )
             for r in response['result']
         )
 
@@ -407,17 +395,6 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             }
         )
         return self.post(body=body, headers={'Content-Type': 'application/json'})
-
-    def _get_from_url(self, url: str) -> Optional[Response]:
-        """Perform a GET request to an external URL."""
-        try:
-            response = self._session.get(url)
-            response.raise_for_status()
-        except RequestException as e:
-            logger.error(e)
-            return None
-
-        return response
 
     def _opt_raise_on_other_error(self, response: Response) -> None:
         """Raise ApiException or InvalidAddressException on RPC errors."""
