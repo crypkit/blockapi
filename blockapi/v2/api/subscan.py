@@ -143,6 +143,7 @@ class SubscanApi(BlockchainApi, BalanceMixin, ABC):
         return ApiOptions(
             blockchain=blockchain,
             base_url=base_url,
+            rate_limit=1,
             start_offset=0,
             max_items_per_page=100,
             page_offset_step=1,
