@@ -66,6 +66,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     api_options = ApiOptions(
         blockchain=Blockchain.SOLANA,
         base_url='https://api.mainnet-beta.solana.com/',
+        rate_limit=1,
         start_offset=0,
         max_items_per_page=1000,
         page_offset_step=1,
@@ -425,6 +426,7 @@ class SolscanApi(BlockchainApi):
     api_options = ApiOptions(
         blockchain=Blockchain.SOLANA,
         base_url='https://api.solscan.io/',
+        rate_limit=1,
         start_offset=0,
         max_items_per_page=1000,
         page_offset_step=1,
