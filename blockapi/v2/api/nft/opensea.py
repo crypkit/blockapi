@@ -100,14 +100,13 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         max_listings=500,
         max_offers=500,
     ):
-        super().__init__(api_key, sleep_provider=sleep_provider)
+        super().__init__(api_key, sleep_provider=sleep_provider or SleepProvider())
 
         self._blockchain = blockchain
         self._opensea_chain = self.supported_blockchains_map.get(blockchain)
         if not self._opensea_chain:
             raise ApiException(f"Blockchain '{blockchain.value}' is not supported")
 
-        self.sleep_provider = self.sleep_provider or SleepProvider()
         self._headers = {'accept': 'application/json', 'x-api-key': api_key}
         self._limit = limit
 
