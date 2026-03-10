@@ -27,7 +27,7 @@ from blockapi.v2.api.web3_utils import (
     ensure_checksum_address,
     get_eth_client,
 )
-from blockapi.v2.base import CustomizableBlockchainApi, IBalance
+from blockapi.v2.base import CustomizableBlockchainApi, IBalance, ISleepProvider
 from blockapi.v2.coins import COIN_SNX
 from blockapi.v2.models import ApiOptions, AssetType, BalanceItem, Blockchain, Coin
 
@@ -128,8 +128,10 @@ class SynthetixApi(CustomizableBlockchainApi, IBalance, ABC):
     decimals: Decimal = Decimal('18')
     coin = COIN_SNX
 
-    def __init__(self, network: str, api_url: str):
-        super().__init__(base_url=api_url)
+    def __init__(
+        self, network: str, api_url: str, sleep_provider: ISleepProvider = None
+    ):
+        super().__init__(base_url=api_url, sleep_provider=sleep_provider)
         self.network = network
         self.w3 = get_eth_client(api_url)
 
@@ -405,8 +407,11 @@ class SynthetixMainnetApi(SynthetixApi):
     def __init__(
         self,
         api_url: str,
+        sleep_provider: ISleepProvider = None,
     ):
-        super().__init__(network="mainnet", api_url=api_url)
+        super().__init__(
+            network="mainnet", api_url=api_url, sleep_provider=sleep_provider
+        )
 
 
 class SynthetixOptimismApi(SynthetixApi):
@@ -415,5 +420,8 @@ class SynthetixOptimismApi(SynthetixApi):
     def __init__(
         self,
         api_url: str,
+        sleep_provider: ISleepProvider = None,
     ):
-        super().__init__(network='optimism', api_url=api_url)
+        super().__init__(
+            network='optimism', api_url=api_url, sleep_provider=sleep_provider
+        )

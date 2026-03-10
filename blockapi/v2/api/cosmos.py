@@ -7,7 +7,7 @@ from typing import Iterable, Optional, Union
 from requests import Session
 
 from blockapi.utils.num import to_decimal
-from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance
+from blockapi.v2.base import ApiOptions, BlockchainApi, IBalance, ISleepProvider
 from blockapi.v2.coins import COIN_ATOM, COIN_CELESTIA, COIN_DYDX, COIN_OSMOSIS
 from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin, CoinInfo
 
@@ -102,8 +102,9 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
         self,
         tokens_map: defaultdict[str, dict] = None,
         enable_token_mapping=True,
+        sleep_provider: ISleepProvider = None,
     ):
-        super().__init__()
+        super().__init__(sleep_provider=sleep_provider)
         self._tokens_map = tokens_map
         self.enable_token_mapping = enable_token_mapping
 

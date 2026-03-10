@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Iterable, List
 
-from blockapi.v2.base import BalanceMixin, BlockchainApi, ITransactions
+from blockapi.v2.base import BalanceMixin, BlockchainApi, ISleepProvider, ITransactions
 from blockapi.v2.coins import COIN_BTC, COIN_DOGE, COIN_LTC
 from blockapi.v2.models import (
     ApiOptions,
@@ -19,8 +19,8 @@ from blockapi.v2.models import (
 
 
 class BlockchairApi(BlockchainApi, BalanceMixin, ITransactions, ABC):
-    def __init__(self, offset=0, limit=10):
-        super().__init__()
+    def __init__(self, offset=0, limit=10, sleep_provider: ISleepProvider = None):
+        super().__init__(sleep_provider=sleep_provider)
         self._offset = offset
         self._limit = limit
 

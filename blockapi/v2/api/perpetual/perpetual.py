@@ -18,6 +18,7 @@ from blockapi.v2.base import (
     BalanceMixin,
     CustomizableBlockchainApi,
     IBalance,
+    ISleepProvider,
 )
 from blockapi.v2.coins import COIN_PERP
 from blockapi.v2.models import (
@@ -217,8 +218,8 @@ class PerpetualApi(CustomizableBlockchainApi, BalanceMixin):
         blockchain=Blockchain.ETHEREUM, base_url=None, rate_limit=0.2
     )
 
-    def __init__(self, base_url: str) -> None:
-        super().__init__(base_url=base_url)
+    def __init__(self, base_url: str, sleep_provider: ISleepProvider = None) -> None:
+        super().__init__(base_url=base_url, sleep_provider=sleep_provider)
 
     def fetch_balances(self, address: str) -> FetchResult:
         try:

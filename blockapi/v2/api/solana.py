@@ -14,6 +14,7 @@ from blockapi.v2.base import (
     BlockchainApi,
     CustomizableBlockchainApi,
     InvalidAddressException,
+    ISleepProvider,
 )
 from blockapi.v2.coins import COIN_SOL
 from blockapi.v2.models import (
@@ -85,8 +86,13 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
     # ── Initialization ─────────────────────────────────────────
 
-    def __init__(self, base_url: Optional[str] = None, include_nfts: bool = False):
-        super().__init__(base_url)
+    def __init__(
+        self,
+        base_url: Optional[str] = None,
+        include_nfts: bool = False,
+        sleep_provider: ISleepProvider = None,
+    ):
+        super().__init__(base_url, sleep_provider=sleep_provider)
         self.include_nfts = include_nfts
         self._request_id = 0
 

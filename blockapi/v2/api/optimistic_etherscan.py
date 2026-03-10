@@ -3,7 +3,13 @@ from typing import Dict, List
 from requests import Response
 
 from blockapi.utils.user_agent import get_random_user_agent
-from blockapi.v2.base import ApiException, ApiOptions, BalanceMixin, BlockchainApi
+from blockapi.v2.base import (
+    ApiException,
+    ApiOptions,
+    BalanceMixin,
+    BlockchainApi,
+    ISleepProvider,
+)
 from blockapi.v2.coins import COIN_ETH
 from blockapi.v2.models import BalanceItem, Blockchain, FetchResult, ParseResult
 
@@ -25,8 +31,8 @@ class OptimismEtherscanApi(BlockchainApi, BalanceMixin):
         'get_balance': '?module=account&action=balance&address={address}&tag=latest&apikey={api_key}'
     }
 
-    def __init__(self, api_key: str = ''):
-        super().__init__(api_key)
+    def __init__(self, api_key: str = '', sleep_provider: ISleepProvider = None):
+        super().__init__(api_key, sleep_provider=sleep_provider)
 
     def _parse_eth_balance(self, response: Dict) -> BalanceItem:
         return BalanceItem.from_api(

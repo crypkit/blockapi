@@ -100,15 +100,15 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         max_listings=500,
         max_offers=500,
     ):
-        super().__init__(api_key)
+        super().__init__(api_key, sleep_provider=sleep_provider)
 
         self._blockchain = blockchain
         self._opensea_chain = self.supported_blockchains_map.get(blockchain)
         if not self._opensea_chain:
             raise ApiException(f"Blockchain '{blockchain.value}' is not supported")
 
+        self.sleep_provider = self.sleep_provider or SleepProvider()
         self._headers = {'accept': 'application/json', 'x-api-key': api_key}
-        self._sleep_provider = sleep_provider or SleepProvider()
         self._limit = limit
 
         self.max_listings = max_listings
@@ -264,7 +264,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
         item_count = 0
 
         while True:
-            self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
+            self.sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
             page_count += 1
             logger.debug(f'Fetching page {page_count} of {key} from {cursor}')
             fetched, next_cursor = fetch_method(key, cursor)
@@ -659,7 +659,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
 
             logger.warning(f'Service unavailable - will retry after {seconds}s sleep')
 
-            self._sleep_provider.sleep(self.base_url, seconds=seconds)
+            self.sleep_provider.sleep(self.base_url, seconds=seconds)
             return True
 
         return False

@@ -4,7 +4,7 @@ from typing import Dict
 
 from eth_utils import to_checksum_address
 
-from blockapi.v2.base import BlockchainApi, IBalance
+from blockapi.v2.base import BlockchainApi, IBalance, ISleepProvider
 from blockapi.v2.models import BalanceItem, Coin, CoinInfo
 
 logger = logging.getLogger(__name__)
@@ -37,8 +37,8 @@ class CovalentApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
         'get_balance': '/v1/{chain_id}/address/{address}/balances_v2/'
     }
 
-    def __init__(self, api_key: str):
-        super().__init__(api_key)
+    def __init__(self, api_key: str, sleep_provider: ISleepProvider = None):
+        super().__init__(api_key, sleep_provider=sleep_provider)
 
         # Set http basic auth for requests.
         self._session.auth = (api_key, "")
