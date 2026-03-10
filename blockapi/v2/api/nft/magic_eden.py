@@ -55,8 +55,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
     def __init__(
         self, sleep_provider: ISleepProvider = None, max_listings=500, max_offers=500
     ):
-        super().__init__(sleep_provider=sleep_provider)
-        self.sleep_provider = self.sleep_provider or SleepProvider()
+        super().__init__(sleep_provider=sleep_provider or SleepProvider())
 
         self.max_offers = max_offers
         if max_listings > 15000:
