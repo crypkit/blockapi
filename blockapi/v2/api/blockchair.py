@@ -194,7 +194,9 @@ class BlockchairApi(BlockchainApi, BalanceMixin, ITransactions, ABC):
 
 class BlockchairBitcoinApi(BlockchairApi):
     api_options = ApiOptions(
-        blockchain=Blockchain.BITCOIN, base_url='https://api.blockchair.com/bitcoin/'
+        blockchain=Blockchain.BITCOIN,
+        base_url='https://api.blockchair.com/bitcoin/',
+        rate_limit=1,
     )
 
     coin = COIN_BTC
@@ -202,7 +204,9 @@ class BlockchairBitcoinApi(BlockchairApi):
 
 class BlockchairDogecoinApi(BlockchairApi):
     api_options = ApiOptions(
-        blockchain=Blockchain.DOGECHAIN, base_url='https://api.blockchair.com/dogecoin/'
+        blockchain=Blockchain.DOGECHAIN,
+        base_url='https://api.blockchair.com/dogecoin/',
+        rate_limit=1,
     )
 
     coin = COIN_DOGE
@@ -210,7 +214,9 @@ class BlockchairDogecoinApi(BlockchairApi):
 
 class BlockchairLitecoinApi(BlockchairApi):
     api_options = ApiOptions(
-        blockchain=Blockchain.LITECOIN, base_url='https://api.blockchair.com/litecoin/'
+        blockchain=Blockchain.LITECOIN,
+        base_url='https://api.blockchair.com/litecoin/',
+        rate_limit=1,
     )
 
     coin = COIN_LTC

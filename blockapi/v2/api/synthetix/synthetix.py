@@ -402,7 +402,9 @@ class SynthetixApi(CustomizableBlockchainApi, IBalance, ABC):
 
 
 class SynthetixMainnetApi(SynthetixApi):
-    api_options = ApiOptions(blockchain=Blockchain.ETHEREUM, base_url=None)
+    api_options = ApiOptions(
+        blockchain=Blockchain.ETHEREUM, base_url=None, rate_limit=1
+    )
 
     def __init__(
         self,
@@ -415,7 +417,9 @@ class SynthetixMainnetApi(SynthetixApi):
 
 
 class SynthetixOptimismApi(SynthetixApi):
-    api_options = ApiOptions(blockchain=Blockchain.OPTIMISM, base_url=None)
+    api_options = ApiOptions(
+        blockchain=Blockchain.OPTIMISM, base_url=None, rate_limit=1
+    )
 
     def __init__(
         self,

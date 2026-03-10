@@ -76,6 +76,7 @@ class TerraFcdApi(BlockchainApi):
     api_options = ApiOptions(
         blockchain=Blockchain.TERRA,
         base_url='https://fcd.terra.dev/',
+        rate_limit=1,
     )
 
     supported_requests = {
@@ -202,6 +203,7 @@ class TerraMantleApi(BlockchainApi):
     api_options = ApiOptions(
         blockchain=Blockchain.TERRA,
         base_url='https://mantle.terra.dev',
+        rate_limit=1,
     )
 
     # API uses post requests
