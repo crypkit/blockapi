@@ -2,7 +2,13 @@ import logging
 from decimal import Decimal
 from typing import Iterable, Optional, Tuple
 
-from blockapi.v2.base import BlockchainApi, INftParser, INftProvider
+from blockapi.v2.base import (
+    BlockchainApi,
+    INftParser,
+    INftProvider,
+    ISleepProvider,
+    SleepProvider,
+)
 from blockapi.v2.coins import COIN_SOL
 from blockapi.v2.models import (
     ApiOptions,
@@ -46,9 +52,11 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
 
     coin_map = NotImplemented
 
-    def __init__(self, sleep_provider, max_listings=500, max_offers=500):
-        super().__init__()
-        self._sleep_provider = sleep_provider
+    def __init__(
+        self, sleep_provider: ISleepProvider = None, max_listings=500, max_offers=500
+    ):
+        super().__init__(sleep_provider=sleep_provider)
+        self.sleep_provider = self.sleep_provider or SleepProvider()
 
         self.max_offers = max_offers
         if max_listings > 15000:
@@ -67,7 +75,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
         items = []
 
         while True:
-            self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
+            self.sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
             data = self.get_data(
                 'get_nfts',
                 address=address,
@@ -131,7 +139,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
 
     def fetch_collection(self, collection: str) -> FetchResult:
         while True:
-            self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
+            self.sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
 
             data = self.get_data(
                 'get_collection',
@@ -186,7 +194,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
         items = []
 
         while True:
-            self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
+            self.sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
             logger.info(f'get_pools: {collection} offset={offset} limit={limit}')
             data = self.get_data(
                 'get_pools', slug=collection, offset=offset, limit=limit
@@ -283,7 +291,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
         items = []
 
         while True:
-            self._sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
+            self.sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
             data = self.get_data(
                 'get_listings',
                 slug=collection,
@@ -396,7 +404,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
         )
         if retry:
             logger.warning('Service unavailable - will retry after long sleep')
-            self._sleep_provider.sleep(self.base_url, seconds=60)
+            self.sleep_provider.sleep(self.base_url, seconds=60)
             return True
 
         return False

@@ -2,7 +2,7 @@ from typing import Dict, Iterable, Optional
 
 from eth_utils import to_checksum_address
 
-from blockapi.v2.base import ApiOptions, BalanceMixin, BlockchainApi
+from blockapi.v2.base import ApiOptions, BalanceMixin, BlockchainApi, ISleepProvider
 from blockapi.v2.coins import COIN_ETH
 from blockapi.v2.models import (
     BalanceItem,
@@ -30,8 +30,8 @@ class EthplorerApi(BlockchainApi, BalanceMixin):
 
     supported_requests = {'get_info': '/getAddressInfo/{address}?apiKey={api_key}'}
 
-    def __init__(self, api_key: str = 'freekey'):
-        super().__init__(api_key)
+    def __init__(self, api_key: str = 'freekey', sleep_provider: ISleepProvider = None):
+        super().__init__(api_key, sleep_provider=sleep_provider)
 
     def fetch_balances(self, address: str) -> FetchResult:
         return self.get_data(

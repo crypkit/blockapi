@@ -22,8 +22,10 @@ from blockapi.v2.base import (
     BalanceMixin,
     CustomizableBlockchainApi,
     IPortfolio,
+    ISleepProvider,
 )
 from blockapi.v2.blockchain_mapping import get_blockchain_from_debank_chain
+from blockapi.v2.coin_mapping import symbol_to_coin_map
 from blockapi.v2.models import (
     AssetType,
     BalanceItem,
@@ -31,18 +33,17 @@ from blockapi.v2.models import (
     Coin,
     CoingeckoId,
     CoinInfo,
+    DebankApp,
+    DebankModelApp,
+    DebankModelAppPortfolioItem,
+    DebankModelPredictionDetail,
+    DebankPrediction,
     FetchResult,
     ParseResult,
     Pool,
     PoolInfo,
     Protocol,
-    DebankApp,
-    DebankPrediction,
-    DebankModelAppPortfolioItem,
-    DebankModelApp,
-    DebankModelPredictionDetail,
 )
-from blockapi.v2.coin_mapping import symbol_to_coin_map
 
 logger = logging.getLogger(__name__)
 
@@ -733,8 +734,9 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
         is_all: bool,
         protocol_cache: Optional[DebankProtocolCache] = None,
         base_url: Optional[str] = None,
+        sleep_provider: ISleepProvider = None,
     ):
-        super().__init__(base_url=base_url)
+        super().__init__(base_url=base_url, sleep_provider=sleep_provider)
 
         self._is_all = bool(is_all)
         self._headers = {'AccessKey': api_key}
