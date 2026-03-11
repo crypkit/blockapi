@@ -127,6 +127,9 @@ class SubscanApi(BlockchainApi, BalanceMixin, ABC):
 
     def _post(self, request_method: str, body):
         headers = {'Content-Type': 'application/json'}
+        if self.api_key:
+            headers['X-API-Key'] = self.api_key
+
         return self.post(request_method, body=body, headers=headers)
 
     def _opt_raise_on_other_error(self, response: Response) -> None:
