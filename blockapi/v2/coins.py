@@ -34,8 +34,8 @@ COIN_SOL = Coin(
 
 
 COIN_TERRA = Coin(
-    symbol='LUNA',
-    name='Terra',
+    symbol='LUNC',
+    name='Terra Classic',
     decimals=6,
     blockchain=Blockchain.TERRA,
     address='uluna',
