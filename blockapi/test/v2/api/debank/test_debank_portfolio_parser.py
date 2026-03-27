@@ -132,6 +132,44 @@ def test_parse_pool_names(portfolio_parser, tokenset_portfolio_response):
     assert parsed[1].pool_info.tokens == ['ETH', 'USDC']
 
 
+def test_portfolio_detail_types(portfolio_parser, portfolio_response):
+    pool = portfolio_parser.parse([portfolio_response])[0]
+    assert pool.detail_types == ['lending']
+
+
+def test_portfolio_asset_usd_value(portfolio_parser, portfolio_response):
+    pool = portfolio_parser.parse([portfolio_response])[0]
+    assert pool.asset_usd_value == Decimal('547045.4515305705')
+
+
+def test_portfolio_debt_usd_value(portfolio_parser, portfolio_response):
+    pool = portfolio_parser.parse([portfolio_response])[0]
+    assert pool.debt_usd_value == Decimal('0')
+
+
+def test_portfolio_net_usd_value(portfolio_parser, portfolio_response):
+    pool = portfolio_parser.parse([portfolio_response])[0]
+    assert pool.net_usd_value == Decimal('547045.4515305705')
+
+
+def test_portfolio_update_at(portfolio_parser, portfolio_response):
+    pool = portfolio_parser.parse([portfolio_response])[0]
+    assert pool.update_at is not None
+    assert isinstance(pool.update_at, datetime)
+
+
+def test_portfolio_debt_ratio_none_when_absent(portfolio_parser, portfolio_response):
+    pool = portfolio_parser.parse([portfolio_response])[0]
+    assert pool.debt_ratio is None
+
+
+def test_portfolio_debt_ratio_when_present(portfolio_parser, portfolio_response):
+    """debt_ratio appears for leveraged_farming positions."""
+    portfolio_response['portfolio_item_list'][0]['detail']['debt_ratio'] = 0.65
+    pool = portfolio_parser.parse([portfolio_response])[0]
+    assert pool.debt_ratio == Decimal('0.65')
+
+
 def test_require_pool_or_pool_id():
     with pytest.raises(ValueError, match="either pool or pool_id must have a value"):
         detail = DebankModelPoolItemDetail()
