@@ -1163,6 +1163,19 @@ class TransactionItem:
         )
 
 
+# uint256.max / 1e18 — Aave's sentinel for "no debt / infinite health factor"
+_HEALTH_RATE_SENTINEL_THRESHOLD = Decimal('1e18')
+
+
+def _normalize_health_rate(value) -> Optional[Decimal]:
+    if value is None:
+        return None
+    d = to_decimal(value)
+    if d >= _HEALTH_RATE_SENTINEL_THRESHOLD:
+        return None
+    return d
+
+
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class Pool:
     pool_info: PoolInfo
@@ -1170,6 +1183,12 @@ class Pool:
     items: List[BalanceItem]
     locked_until: Optional[datetime] = attr.ib(default=None)
     health_rate: Optional[Decimal] = attr.ib(default=None)
+    detail_types: List[str] = attr.ib(factory=list)
+    asset_usd_value: Decimal = attr.ib(default=Decimal('0'))
+    debt_usd_value: Decimal = attr.ib(default=Decimal('0'))
+    net_usd_value: Decimal = attr.ib(default=Decimal('0'))
+    debt_ratio: Optional[Decimal] = attr.ib(default=None)
+    update_at: Optional[datetime] = attr.ib(default=None)
 
     @classmethod
     def from_api(
@@ -1180,13 +1199,25 @@ class Pool:
         locked_until: Optional[Union[int, str, float]] = None,
         health_rate: Optional[Union[float, str]] = None,
         items: List[BalanceItem],
+        detail_types: Optional[List[str]] = None,
+        asset_usd_value: Union[float, str] = 0,
+        debt_usd_value: Union[float, str] = 0,
+        net_usd_value: Union[float, str] = 0,
+        debt_ratio: Optional[Union[float, str]] = None,
+        update_at: Optional[Union[int, str, float]] = None,
     ) -> 'Pool':
         return cls(
             pool_info=pool_info,
             protocol=protocol,
             items=items,
             locked_until=(parse_dt(locked_until) if locked_until is not None else None),
-            health_rate=to_decimal(health_rate) if health_rate is not None else None,
+            health_rate=_normalize_health_rate(health_rate),
+            detail_types=detail_types or [],
+            asset_usd_value=to_decimal(asset_usd_value),
+            debt_usd_value=to_decimal(debt_usd_value),
+            net_usd_value=to_decimal(net_usd_value),
+            debt_ratio=to_decimal(debt_ratio) if debt_ratio is not None else None,
+            update_at=(parse_dt(update_at) if update_at is not None else None),
         )
 
     def append_items(self, items: List[BalanceItem]) -> None:

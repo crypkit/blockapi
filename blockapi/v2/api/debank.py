@@ -36,6 +36,7 @@ from blockapi.v2.models import (
     DebankApp,
     DebankModelApp,
     DebankModelAppPortfolioItem,
+    DebankModelAppStats,
     DebankModelPredictionDetail,
     DebankPrediction,
     FetchResult,
@@ -70,6 +71,7 @@ class DebankModelPoolItemDetail(BaseModel):
     description: Optional[str] = None
     health_rate: Optional[float] = None
     unlock_at: Optional[float] = None
+    debt_ratio: Optional[float] = None
     token_list: Optional[list[dict]] = None
     supply_token_list: Optional[list[dict]] = None
     borrow_token_list: Optional[list[dict]] = None
@@ -90,6 +92,9 @@ class DebankModelPortfolioItem(BaseModel):
     pool_id: Optional[str] = None
     pool: Optional[DebankModelPoolItem] = None
     position_index: Optional[str] = None
+    stats: DebankModelAppStats
+    detail_types: list[str]
+    update_at: float
 
     @validator('pool')
     def require_pool_or_pool_id(cls, v, values, **kwargs):
@@ -481,6 +486,12 @@ class DebankPortfolioParser:
                 locked_until=locked_until,
                 health_rate=health_rate,
                 items=[],
+                detail_types=item.detail_types,
+                asset_usd_value=item.stats.asset_usd_value,
+                debt_usd_value=item.stats.debt_usd_value,
+                net_usd_value=item.stats.net_usd_value,
+                debt_ratio=detail.debt_ratio,
+                update_at=item.update_at,
             )
 
         items = list(self._parse_balances(detail, item, pool.pool_info))
