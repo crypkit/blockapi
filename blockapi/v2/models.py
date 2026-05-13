@@ -215,6 +215,7 @@ class Blockchain(str, Enum):
     MANTLE = 'mantle'
     MAP_PROTOCOL = 'map-protocol'
     MASSA = 'massa'
+    MEGAETH = 'megaeth'
     MELD = 'meld'
     MERLIN_CHAIN = 'merlin-chain'
     METAL_L2 = 'metal-l2'
