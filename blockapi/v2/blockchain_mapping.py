@@ -203,6 +203,7 @@ CHAIN_ID_BLOCKCHAINS_MAP = {
     '2222': Blockchain.KAVA,
     '2741': Blockchain.ABSTRACT,
     '4689': Blockchain.IOTEX,
+    '6342': Blockchain.MEGAETH,
     '8217': Blockchain.KLAYTN_CYPRESS,
     '9001': Blockchain.EVMOS,
     # "16350": None, #TODO: Not found
