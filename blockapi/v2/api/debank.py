@@ -735,6 +735,12 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
         'get_protocols': '/v1/protocol/all_list',
         'usage': '/v1/account/units',
         'get_complex_app_list': '/v1/user/complex_app_list?id={address}',
+        'get_token_list_for_chain': (
+            '/v1/user/token_list?id={address}&chain_id={chain_id}&is_all={is_all}'
+        ),
+        'get_protocol_for_address': (
+            '/v1/user/protocol?id={address}&protocol_id={protocol_id}'
+        ),
     }
 
     default_protocol_cache = DebankProtocolCache()
@@ -783,6 +789,23 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
             address=address,
         )
 
+    def fetch_token_list_for_chain(self, address: str, chain_id: str) -> FetchResult:
+        return self.get_data(
+            'get_token_list_for_chain',
+            headers=self._headers,
+            address=address,
+            chain_id=chain_id,
+            is_all=self._is_all,
+        )
+
+    def fetch_protocol_for_address(self, address: str, protocol_id: str) -> FetchResult:
+        return self.get_data(
+            'get_protocol_for_address',
+            headers=self._headers,
+            address=address,
+            protocol_id=protocol_id,
+        )
+
     def fetch_protocols(self) -> FetchResult:
         return self.get_data(
             'get_protocols',
@@ -808,6 +831,17 @@ class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
 
         self._maybe_update_protocols()
         return ParseResult(data=self._portfolio_parser.parse(fetch_result.data))
+
+    def parse_pool_for_address(self, fetch_result: FetchResult) -> ParseResult:
+        if error := self._get_error(fetch_result.data):
+            return ParseResult(errors=[error])
+
+        self._maybe_update_protocols()
+        data = fetch_result.data
+        # /v1/user/protocol returns a single protocol object; wrap in a list
+        # so the portfolio parser (which iterates) handles it uniformly.
+        wrapped = [data] if isinstance(data, dict) else (data or [])
+        return ParseResult(data=self._portfolio_parser.parse(wrapped))
 
     def get_protocols(self) -> Dict[str, Protocol]:
         response = self.get('get_protocols', headers=self._headers)
