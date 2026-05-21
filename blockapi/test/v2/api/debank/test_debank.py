@@ -2,6 +2,7 @@ from decimal import Decimal
 
 from blockapi.utils.address import make_checksum_address
 from blockapi.v2.api import DebankApi
+from blockapi.v2.models import FetchResult
 
 
 def test_build_balance_request_url(debank_api):
@@ -55,6 +56,79 @@ def test_build_portfolio_request_url(debank_api):
         url
         == 'https://pro-openapi.debank.com/v1/user/all_complex_protocol_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca'
     )
+
+
+def test_build_token_list_for_chain_request_url(debank_api):
+    url = debank_api._build_request_url(
+        'get_token_list_for_chain',
+        address='0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca',
+        chain_id='eth',
+        is_all=True,
+    )
+    assert (
+        url
+        == 'https://pro-openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&chain_id=eth&is_all=True'
+    )
+
+
+def test_build_protocol_for_address_request_url(debank_api):
+    url = debank_api._build_request_url(
+        'get_protocol_for_address',
+        address='0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca',
+        protocol_id='yflink',
+    )
+    assert (
+        url
+        == 'https://pro-openapi.debank.com/v1/user/protocol?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&protocol_id=yflink'
+    )
+
+
+def test_parse_pool_for_address_wraps_single_object(
+    debank_api, yflink_protocol_response_raw, portfolio_response, requests_mock
+):
+    # /v1/user/protocol returns a single protocol object (dict, not list).
+    # parse_pool_for_address must wrap it so DebankPortfolioParser can iterate.
+    requests_mock.get(
+        'https://pro-openapi.debank.com/v1/protocol/all_list',
+        text=yflink_protocol_response_raw,
+    )
+    requests_mock.get(
+        'https://pro-openapi.debank.com/v1/user/protocol?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&protocol_id=avax_traderjoexyz_lending',
+        json=portfolio_response,
+    )
+    debank_api._protocol_cache.invalidate()
+    fetched = debank_api.fetch_protocol_for_address(
+        '0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca',
+        'avax_traderjoexyz_lending',
+    )
+    parsed = debank_api.parse_pool_for_address(fetched)
+    assert parsed.errors is None
+    assert len(parsed.data) > 0
+    assert (
+        parsed.data[0].pool_info.pool_id == '0xdc13687554205e5b89ac783db14bb5bba4a1edac'
+    )
+
+
+def test_parse_pool_for_address_handles_empty_response(debank_api, protocol_cache):
+    # When Debank returns null/None for an address with no positions in this protocol.
+    protocol_cache.update({})
+    parsed = debank_api.parse_pool_for_address(FetchResult(status_code=200, data=None))
+    assert parsed.errors is None
+    assert parsed.data == []
+
+
+def test_fetch_token_list_for_chain_uses_api_key(
+    debank_api, protocol_cache, requests_mock
+):
+    req = requests_mock.get(
+        'https://pro-openapi.debank.com/v1/user/token_list?id=0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca&chain_id=eth&is_all=True',
+        text='[]',
+    )
+    protocol_cache.update({})
+    debank_api.fetch_token_list_for_chain(
+        '0xca8fa8f0b631ecdb18cda619c4fc9d197c8affca', 'eth'
+    )
+    assert req.last_request.headers.get('AccessKey') == 'dummy-key'
 
 
 def test_error_response_returns_empty_balances(
