@@ -7,7 +7,7 @@ from blockapi.v2.api.debank import (
     DebankPrediction,
 )
 from blockapi.v2.models import BalanceItem, AssetType
-from blockapi.v2.coins import COIN_USDC
+from blockapi.v2.coins import COIN_PUSD, COIN_USDC
 from blockapi.v2.models import Blockchain
 
 
@@ -144,6 +144,53 @@ def test_parse_polymarket_deposits(debank_app_parser, polymarket_response):
     assert deposit.balance_raw == Decimal("290595.12768")
     assert deposit.coin.symbol == COIN_USDC.symbol
     assert deposit.coin.info.coingecko_id == COIN_USDC.info.coingecko_id
+    assert deposit.coin.blockchain == Blockchain.POLYGON
+
+
+def test_parse_polymarket_pusd_deposit(debank_app_parser):
+    """pUSD cash deposit (post-USDC migration) should map to COIN_PUSD."""
+    response = [
+        {
+            "id": "polymarket",
+            "name": "Polymarket",
+            "has_supported_portfolio": True,
+            "portfolio_item_list": [
+                {
+                    "stats": {
+                        "asset_usd_value": 177166.65,
+                        "debt_usd_value": 0,
+                        "net_usd_value": 177166.65,
+                    },
+                    "asset_token_list": [
+                        {
+                            "id": "5bb21dd602ae2c397222148562f7fe6e",
+                            "name": "pUSD",
+                            "symbol": "pUSD",
+                            "decimals": 6,
+                            "app_id": "polymarket",
+                            "price": 1.001,
+                            "amount": 176961.476901,
+                        }
+                    ],
+                    "update_at": 1779790996.4148061,
+                    "name": "Deposit",
+                    "detail_types": ["common"],
+                    "detail": {},
+                    "position_index": "cash_0x5c23dead9ecf271448411096f349133e0bb9c465",
+                }
+            ],
+        }
+    ]
+
+    parsed_apps = debank_app_parser.parse(response)
+    app = parsed_apps[0]
+
+    assert len(app.deposits) == 1
+    deposit = app.deposits[0]
+    assert deposit.asset_type == AssetType.DEPOSITED
+    assert deposit.balance_raw == Decimal("176961.476901")
+    assert deposit.coin.symbol == COIN_PUSD.symbol
+    assert deposit.coin.info.coingecko_id == COIN_PUSD.info.coingecko_id
     assert deposit.coin.blockchain == Blockchain.POLYGON
 
 

@@ -459,6 +459,14 @@ COIN_USDC = Coin(
     info=CoinInfo(coingecko_id=CoingeckoId.USDC),
 )
 
+COIN_PUSD = Coin(
+    symbol='pUSD',
+    name='Polymarket USD',
+    decimals=6,
+    blockchain=Blockchain.POLYGON,
+    info=CoinInfo(coingecko_id=CoingeckoId.POLYMARKET_USD),
+)
+
 COIN_PRIME = Coin(
     symbol='PRIME',
     name='Echelon Prime',

@@ -465,6 +465,7 @@ class CoingeckoId(str, Enum):
     OSMOSIS = 'osmosis'
     PERPETUAL = 'perpetual-protocol'
     POLKADOT = 'polkadot'
+    POLYMARKET_USD = 'polymarket-usd'
     PRIME = 'echelon-prime'
     RONIN = 'ronin'
     RSK = 'rootstock'
