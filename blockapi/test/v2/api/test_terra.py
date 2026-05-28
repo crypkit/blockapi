@@ -3,7 +3,7 @@ from decimal import Decimal
 import pytest
 
 from blockapi.v2.api.terra import TerraApi
-from blockapi.v2.models import AssetType, Blockchain
+from blockapi.v2.models import AssetType, BalanceItem, Blockchain, Coin, CoinInfo
 
 
 @pytest.fixture()
@@ -255,6 +255,52 @@ def test_get_balance_with_ibc_tokens(
     rowan = next(b for b in balances if b.coin.symbol == 'ROWAN')
     assert rowan.balance == Decimal('0.5')
     assert 'ibc' in rowan.coin.standards
+
+
+def _make_balance(address, balance_raw, coingecko_id):
+    return BalanceItem(
+        balance=Decimal(balance_raw) / Decimal(10**6),
+        balance_raw=Decimal(balance_raw),
+        raw={'denom': address, 'amount': balance_raw},
+        coin=Coin(
+            symbol='X',
+            name='X',
+            decimals=6,
+            blockchain=Blockchain.TERRA,
+            address=address,
+            standards=[],
+            info=CoinInfo(coingecko_id=coingecko_id),
+        ),
+        asset_type=AssetType.AVAILABLE,
+    )
+
+
+def test_merge_duplicate_balances():
+    """Two balances share a coingecko_id and merge; two distinct ones do not."""
+    balances = [
+        _make_balance('ibc/AAAA', '100', 'secret'),
+        _make_balance('ibc/BBBB', '200', 'secret'),
+        _make_balance('uluna', '1000000', 'terra-luna'),
+        _make_balance('ibc/CCCC', '50', None),
+    ]
+
+    merged = TerraApi._merge_duplicate_balances(balances)
+
+    assert len(merged) == 3
+
+    secret = next(b for b in merged if b.coin.info.coingecko_id == 'secret')
+    assert secret.balance_raw == Decimal('300')
+    assert secret.balance == Decimal('0.0003')
+    assert secret.raw['merged_count'] == 2
+    assert len(secret.raw['merged']) == 2
+
+    lunc = next(b for b in merged if b.coin.info.coingecko_id == 'terra-luna')
+    assert lunc.balance_raw == Decimal('1000000')
+    assert 'merged' not in lunc.raw
+
+    no_cg = next(b for b in merged if b.coin.info.coingecko_id is None)
+    assert no_cg.balance_raw == Decimal('50')
+    assert 'merged' not in no_cg.raw
 
 
 def test_unbonding_included_in_staked(terra_api, requests_mock):
