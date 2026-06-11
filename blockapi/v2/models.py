@@ -906,12 +906,16 @@ class NftCollectionIntervalStats:
         average_price: str,
     ) -> 'NftCollectionIntervalStats':
         return cls(
-            volume=Decimal(volume),
-            volume_diff=Decimal(volume_diff),
-            volume_percent_change=Decimal(volume_percent_change),
+            volume=Decimal(volume) if volume else Decimal('0'),
+            volume_diff=Decimal(volume_diff) if volume_diff else Decimal('0'),
+            volume_percent_change=(
+                Decimal(volume_percent_change)
+                if volume_percent_change
+                else Decimal('0')
+            ),
             sales_count=int(sales_count) if sales_count else 0,
             sales_diff=int(Decimal(sales_diff)) if sales_diff else 0,
-            average_price=Decimal(average_price),
+            average_price=Decimal(average_price) if average_price else Decimal('0'),
         )
 
 
