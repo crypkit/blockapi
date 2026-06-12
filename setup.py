@@ -33,6 +33,8 @@ setuptools.setup(
         'attrs>=17.4.0,<23.0.0',
         'solders>=0.22.0',
         'base58>=2.1.0',
+        # vcrpy incompatible with 3.14, remove once vcrpy>8.1.1 is out
+        'aiohttp<3.14',
     ],
     url="https://github.com/crypkit/blockapi",
 )
