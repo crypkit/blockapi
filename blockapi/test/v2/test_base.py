@@ -1,3 +1,4 @@
+import logging
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -117,3 +118,60 @@ def mocked_500_with_success_response():
 def test_5xx_will_retry(customizable_api, mocked_500_with_success_response):
     response = customizable_api.get_data("test_method")
     assert response.status_code == 200
+
+
+@pytest.fixture()
+def mocked_429_with_success_response():
+    mocked_throttled = MagicMock()
+    mocked_throttled.status_code = 429
+    mocked_throttled.raise_for_status.side_effect = HTTPError(
+        "test_method", 429, "exception", {}, None
+    )
+    mocked_throttled.json.return_value = {}
+    mocked_throttled.headers = {}
+
+    mocked_success = MagicMock()
+    mocked_success.status_code = 200
+    mocked_success.json.return_value = {}
+    mocked_success.headers = {}
+
+    with patch('blockapi.v2.base.CustomizableBlockchainApi._get_response') as patched:
+        patched.side_effect = [
+            mocked_throttled,
+            mocked_success,
+        ]
+        yield patched
+
+
+def test_429_retried_logs_warning_not_error(
+    customizable_api, mocked_429_with_success_response, caplog
+):
+    with caplog.at_level(logging.WARNING, logger='blockapi.v2.base'):
+        response = customizable_api.get_data("test_method")
+
+    assert response.status_code == 200
+    assert not any(r.levelno >= logging.ERROR for r in caplog.records)
+    assert any(r.levelno == logging.WARNING for r in caplog.records)
+
+
+@pytest.fixture()
+def mocked_429_only_response():
+    mocked_throttled = MagicMock()
+    mocked_throttled.status_code = 429
+    mocked_throttled.raise_for_status.side_effect = HTTPError(
+        "test_method", 429, "exception", {}, None
+    )
+    mocked_throttled.json.return_value = {}
+    mocked_throttled.headers = {}
+
+    with patch('blockapi.v2.base.CustomizableBlockchainApi._get_response') as patched:
+        patched.side_effect = [mocked_throttled] * 5
+        yield patched
+
+
+def test_429_exhausted_logs_error(customizable_api, mocked_429_only_response, caplog):
+    with caplog.at_level(logging.WARNING, logger='blockapi.v2.base'):
+        response = customizable_api.get_data("test_method")
+
+    assert response.status_code == 429
+    assert any(r.levelno == logging.ERROR for r in caplog.records)

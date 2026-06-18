@@ -113,15 +113,17 @@ class CustomizableBlockchainApi(ABC):
                 self.sleep_provider.sleep(self.base_url, seconds=sleep_seconds)
                 continue
             except HTTPError:
-                logger.error(f"Request failed with http error: {response.status_code}")
-
                 retries -= 1
 
-                if (
-                    retries <= 0
-                    or (response.status_code < 500 and response.status_code != 429)
-                    or not self.sleep_provider
-                ):
+                retryable = response.status_code == 429 or response.status_code >= 500
+
+                if retries <= 0 or not retryable or not self.sleep_provider:
+                    # Genuine failure: out of retries, non-retryable status,
+                    # or nothing to pace the retry with. This is the only path
+                    # that surfaces an error to the caller, so log at ERROR.
+                    logger.error(
+                        f"Request failed with http error: {response.status_code}"
+                    )
                     time = self._get_response_time(response.headers)
                     return FetchResult(
                         status_code=response.status_code,
@@ -137,9 +139,12 @@ class CustomizableBlockchainApi(ABC):
                 except ValueError:
                     seconds = 60
 
+                # Retryable error that will be retried, so this is expected
+                # noise (e.g. 429 throttling) rather than a failure: WARNING.
                 logger.warning(
-                    f'Too Many Requests: Will retry after {seconds}s sleep.'
-                    f' Remaining attempts {retries}.'
+                    f'Request failed with retryable http error'
+                    f' {response.status_code}: will retry after {seconds}s'
+                    f' sleep. Remaining attempts {retries}.'
                 )
                 self.sleep_provider.sleep(self.base_url, seconds=seconds)
                 continue
