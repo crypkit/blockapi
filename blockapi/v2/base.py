@@ -198,15 +198,19 @@ class CustomizableBlockchainApi(ABC):
     def _get_reason(response):
         reason = response.reason
         if not reason and response.status_code >= 400:
-            return f'Error {response.status_code}'
+            reason = f'Error {response.status_code}'
 
-        if not isinstance(reason, bytes):
-            return reason
+        if isinstance(reason, bytes):
+            try:
+                reason = reason.decode("utf-8")
+            except UnicodeDecodeError:
+                reason = reason.decode("iso-8859-1")
 
-        try:
-            return reason.decode("utf-8")
-        except UnicodeDecodeError:
-            return reason.decode("iso-8859-1")
+        # Append the response body so the error carries the server's own
+        # message instead of just the HTTP status phrase. Truncated to keep
+        # logs readable.
+        body = (response.text or '').strip()
+        return f'{reason}: {body[:500]}' if body else reason
 
     @staticmethod
     def _raise_from_response(response: Response) -> None:
