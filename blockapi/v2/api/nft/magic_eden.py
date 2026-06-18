@@ -399,7 +399,7 @@ class MagicEdenApi(BlockchainApi, INftProvider, INftParser):
             return False
 
         retry = bool(
-            [t for t in data.errors if str(t).upper() == 'SERVICE UNAVAILABLE']
+            [t for t in data.errors if 'SERVICE UNAVAILABLE' in str(t).upper()]
         )
         if retry:
             logger.warning('Service unavailable - will retry after long sleep')

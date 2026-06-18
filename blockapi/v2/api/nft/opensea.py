@@ -75,7 +75,7 @@ class OpenSeaApi(BlockchainApi, INftProvider, INftParser):
     api_options = ApiOptions(
         blockchain=Blockchain.ETHEREUM,
         base_url='https://api.opensea.io/',
-        rate_limit=0.25,  # 4 per second
+        rate_limit=0.75,  # 4 requests per 3 seconds
     )
 
     supported_requests = {
