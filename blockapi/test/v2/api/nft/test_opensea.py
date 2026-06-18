@@ -84,7 +84,7 @@ def test_fetch_ntfs(
     nfts = api.fetch_nfts(nfts_test_address)
     assert len(nfts.data) == 2
     assert len(fake_sleep_provider.calls)
-    assert fake_sleep_provider.calls[0] == ('https://api.opensea.io/', 0.25)
+    assert fake_sleep_provider.calls[0] == ('https://api.opensea.io/', 0.75)
 
 
 def test_fetch_ntfs_error_response(requests_mock, api, fake_sleep_provider):
@@ -96,7 +96,7 @@ def test_fetch_ntfs_error_response(requests_mock, api, fake_sleep_provider):
     nfts = api.fetch_nfts(nfts_test_address)
     assert len(nfts.data) == 0
     assert len(fake_sleep_provider.calls)
-    assert fake_sleep_provider.calls[0] == ('https://api.opensea.io/', 0.25)
+    assert fake_sleep_provider.calls[0] == ('https://api.opensea.io/', 0.75)
 
 
 def test_fetch_offers(
@@ -114,7 +114,7 @@ def test_fetch_offers(
     offers = api.fetch_offers(test_collection_slug)
     assert len(offers.data) == 2
     assert len(fake_sleep_provider.calls)
-    assert fake_sleep_provider.calls[0] == ('https://api.opensea.io/', 0.25)
+    assert fake_sleep_provider.calls[0] == ('https://api.opensea.io/', 0.75)
 
 
 def test_fetch_offers_error_response(requests_mock, api, offers_response):
