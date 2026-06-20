@@ -12,7 +12,6 @@ from blockapi.v2.api.ethplorer import EthplorerApi
 from blockapi.v2.api.haskoin import HaskoinApi
 from blockapi.v2.api.litecoinspace import LitecoinSpaceApi
 from blockapi.v2.api.optimistic_etherscan import OptimismEtherscanApi
-from blockapi.v2.api.perpetual import PerpetualApi, perp_contract_address
 from blockapi.v2.api.solana import SolanaApi, SolscanApi
 from blockapi.v2.api.subscan import KusamaSubscanApi, PolkadotSubscanApi, SubscanApi
 from blockapi.v2.api.terra import TerraApi

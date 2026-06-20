@@ -5,7 +5,7 @@ from blockapi.test.v2.test_data import (
     yield_api_balance_classes,
     yield_covalent_api_classes,
 )
-from blockapi.v2.api import DebankApi, EthplorerApi, PerpetualApi
+from blockapi.v2.api import DebankApi, EthplorerApi
 from blockapi.v2.api.covalenth.arbitrum import ArbitrumCovalentApi
 from blockapi.v2.api.covalenth.astar import AstarCovalentApi
 from blockapi.v2.api.covalenth.avalanche import AvalancheCovalentApi
@@ -20,7 +20,6 @@ from blockapi.v2.api.covalenth.moonbeam import MoonBeamCovalentApi
 from blockapi.v2.api.covalenth.palm import PalmCovalentApi
 from blockapi.v2.api.covalenth.polygon import PolygonCovalentApi
 from blockapi.v2.api.covalenth.rsk import RskCovalentApi
-from blockapi.v2.api.synthetix import SynthetixApi
 
 
 def test_enumerate_subclasses():
@@ -29,8 +28,6 @@ def test_enumerate_subclasses():
     assert classes
     assert EthplorerApi.__name__ in classes
     assert DebankApi.__name__ not in classes
-    assert PerpetualApi.__name__ not in classes
-    assert SynthetixApi.__name__ not in classes
 
     for cls in classes:
         assert 'Base' not in cls
