@@ -20,6 +20,7 @@ setuptools.setup(
     install_requires=[
         'requests>=2.28,<3.0',
         'python-dateutil>=2.8.0',
+        'cytoolz>=0.12.0',
         'coinaddrng==1.1.1',
         'pydantic>=1.10.2',
         'fake_useragent>=1.1.3',
@@ -27,7 +28,6 @@ setuptools.setup(
         'pytest-vcr',
         'requests_mock>=1.9.3',
         'attrs>=17.4.0,<23.0.0',
-        'solders>=0.22.0',
         'base58>=2.1.0',
         # vcrpy incompatible with 3.14, remove once vcrpy>8.1.1 is out
         'aiohttp<3.14',
