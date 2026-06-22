@@ -473,7 +473,6 @@ class CoingeckoId(str, Enum):
     SOLANA = 'solana'
     SONGBIRD = 'songbird'
     SUI = 'sui'
-    SYNTHETIX = 'havven'
     TELOS = 'telos'
     USDC = 'usd-coin'
     WANCHAIN = 'wanchain'
