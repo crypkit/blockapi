@@ -21,6 +21,7 @@ setuptools.setup(
         'requests>=2.28,<3.0',
         'python-dateutil>=2.8.0',
         'cytoolz>=0.12.0',
+        'eth-utils>=2.0.0',
         'coinaddrng==1.1.1',
         'pydantic>=1.10.2',
         'fake_useragent>=1.1.3',
