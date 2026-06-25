@@ -56,6 +56,9 @@ class Service(ABC):
             response = reqobj.get(request_url, headers=headers)
 
         self.last_response = response
+        # Naive local time on purpose: only used to measure elapsed time against
+        # datetime.now() in wait_for_next_request (rate limiting), never compared
+        # with tz-aware datetimes.
         self.last_response_time = datetime.now()
 
         if response.status_code != 200:

@@ -1,7 +1,7 @@
 import logging
 from typing import Optional, Dict, Generator, Tuple
 from enum import Enum
-from datetime import datetime
+from datetime import datetime, timezone
 
 from blockapi.v2.base import BlockchainApi, INftParser, INftProvider, ISleepProvider
 from blockapi.v2.coins import COIN_BTC
@@ -670,7 +670,7 @@ class UnisatApi(BlockchainApi, INftParser, INftProvider):
                 try:
                     timestamp_seconds = timestamp / 1000
                     formatted_time = datetime.fromtimestamp(
-                        timestamp_seconds
+                        timestamp_seconds, tz=timezone.utc
                     ).isoformat()
                 except (ValueError, TypeError, OverflowError):
                     logger.warning(

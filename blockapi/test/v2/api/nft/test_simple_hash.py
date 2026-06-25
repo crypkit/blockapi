@@ -55,7 +55,9 @@ def test_parse_nfts(requests_mock, api, nfts_response):
     )
     assert not data.metadata_url
     assert not data.metadata
-    assert data.updated_time == datetime.datetime(2023, 3, 11, 3, 46, 15)
+    assert data.updated_time == datetime.datetime(
+        2023, 3, 11, 3, 46, 15, tzinfo=datetime.timezone.utc
+    )
     assert not data.is_disabled
     assert not data.is_nsfw
     assert data.blockchain == Blockchain.BITCOIN

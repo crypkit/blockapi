@@ -1,7 +1,7 @@
 import logging
 import time
 from abc import ABC
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional
 from urllib.parse import urljoin
 
@@ -107,7 +107,7 @@ class CustomizableBlockchainApi(ABC):
                     return FetchResult(
                         status_code=1,
                         errors=[str(connection_error)],
-                        time=datetime.utcnow(),
+                        time=datetime.now(timezone.utc),
                     )
 
                 self.sleep_provider.sleep(self.base_url, seconds=sleep_seconds)
@@ -155,7 +155,7 @@ class CustomizableBlockchainApi(ABC):
                     headers=dict(),
                     errors=[f'{type(ex).__name__}: {str(ex)}'],
                     extra=extra,
-                    time=datetime.utcnow(),
+                    time=datetime.now(timezone.utc),
                 )
 
             time = self._get_response_time(response.headers)
@@ -236,7 +236,7 @@ class CustomizableBlockchainApi(ABC):
             return parse_dt(date_str)
 
         if age_str := headers.get('age'):
-            return datetime.utcnow() - timedelta(seconds=int(age_str))
+            return datetime.now(timezone.utc) - timedelta(seconds=int(age_str))
 
         return None
 

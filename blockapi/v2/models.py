@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 from enum import Enum
 from typing import Dict, List, Literal, Optional, Union
@@ -863,7 +863,9 @@ class NftOffer:
             contract=contract,
             blockchain=blockchain,
             offerer=offerer,
-            start_time=parse_dt(start_time) if start_time else datetime.utcnow(),
+            start_time=(
+                parse_dt(start_time) if start_time else datetime.now(timezone.utc)
+            ),
             end_time=parse_dt(end_time) if end_time else None,
             offer_coin=offer_coin,
             offer_contract=offer_contract.lower() if offer_contract else None,

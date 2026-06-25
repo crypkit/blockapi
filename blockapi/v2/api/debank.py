@@ -243,6 +243,9 @@ class DebankProtocolCache:
     def __init__(self, timeout: int = 3600):
         self._timeout: int = timeout
         self._data: Dict[str, Protocol] = {}
+        # Naive local time on purpose: _timelimit is only ever compared against
+        # other datetime.now() values here (cache TTL), never mixed with the
+        # tz-aware datetimes used elsewhere, so there is no naive/aware hazard.
         self._timelimit = datetime.now()
 
     def invalidate(self):
