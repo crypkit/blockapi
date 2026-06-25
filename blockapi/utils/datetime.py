@@ -12,7 +12,12 @@ def parse_dt(dt: Union[str, int, float]) -> datetime:
         try:
             return datetime.fromtimestamp(int(dt), tz=timezone.utc)
         except ValueError:
-            return parse_date(dt)
+            parsed = parse_date(dt)
+            # Assume UTC for strings that carry no timezone, so parse_dt always
+            # returns a tz-aware datetime (consistent with the numeric paths).
+            if parsed.tzinfo is None:
+                parsed = parsed.replace(tzinfo=timezone.utc)
+            return parsed
     elif isinstance(dt, int) or isinstance(dt, float):
         return datetime.fromtimestamp(dt, tz=timezone.utc)
     else:

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 
 
@@ -10,4 +10,4 @@ def test_can_parse_usage(usage_parser, debank_usage_response):
     stats = parsed.stats[0]
     assert stats.remains == Decimal('351978')
     assert stats.usage == Decimal('13162')
-    assert stats.date == datetime(2023, 3, 20)
+    assert stats.date == datetime(2023, 3, 20, tzinfo=timezone.utc)

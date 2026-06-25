@@ -162,7 +162,9 @@ def test_parse_nfts(requests_mock, api, nfts_response, nfts_next_response):
         == 'data:application/json;base64,eyJuYW1lIjoiVW5pc3dhcCAtIDElIC0gUFJJTUUvV0VUSCAtIDMzMC4yMDw+NzgwLjI5In0='
     )
     assert not data.metadata
-    assert data.updated_time == datetime.datetime(2023, 8, 15, 13, 56, 39, 759414)
+    assert data.updated_time == datetime.datetime(
+        2023, 8, 15, 13, 56, 39, 759414, tzinfo=datetime.timezone.utc
+    )
     assert not data.is_disabled
     assert not data.is_nsfw
     assert data.blockchain == Blockchain.ETHEREUM
