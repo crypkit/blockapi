@@ -37,6 +37,7 @@ from blockapi.v2.models import (
     DebankModelApp,
     DebankModelAppPortfolioItem,
     DebankModelAppStats,
+    DebankModelDepositToken,
     DebankModelPredictionDetail,
     DebankPrediction,
     FetchResult,
@@ -688,32 +689,48 @@ class DebankAppParser:
     ) -> list[BalanceItem]:
         balances = []
         for token in item.asset_token_list or []:
-            coin = symbol_to_coin_map.get(token.symbol)
-            if not coin:
-                logger.error(
-                    f'No coin mapping found for app deposit token {token.symbol} in chain {chain}. Skipping.'
+            # Map first so well-known tokens keep their canonical coingecko_id.
+            mapped = symbol_to_coin_map.get(token.symbol)
+            if mapped:
+                coin = Coin.from_api(
+                    blockchain=chain,
+                    decimals=mapped.decimals,
+                    name=mapped.name,
+                    symbol=mapped.symbol,
+                    info=mapped.info,
                 )
-                continue
-
-            coin_with_app_chain = Coin.from_api(
-                blockchain=chain,
-                decimals=coin.decimals,
-                name=coin.name,
-                symbol=coin.symbol,
-                info=coin.info,
-            )
+            else:
+                coin = self._coin_from_deposit_token(token, chain)
 
             balance = BalanceItem.from_api(
                 balance=Decimal(token.amount),
                 balance_raw=token.amount,
                 asset_type=AssetType.DEPOSITED,
-                coin=coin_with_app_chain,
+                coin=coin,
                 raw=token.model_dump(),
                 last_updated=int(item.update_at) if item.update_at else None,
             )
             balances.append(balance)
 
         return balances
+
+    @staticmethod
+    def _coin_from_deposit_token(
+        token: DebankModelDepositToken, chain: Blockchain
+    ) -> Coin:
+        # Address must stay unique per token: a null one makes downstream
+        # add_unknown_currency_v2 key the currency by chain, collapsing all
+        # unmapped tokens on a chain into one.
+        address = make_checksum_address(token.id) or token.id
+        coingecko_id = get_coingecko_id(token.id, token.symbol)
+        return Coin.from_api(
+            symbol=token.symbol,
+            name=token.name,
+            decimals=token.decimals,
+            blockchain=chain,
+            address=address,
+            info=CoinInfo(logo_url=token.logo_url, coingecko_id=coingecko_id),
+        )
 
 
 class DebankApi(CustomizableBlockchainApi, BalanceMixin, IPortfolio):
