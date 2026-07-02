@@ -181,7 +181,8 @@ def test_require_pool_or_pool_id():
 
 def test_portfolio_with_unknown_chain(portfolio_parser, unknown_chain_response):
     parsed = portfolio_parser.parse(unknown_chain_response)
-    assert parsed == []
+    assert len(parsed) == 1
+    assert parsed[0].protocol.chain == 'this-chain-will-never-exist'
 
 
 def test_parse_no_error(debank_api):

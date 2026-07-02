@@ -180,10 +180,7 @@ class DebankProtocolParser:
 
     @staticmethod
     def parse_item(item: DebankModelProtocol) -> Optional[Protocol]:
-        blockchain = get_blockchain_from_debank_chain(item.chain)
-        if not blockchain:
-            logger.warning(f'No blockchain found for protocol {item.id}. Skipping.')
-            return None
+        blockchain = get_blockchain_from_debank_chain(item.chain) or item.chain
 
         return Protocol.from_api(
             protocol_id=item.id,
@@ -329,12 +326,6 @@ class DebankBalanceParser:
             )
             return None
 
-        if not coin.blockchain:
-            logger.error(
-                f'DeBank: Skipping balance - could not parse blockchain "{balance_item.chain}". Amount={amount} (raw={raw_amount})'
-            )
-            return None
-
         if asset_type == AssetType.INVESTMENT and amount < 0:
             asset_type = AssetType.DEBT
             amount = -amount
@@ -363,7 +354,9 @@ class DebankBalanceParser:
 
     def get_coin(self, balance_item: DebankModelBalanceItem) -> Coin:
         contract = balance_item.id
-        blockchain = get_blockchain_from_debank_chain(balance_item.chain)
+        blockchain = (
+            get_blockchain_from_debank_chain(balance_item.chain) or balance_item.chain
+        )
         symbol = self.get_symbol(balance_item)
 
         coingecko_id = get_coingecko_id(contract, symbol)
