@@ -561,7 +561,7 @@ class Coin:
     symbol: str
     name: str
     decimals: int
-    blockchain: Blockchain
+    blockchain: Union[Blockchain, str]
     address: Optional[str] = attr.ib(default=None)
     standards: Optional[List[str]] = attr.ib(default=None)
     protocol_id: Optional[str] = attr.ib(default=None)
@@ -576,7 +576,7 @@ class Coin:
     @classmethod
     def from_api(
         cls,
-        blockchain: Blockchain,
+        blockchain: Union[Blockchain, str],
         decimals: Union[int, str],
         symbol: Optional[str] = None,
         name: Optional[str] = None,
@@ -607,7 +607,7 @@ class CoingeckoMapping:
 @attr.s(auto_attribs=True, slots=True, frozen=True)
 class Protocol:
     protocol_id: str
-    chain: Blockchain
+    chain: Union[Blockchain, str]
     name: str
     user_deposit: Decimal
     site_url: Optional[str] = attr.ib(default=None)
@@ -619,7 +619,7 @@ class Protocol:
         cls,
         *,
         protocol_id: str,
-        chain: Blockchain,
+        chain: Union[Blockchain, str],
         name: str,
         user_deposit: Union[str, float, int],
         site_url: Optional[str] = None,

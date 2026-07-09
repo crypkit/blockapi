@@ -232,7 +232,7 @@ def test_all_mapping(contract, symbol, coin, balance_parser):
     assert coin == balance_parser.get_coin(balance)
 
 
-def test_skip_balance_with_unknown_chain(balance_parser):
+def test_balance_with_unknown_chain_is_returned(balance_parser):
     balance = DebankModelBalanceItem(
         id="123",
         chain="does-not-exist",
@@ -243,4 +243,24 @@ def test_skip_balance_with_unknown_chain(balance_parser):
     )
 
     item = balance_parser.parse_item(balance)
-    assert not item
+    assert item.coin.blockchain == 'does-not-exist'
+
+
+def test_parse_balance_with_unknown_chain(balance_parser):
+    parsed = balance_parser.parse(
+        [
+            {
+                "id": "123",
+                "chain": "does-not-exist",
+                "name": "Unknown",
+                "symbol": "SYM",
+                "decimals": 18,
+                "amount": 2,
+                "raw_amount": 2,
+                "price": 3.5,
+            }
+        ]
+    )
+
+    assert len(parsed) == 1
+    assert parsed[0].coin.blockchain == 'does-not-exist'
