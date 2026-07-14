@@ -232,6 +232,28 @@ def test_debank_parse_chains(
     assert parsed_items[0] == debank_chain_eth
 
 
+def test_debank_parse_unknown_chain(debank_api, requests_mock):
+    requests_mock.get(
+        "https://pro-openapi.debank.com/v1/chain/list",
+        json=[
+            {
+                "id": "new-chain",
+                "community_id": 1234,
+                "name": "New Chain",
+                "native_token_id": "new-chain",
+                "logo_url": "https://example.com/new-chain.png",
+                "wrapped_token_id": "new-chain",
+                "is_support_pre_exec": False,
+            }
+        ],
+    )
+
+    chain = debank_api.get_chains()[0]
+
+    assert chain.chain == "new-chain"
+    assert chain.name == "New Chain"
+
+
 def test_get_balance_fetches_protocols(
     debank_api,
     yflink_protocol_response_raw,
