@@ -161,7 +161,7 @@ class DebankModelChain(BaseModel):
 
 
 class DebankChain(BaseModel):
-    chain: Blockchain
+    chain: Union[Blockchain, str]
     community_id: int
     name: str
     logo_url: str
@@ -204,13 +204,8 @@ class DebankChainParser:
         return list(sorted(chains, key=lambda x: x.name))
 
     @staticmethod
-    def parse_item(item: DebankModelChain) -> Optional[DebankChain]:
-        blockchain = get_blockchain_from_debank_chain(item.id)
-        if not blockchain:
-            logger.warning(
-                f'No blockchain found for debank chain {item.id} ({item.name}, {item.community_id}). Skipping.'
-            )
-            return None
+    def parse_item(item: DebankModelChain) -> DebankChain:
+        blockchain = get_blockchain_from_debank_chain(item.id) or item.id
 
         return DebankChain(
             chain=blockchain,
