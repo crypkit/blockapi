@@ -71,7 +71,7 @@ def test_balance_parser_parses_protocol(
     item = balance_parser.parse([coin_with_protocol_response])[0]
     assert item.protocol.protocol_id == "yflink"
     assert item.protocol.name == "YFLink"
-    assert item.protocol.chain == Blockchain.ETHEREUM
+    assert item.protocol.chain == 'eth'
     assert item.protocol.user_deposit == Decimal(1234.5)
 
     assert item.coin.protocol_id == "yflink"
@@ -82,7 +82,7 @@ def test_debank_parses_coin(balance_parser, coin_response):
     assert item.coin.symbol == "PYRO"
     assert item.coin.name == "PYRO Network"
     assert item.coin.decimals == 18
-    assert item.coin.blockchain == Blockchain.ETHEREUM
+    assert item.coin.blockchain == 'eth'
     assert item.coin.address == '0x14409B0Fc5C7f87b5DAd20754fE22d29A3dE8217'
 
 
@@ -127,7 +127,9 @@ def test_get_coin_returns_defined_coin(balance_parser):
     )
 
     coin = balance_parser.get_coin(balance)
-    assert coin is COIN_ETH
+    assert coin.symbol == 'ETH'
+    assert coin.blockchain == 'eth'
+    assert coin.info.coingecko_id == CoingeckoId.ETHEREUM
 
 
 def test_get_coin_preserves_protocol_id(balance_parser):
@@ -159,7 +161,7 @@ def test_get_coin_creates_know_coin_allowed_blockchains(balance_parser):
 
     coin = balance_parser.get_coin(balance)
     assert coin.symbol == 'ETH'
-    assert coin.blockchain == Blockchain.OPTIMISM
+    assert coin.blockchain == 'op'
     assert coin.info.coingecko_id == CoingeckoId.ETHEREUM
     assert coin.protocol_id == 'optimism'
     assert coin.address == 'op'
@@ -178,7 +180,7 @@ def test_get_coin_creates_unknown_coin(balance_parser):
 
     coin = balance_parser.get_coin(balance)
     assert coin.symbol == 'WAVAX'
-    assert coin.blockchain == Blockchain.AVALANCHE
+    assert coin.blockchain == 'avax'
     assert not coin.info.coingecko_id
     assert coin.protocol_id == 'avax_gmx'
     assert coin.address == '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7'
@@ -229,7 +231,9 @@ def test_all_mapping(contract, symbol, coin, balance_parser):
         amount=Decimal(1),
     )
 
-    assert coin == balance_parser.get_coin(balance)
+    parsed = balance_parser.get_coin(balance)
+    assert parsed.blockchain == contract
+    assert parsed.info.coingecko_id == coin.info.coingecko_id
 
 
 def test_balance_with_unknown_chain_is_returned(balance_parser):

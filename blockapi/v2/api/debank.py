@@ -24,7 +24,6 @@ from blockapi.v2.base import (
     IPortfolio,
     ISleepProvider,
 )
-from blockapi.v2.blockchain_mapping import get_blockchain_from_debank_chain
 from blockapi.v2.coin_mapping import symbol_to_coin_map
 from blockapi.v2.models import (
     AssetType,
@@ -161,7 +160,7 @@ class DebankModelChain(BaseModel):
 
 
 class DebankChain(BaseModel):
-    chain: Union[Blockchain, str]
+    chain: str
     community_id: int
     name: str
     logo_url: str
@@ -180,11 +179,9 @@ class DebankProtocolParser:
 
     @staticmethod
     def parse_item(item: DebankModelProtocol) -> Optional[Protocol]:
-        blockchain = get_blockchain_from_debank_chain(item.chain) or item.chain
-
         return Protocol.from_api(
             protocol_id=item.id,
-            chain=blockchain,
+            chain=item.chain,
             name=item.name,
             user_deposit=item.tvl,
             site_url=item.site_url,
@@ -205,10 +202,8 @@ class DebankChainParser:
 
     @staticmethod
     def parse_item(item: DebankModelChain) -> DebankChain:
-        blockchain = get_blockchain_from_debank_chain(item.id) or item.id
-
         return DebankChain(
-            chain=blockchain,
+            chain=item.id,
             community_id=item.community_id,
             name=item.name,
             logo_url=item.logo_url,
@@ -349,9 +344,7 @@ class DebankBalanceParser:
 
     def get_coin(self, balance_item: DebankModelBalanceItem) -> Coin:
         contract = balance_item.id
-        blockchain = (
-            get_blockchain_from_debank_chain(balance_item.chain) or balance_item.chain
-        )
+        blockchain = balance_item.chain
         symbol = self.get_symbol(balance_item)
 
         coingecko_id = get_coingecko_id(contract, symbol)
@@ -603,7 +596,6 @@ class DebankPortfolioParser:
 
 
 class DebankAppParser:
-
     def parse(self, response: list) -> list[DebankApp]:
         if not response:
             return []
