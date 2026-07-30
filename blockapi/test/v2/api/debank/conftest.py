@@ -566,7 +566,7 @@ def yflink_protocol_response_raw():
 def protocol_yflink():
     return Protocol.from_api(
         protocol_id="yflink",
-        chain=Blockchain.ETHEREUM,
+        chain='eth',
         name="YFLink",
         user_deposit=1234.5,
         site_url="https://linkswap.app",
@@ -578,7 +578,7 @@ def protocol_yflink():
 def protocol_trader_joe():
     return Protocol.from_api(
         protocol_id="avax_traderjoexyz_lending",
-        chain=Blockchain.AVALANCHE,
+        chain='avax',
         name="Trader Joe Lending",
         user_deposit='162476998.75607753',
         site_url="https://www.traderjoexyz.com",
@@ -612,7 +612,7 @@ def debank_chain_eth_response_raw():
 @pytest.fixture
 def debank_chain_eth():
     return DebankChain(
-        chain=Blockchain.ETHEREUM,
+        chain='eth',
         community_id=1,
         name='Ethereum',
         logo_url="https://static.debank.com/image/chain/logo_url/eth/"
