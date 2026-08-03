@@ -78,7 +78,7 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
 
     coin = COIN_ATOM
 
-    API_BASE_URL = 'https://lcd-cosmos.cosmostation.io/'
+    API_BASE_URL = 'https://cosmoshub-mainnet-api.itrocket.net/'
     API_BASE_RATE_LIMIT = 0.2
 
     supported_requests = {
