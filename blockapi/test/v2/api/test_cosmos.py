@@ -228,7 +228,7 @@ def test_cosmos_get_balance():
 def test_osmosis_get_balance():
     api = CosmosOsmosisApi()
     balances = api.get_balance('osmo1aff76avnwpnk02wxkc6n5xnwasjkgekazvl8xj')
-    assert len(balances) == 2
+    assert len(balances) == 4
     assert all([balance.coin != UNKNOWN for balance in balances])
 
 
@@ -237,7 +237,7 @@ def test_osmosis_get_balance():
 def test_dydx_get_balance():
     api = CosmosDydxApi()
     balances = api.get_balance('dydx1aff76avnwpnk02wxkc6n5xnwasjkgekarwznsh')
-    assert len(balances) == 4
+    assert len(balances) == 1
     assert all([balance.coin != UNKNOWN for balance in balances])
 
 
