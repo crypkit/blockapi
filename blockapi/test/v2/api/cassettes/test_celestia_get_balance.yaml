@@ -1,0 +1,236 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Referer:
+      - https://www.mintscan.io/
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/50.0.2661.102 Safari/537.36
+    method: GET
+    uri: https://celestia-mainnet-api.itrocket.net/cosmos/bank/v1beta1/balances/celestia1aff76avnwpnk02wxkc6n5xnwasjkgekamaa82d
+  response:
+    body:
+      string: '{"balances":[{"denom":"utia","amount":"356580009"}],"pagination":{"next_key":null,"total":"1"}}'
+    headers:
+      CF-RAY:
+      - a2745a643e8196a7-PRG
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 07 Aug 2026 06:51:29 GMT
+      Nel:
+      - '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+      Report-To:
+      - '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=LV%2BRJNvX4cNfQt5h4bGeGKh8sIqzv6%2B1ZJZzRduIBSock8a3ouQ21zH8Pu1hTP2CselVOi3Q7aoJdgSBmgWoL%2FZcM6Yy1pCQcpuxmjViIWfnXHWEs4YSd9myybHYfugReOiHaSvpP2PSl1k38VgpLqX%2BNg%3D%3D"}]}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - '*'
+      access-control-allow-methods:
+      - '*'
+      access-control-allow-origin:
+      - '*'
+      cf-cache-status:
+      - DYNAMIC
+      content-length:
+      - '95'
+      grpc-metadata-content-type:
+      - application/grpc+cosmos-sdk-grpc-codec
+      grpc-metadata-x-cosmos-block-height:
+      - '12883846'
+      via:
+      - 1.1 Caddy
+      x-server-time:
+      - '1786085489'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Referer:
+      - https://www.mintscan.io/
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/50.0.2661.102 Safari/537.36
+    method: GET
+    uri: https://celestia-mainnet-api.itrocket.net/cosmos/staking/v1beta1/delegations/celestia1aff76avnwpnk02wxkc6n5xnwasjkgekamaa82d?pagination.limit=1000
+  response:
+    body:
+      string: '{"delegation_responses":[],"pagination":{"next_key":null,"total":"0"}}'
+    headers:
+      CF-RAY:
+      - a2745a64de9308c1-PRG
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 07 Aug 2026 06:51:29 GMT
+      Nel:
+      - '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+      Report-To:
+      - '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=d98PZ%2F671G2Dx2vQv6DeNapC10uf5DK8rd%2FhY7mxKo%2B2fW2XzJ5D2Z%2Ft3HvovRb0iHkxH%2B00RyyjBJE8cJ1p%2F3EvFzm9NRObNAHZT7ZHaPp%2F6NPXZEJYciaoikNhb9iLh3ahn20itIttRgyeb9pc2snzaA%3D%3D"}]}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - '*'
+      access-control-allow-methods:
+      - '*'
+      access-control-allow-origin:
+      - '*'
+      cf-cache-status:
+      - DYNAMIC
+      content-length:
+      - '70'
+      grpc-metadata-content-type:
+      - application/grpc+cosmos-sdk-grpc-codec
+      grpc-metadata-x-cosmos-block-height:
+      - '12883846'
+      via:
+      - 1.1 Caddy
+      x-server-time:
+      - '1786085489'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Referer:
+      - https://www.mintscan.io/
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/50.0.2661.102 Safari/537.36
+    method: GET
+    uri: https://celestia-mainnet-api.itrocket.net/cosmos/staking/v1beta1/delegators/celestia1aff76avnwpnk02wxkc6n5xnwasjkgekamaa82d/unbonding_delegations
+  response:
+    body:
+      string: '{"unbonding_responses":[],"pagination":{"next_key":null,"total":"0"}}'
+    headers:
+      CF-RAY:
+      - a2745a657c9ad935-PRG
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 07 Aug 2026 06:51:29 GMT
+      Nel:
+      - '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+      Report-To:
+      - '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=ZbrFFZQF8DBceCZlEzzj%2FpFS7zLBZgeXq2q3pkJnhaZahWZ%2Fn8bhDkDQEgpVbVdExFGAc4FC4KeuppSWhTAJQ1eeBKUl1XBefziuM8J%2Bm%2F6GDLl8nw72IokMZSPqGAy%2BxliwSsspkkDvxdnpxFAENktzKg%3D%3D"}]}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - '*'
+      access-control-allow-methods:
+      - '*'
+      access-control-allow-origin:
+      - '*'
+      cf-cache-status:
+      - DYNAMIC
+      content-length:
+      - '69'
+      grpc-metadata-content-type:
+      - application/grpc+cosmos-sdk-grpc-codec
+      grpc-metadata-x-cosmos-block-height:
+      - '12883846'
+      via:
+      - 1.1 Caddy
+      x-server-time:
+      - '1786085489'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Referer:
+      - https://www.mintscan.io/
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/50.0.2661.102 Safari/537.36
+    method: GET
+    uri: https://celestia-mainnet-api.itrocket.net/cosmos/distribution/v1beta1/delegators/celestia1aff76avnwpnk02wxkc6n5xnwasjkgekamaa82d/rewards
+  response:
+    body:
+      string: '{"rewards":[],"total":[]}'
+    headers:
+      CF-RAY:
+      - a2745a66292af970-PRG
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '25'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 07 Aug 2026 06:51:29 GMT
+      Nel:
+      - '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+      Report-To:
+      - '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=KvnDpZxLAxvESCY%2BlRTHzqwReyq24%2F6p9sx4MaMain4xuo4773IZw%2F8s%2BHoZJ9gUT1E%2FxZjP009V%2B%2BeYiLDlDLasRy5HUagt8wgutT5hA71wXL%2FKNppb7scWi7A0VhtPn4ab4s%2BUipU%2FNjJFGIWs1%2FO5zw%3D%3D"}]}'
+      Server:
+      - cloudflare
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - '*'
+      access-control-allow-methods:
+      - '*'
+      access-control-allow-origin:
+      - '*'
+      cf-cache-status:
+      - DYNAMIC
+      grpc-metadata-content-type:
+      - application/grpc+cosmos-sdk-grpc-codec
+      grpc-metadata-x-cosmos-block-height:
+      - '12883846'
+      via:
+      - 1.1 Caddy
+      x-server-time:
+      - '1786085489'
+    status:
+      code: 200
+      message: OK
+version: 1

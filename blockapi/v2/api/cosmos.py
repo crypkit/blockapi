@@ -252,7 +252,7 @@ class CosmosOsmosisApi(CosmosApiBase):
     TOKENS_MAP_BLOCKCHAIN_KEY = "osmosis"
     api_options = ApiOptions(
         blockchain=Blockchain.OSMOSIS,
-        base_url='https://lcd-osmosis.cosmostation.io/',
+        base_url='https://osmosis-mainnet-api.itrocket.net/',
         rate_limit=CosmosApiBase.API_BASE_RATE_LIMIT,
     )
 
@@ -262,7 +262,7 @@ class CosmosDydxApi(CosmosApiBase):
     TOKENS_MAP_BLOCKCHAIN_KEY = "dydx"
     api_options = ApiOptions(
         blockchain=Blockchain.DYDX,
-        base_url='https://lcd-dydx.cosmostation.io/',
+        base_url='https://dydx-rest.publicnode.com/',
         rate_limit=CosmosApiBase.API_BASE_RATE_LIMIT,
     )
 
@@ -272,6 +272,6 @@ class CosmosCelestiaApi(CosmosApiBase):
     TOKENS_MAP_BLOCKCHAIN_KEY = "celestia"
     api_options = ApiOptions(
         blockchain=Blockchain.CELESTIA,
-        base_url='https://lcd-celestia.cosmostation.io/',
+        base_url='https://celestia-mainnet-api.itrocket.net/',
         rate_limit=CosmosApiBase.API_BASE_RATE_LIMIT,
     )
