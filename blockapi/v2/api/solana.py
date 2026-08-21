@@ -1,6 +1,7 @@
 import json
 import logging
 from typing import Optional, Union
+from urllib.parse import urlparse
 
 from cytoolz import reduceby
 from requests import Response
@@ -79,6 +80,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     TOKEN_2022_PROGRAM_ID = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
     STAKE_PROGRAM_ID = 'Stake11111111111111111111111111111111111111'
     STAKE_AUTHORITY_OFFSET = 44
+    HELIUS_RPC_DOMAIN = 'helius-rpc.com'
     DAS_BATCH_SIZE = 1000
     _JSONRPC_INVALID_PARAMS = -32602
 
@@ -314,25 +316,47 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
     def _fetch_staked_sol(self, address: str) -> dict:
         """Fetch staked SOL accounts for a given address."""
-        return self._request(
-            method='getProgramAccounts',
-            params=[
-                self.STAKE_PROGRAM_ID,
+        config = {
+            'filters': [
                 {
-                    'filters': [
-                        {
-                            'memcmp': {
-                                'offset': self.STAKE_AUTHORITY_OFFSET,
-                                'bytes': address,
-                                'encoding': 'base58',
-                            }
-                        }
-                    ],
-                    'encoding': 'jsonParsed',
-                    'commitment': 'finalized',
-                },
+                    'memcmp': {
+                        'offset': self.STAKE_AUTHORITY_OFFSET,
+                        'bytes': address,
+                        'encoding': 'base58',
+                    }
+                }
             ],
+            'encoding': 'jsonParsed',
+            'commitment': 'finalized',
+        }
+
+        hostname = urlparse(self.base_url).hostname or ''
+        is_helius_rpc = hostname == self.HELIUS_RPC_DOMAIN or hostname.endswith(
+            f'.{self.HELIUS_RPC_DOMAIN}'
         )
+        if not is_helius_rpc:
+            return self._request(
+                method='getProgramAccounts',
+                params=[self.STAKE_PROGRAM_ID, config],
+            )
+
+        config['limit'] = self.api_options.max_items_per_page
+        accounts = []
+
+        while True:
+            response = self._request(
+                method='getProgramAccountsV2',
+                params=[self.STAKE_PROGRAM_ID, config],
+            )
+            page = response['result']
+            accounts.extend(page['accounts'])
+
+            pagination_key = page.get('paginationKey')
+            if pagination_key is None:
+                response['result'] = accounts
+                return response
+
+            config = {**config, 'paginationKey': pagination_key}
 
     # ── Balance parsing ────────────────────────────────────────
 
@@ -373,7 +397,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     def _parse_rent_reserve(
         self, staked_sol: BalanceItem, raw_staked_sol: dict
     ) -> BalanceItem:
-        """Parse rent reserve from getProgramAccounts response.
+        """Parse rent reserve from a program accounts response.
 
         Uses result[].account.lamports already returned by _fetch_staked_sol,
         avoiding a separate getMultipleAccounts call.
