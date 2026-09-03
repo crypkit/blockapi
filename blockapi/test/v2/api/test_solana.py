@@ -288,7 +288,7 @@ def test_fetch_staked_sol_uses_v2_pagination():
         ],
         'encoding': 'jsonParsed',
         'commitment': 'finalized',
-        'limit': api.api_options.max_items_per_page,
+        'limit': api.HELIUS_PROGRAM_ACCOUNTS_PAGE_SIZE,
     }
     assert request.call_args_list == [
         call(

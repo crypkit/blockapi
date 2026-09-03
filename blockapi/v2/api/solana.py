@@ -81,6 +81,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     STAKE_PROGRAM_ID = 'Stake11111111111111111111111111111111111111'
     STAKE_AUTHORITY_OFFSET = 44
     HELIUS_RPC_DOMAIN = 'helius-rpc.com'
+    HELIUS_PROGRAM_ACCOUNTS_PAGE_SIZE = 5000
     DAS_BATCH_SIZE = 1000
     _JSONRPC_INVALID_PARAMS = -32602
 
@@ -340,7 +341,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
                 params=[self.STAKE_PROGRAM_ID, config],
             )
 
-        config['limit'] = self.api_options.max_items_per_page
+        config['limit'] = self.HELIUS_PROGRAM_ACCOUNTS_PAGE_SIZE
         accounts = []
 
         while True:
