@@ -1,3 +1,4 @@
+import json
 from decimal import Decimal
 from unittest.mock import call, patch
 
@@ -75,15 +76,26 @@ def test_use_base_url():
     assert api.base_url == 'https://api.mainnet-beta.solana.com/'
 
 
-def test_use_base_url_in_post(
+@pytest.mark.parametrize(
+    ('rpc_url', 'uses_v2_staking'),
+    [
+        ('https://mainnet.helius-rpc.com/', True),
+        ('https://proxy/solana/', False),
+    ],
+)
+def test_get_balance_supports_helius_and_legacy_staking_responses(
     sol_balance_response,
     token_accounts_response,
     das_asset_batch_response,
     staked_solana_response,
+    rpc_url,
+    uses_v2_staking,
 ):
-    rpc_url = 'https://mainnet.helius-rpc.com/'
     test_addr = '5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu'
     empty_token_accounts = '{"jsonrpc":"2.0","result":{"context":{"apiVersion":"1.17.34","slot":268207149},"value":[]},"id":1}'
+    staking_response = json.loads(staked_solana_response)
+    if not uses_v2_staking:
+        staking_response['result'] = staking_response['result']['accounts']
 
     iterator = iter(
         [
@@ -91,7 +103,7 @@ def test_use_base_url_in_post(
             token_accounts_response,
             empty_token_accounts,
             das_asset_batch_response,
-            staked_solana_response,
+            json.dumps(staking_response),
         ]
     )
 
@@ -101,9 +113,19 @@ def test_use_base_url_in_post(
         return data
 
     with Mocker() as m:
-        m.post(ANY, text=get_text),
+        m.post(ANY, text=get_text)
         api = SolanaApi(base_url=rpc_url)
-        api.get_balance(test_addr)
+        balances = api.get_balance(test_addr)
+
+    staking_balances = {
+        balance.asset_type: balance.balance_raw
+        for balance in balances
+        if balance.asset_type in {AssetType.STAKED, AssetType.LOCKED}
+    }
+    assert staking_balances == {
+        AssetType.STAKED: Decimal('179062913955311'),
+        AssetType.LOCKED: Decimal('424045085255'),
+    }
 
 
 def test_build_coin_from_das_asset():
