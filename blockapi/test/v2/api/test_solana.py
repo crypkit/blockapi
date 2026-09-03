@@ -6,6 +6,7 @@ from requests_mock import ANY, Mocker
 
 from blockapi.test.v2.api.conftest import read_file
 from blockapi.v2.api import SolanaApi, SolscanApi
+from blockapi.v2.base import ApiException
 from blockapi.v2.models import (
     AssetType,
     BalanceItem,
@@ -315,6 +316,32 @@ def test_fetch_staked_sol_uses_v2_pagination():
         'id': 3,
         'result': [first_account, second_account],
     }
+
+
+def test_fetch_staked_sol_rejects_repeated_pagination_key():
+    api = SolanaApi(base_url='https://mainnet.helius-rpc.com/')
+    repeated_page = {
+        'result': {
+            'accounts': [],
+            'paginationKey': 'same-page',
+        }
+    }
+    terminal_page = {
+        'result': {
+            'accounts': [],
+            'paginationKey': None,
+        }
+    }
+
+    with patch.object(
+        api,
+        '_request',
+        side_effect=[repeated_page, repeated_page, terminal_page],
+    ) as request:
+        with pytest.raises(ApiException, match='repeated pagination key'):
+            api._fetch_staked_sol('address')
+
+    assert request.call_count == 2
 
 
 def test_fetch_staked_sol_uses_legacy_method_for_non_helius_rpc():

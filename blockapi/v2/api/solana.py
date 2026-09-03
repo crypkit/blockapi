@@ -343,6 +343,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
         config['limit'] = self.HELIUS_PROGRAM_ACCOUNTS_PAGE_SIZE
         accounts = []
+        seen_pagination_keys = set()
 
         while True:
             response = self._request(
@@ -356,7 +357,10 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             if pagination_key is None:
                 response['result'] = accounts
                 return response
+            if pagination_key in seen_pagination_keys:
+                raise ApiException('Solana RPC returned a repeated pagination key')
 
+            seen_pagination_keys.add(pagination_key)
             config = {**config, 'paginationKey': pagination_key}
 
     # ── Balance parsing ────────────────────────────────────────
