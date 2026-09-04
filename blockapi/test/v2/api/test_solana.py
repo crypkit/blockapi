@@ -1,11 +1,13 @@
+import json
 from decimal import Decimal
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 import pytest
 from requests_mock import ANY, Mocker
 
 from blockapi.test.v2.api.conftest import read_file
 from blockapi.v2.api import SolanaApi, SolscanApi
+from blockapi.v2.base import ApiException
 from blockapi.v2.models import (
     AssetType,
     BalanceItem,
@@ -74,14 +76,26 @@ def test_use_base_url():
     assert api.base_url == 'https://api.mainnet-beta.solana.com/'
 
 
-def test_use_base_url_in_post(
+@pytest.mark.parametrize(
+    ('rpc_url', 'uses_v2_staking'),
+    [
+        ('https://mainnet.helius-rpc.com/', True),
+        ('https://proxy/solana/', False),
+    ],
+)
+def test_get_balance_supports_helius_and_legacy_staking_responses(
     sol_balance_response,
     token_accounts_response,
     das_asset_batch_response,
     staked_solana_response,
+    rpc_url,
+    uses_v2_staking,
 ):
     test_addr = '5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu'
     empty_token_accounts = '{"jsonrpc":"2.0","result":{"context":{"apiVersion":"1.17.34","slot":268207149},"value":[]},"id":1}'
+    staking_response = json.loads(staked_solana_response)
+    if not uses_v2_staking:
+        staking_response['result'] = staking_response['result']['accounts']
 
     iterator = iter(
         [
@@ -89,19 +103,29 @@ def test_use_base_url_in_post(
             token_accounts_response,
             empty_token_accounts,
             das_asset_batch_response,
-            staked_solana_response,
+            json.dumps(staking_response),
         ]
     )
 
     def get_text(*args, **kwargs):
-        assert args[0].url == 'https://proxy/solana/'
+        assert args[0].url == rpc_url
         data = next(iterator)
         return data
 
     with Mocker() as m:
-        m.post(ANY, text=get_text),
-        api = SolanaApi(base_url='https://proxy/solana/')
-        api.get_balance(test_addr)
+        m.post(ANY, text=get_text)
+        api = SolanaApi(base_url=rpc_url)
+        balances = api.get_balance(test_addr)
+
+    staking_balances = {
+        balance.asset_type: balance.balance_raw
+        for balance in balances
+        if balance.asset_type in {AssetType.STAKED, AssetType.LOCKED}
+    }
+    assert staking_balances == {
+        AssetType.STAKED: Decimal('179062913955311'),
+        AssetType.LOCKED: Decimal('424045085255'),
+    }
 
 
 def test_build_coin_from_das_asset():
@@ -235,6 +259,123 @@ def test_parse_staked_balance_skips_undelegated():
     assert result is not None
     assert result.balance_raw == 1000000000
     assert result.asset_type == AssetType.STAKED
+
+
+def test_fetch_staked_sol_uses_v2_pagination():
+    api = SolanaApi(base_url='https://mainnet.helius-rpc.com/')
+    address = '5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu'
+    first_account = {'pubkey': 'first'}
+    second_account = {'pubkey': 'second'}
+
+    with patch.object(
+        api,
+        '_request',
+        side_effect=[
+            {
+                'jsonrpc': '2.0',
+                'id': 1,
+                'result': {
+                    'accounts': [first_account],
+                    'paginationKey': 'next-page',
+                },
+            },
+            {
+                'jsonrpc': '2.0',
+                'id': 2,
+                'result': {
+                    'accounts': [],
+                    'paginationKey': 'last-page',
+                },
+            },
+            {
+                'jsonrpc': '2.0',
+                'id': 3,
+                'result': {
+                    'accounts': [second_account],
+                    'paginationKey': None,
+                },
+            },
+        ],
+    ) as request:
+        response = api._fetch_staked_sol(address)
+
+    config = {
+        'filters': [
+            {
+                'memcmp': {
+                    'offset': api.STAKE_AUTHORITY_OFFSET,
+                    'bytes': address,
+                    'encoding': 'base58',
+                }
+            }
+        ],
+        'encoding': 'jsonParsed',
+        'commitment': 'finalized',
+        'limit': api.HELIUS_PROGRAM_ACCOUNTS_PAGE_SIZE,
+    }
+    assert request.call_args_list == [
+        call(
+            method='getProgramAccountsV2',
+            params=[api.STAKE_PROGRAM_ID, config],
+        ),
+        call(
+            method='getProgramAccountsV2',
+            params=[
+                api.STAKE_PROGRAM_ID,
+                {**config, 'paginationKey': 'next-page'},
+            ],
+        ),
+        call(
+            method='getProgramAccountsV2',
+            params=[
+                api.STAKE_PROGRAM_ID,
+                {**config, 'paginationKey': 'last-page'},
+            ],
+        ),
+    ]
+    assert response == {
+        'jsonrpc': '2.0',
+        'id': 3,
+        'result': [first_account, second_account],
+    }
+
+
+def test_fetch_staked_sol_rejects_repeated_pagination_key():
+    api = SolanaApi(base_url='https://mainnet.helius-rpc.com/')
+    repeated_page = {
+        'result': {
+            'accounts': [],
+            'paginationKey': 'same-page',
+        }
+    }
+    terminal_page = {
+        'result': {
+            'accounts': [],
+            'paginationKey': None,
+        }
+    }
+
+    with patch.object(
+        api,
+        '_request',
+        side_effect=[repeated_page, repeated_page, terminal_page],
+    ) as request:
+        with pytest.raises(ApiException, match='repeated pagination key'):
+            api._fetch_staked_sol('address')
+
+    assert request.call_count == 2
+
+
+def test_fetch_staked_sol_uses_legacy_method_for_non_helius_rpc():
+    api = SolanaApi()
+
+    with patch.object(api, '_request', return_value={'result': []}) as request:
+        response = api._fetch_staked_sol('address')
+
+    request.assert_called_once()
+    assert request.call_args.kwargs['method'] == 'getProgramAccounts'
+    assert 'limit' not in request.call_args.kwargs['params'][1]
+    assert response == {'result': []}
 
 
 def test_das_cache_stores_sentinel_for_unknown_mint():
