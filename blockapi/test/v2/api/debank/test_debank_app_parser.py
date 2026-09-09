@@ -224,6 +224,58 @@ def test_parse_polymarket_predictions(debank_app_parser, polymarket_response):
     assert pred2.chain == Blockchain.POLYGON
 
 
+def test_parse_deposit_unmapped_symbol_is_not_dropped(debank_app_parser):
+    """A deposit token missing from symbol_to_coin_map must be kept, with the
+    coin built from the token's own fields (not silently dropped)."""
+    response = [
+        {
+            "id": "hyperliquid",
+            "name": "Hyperliquid",
+            "has_supported_portfolio": True,
+            "portfolio_item_list": [
+                {
+                    "stats": {
+                        "asset_usd_value": 1234.5,
+                        "debt_usd_value": 0,
+                        "net_usd_value": 1234.5,
+                    },
+                    "asset_token_list": [
+                        {
+                            "id": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+                            "name": "Hyperliquid",
+                            "symbol": "HYPE",
+                            "decimals": 18,
+                            "app_id": "hyperliquid",
+                            "price": 41.2,
+                            "amount": 30.0,
+                        }
+                    ],
+                    "update_at": 1779790996.4148061,
+                    "name": "Deposit",
+                    "detail_types": ["common"],
+                    "detail": {},
+                    "position_index": "spot_0xabc",
+                }
+            ],
+        }
+    ]
+
+    parsed_apps = debank_app_parser.parse(response)
+    app = parsed_apps[0]
+
+    assert len(app.deposits) == 1
+    deposit = app.deposits[0]
+    assert deposit.asset_type == AssetType.DEPOSITED
+    assert deposit.balance_raw == Decimal("30.0")
+    assert deposit.coin.symbol == "HYPE"
+    assert deposit.coin.name == "Hyperliquid"
+    assert deposit.coin.decimals == 18
+    assert deposit.coin.blockchain == Blockchain.HYPERLIQUID
+    # token.id is passed through as address (unique per token) so unmapped
+    # tokens don't collapse into one unknown currency downstream.
+    assert deposit.coin.address == "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6"
+
+
 def test_parse_multiple_apps(debank_app_parser):
     """Test parsing multiple apps."""
     response = [
