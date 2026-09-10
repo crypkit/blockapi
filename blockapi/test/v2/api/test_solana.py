@@ -4,7 +4,6 @@ from decimal import Decimal
 from unittest.mock import call, patch
 
 import pytest
-from requests_mock import ANY, Mocker
 
 from blockapi.test.v2.api.conftest import read_file
 from blockapi.test.v2.api.fake_sleep_provider import FakeSleepProvider
@@ -91,6 +90,7 @@ def test_use_base_url():
     ],
 )
 def test_get_balance_supports_helius_and_legacy_staking_responses(
+    requests_mock,
     sol_balance_response,
     token_accounts_response,
     das_asset_batch_response,
@@ -106,30 +106,22 @@ def test_get_balance_supports_helius_and_legacy_staking_responses(
     if not uses_v2_staking:
         staking_response['result'] = staking_response['result']['accounts']
 
-    iterator = iter(
-        [
-            sol_balance_response,
-            token_accounts_response,
-            empty_token_accounts,
-            das_asset_batch_response,
-            json.dumps(staking_response),
-        ]
-    )
-
-    methods = []
+    responses = [
+        {'text': sol_balance_response},
+        {'text': token_accounts_response},
+        {'text': empty_token_accounts},
+        {'text': das_asset_batch_response},
+        {'json': staking_response},
+    ]
+    if throttled_request_index is not None:
+        responses.insert(
+            throttled_request_index,
+            {'status_code': 429, 'text': 'Too Many Requests'},
+        )
+    requests_mock.post(rpc_url, responses)
     sleep_provider = FakeSleepProvider()
 
-    def get_text(request, context):
-        assert request.url == rpc_url
-        method = request.json()['method']
-        methods.append(method)
-        if len(methods) - 1 == throttled_request_index:
-            context.status_code = 429
-            return 'Too Many Requests'
-        return next(iterator)
-
-    with Mocker() as m, patch('time.sleep') as sleep:
-        m.post(ANY, text=get_text)
+    with patch('time.sleep') as sleep:
         api = SolanaApi(base_url=rpc_url, sleep_provider=sleep_provider)
         balances = api.get_balance(test_addr)
 
@@ -144,14 +136,16 @@ def test_get_balance_supports_helius_and_legacy_staking_responses(
         retry_index = throttled_request_index
         expected_methods.insert(retry_index, expected_methods[retry_index])
         assert (
-            m.request_history[retry_index].json()
-            == m.request_history[retry_index + 1].json()
+            requests_mock.request_history[retry_index].json()
+            == requests_mock.request_history[retry_index + 1].json()
         )
         sleep.assert_called_once()
         assert 1 <= sleep.call_args.args[0] <= 1.25
     else:
         sleep.assert_not_called()
-    assert methods == expected_methods
+    assert [
+        r.json()['method'] for r in requests_mock.request_history
+    ] == expected_methods
     assert sleep_provider.calls == []
     assert not any(record.levelno >= logging.ERROR for record in caplog.records)
 
@@ -194,20 +188,21 @@ def test_get_balance_fails_after_three_throttled_token_attempts(requests_mock):
 
 
 @pytest.mark.parametrize(
-    ('retry_after', 'min_delay'),
+    ('retry_after', 'min_delays'),
     [
-        (None, 1),
-        ('2', 2),
-        ('5', 5),
-        ('0', 1),
-        ('-1', 1),
-        ('invalid', 1),
-        ('Thu, 10 Sep 2026 07:00:03 GMT', 3),
-        ('Thu, 10 Sep 2026 06:59:59 GMT', 1),
+        (None, [1]),
+        pytest.param(None, [1, 2], id='success-on-third-attempt'),
+        ('2', [2]),
+        ('5', [5]),
+        ('0', [1]),
+        ('-1', [1]),
+        ('invalid', [1]),
+        ('Thu, 10 Sep 2026 07:00:03 GMT', [3]),
+        ('Thu, 10 Sep 2026 06:59:59 GMT', [1]),
     ],
 )
 def test_helius_retry_after_without_sleep_provider(
-    requests_mock, retry_after, min_delay
+    requests_mock, retry_after, min_delays
 ):
     rpc_url = 'https://mainnet.helius-rpc.com/?api-key=test-key'
     headers = {'Retry-After': retry_after} if retry_after is not None else {}
@@ -215,8 +210,9 @@ def test_helius_retry_after_without_sleep_provider(
         rpc_url,
         [
             {'status_code': 429, 'text': 'Too Many Requests', 'headers': headers},
-            {'json': {'result': {'value': 1}}},
-        ],
+        ]
+        * len(min_delays)
+        + [{'json': {'result': {'value': 1}}}],
     )
     api = SolanaApi(base_url=rpc_url)
 
@@ -224,9 +220,14 @@ def test_helius_retry_after_without_sleep_provider(
         result = api._request('getBalance', ['address'])
 
     assert result == {'result': {'value': 1}}
-    assert requests_mock.call_count == 2
-    sleep.assert_called_once()
-    assert min_delay <= sleep.call_args.args[0] <= min(min_delay + 0.25, 5)
+    assert requests_mock.call_count == len(min_delays) + 1
+    assert sleep.call_count == len(min_delays)
+    for sleep_call, min_delay in zip(sleep.call_args_list, min_delays):
+        assert min_delay <= sleep_call.args[0] <= min(min_delay + 0.25, 5)
+    assert all(
+        request.json() == requests_mock.request_history[0].json()
+        for request in requests_mock.request_history[1:]
+    )
 
 
 @pytest.mark.parametrize('retry_after', ['6', '60', 'Thu, 10 Sep 2026 07:01:00 GMT'])
