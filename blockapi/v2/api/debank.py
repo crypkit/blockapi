@@ -14,6 +14,7 @@ from blockapi.v2.api.debank_maps import (
     COINGECKO_IDS_BY_CONTRACTS,
     DEBANK_APP_CHAIN_MAP,
     DEBANK_ASSET_TYPES,
+    DEBANK_BORROW_ASSET_TYPES,
     NATIVE_COIN_MAP,
     REWARD_ASSET_TYPE_MAP,
 )
@@ -486,7 +487,7 @@ class DebankPortfolioParser:
 
     def _parse_balances(self, detail, item, pool_info) -> Iterable[BalanceItem]:
         asset_type = self._parse_asset_type(item.name)
-        borrow_type = self._get_borrow_asset_type(asset_type)
+        borrow_type = self._get_borrow_asset_type(item.name, asset_type)
         reward_type = self._get_reward_asset_type(asset_type)
         exclude = set()
 
@@ -585,7 +586,11 @@ class DebankPortfolioParser:
             return AssetType.LOCKED
 
     @staticmethod
-    def _get_borrow_asset_type(asset_type):
+    def _get_borrow_asset_type(debank_type: str, asset_type: AssetType):
+        mapped_type = DEBANK_BORROW_ASSET_TYPES.get(debank_type.lower())
+        if mapped_type:
+            return mapped_type
+
         if asset_type == AssetType.LENDING:
             return AssetType.LENDING_BORROW
 

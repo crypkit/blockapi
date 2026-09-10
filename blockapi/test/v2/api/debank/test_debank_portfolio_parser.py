@@ -88,6 +88,51 @@ def test_parse_asset_type_liquidity_pool(portfolio_parser):
     )
 
 
+@pytest.mark.parametrize(
+    ('debank_type', 'asset_type'),
+    [
+        ('Airdrop', AssetType.CLAIMABLE),
+        ('Leveraged Farming', AssetType.FARMING),
+        ('NFT Fraction', AssetType.LOCKED),
+        ('NFT Staked', AssetType.STAKED),
+    ],
+)
+def test_parse_debank_asset_type_aliases(portfolio_parser, debank_type, asset_type):
+    assert portfolio_parser._parse_asset_type(debank_type) == asset_type
+
+
+def test_parse_leveraged_farming_borrow_as_debt(portfolio_parser, portfolio_response):
+    portfolio_item = portfolio_response['portfolio_item_list'][0]
+    portfolio_item['name'] = 'Leveraged Farming'
+    portfolio_item['detail_types'] = ['leveraged_farming']
+    portfolio_response['portfolio_item_list'] = [portfolio_item]
+
+    items = portfolio_parser.parse([portfolio_response])[0].items
+
+    assert [item.asset_type for item in items] == [
+        AssetType.FARMING,
+        AssetType.DEBT,
+        AssetType.DEBT,
+        AssetType.DEBT,
+    ]
+
+
+def test_parse_nft_staked_rewards_as_rewards(portfolio_parser, portfolio_response):
+    portfolio_item = portfolio_response['portfolio_item_list'][0]
+    reward_token = portfolio_item['detail']['supply_token_list'][0]
+    portfolio_item['name'] = 'NFT Staked'
+    portfolio_item['detail_types'] = ['nft_common']
+    portfolio_item['detail'] = {
+        'reward_token_list': [reward_token],
+        'supply_nft_list': [{'id': 'ignored-by-current-parser'}],
+    }
+    portfolio_response['portfolio_item_list'] = [portfolio_item]
+
+    items = portfolio_parser.parse([portfolio_response])[0].items
+
+    assert [item.asset_type for item in items] == [AssetType.REWARDS]
+
+
 def test_parse_unknown_asset_type_logs(portfolio_parser, caplog):
     expected_log = ["'dummy' is not a valid AssetType"]
     with caplog.at_level(level=logging.DEBUG):
