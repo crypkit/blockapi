@@ -1,5 +1,8 @@
 import json
 import logging
+import random
+import time
+from email.utils import parsedate_to_datetime
 from typing import Optional, Union
 from urllib.parse import urlparse
 
@@ -67,7 +70,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     api_options = ApiOptions(
         blockchain=Blockchain.SOLANA,
         base_url='https://api.mainnet-beta.solana.com/',
-        rate_limit=1,
+        rate_limit=2,
         start_offset=0,
         max_items_per_page=1000,
         page_offset_step=1,
@@ -82,6 +85,8 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     STAKE_AUTHORITY_OFFSET = 44
     HELIUS_RPC_DOMAIN = 'helius-rpc.com'
     HELIUS_PROGRAM_ACCOUNTS_PAGE_SIZE = 5000
+    HELIUS_MAX_ATTEMPTS = 3
+    HELIUS_MAX_RETRY_DELAY = 5
     DAS_BATCH_SIZE = 1000
     _JSONRPC_INVALID_PARAMS = -32602
 
@@ -331,11 +336,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             'commitment': 'finalized',
         }
 
-        hostname = urlparse(self.base_url).hostname or ''
-        is_helius_rpc = hostname == self.HELIUS_RPC_DOMAIN or hostname.endswith(
-            f'.{self.HELIUS_RPC_DOMAIN}'
-        )
-        if not is_helius_rpc:
+        if not self._is_helius_rpc():
             return self._request(
                 method='getProgramAccounts',
                 params=[self.STAKE_PROGRAM_ID, config],
@@ -430,7 +431,46 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
                 'params': params,
             }
         )
-        return self.post(body=body, headers={'Content-Type': 'application/json'})
+        headers = {'Content-Type': 'application/json'}
+        if not self._is_helius_rpc():
+            return self.post(body=body, headers=headers)
+
+        for attempt in range(self.HELIUS_MAX_ATTEMPTS):
+            response = self._session.post(self.base_url, data=body, headers=headers)
+            if response.status_code != 429 or attempt == self.HELIUS_MAX_ATTEMPTS - 1:
+                break
+
+            delay = self._helius_retry_delay(response, attempt)
+            # Leave long cooldowns to the caller's next fetch instead of blocking it.
+            if delay > self.HELIUS_MAX_RETRY_DELAY:
+                break
+            delay = min(delay + random.uniform(0, 0.25), self.HELIUS_MAX_RETRY_DELAY)
+            logger.warning(f'Helius {method} rate limited; retrying in {delay:.2f}s')
+            response.close()
+            time.sleep(delay)
+
+        return self._check_and_get_from_response(response)
+
+    def _is_helius_rpc(self) -> bool:
+        hostname = urlparse(self.base_url).hostname or ''
+        return hostname == self.HELIUS_RPC_DOMAIN or hostname.endswith(
+            f'.{self.HELIUS_RPC_DOMAIN}'
+        )
+
+    @staticmethod
+    def _helius_retry_delay(response: Response, attempt: int) -> float:
+        delay = 2**attempt
+        retry_after = response.headers.get('Retry-After')
+        if retry_after:
+            try:
+                return max(delay, int(retry_after))
+            except ValueError:
+                try:
+                    retry_at = parsedate_to_datetime(retry_after).timestamp()
+                    return max(delay, retry_at - time.time())
+                except (TypeError, ValueError, OverflowError):
+                    pass
+        return delay
 
     def _opt_raise_on_other_error(self, response: Response) -> None:
         """Raise ApiException or InvalidAddressException on RPC errors."""
