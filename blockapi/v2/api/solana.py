@@ -1,5 +1,7 @@
 import json
 import logging
+import time
+from dataclasses import dataclass
 from typing import Optional, Union
 from urllib.parse import urlparse
 
@@ -30,6 +32,11 @@ from blockapi.v2.models import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class _HeliusRetry:
+    used: bool = False
 
 
 class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
@@ -81,6 +88,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     STAKE_PROGRAM_ID = 'Stake11111111111111111111111111111111111111'
     STAKE_AUTHORITY_OFFSET = 44
     HELIUS_RPC_DOMAIN = 'helius-rpc.com'
+    HELIUS_RETRY_DELAY = 1.1
     HELIUS_PROGRAM_ACCOUNTS_PAGE_SIZE = 5000
     DAS_BATCH_SIZE = 1000
     _JSONRPC_INVALID_PARAMS = -32602
@@ -104,7 +112,8 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
     def fetch_balances(self, address: str) -> FetchResult:
         """Fetch native SOL, token accounts, DAS metadata, and staking data."""
-        sol_response = self._request('getBalance', [address])
+        retry = _HeliusRetry()
+        sol_response = self._request('getBalance', [address], retry=retry)
 
         raw_token_balances = self._request(
             'getTokenAccountsByOwner',
@@ -113,6 +122,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
                 {'programId': self.TOKEN_PROGRAM_ID},
                 {'encoding': 'jsonParsed'},
             ],
+            retry=retry,
         )
         raw_token2022_balances = self._request(
             'getTokenAccountsByOwner',
@@ -121,14 +131,15 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
                 {'programId': self.TOKEN_2022_PROGRAM_ID},
                 {'encoding': 'jsonParsed'},
             ],
+            retry=retry,
         )
 
         mint_addresses = self._collect_mint_addresses(
             raw_token_balances, raw_token2022_balances
         )
-        self._fetch_das_assets(mint_addresses)
+        self._fetch_das_assets(mint_addresses, retry=retry)
 
-        raw_staked_sol = self._fetch_staked_sol(address)
+        raw_staked_sol = self._fetch_staked_sol(address, retry=retry)
 
         return FetchResult(
             data=sol_response,
@@ -172,7 +183,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
     def get_coin(self, fetch_params: tuple[str, int]) -> Coin:
         """Fetch and build a Coin for a given contract address and decimals."""
         contract, decimals = fetch_params
-        self._fetch_das_assets([contract])
+        self._fetch_das_assets([contract], retry=_HeliusRetry())
         return self._resolve_coin(contract, decimals)
 
     @staticmethod
@@ -248,7 +259,9 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
     # ── DAS integration ────────────────────────────────────────
 
-    def _fetch_das_assets(self, mint_addresses: list[str]) -> None:
+    def _fetch_das_assets(
+        self, mint_addresses: list[str], retry: Optional[_HeliusRetry] = None
+    ) -> None:
         """Batch-fetch token metadata via DAS and populate cache."""
         uncached = list(
             dict.fromkeys(m for m in mint_addresses if m not in self._das_cache)
@@ -262,6 +275,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
                 response = self._request(
                     'getAssetBatch',
                     {'ids': chunk, 'options': {'showFungible': True}},
+                    retry=retry,
                 )
             except (ApiException, RequestException) as e:
                 logger.warning('DAS getAssetBatch failed: %s', e)
@@ -315,7 +329,9 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
     # ── Staking ────────────────────────────────────────────────
 
-    def _fetch_staked_sol(self, address: str) -> dict:
+    def _fetch_staked_sol(
+        self, address: str, retry: Optional[_HeliusRetry] = None
+    ) -> dict:
         """Fetch staked SOL accounts for a given address."""
         config = {
             'filters': [
@@ -331,11 +347,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             'commitment': 'finalized',
         }
 
-        hostname = urlparse(self.base_url).hostname or ''
-        is_helius_rpc = hostname == self.HELIUS_RPC_DOMAIN or hostname.endswith(
-            f'.{self.HELIUS_RPC_DOMAIN}'
-        )
-        if not is_helius_rpc:
+        if not self._is_helius_rpc():
             return self._request(
                 method='getProgramAccounts',
                 params=[self.STAKE_PROGRAM_ID, config],
@@ -349,6 +361,7 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
             response = self._request(
                 method='getProgramAccountsV2',
                 params=[self.STAKE_PROGRAM_ID, config],
+                retry=retry,
             )
             page = response['result']
             accounts.extend(page['accounts'])
@@ -419,7 +432,12 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
 
     # ── Infrastructure ─────────────────────────────────────────
 
-    def _request(self, method: str, params: Union[list, dict]) -> dict:
+    def _request(
+        self,
+        method: str,
+        params: Union[list, dict],
+        retry: Optional[_HeliusRetry] = None,
+    ) -> dict:
         """Send a JSON-RPC request to the Solana RPC endpoint."""
         self._request_id += 1
         body = json.dumps(
@@ -430,7 +448,31 @@ class SolanaApi(CustomizableBlockchainApi, BalanceMixin):
                 'params': params,
             }
         )
-        return self.post(body=body, headers={'Content-Type': 'application/json'})
+        headers = {'Content-Type': 'application/json'}
+        if not self._is_helius_rpc():
+            return self.post(body=body, headers=headers)
+
+        response = self._session.post(self.base_url, data=body, headers=headers)
+        if (
+            response.status_code == 429
+            and retry is not None
+            and not retry.used
+            and response.headers.get('Retry-After', '0').strip() in ('0', '1')
+        ):
+            retry.used = True
+            response.close()
+            logger.warning(
+                f'Helius {method} rate limited; retrying in {self.HELIUS_RETRY_DELAY}s'
+            )
+            time.sleep(self.HELIUS_RETRY_DELAY)
+            response = self._session.post(self.base_url, data=body, headers=headers)
+        return self._check_and_get_from_response(response)
+
+    def _is_helius_rpc(self) -> bool:
+        hostname = urlparse(self.base_url).hostname or ''
+        return hostname == self.HELIUS_RPC_DOMAIN or hostname.endswith(
+            f'.{self.HELIUS_RPC_DOMAIN}'
+        )
 
     def _opt_raise_on_other_error(self, response: Response) -> None:
         """Raise ApiException or InvalidAddressException on RPC errors."""
