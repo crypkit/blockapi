@@ -3,7 +3,7 @@ from decimal import Decimal
 from unittest.mock import call, patch
 
 import pytest
-from requests_mock import ANY, Mocker
+from requests_mock import Mocker
 
 from blockapi.test.v2.api.conftest import read_file
 from blockapi.v2.api import SolanaApi, SolscanApi
@@ -77,10 +77,41 @@ def test_use_base_url():
 
 
 @pytest.mark.parametrize(
-    ('rpc_url', 'uses_v2_staking'),
+    ('rpc_url', 'status', 'retry_after'),
     [
-        ('https://mainnet.helius-rpc.com/', True),
-        ('https://proxy/solana/', False),
+        ('https://proxy/solana/', 429, None),
+        ('https://not-helius-rpc.com/', 429, None),
+        ('https://helius-rpc.com.example.org/', 429, None),
+        ('https://mainnet.helius-rpc.com/', 400, None),
+        ('https://mainnet.helius-rpc.com/', 500, None),
+        ('https://mainnet.helius-rpc.com/', 429, '5'),
+        ('https://mainnet.helius-rpc.com/', 429, 'Fri, 31 Dec 9999 23:59:59 GMT'),
+        ('https://mainnet.helius-rpc.com/', 429, 'invalid'),
+    ],
+)
+def test_fetch_does_not_retry_other_errors_or_long_cooldowns(
+    rpc_url, status, retry_after
+):
+    headers = {'Retry-After': retry_after} if retry_after is not None else {}
+    with Mocker() as m, patch('time.sleep') as sleep:
+        m.post(rpc_url, status_code=status, headers=headers)
+        with pytest.raises(ApiException):
+            SolanaApi(base_url=rpc_url).fetch_balances('address')
+
+    assert len(m.request_history) == 1
+    sleep.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    ('rpc_url', 'uses_v2_staking', 'retry_index', 'retry_after'),
+    [
+        ('https://mainnet.helius-rpc.com/', True, None, None),
+        ('https://proxy/solana/', False, None, None),
+        ('https://mainnet.helius-rpc.com/', True, 0, None),
+        ('https://mainnet.helius-rpc.com/', True, 1, '0'),
+        ('https://mainnet.helius-rpc.com/', True, 2, '1'),
+        ('https://mainnet.helius-rpc.com/', True, 3, None),
+        ('https://mainnet.helius-rpc.com/', True, 5, None),
     ],
 )
 def test_get_balance_supports_helius_and_legacy_staking_responses(
@@ -90,6 +121,8 @@ def test_get_balance_supports_helius_and_legacy_staking_responses(
     staked_solana_response,
     rpc_url,
     uses_v2_staking,
+    retry_index,
+    retry_after,
 ):
     test_addr = '5PjMxaijeVVQtuEzxK2NxyJeWwUbpTsi2uXuZ653WoHu'
     empty_token_accounts = '{"jsonrpc":"2.0","result":{"context":{"apiVersion":"1.17.34","slot":268207149},"value":[]},"id":1}'
@@ -97,25 +130,38 @@ def test_get_balance_supports_helius_and_legacy_staking_responses(
     if not uses_v2_staking:
         staking_response['result'] = staking_response['result']['accounts']
 
-    iterator = iter(
-        [
+    responses = [
+        {'text': data}
+        for data in [
             sol_balance_response,
             token_accounts_response,
             empty_token_accounts,
             das_asset_batch_response,
             json.dumps(staking_response),
         ]
-    )
+    ]
+    if uses_v2_staking:
+        responses.insert(
+            4, {'json': {'result': {'accounts': [], 'paginationKey': 'next-page'}}}
+        )
+    if retry_index is not None:
+        headers = {'Retry-After': retry_after} if retry_after is not None else {}
+        responses.insert(retry_index, {'status_code': 429, 'headers': headers})
 
-    def get_text(*args, **kwargs):
-        assert args[0].url == rpc_url
-        data = next(iterator)
-        return data
-
-    with Mocker() as m:
-        m.post(ANY, text=get_text)
+    with Mocker() as m, patch('time.sleep') as sleep:
+        m.post(rpc_url, responses)
         api = SolanaApi(base_url=rpc_url)
         balances = api.get_balance(test_addr)
+
+    if retry_index is not None:
+        sleep.assert_called_once_with(1.1)
+        assert len(m.request_history) == len(responses)
+        assert (
+            m.request_history[retry_index].body
+            == m.request_history[retry_index + 1].body
+        )
+    else:
+        sleep.assert_not_called()
 
     staking_balances = {
         balance.asset_type: balance.balance_raw
@@ -126,6 +172,47 @@ def test_get_balance_supports_helius_and_legacy_staking_responses(
         AssetType.STAKED: Decimal('179062913955311'),
         AssetType.LOCKED: Decimal('424045085255'),
     }
+
+
+@pytest.mark.parametrize('fail_on_same_rpc', [True, False])
+def test_retry_is_shared_across_fetch_and_resets_for_next_fetch(
+    token_accounts_response, fail_on_same_rpc
+):
+    api = SolanaApi(base_url='https://mainnet.helius-rpc.com/')
+    responses = [{'status_code': 429}]
+    if not fail_on_same_rpc:
+        responses += [
+            {'json': {'result': {'value': 0}}},
+            {'text': token_accounts_response},
+            {'json': {'result': {'value': []}}},
+            {'status_code': 429},  # Optional DAS metadata may fail.
+            {'json': {'result': {'accounts': [], 'paginationKey': 'next-page'}}},
+        ]
+    responses.append({'status_code': 429})
+
+    with Mocker() as m, patch('time.sleep') as sleep:
+        for attempt in range(2):
+            m.post(api.base_url, responses)
+            with pytest.raises(ApiException):
+                api.fetch_balances('address')
+            assert len(m.request_history) == (attempt + 1) * len(responses)
+            if not fail_on_same_rpc:
+                assert (
+                    m.last_request.json()['params'][1]['paginationKey'] == 'next-page'
+                )
+
+    assert sleep.call_args_list == [call(1.1), call(1.1)]
+
+
+def test_get_coin_retries_helius_metadata_once():
+    api = SolanaApi(base_url='https://mainnet.helius-rpc.com/')
+    with Mocker() as m, patch('time.sleep') as sleep:
+        m.post(api.base_url, [{'status_code': 429}, {'json': {'result': []}}])
+        coin = api.get_coin(('mint', 6))
+
+    assert coin.address == 'mint'
+    assert len(m.request_history) == 2
+    sleep.assert_called_once_with(1.1)
 
 
 def test_build_coin_from_das_asset():
@@ -317,6 +404,7 @@ def test_fetch_staked_sol_uses_v2_pagination():
         call(
             method='getProgramAccountsV2',
             params=[api.STAKE_PROGRAM_ID, config],
+            retry=None,
         ),
         call(
             method='getProgramAccountsV2',
@@ -324,6 +412,7 @@ def test_fetch_staked_sol_uses_v2_pagination():
                 api.STAKE_PROGRAM_ID,
                 {**config, 'paginationKey': 'next-page'},
             ],
+            retry=None,
         ),
         call(
             method='getProgramAccountsV2',
@@ -331,6 +420,7 @@ def test_fetch_staked_sol_uses_v2_pagination():
                 api.STAKE_PROGRAM_ID,
                 {**config, 'paginationKey': 'last-page'},
             ],
+            retry=None,
         ),
     ]
     assert response == {
