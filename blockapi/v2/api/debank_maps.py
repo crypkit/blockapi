@@ -9,9 +9,17 @@ from blockapi.v2.models import (
 )
 
 DEBANK_ASSET_TYPES = {
+    'airdrop': AssetType.CLAIMABLE,
     'deposit': AssetType.DEPOSITED,
-    'vested': AssetType.VESTING,
+    'leveraged farming': AssetType.FARMING,
     'liquidity pool': AssetType.LIQUIDITY_POOL,
+    'nft fraction': AssetType.LOCKED,
+    'nft staked': AssetType.STAKED,
+    'vested': AssetType.VESTING,
+}
+
+DEBANK_BORROW_ASSET_TYPES = {
+    'leveraged farming': AssetType.DEBT,
 }
 
 REWARD_ASSET_TYPE_MAP = {
