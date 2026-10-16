@@ -177,13 +177,13 @@ class CosmosApiBase(BlockchainApi, IBalance, metaclass=ABCMeta):
         staked_response = self._get('get_staked_balance', address=address)
         staked_balance = sum(
             to_decimal(d['balance']['amount'])
-            for d in staked_response['delegation_responses']
+            for d in (staked_response['delegation_responses'] or [])
         )
 
         unbonding_response = self._get('get_unbonding_balance', address=address)
         unbonding_balance = sum(
             to_decimal(unbonding_entry['balance'])
-            for unbonding in unbonding_response['unbonding_responses']
+            for unbonding in (unbonding_response['unbonding_responses'] or [])
             for unbonding_entry in unbonding['entries']
         )
 
