@@ -176,6 +176,72 @@ def test_get_staking_balances(
     assert luna_reward.balance == Decimal('5')
 
 
+@pytest.mark.parametrize(
+    'has_delegations, has_unbonding, expected_staked',
+    [
+        (False, False, '0'),
+        (False, True, '25'),
+        (True, False, '100'),
+    ],
+)
+def test_get_balance_with_null_staking_responses(
+    terra_api,
+    balances_response,
+    staking_response,
+    rewards_response,
+    requests_mock,
+    has_delegations,
+    has_unbonding,
+    expected_staked,
+):
+    requests_mock.get(
+        f'{BASE_URL}/cosmos/bank/v1beta1/balances/{ADDRESS}',
+        json=balances_response,
+    )
+    requests_mock.get(
+        f'{BASE_URL}/cosmos/staking/v1beta1/delegations/{ADDRESS}',
+        json={
+            'delegation_responses': (
+                staking_response['delegation_responses'] if has_delegations else None
+            ),
+            'pagination': {'next_key': None, 'total': str(int(has_delegations))},
+        },
+    )
+    requests_mock.get(
+        f'{BASE_URL}/cosmos/staking/v1beta1/delegators/{ADDRESS}/unbonding_delegations',
+        json={
+            'unbonding_responses': (
+                [{'entries': [{'balance': '25000000'}]}] if has_unbonding else None
+            ),
+            'pagination': {'next_key': None, 'total': str(int(has_unbonding))},
+        },
+    )
+    requests_mock.get(
+        f'{BASE_URL}/cosmos/distribution/v1beta1/delegators/{ADDRESS}/rewards',
+        json=rewards_response,
+    )
+
+    balances = terra_api.get_balance(ADDRESS)
+
+    available = {
+        b.coin.address: b.balance
+        for b in balances
+        if b.asset_type == AssetType.AVAILABLE
+    }
+    assert available == {
+        'uluna': Decimal('23068.009633'),
+        'uusd': Decimal('85.997844'),
+    }
+    staked = [b for b in balances if b.asset_type == AssetType.STAKED]
+    assert [b.balance for b in staked] == (
+        [Decimal(expected_staked)] if Decimal(expected_staked) else []
+    )
+    rewards = {
+        b.coin.address: b.balance for b in balances if b.asset_type == AssetType.REWARDS
+    }
+    assert rewards == {'uluna': Decimal('5'), 'uusd': Decimal('1')}
+
+
 def test_resolve_ibc_denom(terra_api, ibc_denom_trace_response, requests_mock):
     ibc_hash = '0A866A7A214C42CEF84430C8A4C7210C8C7A980548A9B9BE64316D1610A87C6C'
     ibc_denom = f'ibc/{ibc_hash}'
