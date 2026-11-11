@@ -1,6 +1,27 @@
 # blockapi
 
 Library to interact with numerous cryptocurrency data APIs to get the basic info about account balance, transactions, staking informations, etc.
+
+### Confirmed Bitcoin balances with Esplora (v2)
+
+```python
+from blockapi.v2.api import EsploraApi, MempoolSpaceApi
+
+api = EsploraApi()  # https://blockstream.info/api/
+balances = api.get_balance('17vu4hEWtuPXFbJLPKtg4MFQnoohRE88v6')
+
+# Alternative endpoint, or your own Esplora instance:
+alternative = MempoolSpaceApi()
+custom = EsploraApi(base_url='https://example.com/api/')
+```
+
+These adapters return confirmed BTC only, excluding mempool changes. A valid
+zero balance returns an empty list; HTTP, network, and malformed-response errors
+are failures, not zero balances. Requests use 5-second connect and 15-second read
+timeouts. Only individual addresses are supported; xpub/ypub/zpub wallets require
+a provider with extended-key support. Selecting an alternative provider is
+explicit: these classes do not automatically fail over or combine balances.
+
 List of supported coins:
 
 | coin  | API name | supported operations

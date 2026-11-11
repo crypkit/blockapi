@@ -9,6 +9,7 @@ from blockapi.v2.api.blockchair import (
 )
 from blockapi.v2.api.chainso import ChainSoLitecoinApi
 from blockapi.v2.api.debank import DebankApi, DebankApp, DebankPrediction
+from blockapi.v2.api.esplora import EsploraApi, MempoolSpaceApi
 from blockapi.v2.api.ethplorer import EthplorerApi
 from blockapi.v2.api.haskoin import HaskoinApi
 from blockapi.v2.api.litecoinspace import LitecoinSpaceApi
