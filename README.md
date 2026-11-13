@@ -146,3 +146,22 @@ See also the list of [contributors](https://github.com/crypkit/blockapi/contribu
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
+
+### Blockonomics Bitcoin balances
+
+`blockapi.v2.api.BlockonomicsApi(api_key=...)` supports a single Bitcoin address
+or an xpub/ypub/zpub extended public key through `fetch_balances` /
+`parse_balances` and `get_balance`. Supply the API key from your application's
+secret configuration; it is sent as a Bearer header.
+
+Extended-key responses are aggregated across returned derived addresses.
+Balances include only the provider's `confirmed` amounts (in satoshis), excluding
+`unconfirmed` deltas. Blockonomics considers transactions with fewer than two
+confirmations unconfirmed, so a recently mined transaction can differ from
+providers using a one-confirmation threshold. Address discovery and gap limits
+are controlled by Blockonomics. Empty or malformed responses raise errors rather
+than being interpreted as a zero balance. Requests use 5-second connect and
+30-second read timeouts; the configured one-second pacing interval is a client
+setting, not a claim about the provider's quota.
+
+See the [balance API documentation](https://developers.blockonomics.co/docs/search/getbalance).
