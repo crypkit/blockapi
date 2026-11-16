@@ -1,8 +1,10 @@
+import hashlib
 import json
 from abc import ABC
 from decimal import Decimal
 from typing import Iterable, List, Optional
 
+import base58
 from requests import Response
 
 from blockapi.utils.num import decimals_to_raw, safe_opt_decimal, to_decimal
@@ -23,6 +25,18 @@ from blockapi.v2.models import (
 )
 
 
+def _is_ss58_address(address: str) -> bool:
+    """Checksum check of a 1-byte-prefix SS58 address (Polkadot, Kusama)."""
+    try:
+        raw = base58.b58decode(address)
+    except ValueError:
+        return False
+
+    payload, checksum = raw[:-2], raw[-2:]
+    expected = hashlib.blake2b(b'SS58PRE' + payload, digest_size=64).digest()[:2]
+    return len(raw) == 35 and checksum == expected
+
+
 class SubscanApi(BlockchainApi, BalanceMixin, ABC):
     """
     API docs: https://docs.api.subscan.io/
@@ -39,10 +53,21 @@ class SubscanApi(BlockchainApi, BalanceMixin, ABC):
 
     def fetch_balances(self, address: str) -> FetchResult:
         body = json.dumps({'key': address})
-        response = self._post('get_balance', body=body)
+        try:
+            response = self._post('get_balance', body=body)
+        except InvalidAddressException:
+            # Subscan answers "Record Not Found" both for malformed addresses
+            # and for accounts that never held anything on Asset Hub.
+            if not _is_ss58_address(address):
+                raise
+            return FetchResult()
+
         return FetchResult(data=response)
 
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
+        if not fetch_result.data:
+            return ParseResult(data=[])
+
         balances = list(self._yield_native_balances_zero_zum(fetch_result.data))
 
         # add staking rewards (and slashes) too? it's a lot of requests
@@ -69,7 +94,8 @@ class SubscanApi(BlockchainApi, BalanceMixin, ABC):
                 raw=data,
             )
 
-        b_bonded = safe_opt_decimal(data.get('bonded'))
+        # The staking ledger can exceed the held amount (seen on Asset Hub)
+        b_bonded = min(safe_opt_decimal(data.get('bonded')), b_reserved)
         if b_bonded:
             yield BalanceItem.from_api(
                 balance_raw=int(b_bonded),
@@ -153,15 +179,18 @@ class SubscanApi(BlockchainApi, BalanceMixin, ABC):
         )
 
 
+# Balances and staking moved from the relay chains to Asset Hub (Kusama Oct
+# 2025, Polkadot Nov 2025); relay chain accounts now hold nothing.
 class PolkadotSubscanApi(SubscanApi):
     coin = COIN_DOT
     api_options = SubscanApi._get_api_options(
-        blockchain=Blockchain.POLKADOT, base_url='https://polkadot.api.subscan.io'
+        blockchain=Blockchain.POLKADOT,
+        base_url='https://assethub-polkadot.api.subscan.io',
     )
 
 
 class KusamaSubscanApi(SubscanApi):
     coin = COIN_KSM
     api_options = SubscanApi._get_api_options(
-        blockchain=Blockchain.KUSAMA, base_url='https://kusama.api.subscan.io'
+        blockchain=Blockchain.KUSAMA, base_url='https://assethub-kusama.api.subscan.io'
     )
