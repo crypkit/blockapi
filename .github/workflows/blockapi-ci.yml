@@ -14,10 +14,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python 3.12.11
+      - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12.11'
+          python-version: '3.12'
 
       - name: Verify Python
         run: python --version
@@ -72,10 +72,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python 3.12.11
+      - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12.11'
+          python-version: '3.12'
 
       - name: Install dependencies
         run: |
@@ -123,10 +123,10 @@ jobs:
         VER=$(git tag --points-at HEAD)
         [ -z "$VER" ] && grep -q "__version__ = \"${VER/v}\"" setup.py || true
 
-    - name: Set up Python 3.12.11
+    - name: Set up Python 3.12
       uses: actions/setup-python@v4
       with:
-        python-version: '3.12.11'
+        python-version: '3.12'
 
     - name: Restore cache
       uses: actions/cache@v3
