@@ -4,6 +4,7 @@ import pytest
 
 from blockapi.test.v2.api.conftest import read_file
 from blockapi.v2.api import PolkadotSubscanApi
+from blockapi.v2.base import InvalidAddressException
 from blockapi.v2.models import AssetType
 
 
@@ -30,7 +31,7 @@ def api():
 )
 def test_fetch_balances(requests_mock, address, response_path, expected_balance, api):
     requests_mock.post(
-        'https://polkadot.api.subscan.io/api/v2/scan/search',
+        'https://assethub-polkadot.api.subscan.io/api/v2/scan/search',
         text=read_file(response_path),
     )
 
@@ -44,7 +45,7 @@ def test_real_problematic_address_overlap(requests_mock, api):
     Test the real problematic address that exhibits balance overlap.
     """
     requests_mock.post(
-        'https://polkadot.api.subscan.io/api/v2/scan/search',
+        'https://assethub-polkadot.api.subscan.io/api/v2/scan/search',
         text=read_file('data/subscan_polkadot_balance_overlap_1567z.json'),
     )
 
@@ -69,7 +70,7 @@ def test_second_problematic_address_overlap(requests_mock, api):
     amount (154.31 DOT) but no staking locks, demonstrating reserved > locked case.
     """
     requests_mock.post(
-        'https://polkadot.api.subscan.io/api/v2/scan/search',
+        'https://assethub-polkadot.api.subscan.io/api/v2/scan/search',
         text=read_file('data/subscan_polkadot_balance_overlap_15gT3.json'),
     )
 
@@ -91,3 +92,53 @@ def test_second_problematic_address_overlap(requests_mock, api):
     other_balance = other_balances[0]
     assert other_balance.balance == Decimal('154.3078601187')
     assert other_balance.asset_type == AssetType.LOCKED
+
+
+def test_bonded_above_reserved_does_not_overcount(requests_mock, api):
+    # 15j4dg5G... on Asset Hub: staking ledger 7920963.40 > held 7920960.99
+    account = {
+        'balance': '7921211.1136402109',
+        'reserved': '79209609960724902',
+        'bonded': '79209634033624902',
+    }
+    requests_mock.post(
+        'https://assethub-polkadot.api.subscan.io/api/v2/scan/search',
+        json={'code': 0, 'data': {'account': account}},
+    )
+
+    balances = api.get_balance('15j4dg5GzsL1bw2U2AWgeyAk6QTxq43V7ZPbXdAmbVLjvDCK')
+
+    assert {b.asset_type: b.balance for b in balances} == {
+        AssetType.AVAILABLE: Decimal('250.1175677207'),
+        AssetType.STAKED: Decimal('7920960.9960724902'),
+    }
+
+
+NOT_FOUND = {'code': 10004, 'message': 'Record Not Found', 'data': None}
+
+
+def test_account_unknown_to_asset_hub_has_no_balances(requests_mock, api):
+    requests_mock.post(
+        'https://assethub-polkadot.api.subscan.io/api/v2/scan/search',
+        json=NOT_FOUND,
+    )
+
+    assert api.get_balance('148x3evJb8aLBrpvPU3AN8cRAphjhNLiT3o12BvFyDdhL289') == []
+
+
+@pytest.mark.parametrize(
+    'address',
+    [
+        'not-an-address',
+        # valid address with its last character changed: bad checksum
+        '148x3evJb8aLBrpvPU3AN8cRAphjhNLiT3o12BvFyDdhL288',
+    ],
+)
+def test_invalid_address_raises(requests_mock, api, address):
+    requests_mock.post(
+        'https://assethub-polkadot.api.subscan.io/api/v2/scan/search',
+        json=NOT_FOUND,
+    )
+
+    with pytest.raises(InvalidAddressException):
+        api.get_balance(address)
