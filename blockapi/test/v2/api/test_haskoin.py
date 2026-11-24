@@ -42,6 +42,54 @@ def test_fetch_balances_xpub(requests_mock, haskoin_xpub_response):
     assert balances[0].balance == Decimal('0.12706308')
 
 
+def test_xpub_returns_segwit_hint(requests_mock):
+    url = f'https://api.haskoin.com/btc/xpub/{xpub_test_address}'
+    requests_mock.get(
+        url,
+        complete_qs=True,
+        status_code=400,
+        json={
+            'error': 'user-error',
+            'message': 'This xpub has no transactions with derive=legacy, '
+            'but has some with derive=segwit; ask with derive=segwit.',
+        },
+    )
+    result = HaskoinApi().fetch_balances(xpub_test_address)
+
+    assert result.status_code == 400
+    assert 'ask with derive=segwit.' in result.errors[0]
+    assert [request.url for request in requests_mock.request_history] == [url]
+
+
+@pytest.mark.parametrize('derive', ['legacy', 'compat', 'segwit'])
+def test_xpub_explicit_derivation(requests_mock, haskoin_xpub_response, derive):
+    url = f'https://api.haskoin.com/btc/xpub/{xpub_test_address}?derive={derive}'
+    requests_mock.get(url, complete_qs=True, text=haskoin_xpub_response)
+
+    result = HaskoinApi().fetch_balances(xpub_test_address, derive=derive)
+
+    assert result.status_code == 200
+    assert result.data['balance']['confirmed'] == 12706308
+    assert requests_mock.call_count == 1
+
+
+def test_cannot_override_zpub_derivation(requests_mock):
+    result = HaskoinApi().fetch_balances(zpub_test_address, derive='legacy')
+
+    assert result.errors
+    assert requests_mock.call_count == 0
+
+
+def test_xpub_preserves_unrelated_bad_request(requests_mock):
+    url = f'https://api.haskoin.com/btc/xpub/{xpub_test_address}'
+    requests_mock.get(url, status_code=400, reason='Bad Request')
+
+    result = HaskoinApi().fetch_balances(xpub_test_address)
+
+    assert result.errors == ['Bad Request']
+    assert requests_mock.call_count == 1
+
+
 def test_fetch_only(requests_mock, haskoin_balance_response):
     requests_mock.get(
         f'https://api.haskoin.com/btc/address/{btc_test_address}/balance',
