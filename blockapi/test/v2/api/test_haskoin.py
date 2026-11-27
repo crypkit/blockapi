@@ -1,4 +1,5 @@
 from decimal import Decimal
+from unittest.mock import Mock
 
 import pytest
 
@@ -42,22 +43,47 @@ def test_fetch_balances_xpub(requests_mock, haskoin_xpub_response):
     assert balances[0].balance == Decimal('0.12706308')
 
 
-def test_xpub_returns_segwit_hint(requests_mock):
-    url = f'https://api.haskoin.com/btc/xpub/{xpub_test_address}'
+@pytest.mark.parametrize('follow_up_status', [200, 400])
+def test_xpub_follows_segwit_hint_once(requests_mock, follow_up_status):
+    url = 'https://api.haskoin.com/btc/xpub/xpubSynthetic'
+    hint = {'error': 'user-error', 'message': 'ask with derive=segwit.'}
+    requests_mock.get(url, complete_qs=True, status_code=400, json=hint)
+    follow_up = f'{url}?derive=segwit'
+    payload = {'balance': {'confirmed': 42}} if follow_up_status == 200 else hint
+    requests_mock.get(
+        follow_up, complete_qs=True, status_code=follow_up_status, json=payload
+    )
+    sleep_provider = Mock()
+    api = HaskoinApi(sleep_provider=sleep_provider)
+
+    result = api.fetch_balances('xpubSynthetic')
+
+    assert result.status_code == follow_up_status
+    if follow_up_status == 200:
+        assert result.data == payload
+    else:
+        assert 'ask with derive=segwit.' in result.errors[0]
+    assert [request.url for request in requests_mock.request_history] == [
+        url,
+        follow_up,
+    ]
+    sleep_provider.sleep.assert_called_once_with(
+        api.base_url, api.api_options.rate_limit
+    )
+
+
+def test_explicit_derivation_ignores_hint(requests_mock):
+    url = 'https://api.haskoin.com/btc/xpub/xpubSynthetic?derive=legacy'
     requests_mock.get(
         url,
         complete_qs=True,
         status_code=400,
-        json={
-            'error': 'user-error',
-            'message': 'This xpub has no transactions with derive=legacy, '
-            'but has some with derive=segwit; ask with derive=segwit.',
-        },
+        json={'message': 'ask with derive=segwit.'},
     )
-    result = HaskoinApi().fetch_balances(xpub_test_address)
+
+    result = HaskoinApi().fetch_balances('xpubSynthetic', derive='legacy')
 
     assert result.status_code == 400
-    assert 'ask with derive=segwit.' in result.errors[0]
     assert [request.url for request in requests_mock.request_history] == [url]
 
 

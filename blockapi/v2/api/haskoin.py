@@ -58,7 +58,7 @@ class HaskoinApi(BlockchainApi, BalanceMixin):
     def fetch_balances(
         self, address: str, *, derive: Optional[Derivation] = None
     ) -> FetchResult:
-        """Optionally select the derivation of a plain xpub for this fetch."""
+        """Follow Haskoin's SegWit hint once for a plain xpub without a derive override."""
         prefix = address[:4]
         if derive is not None and (
             prefix != 'xpub' or derive not in ('legacy', 'compat', 'segwit')
@@ -70,15 +70,22 @@ class HaskoinApi(BlockchainApi, BalanceMixin):
         if prefix in _DERIVE_TYPES:
             derive = _DERIVE_TYPES[prefix]
             address = _to_xpub(address)
+        elif prefix != 'xpub':
+            return self.get_data('get_balance', address=address)
 
-        if derive is not None:
-            return self.get_data(
-                'get_balance_xpub', params={'derive': derive}, address=address
-            )
-        if prefix == 'xpub':
-            return self.get_data('get_balance_xpub', address=address)
+        if derive is None:
+            result = self.get_data('get_balance_xpub', address=address)
+            if result.status_code != 400 or not any(
+                'ask with derive=segwit.' in error for error in result.errors or []
+            ):
+                return result
+            if self.sleep_provider:
+                self.sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
+            derive = 'segwit'
 
-        return self.get_data('get_balance', address=address)
+        return self.get_data(
+            'get_balance_xpub', params={'derive': derive}, address=address
+        )
 
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
         if not fetch_result.data:
