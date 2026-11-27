@@ -1,3 +1,5 @@
+from typing import Literal, Optional
+
 import base58
 
 from blockapi.v2.base import BalanceMixin, BlockchainApi
@@ -10,6 +12,8 @@ from blockapi.v2.models import (
     FetchResult,
     ParseResult,
 )
+
+Derivation = Literal['legacy', 'compat', 'segwit']
 
 # Version bytes for extended public keys (BIP32)
 _XPUB_VERSION = bytes.fromhex('0488B21E')
@@ -51,22 +55,37 @@ class HaskoinApi(BlockchainApi, BalanceMixin):
         'get_balance_xpub': 'xpub/{address}',
     }
 
-    def fetch_balances(self, address: str) -> FetchResult:
+    def fetch_balances(
+        self, address: str, *, derive: Optional[Derivation] = None
+    ) -> FetchResult:
+        """Follow Haskoin's SegWit hint once for a plain xpub without a derive override."""
         prefix = address[:4]
-        derive = _DERIVE_TYPES.get(prefix)
-
-        if derive:
-            xpub = _to_xpub(address)
-            return self.get_data(
-                'get_balance_xpub',
-                params={'derive': derive},
-                address=xpub,
+        if derive is not None and (
+            prefix != 'xpub' or derive not in ('legacy', 'compat', 'segwit')
+        ):
+            return FetchResult(
+                errors=['derive requires an xpub and legacy, compat, or segwit']
             )
 
-        if prefix == 'xpub':
-            return self.get_data('get_balance_xpub', address=address)
+        if prefix in _DERIVE_TYPES:
+            derive = _DERIVE_TYPES[prefix]
+            address = _to_xpub(address)
+        elif prefix != 'xpub':
+            return self.get_data('get_balance', address=address)
 
-        return self.get_data('get_balance', address=address)
+        if derive is None:
+            result = self.get_data('get_balance_xpub', address=address)
+            if result.status_code != 400 or not any(
+                'ask with derive=segwit.' in error for error in result.errors or []
+            ):
+                return result
+            if self.sleep_provider:
+                self.sleep_provider.sleep(self.base_url, self.api_options.rate_limit)
+            derive = 'segwit'
+
+        return self.get_data(
+            'get_balance_xpub', params={'derive': derive}, address=address
+        )
 
     def parse_balances(self, fetch_result: FetchResult) -> ParseResult:
         if not fetch_result.data:
